@@ -110,7 +110,6 @@ async function apiRequest<T>(
           'Accept': 'application/json',
           ...options?.headers,
         },
-        timeout: 10000, // 10 second timeout
         ...options,
       })
 
