@@ -1,0 +1,63 @@
+{
+  "name": "macrobius-frontend-hybrid-superior",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Revolutionary AI-powered Latin education platform - Superior Hybrid Version combining advanced Oracle Cloud integration with exceptional Azure visual design",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "analyze": "ANALYZE=true npm run build",
+    "phase4": "node phase4-production-lighthouse-validator.js",
+    "test": "node integration-test.js",
+    "deploy": "npm run build && npm run start",
+    "oracle-test": "node scripts/oracle-connection-test.js"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-progress": "^1.0.3",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.15.11",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^10.16.4",
+    "lucide-react": "^0.263.1",
+    "next": "^15.3.2",
+    "puppeteer": "^24.9.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^1.14.0",
+    "tailwindcss-animate": "^1.0.7",
+    "three": "^0.176.0"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^13.4.19",
+    "@types/node": "^20.5.0",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@types/three": "^0.176.0",
+    "autoprefixer": "^10.4.15",
+    "chrome-launcher": "^0.15.2",
+    "critters": "^0.0.23",
+    "lighthouse": "^12.6.0",
+    "postcss": "^8.4.28",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.1.6"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "latin",
+    "education",
+    "ai",
+    "macrobius",
+    "oracle-cloud",
+    "next.js",
+    "azure-design"
+  ]
+}
