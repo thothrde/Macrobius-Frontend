@@ -1,0 +1,154 @@
+'use client';
+
+import { useEffect } from 'react';
+import Script from 'next/script';
+
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void;
+    plausible: (...args: any[]) => void;
+  }
+}
+
+// Google Analytics Configuration
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
+const ENABLE_ANALYTICS = process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === 'true';
+
+// Analytics Events
+export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
+  if (!ENABLE_ANALYTICS) return;
+  
+  // Google Analytics
+  if (typeof window !== 'undefined' && window.gtag && GA_MEASUREMENT_ID) {
+    window.gtag('event', eventName, {
+      ...parameters,
+      app_name: 'Macrobius Frontend',
+    });
+  }
+  
+  // Plausible Analytics
+  if (typeof window !== 'undefined' && window.plausible && PLAUSIBLE_DOMAIN) {
+    window.plausible(eventName, {
+      props: parameters,
+    });
+  }
+};
+
+// Page View Tracking
+export const trackPageView = (url: string) => {
+  if (!ENABLE_ANALYTICS) return;
+  
+  // Google Analytics
+  if (typeof window !== 'undefined' && window.gtag && GA_MEASUREMENT_ID) {
+    window.gtag('config', GA_MEASUREMENT_ID, {
+      page_location: url,
+      page_title: document.title,
+    });
+  }
+  
+  // Plausible automatically tracks page views
+};
+
+// Custom Events for Educational Platform
+export const trackEducationalEvent = {
+  quizStarted: (category: string) => trackEvent('quiz_started', { category }),
+  quizCompleted: (category: string, score: number) => trackEvent('quiz_completed', { category, score }),
+  vocabularyPracticed: (word: string, correct: boolean) => trackEvent('vocabulary_practiced', { word, correct }),
+  '3dVisualizationViewed': (type: string) => trackEvent('3d_visualization_viewed', { type }),
+  banquetPhaseCompleted: (phase: number) => trackEvent('banquet_phase_completed', { phase }),
+  languageChanged: (language: string) => trackEvent('language_changed', { language }),
+  sectionViewed: (section: string) => trackEvent('section_viewed', { section }),
+};
+
+// Google Analytics Component
+const GoogleAnalytics = () => {
+  if (!GA_MEASUREMENT_ID || !ENABLE_ANALYTICS) return null;
+  
+  return (
+    <>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}', {
+              page_location: window.location.href,
+              page_title: document.title,
+              anonymize_ip: true,
+              allow_google_signals: false,
+              allow_ad_personalization_signals: false
+            });
+          `,
+        }}
+      />
+    </>
+  );
+};
+
+// Plausible Analytics Component
+const PlausibleAnalytics = () => {
+  if (!PLAUSIBLE_DOMAIN || !ENABLE_ANALYTICS) return null;
+  
+  return (
+    <Script
+      defer
+      data-domain={PLAUSIBLE_DOMAIN}
+      src="https://plausible.io/js/script.js"
+      strategy="afterInteractive"
+    />
+  );
+};
+
+// Main Analytics Component
+const Analytics = () => {
+  useEffect(() => {
+    // Track initial page view
+    if (typeof window !== 'undefined') {
+      trackPageView(window.location.href);
+    }
+    
+    // Track route changes for SPA navigation
+    const handleRouteChange = (url: string) => {
+      trackPageView(url);
+    };
+    
+    // Listen for Next.js route changes
+    if (typeof window !== 'undefined' && window.history) {
+      const originalPushState = window.history.pushState;
+      const originalReplaceState = window.history.replaceState;
+      
+      window.history.pushState = function(...args) {
+        originalPushState.apply(window.history, args);
+        handleRouteChange(window.location.href);
+      };
+      
+      window.history.replaceState = function(...args) {
+        originalReplaceState.apply(window.history, args);
+        handleRouteChange(window.location.href);
+      };
+      
+      window.addEventListener('popstate', () => {
+        handleRouteChange(window.location.href);
+      });
+    }
+  }, []);
+  
+  if (!ENABLE_ANALYTICS) return null;
+  
+  return (
+    <>
+      <GoogleAnalytics />
+      <PlausibleAnalytics />
+    </>
+  );
+};
+
+export default Analytics;
