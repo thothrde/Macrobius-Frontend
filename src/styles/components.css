@@ -1,0 +1,122 @@
+/* Card Components */
+.macrobius-card {
+  @apply w-full bg-blue-800/90 text-white shadow-xl rounded-lg overflow-hidden;
+}
+
+.card-header {
+  @apply p-6 border-b border-blue-700;
+}
+
+.card-content {
+  @apply p-6;
+}
+
+.card-footer {
+  @apply p-6 bg-blue-700/50;
+}
+
+/* Image Components */
+.image-preview {
+  @apply relative overflow-hidden rounded-lg;
+}
+
+.image-preview img {
+  @apply w-full h-full object-cover transition-transform duration-500;
+}
+
+.image-preview:hover img {
+  @apply scale-105;
+}
+
+.image-overlay {
+  @apply absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300 
+         flex items-center justify-center;
+}
+
+.image-preview:hover .image-overlay {
+  @apply opacity-100;
+}
+
+/* Button Styles */
+.nav-button {
+  @apply px-6 py-3 text-lg transition-all duration-300 rounded-md
+         flex items-center justify-center gap-2;
+}
+
+.nav-button-primary {
+  @apply bg-yellow-400 text-blue-900 hover:bg-yellow-300;
+}
+
+.nav-button-outline {
+  @apply text-yellow-400 border-yellow-400 hover:bg-yellow-400/20;
+}
+
+/* Text Styles */
+.section-title {
+  @apply text-3xl font-bold text-yellow-400 mb-8 text-center tracking-wide;
+}
+
+.section-subtitle {
+  @apply text-xl font-semibold text-yellow-400 mb-4;
+}
+
+.body-text {
+  @apply text-lg leading-relaxed text-white/90;
+}
+
+/* Grid Layouts */
+.grid-2-cols {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-8;
+}
+
+.grid-3-cols {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
+}
+
+/* Navigation */
+.nav-container {
+  @apply flex flex-wrap justify-center gap-6 mb-12;
+}
+
+/* Animations */
+.fade-enter {
+  @apply transition-opacity duration-500;
+}
+
+.slide-enter {
+  @apply transition-transform duration-500;
+}
+
+/* Video Player */
+.video-player {
+  @apply w-full rounded-lg shadow-lg overflow-hidden;
+}
+
+/* Language Selector */
+.language-selector {
+  @apply flex justify-center gap-6 mb-12;
+}
+
+/* Interactive Elements */
+.interactive-element {
+  @apply cursor-pointer transition-all duration-300 hover:scale-105;
+}
+
+/* Responsive Design */
+@screen sm {
+  .responsive-container {
+    @apply px-4;
+  }
+}
+
+@screen md {
+  .responsive-container {
+    @apply px-6;
+  }
+}
+
+@screen lg {
+  .responsive-container {
+    @apply px-8;
+  }
+}

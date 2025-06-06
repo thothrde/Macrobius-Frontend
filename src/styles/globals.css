@@ -1,0 +1,466 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+ * MACROBIUS HYBRID SUPERIOR - GLOBAL STYLES
+ * Combining Azure visual excellence with advanced Oracle Cloud integration
+ * Version 2.0.0 - Revolutionary Educational Platform
+ */
+
+@layer base {
+  :root {
+    /* Macrobius Color System */
+    --azure-blue: #007BC7;
+    --wine-red: #722F37;
+    --gold: #FFD700;
+    --dark-gold: #B8860B;
+    --light-azure: #4A9FD4;
+    --deep-wine: #5A2429;
+    
+    /* Dynamic Variables */
+    --astrolabe-rotation: 0deg;
+    --stars-speed: 20s;
+    --tab-reaction-intensity: 1;
+    
+    /* Design System Variables */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --border: 214.3 31.8% 91.4%;
+    --radius: 0.5rem;
+    
+    /* Advanced Features */
+    --ai-pulse-color: #00FF87;
+    --oracle-connection-color: #FF6B35;
+    --realtime-indicator: #FF0080;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+  
+  body {
+    /* Azure Background with Advanced Gradient */
+    background: linear-gradient(
+      135deg,
+      var(--azure-blue) 0%,
+      rgba(0, 123, 199, 0.95) 25%,
+      rgba(74, 159, 212, 0.9) 50%,
+      rgba(0, 123, 199, 0.95) 75%,
+      var(--azure-blue) 100%
+    );
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    
+    /* Advanced Typography */
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ANIMATED STARS BACKGROUND - Enhanced */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      /* Layer 1: Large golden stars */
+      radial-gradient(3px 3px at 20px 30px, var(--gold), transparent),
+      radial-gradient(2px 2px at 40px 70px, var(--gold), transparent),
+      radial-gradient(3px 3px at 90px 40px, var(--gold), transparent),
+      radial-gradient(1px 1px at 130px 80px, var(--gold), transparent),
+      radial-gradient(2px 2px at 160px 30px, var(--gold), transparent),
+      /* Layer 2: Medium stars */
+      radial-gradient(2px 2px at 180px 90px, rgba(255, 215, 0, 0.8), transparent),
+      radial-gradient(1px 1px at 220px 50px, rgba(255, 215, 0, 0.6), transparent),
+      radial-gradient(2px 2px at 280px 120px, rgba(255, 215, 0, 0.7), transparent),
+      /* Layer 3: Small twinkling stars */
+      radial-gradient(1px 1px at 320px 60px, rgba(255, 215, 0, 0.4), transparent),
+      radial-gradient(1px 1px at 360px 110px, rgba(255, 215, 0, 0.5), transparent);
+    background-repeat: repeat;
+    background-size: 400px 200px, 350px 180px, 300px 150px;
+    animation: starsAnimation var(--stars-speed) linear infinite,
+               starsTwinkle 3s ease-in-out infinite alternate;
+    z-index: -2;
+    opacity: 0.8;
+  }
+
+  /* LARGE ASTROLABE BACKGROUND - Enhanced with Historical Astrolabe */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 80vmin;
+    height: 80vmin;
+    transform: translate(-50%, -50%) rotate(calc(var(--astrolabe-rotation)));
+    background-image: url('/assets/images/Astrolab.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.3;
+    animation: astrolabeRotation 120s linear infinite,
+               astrolabePulse 6s ease-in-out infinite alternate;
+    z-index: -1;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                filter 0.5s ease;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3)) sepia(0.3) hue-rotate(30deg);
+  }
+
+  /* Tab Reactivity Enhancement */
+  body.tab-active::after {
+    animation-play-state: paused;
+    filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.5)) brightness(1.2);
+    transform: translate(-50%, -50%) rotate(calc(var(--astrolabe-rotation))) scale(1.05);
+  }
+}
+
+/* EDUCATIONAL COMPONENTS */
+@layer components {
+  .educational-gradient {
+    background: linear-gradient(135deg, var(--azure-blue), rgba(0, 123, 199, 0.8));
+  }
+  
+  .text-gradient {
+    background: linear-gradient(45deg, var(--gold), #FFE55C, var(--dark-gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-weight: 700;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-500 hover:shadow-lg hover:-translate-y-1;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 12px;
+  }
+
+  .card-hover:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 215, 0, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 
+                0 0 30px rgba(255, 215, 0, 0.2);
+  }
+
+  /* WINE-RED BUTTONS WITH GOLDEN ACCENTS - Enhanced */
+  .btn-wine {
+    background: linear-gradient(135deg, var(--wine-red), var(--deep-wine));
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-wine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .btn-wine:hover {
+    background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+    color: var(--wine-red);
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4),
+                0 0 20px rgba(255, 215, 0, 0.3);
+    border-color: var(--wine-red);
+  }
+
+  .btn-wine:hover::before {
+    left: 100%;
+  }
+
+  .btn-wine:active {
+    transform: scale(0.98) translateY(1px);
+  }
+
+  /* GOLDEN ACCENTS - Enhanced */
+  .golden-accent {
+    border-left: 5px solid var(--gold);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .golden-accent::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--gold), var(--dark-gold), var(--gold));
+    animation: goldenPulse 2s ease-in-out infinite alternate;
+  }
+
+  .golden-glow {
+    box-shadow: 0 0 35px rgba(255, 215, 0, 0.5),
+                inset 0 0 15px rgba(255, 215, 0, 0.1);
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    transition: all 0.5s ease;
+  }
+
+  .golden-glow:hover {
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.7),
+                inset 0 0 20px rgba(255, 215, 0, 0.2);
+    transform: scale(1.02);
+  }
+
+  /* LAYER-BASED VISUALIZATIONS - Enhanced */
+  .layer-visualization {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  .layer-base {
+    opacity: 0.85;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(1);
+  }
+
+  .layer-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(
+      45deg,
+      rgba(255, 215, 0, 0.15),
+      rgba(114, 47, 55, 0.1),
+      rgba(0, 123, 199, 0.1)
+    );
+    backdrop-filter: blur(2px);
+  }
+
+  .layer-visualization:hover .layer-base {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+
+  .layer-visualization:hover .layer-overlay {
+    opacity: 1;
+  }
+
+  /* ADVANCED FEATURES */
+  .ai-indicator {
+    background: var(--ai-pulse-color);
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+    animation: aiPulse 1.5s ease-in-out infinite alternate;
+    box-shadow: 0 0 10px var(--ai-pulse-color);
+  }
+
+  .oracle-connection-status {
+    color: var(--oracle-connection-color);
+    animation: connectionPulse 2s ease-in-out infinite;
+  }
+
+  .realtime-indicator {
+    background: var(--realtime-indicator);
+    animation: realtimePulse 1s ease-in-out infinite alternate;
+  }
+
+  /* RESPONSIVE ENHANCEMENTS */
+  .mobile-optimized {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  @media (max-width: 768px) {
+    .btn-wine {
+      padding: 12px 20px;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    body::after {
+      width: 70vmin;
+      height: 70vmin;
+    }
+  }
+}
+
+/* ACCESSIBILITY ENHANCEMENTS */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Focus indicators for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* LATIN TEXT STYLING */
+.latin-text {
+  font-family: 'Times New Roman', 'Trajan Pro', serif;
+  line-height: 1.7;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+/* ANIMATION KEYFRAMES - Enhanced */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes starsAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-400px);
+  }
+}
+
+@keyframes starsTwinkle {
+  0% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes astrolabeRotation {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes astrolabePulse {
+  0% {
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+  }
+  100% {
+    filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.5));
+  }
+}
+
+@keyframes goldenPulse {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes aiPulse {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes connectionPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes realtimePulse {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Animation utilities */
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-staggered-reveal {
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-staggered-reveal:nth-child(1) { animation-delay: 0.1s; }
+.animate-staggered-reveal:nth-child(2) { animation-delay: 0.2s; }
+.animate-staggered-reveal:nth-child(3) { animation-delay: 0.3s; }
+.animate-staggered-reveal:nth-child(4) { animation-delay: 0.4s; }
+.animate-staggered-reveal:nth-child(5) { animation-delay: 0.5s; }
+.animate-staggered-reveal:nth-child(6) { animation-delay: 0.6s; }
+
+/* PERFORMANCE OPTIMIZATIONS */
+.will-change-transform {
+  will-change: transform;
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* REDUCED MOTION SUPPORT */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  body::before,
+  body::after {
+    animation: none !important;
+  }
+}
