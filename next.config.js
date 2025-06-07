@@ -3,13 +3,6 @@
 const path = require('path');
 
 const nextConfig = {
-  experimental: {
-    optimizeCss: true,
-    turbo: {
-      memoryLimit: 512,
-    },
-  },
-  
   // Enable React strict mode for better development experience
   reactStrictMode: true,
   
@@ -107,8 +100,7 @@ const nextConfig = {
     ];
   },
   
-  // Performance optimizations
-  swcMinify: true,
+  // Performance optimizations (swcMinify is now default in Next.js 15)
   modularizeImports: {
     '@react-three/drei': {
       transform: '@react-three/drei/{{member}}',
@@ -128,9 +120,11 @@ const nextConfig = {
     ignoreDuringBuilds: false,
   },
   
+  // External packages configuration
+  serverExternalPackages: ['three'],
+  
   // Experimental features for better performance
   experimental: {
-    serverComponentsExternalPackages: ['three'],
     optimizeCss: true,
   },
 };

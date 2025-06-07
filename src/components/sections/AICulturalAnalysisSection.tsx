@@ -1,116 +1,75 @@
 /**
- * 🏛️ AI Cultural Analysis Section
- * Revolutionary interface for intelligent cultural theme analysis
- * Integrates with Oracle Cloud backend for 1,401 passage analysis
+ * 🏛️ AI CULTURAL ANALYSIS SECTION
+ * Revolutionary interface for AI-powered cultural theme detection and analysis
+ * Processes authentic Macrobius content with intelligent pattern recognition
  */
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Progress } from '@/components/ui/progress';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Brain, 
   Search, 
+  Sparkles, 
   TrendingUp, 
-  Network, 
-  Lightbulb, 
-  Target,
-  BookOpen,
+  BookOpen, 
+  Globe, 
   Zap,
   BarChart3,
-  Users,
-  Globe,
-  Clock
+  Filter,
+  Download,
+  RefreshCw,
+  CheckCircle,
+  AlertCircle,
+  Clock,
+  Target
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  useCulturalAnalysis,
-  type CulturalTheme,
-  type CulturalAnalysisResult,
-  type ThematicConnection,
-  type CulturalInsight
+  aiCulturalAnalysisEngine, 
+  CulturalTheme, 
+  MacrobiusPassage, 
+  CulturalAnalysisResult,
+  AnalysisFilters 
 } from '@/lib/ai-cultural-analysis-engine';
 
-interface AnalysisMetrics {
-  totalPassages: number;
-  themesDetected: number;
-  connectionsFound: number;
-  insightsGenerated: number;
-  modernRelevance: number;
-  analysisTime: number;
+interface AnalysisProps {
+  className?: string;
 }
 
-const AICulturalAnalysisSection: React.FC = () => {
-  const {
-    analysisResult,
-    isAnalyzing,
-    themes,
-    analyzeText,
-    detectThemes,
-    analyzeConnections,
-    generateInsights,
-    analyzeRelevance
-  } = useCulturalAnalysis();
-
-  const [inputText, setInputText] = useState('');
+export default function AICulturalAnalysisSection({ className = '' }: AnalysisProps) {
+  const [analysisText, setAnalysisText] = useState('');
+  const [analysisResult, setAnalysisResult] = useState<CulturalAnalysisResult | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [culturalThemes, setCulturalThemes] = useState<CulturalTheme[]>([]);
   const [selectedThemes, setSelectedThemes] = useState<string[]>([]);
-  const [analysisType, setAnalysisType] = useState<'comprehensive' | 'theme_detection' | 'modern_relevance' | 'educational_optimization'>('comprehensive');
-  const [metrics, setMetrics] = useState<AnalysisMetrics | null>(null);
-  const [activeTab, setActiveTab] = useState('input');
+  const [searchResults, setSearchResults] = useState<MacrobiusPassage[]>([]);
+  const [currentLanguage, setCurrentLanguage] = useState<'EN' | 'DE' | 'LA'>('EN');
+  const [activeTab, setActiveTab] = useState<'analyze' | 'explore' | 'statistics'>('analyze');
+  const [statistics, setStatistics] = useState<any>(null);
 
-  // Sample texts for demonstration
-  const sampleTexts = [
-    {
-      title: 'Banquet Customs',
-      text: 'Multarum artium studia et in convivio prodesse possunt et extra convivium...'
-    },
-    {
-      title: 'Educational Dialogue',
-      text: 'Saturnalibus autem diebus apud maiores nostros...'
-    },
-    {
-      title: 'Philosophical Discussion',
-      text: 'Sed et Vergilius noster quem veteribus poetis...'
-    }
-  ];
-
-  const handleAnalysis = async () => {
-    if (!inputText.trim()) {
-      alert('Please enter text to analyze');
-      return;
-    }
-
-    const startTime = Date.now();
+  useEffect(() => {
+    // Load cultural themes and statistics
+    const themes = aiCulturalAnalysisEngine.getCulturalThemes(currentLanguage);
+    setCulturalThemes(themes);
     
+    const stats = aiCulturalAnalysisEngine.getAnalysisStatistics();
+    setStatistics(stats);
+  }, [currentLanguage]);
+
+  const handleAnalyzeText = async () => {
+    if (!analysisText.trim()) return;
+
+    setIsAnalyzing(true);
     try {
-      const result = await analyzeText(inputText, analysisType);
-      const endTime = Date.now();
-      
-      // Calculate metrics
-      setMetrics({
-        totalPassages: 1, // For single text input
-        themesDetected: result.mainThemes.length,
-        connectionsFound: result.thematicConnections.length,
-        insightsGenerated: result.culturalInsights.length,
-        modernRelevance: result.modernRelevance.overallRelevance,
-        analysisTime: endTime - startTime
-      });
-      
-      setActiveTab('results');
+      const result = await aiCulturalAnalysisEngine.analyzePassage(analysisText);
+      setAnalysisResult(result);
     } catch (error) {
       console.error('Analysis failed:', error);
-      alert('Analysis failed. Please try again.');
+    } finally {
+      setIsAnalyzing(false);
     }
   };
 
-  const handleSampleText = (text: string) => {
-    setInputText(text);
-  };
-
-  const handleThemeToggle = (themeId: string) => {
+  const handleThemeFilter = (themeId: string) => {
     setSelectedThemes(prev => 
       prev.includes(themeId) 
         ? prev.filter(id => id !== themeId)
@@ -118,595 +77,468 @@ const AICulturalAnalysisSection: React.FC = () => {
     );
   };
 
+  const handleSearchPassages = () => {
+    const filters: AnalysisFilters = {
+      themes: selectedThemes.length > 0 ? selectedThemes : undefined,
+      language: currentLanguage
+    };
+    
+    const results = aiCulturalAnalysisEngine.searchPassages(filters);
+    setSearchResults(results);
+  };
+
+  const sampleTexts = [
+    'Saturni autem stella, quae φαίνων dicitur, quod φαεινή sit, id est lucida, triginta fere annis cursum suum conficit',
+    'Convivium autem nostrum non solum voluptatis causa, sed maxime virtutis exercendae gratia celebramus',
+    'Philosophia enim, quae est mater omnium bonarum artium, nihil aliud docet quam ut recte vivamus'
+  ];
+
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+    <section className={`py-24 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 ${className}`}>
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
         <motion.div 
-          className="text-center mb-12"
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
           <div className="flex items-center justify-center mb-6">
-            <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mr-4">
-              <Brain className="h-8 w-8 text-white" />
+            <div className="p-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-4">
+              <Brain className="h-12 w-12 text-white" />
             </div>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              AI Cultural Analysis Engine
-            </h2>
+            <div className="text-left">
+              <h2 className="text-5xl font-bold text-gray-900 mb-2">
+                AI Cultural Analysis Engine
+              </h2>
+              <p className="text-xl text-blue-600 font-semibold">
+                Intelligent Cultural Theme Detection & Pattern Recognition
+              </p>
+            </div>
           </div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Revolutionary intelligent processing of cultural themes from the complete Macrobius corpus.
-            Discover hidden connections, modern relevance, and educational insights through advanced AI analysis.
-          </p>
           
-          {/* Real-time Stats */}
-          <div className="flex justify-center mt-8 space-x-8">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">1,401</div>
-              <div className="text-sm text-gray-500">Latin Passages</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-pink-600">9</div>
-              <div className="text-sm text-gray-500">Cultural Themes</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">16</div>
-              <div className="text-sm text-gray-500">Cultural Insights</div>
+          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            Revolutionary AI system that analyzes Latin texts to identify cultural themes, 
+            detect historical patterns, and establish connections to modern applications.
+          </p>
+
+          {/* Language Selector */}
+          <div className="flex justify-center mt-8">
+            <div className="flex bg-white rounded-lg p-1 shadow-lg border border-gray-200">
+              {(['EN', 'DE', 'LA'] as const).map((lang) => (
+                <button
+                  key={lang}
+                  onClick={() => setCurrentLanguage(lang)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                    currentLanguage === lang
+                      ? 'bg-blue-500 text-white shadow-md'
+                      : 'text-gray-600 hover:text-blue-600'
+                  }`}
+                >
+                  {lang === 'EN' ? '🇬🇧 English' : lang === 'DE' ? '🇩🇪 Deutsch' : '🏛️ Latina'}
+                </button>
+              ))}
             </div>
           </div>
         </motion.div>
 
-        {/* Main Interface */}
-        <div className="max-w-6xl mx-auto">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-8">
-              <TabsTrigger value="input" className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4" />
-                Input & Setup
-              </TabsTrigger>
-              <TabsTrigger value="themes" className="flex items-center gap-2">
-                <Network className="h-4 w-4" />
-                Themes
-              </TabsTrigger>
-              <TabsTrigger value="results" className="flex items-center gap-2">
-                <BarChart3 className="h-4 w-4" />
-                Analysis Results
-              </TabsTrigger>
-              <TabsTrigger value="insights" className="flex items-center gap-2">
-                <Lightbulb className="h-4 w-4" />
-                Cultural Insights
-              </TabsTrigger>
-            </TabsList>
+        {/* Tab Navigation */}
+        <div className="flex justify-center mb-12">
+          <div className="flex bg-white rounded-xl p-2 shadow-lg border border-gray-200">
+            {[
+              { id: 'analyze', label: 'AI Analysis', icon: Brain },
+              { id: 'explore', label: 'Theme Explorer', icon: Search },
+              { id: 'statistics', label: 'Statistics', icon: BarChart3 }
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id as any)}
+                className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                  activeTab === id
+                    ? 'bg-blue-500 text-white shadow-md'
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                }`}
+              >
+                <Icon className="h-5 w-5 mr-2" />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-            {/* Input Tab */}
-            <TabsContent value="input" className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Text Input */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Search className="h-5 w-5" />
-                      Text Analysis Input
-                    </CardTitle>
-                    <CardDescription>
-                      Enter Latin text from Macrobius for AI-powered cultural analysis
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
+        <AnimatePresence mode="wait">
+          {/* AI Analysis Tab */}
+          {activeTab === 'analyze' && (
+            <motion.div
+              key="analyze"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-8"
+            >
+              {/* Analysis Input */}
+              <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                <div className="flex items-center mb-6">
+                  <Zap className="h-6 w-6 text-blue-500 mr-3" />
+                  <h3 className="text-2xl font-bold text-gray-900">Text Analysis Engine</h3>
+                </div>
+                
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Enter Latin text for cultural analysis:
+                    </label>
                     <textarea
-                      value={inputText}
-                      onChange={(e) => setInputText(e.target.value)}
-                      placeholder="Enter Latin text to analyze..."
-                      className="w-full h-32 p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      value={analysisText}
+                      onChange={(e) => setAnalysisText(e.target.value)}
+                      placeholder="Paste Latin text here for AI-powered cultural analysis..."
+                      className="w-full h-32 p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
-                    
-                    <div className="space-y-2">
-                      <p className="text-sm text-gray-600">Sample texts:</p>
-                      {sampleTexts.map((sample, index) => (
-                        <Button
+                  </div>
+
+                  {/* Sample Texts */}
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 mb-3">Or try these sample texts:</p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      {sampleTexts.map((text, index) => (
+                        <button
                           key={index}
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleSampleText(sample.text)}
-                          className="mr-2"
+                          onClick={() => setAnalysisText(text)}
+                          className="p-3 text-left text-sm bg-gray-50 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all duration-300"
                         >
-                          {sample.title}
-                        </Button>
+                          {text.substring(0, 60)}...
+                        </button>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
 
-                {/* Analysis Configuration */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Target className="h-5 w-5" />
-                      Analysis Configuration
-                    </CardTitle>
-                    <CardDescription>
-                      Customize the AI analysis approach
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-3">
-                      <label className="text-sm font-medium">Analysis Type:</label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {[
-                          { value: 'comprehensive', label: 'Comprehensive', icon: BarChart3 },
-                          { value: 'theme_detection', label: 'Theme Detection', icon: Network },
-                          { value: 'modern_relevance', label: 'Modern Relevance', icon: Globe },
-                          { value: 'educational_optimization', label: 'Educational', icon: BookOpen }
-                        ].map(({ value, label, icon: Icon }) => (
-                          <Button
-                            key={value}
-                            variant={analysisType === value ? 'default' : 'outline'}
-                            size="sm"
-                            onClick={() => setAnalysisType(value as any)}
-                            className="flex items-center gap-2 justify-start"
-                          >
-                            <Icon className="h-4 w-4" />
-                            {label}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <Button
-                      onClick={handleAnalysis}
-                      disabled={isAnalyzing || !inputText.trim()}
-                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
-                      size="lg"
-                    >
-                      {isAnalyzing ? (
-                        <>
-                          <Zap className="h-4 w-4 mr-2 animate-pulse" />
-                          Analyzing with AI...
-                        </>
-                      ) : (
-                        <>
-                          <Brain className="h-4 w-4 mr-2" />
-                          Start AI Analysis
-                        </>
-                      )}
-                    </Button>
-                  </CardContent>
-                </Card>
+                  <button
+                    onClick={handleAnalyzeText}
+                    disabled={!analysisText.trim() || isAnalyzing}
+                    className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                  >
+                    {isAnalyzing ? (
+                      <>
+                        <RefreshCw className="h-5 w-5 mr-2 animate-spin" />
+                        Analyzing...
+                      </>
+                    ) : (
+                      <>
+                        <Brain className="h-5 w-5 mr-2" />
+                        Analyze with AI
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
 
-              {/* Real-time Analysis Progress */}
-              <AnimatePresence>
-                {isAnalyzing && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                  >
-                    <Card>
-                      <CardContent className="pt-6">
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">AI Analysis Progress</span>
-                            <span className="text-sm text-gray-500">Processing cultural themes...</span>
-                          </div>
-                          <Progress value={75} className="w-full" />
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                            <div className="space-y-1">
-                              <div className="h-8 w-8 mx-auto bg-purple-100 rounded-full flex items-center justify-center">
-                                <Search className="h-4 w-4 text-purple-600" />
-                              </div>
-                              <div className="text-xs text-gray-600">Theme Detection</div>
-                            </div>
-                            <div className="space-y-1">
-                              <div className="h-8 w-8 mx-auto bg-blue-100 rounded-full flex items-center justify-center">
-                                <Network className="h-4 w-4 text-blue-600" />
-                              </div>
-                              <div className="text-xs text-gray-600">Connection Analysis</div>
-                            </div>
-                            <div className="space-y-1">
-                              <div className="h-8 w-8 mx-auto bg-green-100 rounded-full flex items-center justify-center">
-                                <Lightbulb className="h-4 w-4 text-green-600" />
-                              </div>
-                              <div className="text-xs text-gray-600">Insight Generation</div>
-                            </div>
-                            <div className="space-y-1">
-                              <div className="h-8 w-8 mx-auto bg-orange-100 rounded-full flex items-center justify-center">
-                                <Globe className="h-4 w-4 text-orange-600" />
-                              </div>
-                              <div className="text-xs text-gray-600">Modern Relevance</div>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </TabsContent>
-
-            {/* Themes Tab */}
-            <TabsContent value="themes" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {themes.map((theme) => (
-                  <motion.div
-                    key={theme.id}
-                    whileHover={{ scale: 1.02 }}
-                    className="cursor-pointer"
-                  >
-                    <Card 
-                      className={`transition-all duration-200 ${
-                        selectedThemes.includes(theme.id) 
-                          ? 'ring-2 ring-purple-500 bg-purple-50' 
-                          : 'hover:shadow-lg'
-                      }`}
-                      onClick={() => handleThemeToggle(theme.id)}
-                    >
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <CardTitle className="text-lg">{theme.name}</CardTitle>
-                          <Badge variant="secondary">
-                            {Math.round(theme.complexity * 100)}%
-                          </Badge>
-                        </div>
-                        <CardDescription className="text-sm">
-                          {theme.description}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-3">
-                          <div>
-                            <p className="text-xs text-gray-500 mb-1">Subcategories:</p>
-                            <div className="flex flex-wrap gap-1">
-                              {theme.subcategories.slice(0, 3).map((sub) => (
-                                <Badge key={sub} variant="outline" className="text-xs">
-                                  {sub}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-center justify-between text-xs text-gray-500">
-                            <span>Complexity</span>
-                            <Progress value={theme.complexity * 100} className="w-16 h-2" />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-
-              {selectedThemes.length > 0 && (
-                <Alert>
-                  <Users className="h-4 w-4" />
-                  <AlertDescription>
-                    {selectedThemes.length} theme(s) selected for focused analysis. 
-                    The AI will prioritize these themes in the analysis results.
-                  </AlertDescription>
-                </Alert>
-              )}
-            </TabsContent>
-
-            {/* Results Tab */}
-            <TabsContent value="results" className="space-y-6">
-              {analysisResult ? (
-                <>
-                  {/* Analysis Metrics */}
-                  {metrics && (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-                      <Card>
-                        <CardContent className="pt-4">
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-blue-600">{metrics.themesDetected}</div>
-                            <div className="text-xs text-gray-500">Themes</div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardContent className="pt-4">
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-green-600">{metrics.connectionsFound}</div>
-                            <div className="text-xs text-gray-500">Connections</div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardContent className="pt-4">
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-purple-600">{metrics.insightsGenerated}</div>
-                            <div className="text-xs text-gray-500">Insights</div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardContent className="pt-4">
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-orange-600">
-                              {Math.round(metrics.modernRelevance * 100)}%
-                            </div>
-                            <div className="text-xs text-gray-500">Relevance</div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardContent className="pt-4">
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-pink-600">
-                              {analysisResult.confidence.toFixed(1)}
-                            </div>
-                            <div className="text-xs text-gray-500">Confidence</div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardContent className="pt-4">
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-gray-600">
-                              {metrics.analysisTime}ms
-                            </div>
-                            <div className="text-xs text-gray-500">Analysis Time</div>
-                          </div>
-                        </CardContent>
-                      </Card>
+              {/* Analysis Results */}
+              {analysisResult && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="bg-white rounded-xl p-8 shadow-lg border border-gray-200"
+                >
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center">
+                      <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
+                      <h3 className="text-2xl font-bold text-gray-900">Analysis Results</h3>
                     </div>
-                  )}
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Target className="h-4 w-4 mr-1" />
+                      Confidence: {Math.round(analysisResult.confidence * 100)}%
+                    </div>
+                  </div>
 
-                  {/* Detected Themes */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Network className="h-5 w-5" />
-                        Detected Cultural Themes
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {analysisResult.mainThemes.map((theme, index) => (
-                          <motion.div
-                            key={theme.id}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="border rounded-lg p-4 space-y-2"
-                          >
-                            <div className="flex items-center justify-between">
-                              <h4 className="font-semibold">{theme.name}</h4>
-                              <Badge className="bg-gradient-to-r from-purple-500 to-pink-500">
-                                {Math.round(theme.complexity * 100)}%
-                              </Badge>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Cultural Themes */}
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Detected Cultural Themes</h4>
+                      <div className="space-y-3">
+                        {analysisResult.themes.map((theme) => (
+                          <div key={theme.id} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-medium text-gray-900">{theme.name}</span>
+                              <span 
+                                className="px-2 py-1 text-xs rounded-full text-white"
+                                style={{ backgroundColor: theme.color }}
+                              >
+                                {theme.passages} passages
+                              </span>
                             </div>
                             <p className="text-sm text-gray-600">{theme.description}</p>
-                            <div className="flex flex-wrap gap-1 mt-2">
-                              {theme.subcategories.map((sub) => (
-                                <Badge key={sub} variant="outline" className="text-xs">
-                                  {sub}
-                                </Badge>
-                              ))}
-                            </div>
-                          </motion.div>
+                            <p className="text-xs text-blue-600 mt-2">{theme.modernRelevance}</p>
+                          </div>
                         ))}
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
 
-                  {/* Thematic Connections */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <TrendingUp className="h-5 w-5" />
-                        Thematic Connections
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        {analysisResult.thematicConnections.map((connection, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="border rounded-lg p-4"
-                          >
+                    {/* Modern Connections */}
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Modern Connections</h4>
+                      <div className="space-y-3">
+                        {analysisResult.modernConnections.map((connection) => (
+                          <div key={connection.id} className="p-4 bg-green-50 rounded-lg border border-green-200">
                             <div className="flex items-center justify-between mb-2">
-                              <div className="flex items-center gap-2">
-                                <Badge variant="outline">{connection.theme1}</Badge>
-                                <span className="text-gray-400">↔</span>
-                                <Badge variant="outline">{connection.theme2}</Badge>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <Badge className={`${
-                                  connection.strength > 0.8 ? 'bg-green-500' :
-                                  connection.strength > 0.6 ? 'bg-yellow-500' : 'bg-red-500'
-                                }`}>
-                                  {Math.round(connection.strength * 100)}%
-                                </Badge>
-                                <Badge variant="secondary">{connection.connectionType}</Badge>
-                              </div>
+                              <span className="font-medium text-gray-900">{connection.ancientConcept}</span>
+                              <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                                {Math.round(connection.confidence * 100)}% match
+                              </span>
                             </div>
-                            <p className="text-sm text-gray-600">{connection.insight}</p>
-                          </motion.div>
+                            <p className="text-sm text-gray-600 mb-2">{connection.explanation}</p>
+                            <p className="text-sm font-medium text-green-700">{connection.modernApplication}</p>
+                          </div>
                         ))}
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
 
-                  {/* Modern Relevance */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Globe className="h-5 w-5" />
-                        Modern Relevance Analysis
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium">Overall Relevance Score</span>
-                          <Badge className="bg-gradient-to-r from-blue-500 to-green-500">
-                            {Math.round(analysisResult.modernRelevance.overallRelevance * 100)}%
-                          </Badge>
-                        </div>
-                        
-                        <div>
-                          <h4 className="font-semibold mb-2">Application Areas</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {analysisResult.modernRelevance.applicationAreas.map((area) => (
-                              <Badge key={area} variant="outline">{area}</Badge>
-                            ))}
-                          </div>
-                        </div>
-                        
-                        <div>
-                          <h4 className="font-semibold mb-2">Learning Benefits</h4>
-                          <ul className="space-y-1">
-                            {analysisResult.modernRelevance.learningBenefits.map((benefit, index) => (
-                              <li key={index} className="text-sm text-gray-600 flex items-start gap-2">
-                                <span className="text-green-500 mt-1">•</span>
-                                {benefit}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </>
-              ) : (
-                <div className="text-center py-12">
-                  <Brain className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-500 mb-2">No Analysis Results Yet</h3>
-                  <p className="text-gray-400">Run an AI analysis to see detailed results here.</p>
-                </div>
+                  {/* Insights and Recommendations */}
+                  <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-3">Cultural Insights</h4>
+                      <ul className="space-y-2">
+                        {analysisResult.insights.map((insight, index) => (
+                          <li key={index} className="flex items-start">
+                            <Sparkles className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm text-gray-700">{insight}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-3">Recommendations</h4>
+                      <ul className="space-y-2">
+                        {analysisResult.recommendations.map((rec, index) => (
+                          <li key={index} className="flex items-start">
+                            <TrendingUp className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm text-gray-700">{rec}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </motion.div>
               )}
-            </TabsContent>
+            </motion.div>
+          )}
 
-            {/* Insights Tab */}
-            <TabsContent value="insights" className="space-y-6">
-              {analysisResult?.culturalInsights ? (
-                <div className="space-y-6">
-                  {analysisResult.culturalInsights.map((insight, index) => (
-                    <motion.div
-                      key={insight.id}
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
+          {/* Theme Explorer Tab */}
+          {activeTab === 'explore' && (
+            <motion.div
+              key="explore"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-8"
+            >
+              {/* Theme Filter */}
+              <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                <div className="flex items-center mb-6">
+                  <Filter className="h-6 w-6 text-blue-500 mr-3" />
+                  <h3 className="text-2xl font-bold text-gray-900">Cultural Theme Explorer</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                  {culturalThemes.map((theme) => (
+                    <div
+                      key={theme.id}
+                      onClick={() => handleThemeFilter(theme.id)}
+                      className={`p-4 rounded-lg border-2 cursor-pointer transition-all duration-300 ${
+                        selectedThemes.includes(theme.id)
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50'
+                      }`}
                     >
-                      <Card>
-                        <CardHeader>
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <CardTitle className="flex items-center gap-2">
-                                <Lightbulb className="h-5 w-5 text-yellow-500" />
-                                {insight.title}
-                              </CardTitle>
-                              <CardDescription className="mt-1">
-                                {insight.description}
-                              </CardDescription>
-                            </div>
-                            <div className="flex flex-col items-end gap-2">
-                              <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500">
-                                {Math.round(insight.confidenceLevel * 100)}% confidence
-                              </Badge>
-                              <Badge variant="secondary">
-                                Educational Value: {Math.round(insight.educationalValue * 100)}%
-                              </Badge>
-                            </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                              <h4 className="font-semibold text-sm text-gray-700 mb-2">Ancient Context</h4>
-                              <p className="text-sm text-gray-600 leading-relaxed">
-                                {insight.ancientContext}
-                              </p>
-                            </div>
-                            <div>
-                              <h4 className="font-semibold text-sm text-gray-700 mb-2">Modern Application</h4>
-                              <p className="text-sm text-gray-600 leading-relaxed">
-                                {insight.modernApplication}
-                              </p>
-                            </div>
-                          </div>
-                          
-                          {insight.supportingPassages.length > 0 && (
-                            <div className="mt-4 pt-4 border-t">
-                              <h4 className="font-semibold text-sm text-gray-700 mb-2">Supporting Passages</h4>
-                              <div className="flex flex-wrap gap-2">
-                                {insight.supportingPassages.map((passageId) => (
-                                  <Badge key={passageId} variant="outline" className="text-xs">
-                                    {passageId}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-                  
-                  {/* Educational Recommendations */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Target className="h-5 w-5" />
-                        Educational Recommendations
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        {analysisResult.educationalRecommendations.slice(0, 5).map((rec, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="border rounded-lg p-4"
-                          >
-                            <div className="flex items-start justify-between mb-2">
-                              <h4 className="font-semibold">{rec.title}</h4>
-                              <div className="flex items-center gap-2">
-                                <Badge variant="outline">{rec.targetLevel}</Badge>
-                                <Badge variant="secondary">
-                                  <Clock className="h-3 w-3 mr-1" />
-                                  {rec.estimatedTime}min
-                                </Badge>
-                              </div>
-                            </div>
-                            <p className="text-sm text-gray-600 mb-3">{rec.description}</p>
-                            <div>
-                              <p className="text-xs font-medium text-gray-700 mb-1">Learning Outcomes:</p>
-                              <div className="flex flex-wrap gap-1">
-                                {rec.learningOutcomes.map((outcome, idx) => (
-                                  <Badge key={idx} variant="outline" className="text-xs">
-                                    {outcome}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium text-gray-900">{theme.name}</span>
+                        <span 
+                          className="w-4 h-4 rounded-full"
+                          style={{ backgroundColor: theme.color }}
+                        />
                       </div>
-                    </CardContent>
-                  </Card>
+                      <p className="text-sm text-gray-600 mb-2">{theme.description}</p>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <BookOpen className="h-3 w-3 mr-1" />
+                        {theme.passages} passages ({Math.round(theme.prevalence * 100)}%)
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ) : (
-                <div className="text-center py-12">
-                  <Lightbulb className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-500 mb-2">No Cultural Insights Yet</h3>
-                  <p className="text-gray-400">Complete an analysis to discover AI-generated cultural insights.</p>
+
+                <button
+                  onClick={handleSearchPassages}
+                  className="flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white font-medium rounded-lg hover:from-green-600 hover:to-blue-600 transition-all duration-300"
+                >
+                  <Search className="h-5 w-5 mr-2" />
+                  Search Passages
+                </button>
+              </div>
+
+              {/* Search Results */}
+              {searchResults.length > 0 && (
+                <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                    Found {searchResults.length} passages
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    {searchResults.slice(0, 5).map((passage) => (
+                      <div key={passage.id} className="p-6 bg-gray-50 rounded-lg border border-gray-200">
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <span className="text-sm font-medium text-blue-600">
+                              {passage.workType} {passage.bookNumber}.{passage.chapterNumber}.{passage.sectionNumber}
+                            </span>
+                            <span className={`ml-3 text-xs px-2 py-1 rounded-full ${
+                              passage.difficulty === 'Beginner' ? 'bg-green-100 text-green-700' :
+                              passage.difficulty === 'Intermediate' ? 'bg-blue-100 text-blue-700' :
+                              passage.difficulty === 'Advanced' ? 'bg-orange-100 text-orange-700' :
+                              'bg-red-100 text-red-700'
+                            }`}>
+                              {passage.difficulty}
+                            </span>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xs text-gray-500">Relevance</div>
+                            <div className="text-sm font-medium">{Math.round(passage.relevanceScore * 100)}%</div>
+                          </div>
+                        </div>
+                        
+                        <p className="text-gray-800 mb-3 italic">"{passage.latinText}"</p>
+                        <p className="text-sm text-gray-600 mb-2">{passage.modernRelevance}</p>
+                        
+                        <div className="flex flex-wrap gap-2">
+                          {passage.keywords.map((keyword, index) => (
+                            <span key={index} className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                              {keyword}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
-            </TabsContent>
-          </Tabs>
-        </div>
+            </motion.div>
+          )}
+
+          {/* Statistics Tab */}
+          {activeTab === 'statistics' && statistics && (
+            <motion.div
+              key="statistics"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-8"
+            >
+              <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                <div className="flex items-center mb-6">
+                  <BarChart3 className="h-6 w-6 text-blue-500 mr-3" />
+                  <h3 className="text-2xl font-bold text-gray-900">Analysis Statistics</h3>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="text-center p-6 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="text-3xl font-bold text-blue-600 mb-2">{statistics.totalPassages}</div>
+                    <div className="text-sm text-gray-600">Total Passages</div>
+                  </div>
+                  <div className="text-center p-6 bg-green-50 rounded-lg border border-green-200">
+                    <div className="text-3xl font-bold text-green-600 mb-2">
+                      {Math.round(statistics.averageRelevanceScore * 100)}%
+                    </div>
+                    <div className="text-sm text-gray-600">Avg. Relevance Score</div>
+                  </div>
+                  <div className="text-center p-6 bg-purple-50 rounded-lg border border-purple-200">
+                    <div className="text-3xl font-bold text-purple-600 mb-2">
+                      {Object.keys(statistics.themeDistribution).length}
+                    </div>
+                    <div className="text-sm text-gray-600">Cultural Themes</div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Theme Distribution */}
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4">Theme Distribution</h4>
+                    <div className="space-y-3">
+                      {Object.entries(statistics.themeDistribution).map(([theme, count]) => {
+                        const percentage = Math.round((count / statistics.totalPassages) * 100);
+                        return (
+                          <div key={theme} className="flex items-center">
+                            <div className="w-24 text-sm text-gray-600 capitalize">{theme}</div>
+                            <div className="flex-1 mx-3">
+                              <div className="w-full bg-gray-200 rounded-full h-2">
+                                <div 
+                                  className="bg-blue-500 h-2 rounded-full" 
+                                  style={{ width: `${percentage}%` }}
+                                />
+                              </div>
+                            </div>
+                            <div className="text-sm font-medium text-gray-900 w-16">{count} ({percentage}%)</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Difficulty Distribution */}
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4">Difficulty Distribution</h4>
+                    <div className="space-y-3">
+                      {Object.entries(statistics.difficultyDistribution).map(([difficulty, count]) => {
+                        const percentage = Math.round((count / statistics.totalPassages) * 100);
+                        const colors = {
+                          'Beginner': 'bg-green-500',
+                          'Intermediate': 'bg-blue-500', 
+                          'Advanced': 'bg-orange-500',
+                          'Expert': 'bg-red-500'
+                        };
+                        return (
+                          <div key={difficulty} className="flex items-center">
+                            <div className="w-24 text-sm text-gray-600">{difficulty}</div>
+                            <div className="flex-1 mx-3">
+                              <div className="w-full bg-gray-200 rounded-full h-2">
+                                <div 
+                                  className={`${colors[difficulty as keyof typeof colors]} h-2 rounded-full`}
+                                  style={{ width: `${percentage}%` }}
+                                />
+                              </div>
+                            </div>
+                            <div className="text-sm font-medium text-gray-900 w-16">{count} ({percentage}%)</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Oracle Cloud Integration Status */}
+        <motion.div 
+          className="mt-16 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/30 rounded-full">
+            <Clock className="h-5 w-5 text-blue-600 mr-3" />
+            <span className="text-blue-700 font-medium">
+              Ready for Oracle Cloud Integration - 1,401 Passages Available
+            </span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
-};
-
-export default AICulturalAnalysisSection;
+}

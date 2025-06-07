@@ -1,744 +1,686 @@
 /**
- * 🤖 AI Tutoring System Section
- * Contextual AI assistance for cultural concept understanding
- * Integrates with Oracle Cloud backend and learning systems
+ * 🤖 AI TUTORING SYSTEM SECTION
+ * Intelligent Learning Assistant Interface
+ * Context-aware AI tutor providing personalized guidance and cultural explanations
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Progress } from '@/components/ui/progress';
-import { 
-  MessageCircle, 
-  Brain, 
-  Lightbulb, 
-  HelpCircle, 
-  BookOpen,
-  Send,
-  Mic,
-  MicOff,
-  Star,
-  Users,
-  Clock,
-  TrendingUp,
-  Target,
-  Zap,
-  ChevronDown,
-  ChevronUp,
-  ThumbsUp,
-  ThumbsDown,
-  RotateCcw,
-  Settings
-} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  useAITutoring,
-  type TutorSession,
-  type TutorResponse,
-  type TutorInteraction,
-  type LearningContext
+  Sparkles, 
+  MessageCircle, 
+  Send, 
+  Bot, 
+  User, 
+  BookOpen, 
+  Clock, 
+  Target, 
+  TrendingUp,
+  Lightbulb,
+  Globe,
+  Settings,
+  BarChart3,
+  CheckCircle,
+  AlertCircle,
+  Play,
+  Pause,
+  Square,
+  RefreshCw
+} from 'lucide-react';
+import { 
+  aiTutoringSystem, 
+  TutoringSession, 
+  TutoringInteraction, 
+  SessionProgress 
 } from '@/lib/ai-tutoring-system';
-import { useAILearning } from '@/lib/ai-learning-engine';
 
-interface ChatMessage {
-  id: string;
-  type: 'user' | 'tutor';
-  content: string;
-  timestamp: Date;
-  response?: TutorResponse;
-  feedback?: 'positive' | 'negative';
+interface TutoringProps {
+  className?: string;
 }
 
-interface TutorSettings {
-  responseStyle: 'concise' | 'detailed' | 'socratic';
-  culturalEmphasis: 'high' | 'medium' | 'low';
-  modernConnections: boolean;
-  difficultyAdaptation: 'auto' | 'manual';
-  hintFrequency: 'frequent' | 'moderate' | 'minimal';
-}
-
-const AITutoringSystemSection: React.FC = () => {
-  const { profile } = useAILearning('user-demo'); // Demo user ID
-  const {
-    currentSession,
-    sessionHistory,
-    isActive,
-    lastResponse,
-    startSession,
-    askQuestion,
-    getHint,
-    explainConcept,
-    endSession,
-    getGuidance,
-    assessUnderstanding
-  } = useAITutoring('user-demo');
-
-  const [activeTab, setActiveTab] = useState('chat');
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [isListening, setIsListening] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const [tutorSettings, setTutorSettings] = useState<TutorSettings>({
-    responseStyle: 'detailed',
-    culturalEmphasis: 'high',
-    modernConnections: true,
-    difficultyAdaptation: 'auto',
-    hintFrequency: 'moderate'
-  });
+export default function AITutoringSystemSection({ className = '' }: TutoringProps) {
+  const [currentSession, setCurrentSession] = useState<TutoringSession | null>(null);
+  const [chatInput, setChatInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [selectedConcept, setSelectedConcept] = useState<string>('');
+  const [sessionStats, setSessionStats] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState<'chat' | 'progress' | 'settings'>('chat');
+  const [selectedTopic, setSelectedTopic] = useState('Philosophy');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<'Beginner' | 'Intermediate' | 'Advanced' | 'Expert'>('Intermediate');
+  const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'DE' | 'LA'>('EN');
+  const [sessionTime, setSessionTime] = useState(0);
+  const [isSessionActive, setIsSessionActive] = useState(false);
   
   const chatEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  // Cultural concepts for quick access
-  const culturalConcepts = [
-    'Roman Banquets',
-    'Social Hierarchy',
-    'Religious Practices',
-    'Educational Methods',
-    'Legal Traditions',
-    'Literary Culture',
-    'Philosophical Schools',
-    'Political Structures',
-    'Family Relations',
-    'Economic Systems'
-  ];
-
-  // Sample learning contexts
-  const learningContexts = [
-    {
-      name: 'Beginner Introduction',
-      context: {
-        culturalTheme: 'Roman Social Customs',
-        difficulty: 0.3,
-        userStruggleAreas: [],
-        recentPerformance: [],
-        timeInSession: 0,
-        engagementLevel: 0.8
-      }
-    },
-    {
-      name: 'Advanced Analysis',
-      context: {
-        culturalTheme: 'Philosophical Discourse',
-        difficulty: 0.8,
-        userStruggleAreas: ['abstract concepts'],
-        recentPerformance: [],
-        timeInSession: 0,
-        engagementLevel: 0.7
-      }
-    },
-    {
-      name: 'Cultural Connections',
-      context: {
-        culturalTheme: 'Modern Relevance',
-        difficulty: 0.6,
-        userStruggleAreas: ['modern applications'],
-        recentPerformance: [],
-        timeInSession: 0,
-        engagementLevel: 0.9
-      }
-    }
-  ];
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (currentSession && currentSession.interactions.length > chatMessages.length) {
-      // Update chat messages from session interactions
-      const newMessages: ChatMessage[] = [];
-      
-      currentSession.interactions.forEach((interaction, index) => {
-        if (interaction.userInput) {
-          newMessages.push({
-            id: `user-${index}`,
-            type: 'user',
-            content: interaction.userInput,
-            timestamp: interaction.timestamp
-          });
-        }
-        
-        newMessages.push({
-          id: `tutor-${index}`,
-          type: 'tutor',
-          content: interaction.tutorResponse.content,
-          timestamp: interaction.timestamp,
-          response: interaction.tutorResponse
-        });
-      });
-      
-      setChatMessages(newMessages);
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [currentSession, chatMessages.length]);
+  }, [currentSession?.interactions]);
 
   useEffect(() => {
-    // Scroll to bottom when new messages arrive
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatMessages]);
+    if (isSessionActive && timerRef.current === null) {
+      timerRef.current = setInterval(() => {
+        setSessionTime(prev => prev + 1);
+      }, 1000);
+    } else if (!isSessionActive && timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
 
-  const handleStartSession = async (contextIndex: number = 0) => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [isSessionActive]);
+
+  const topics = [
+    'Philosophy', 'Religious Practices', 'Social Customs', 
+    'Education', 'Roman History', 'Literature', 'Astronomy', 'Law'
+  ];
+
+  const startSession = async () => {
     try {
-      const context = learningContexts[contextIndex].context;
-      await startSession(
-        context,
-        ['Understand cultural concepts', 'Make modern connections'],
-        tutorSettings.responseStyle
+      const session = await aiTutoringSystem.startSession(
+        'user_001',
+        selectedTopic,
+        selectedDifficulty,
+        selectedLanguage,
+        [`Learn about ${selectedTopic}`, 'Understand cultural context', 'Connect to modern relevance']
       );
+      
+      setCurrentSession(session);
+      setIsSessionActive(true);
+      setSessionTime(0);
       setActiveTab('chat');
     } catch (error) {
-      console.error('Failed to start tutoring session:', error);
-      alert('Failed to start session. Please try again.');
+      console.error('Failed to start session:', error);
     }
   };
 
-  const handleSendMessage = async () => {
-    if (!inputMessage.trim() || !isActive) return;
-    
-    const userMessage: ChatMessage = {
-      id: `user-${Date.now()}`,
-      type: 'user',
-      content: inputMessage,
-      timestamp: new Date()
-    };
-    
-    setChatMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
+  const endSession = () => {
+    if (currentSession) {
+      const finalProgress = aiTutoringSystem.endSession(currentSession.id);
+      setCurrentSession(null);
+      setIsSessionActive(false);
+      setSessionTime(0);
+    }
+  };
+
+  const sendMessage = async () => {
+    if (!chatInput.trim() || !currentSession || isTyping) return;
+
+    const userMessage = chatInput;
+    setChatInput('');
     setIsTyping(true);
-    
+
     try {
-      const response = await askQuestion(inputMessage);
-      
-      const tutorMessage: ChatMessage = {
-        id: `tutor-${Date.now()}`,
-        type: 'tutor',
-        content: response.content,
-        timestamp: new Date(),
-        response
-      };
-      
-      setChatMessages(prev => [...prev, tutorMessage]);
+      const interaction = await aiTutoringSystem.processUserInput(
+        currentSession.id,
+        userMessage,
+        selectedTopic
+      );
+
+      // Update session in state
+      setCurrentSession(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          interactions: [...prev.interactions, interaction]
+        };
+      });
+
+      // Update statistics
+      const stats = aiTutoringSystem.getSessionStatistics(currentSession.id);
+      setSessionStats(stats);
+
     } catch (error) {
-      console.error('Failed to get tutor response:', error);
-      const errorMessage: ChatMessage = {
-        id: `error-${Date.now()}`,
-        type: 'tutor',
-        content: 'I apologize, but I encountered an issue. Please try rephrasing your question.',
-        timestamp: new Date()
-      };
-      setChatMessages(prev => [...prev, errorMessage]);
+      console.error('Failed to send message:', error);
     } finally {
       setIsTyping(false);
     }
   };
 
-  const handleGetHint = async (strugglingWith: string) => {
-    setIsTyping(true);
+  const getHint = async () => {
+    if (!currentSession) return;
+
     try {
-      const response = await getHint(strugglingWith, tutorSettings.hintFrequency === 'frequent' ? 'direct' : 'moderate');
-      
-      const hintMessage: ChatMessage = {
-        id: `hint-${Date.now()}`,
-        type: 'tutor',
-        content: `💡 Hint: ${response.content}`,
-        timestamp: new Date(),
-        response
-      };
-      
-      setChatMessages(prev => [...prev, hintMessage]);
+      const hint = await aiTutoringSystem.getHint(
+        currentSession.id,
+        chatInput || selectedTopic,
+        'conceptual'
+      );
+
+      if (hint) {
+        setChatInput(hint.content);
+      }
     } catch (error) {
       console.error('Failed to get hint:', error);
-    } finally {
-      setIsTyping(false);
     }
   };
 
-  const handleExplainConcept = async (concept: string) => {
-    setIsTyping(true);
-    try {
-      const response = await explainConcept(concept, tutorSettings.modernConnections);
-      
-      const explanationMessage: ChatMessage = {
-        id: `explanation-${Date.now()}`,
-        type: 'tutor',
-        content: response.content,
-        timestamp: new Date(),
-        response
-      };
-      
-      setChatMessages(prev => [...prev, explanationMessage]);
-    } catch (error) {
-      console.error('Failed to get explanation:', error);
-    } finally {
-      setIsTyping(false);
-    }
-  };
-
-  const handleEndSession = async () => {
-    if (!isActive) return;
-    
-    try {
-      const summary = await endSession('Great session!');
-      
-      const summaryMessage: ChatMessage = {
-        id: `summary-${Date.now()}`,
-        type: 'tutor',
-        content: `Session completed! We explored ${summary.topicsExplored.length} topics and made ${summary.culturalConnectionsMade} cultural connections. ${summary.recommendedNextSteps.join(' ')}.`,
-        timestamp: new Date()
-      };
-      
-      setChatMessages(prev => [...prev, summaryMessage]);
-    } catch (error) {
-      console.error('Failed to end session:', error);
-    }
-  };
-
-  const handleMessageFeedback = (messageId: string, feedback: 'positive' | 'negative') => {
-    setChatMessages(prev => prev.map(msg => 
-      msg.id === messageId ? { ...msg, feedback } : msg
-    ));
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  const formatTimestamp = (timestamp: Date) => {
-    return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-green-50 to-emerald-50">
+    <section className={`py-24 bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 ${className}`}>
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
         <motion.div 
-          className="text-center mb-12"
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
           <div className="flex items-center justify-center mb-6">
-            <div className="p-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mr-4">
-              <MessageCircle className="h-8 w-8 text-white" />
+            <div className="p-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mr-4">
+              <Sparkles className="h-12 w-12 text-white" />
             </div>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              AI Tutoring System
-            </h2>
+            <div className="text-left">
+              <h2 className="text-5xl font-bold text-gray-900 mb-2">
+                AI Tutoring System
+              </h2>
+              <p className="text-xl text-purple-600 font-semibold">
+                Intelligent Learning Assistant & Cultural Guide
+              </p>
+            </div>
           </div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Get personalized, contextual guidance from your AI tutor. Ask questions, explore cultural concepts,
-            and discover connections between ancient Roman culture and modern life through intelligent conversation.
-          </p>
           
-          {/* Session Stats */}
-          <div className="flex justify-center mt-8 space-x-8">
-            <div className="text-center">
-              <div className={`text-2xl font-bold ${isActive ? 'text-green-600' : 'text-gray-400'}`}>
-                {isActive ? 'ACTIVE' : 'INACTIVE'}
-              </div>
-              <div className="text-sm text-gray-500">Session Status</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-emerald-600">
-                {sessionHistory.length}
-              </div>
-              <div className="text-sm text-gray-500">Total Sessions</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">
-                {chatMessages.length}
-              </div>
-              <div className="text-sm text-gray-500">Messages</div>
-            </div>
-          </div>
+          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            Context-aware AI tutor that provides personalized guidance, cultural explanations, 
+            and adaptive learning support for your classical education journey.
+          </p>
         </motion.div>
 
-        {/* Main Interface */}
-        <div className="max-w-6xl mx-auto">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-8">
-              <TabsTrigger value="chat" className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4" />
-                Chat
-              </TabsTrigger>
-              <TabsTrigger value="concepts" className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4" />
-                Concepts
-              </TabsTrigger>
-              <TabsTrigger value="guidance" className="flex items-center gap-2">
-                <Target className="h-4 w-4" />
-                Guidance
-              </TabsTrigger>
-              <TabsTrigger value="history" className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                History
-              </TabsTrigger>
-            </TabsList>
-
-            {/* Chat Tab */}
-            <TabsContent value="chat" className="space-y-6">
-              {!isActive ? (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-center py-12"
+        {/* Session Status Bar */}
+        {currentSession && (
+          <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 mb-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center">
+                  <div className={`w-3 h-3 rounded-full mr-2 ${isSessionActive ? 'bg-green-500' : 'bg-gray-400'}`} />
+                  <span className="text-sm font-medium text-gray-700">
+                    {isSessionActive ? 'Active Session' : 'Session Paused'}
+                  </span>
+                </div>
+                <div className="flex items-center text-sm text-gray-600">
+                  <Clock className="h-4 w-4 mr-1" />
+                  {formatTime(sessionTime)}
+                </div>
+                <div className="flex items-center text-sm text-gray-600">
+                  <Target className="h-4 w-4 mr-1" />
+                  {currentSession.topic} - {currentSession.difficulty}
+                </div>
+                <div className="flex items-center text-sm text-gray-600">
+                  <MessageCircle className="h-4 w-4 mr-1" />
+                  {currentSession.interactions.length} interactions
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setIsSessionActive(!isSessionActive)}
+                  className={`p-2 rounded-lg ${isSessionActive ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-600'} hover:opacity-80`}
                 >
-                  <MessageCircle className="h-16 w-16 text-gray-300 mx-auto mb-6" />
-                  <h3 className="text-2xl font-semibold text-gray-700 mb-4">Start Your AI Tutoring Session</h3>
-                  <p className="text-gray-500 mb-8 max-w-md mx-auto">
-                    Choose a learning context to begin your personalized tutoring experience with our AI cultural guide.
+                  {isSessionActive ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                </button>
+                <button
+                  onClick={endSession}
+                  className="p-2 rounded-lg bg-red-100 text-red-600 hover:opacity-80"
+                >
+                  <Square className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab Navigation */}
+        <div className="flex justify-center mb-8">
+          <div className="flex bg-white rounded-xl p-2 shadow-lg border border-gray-200">
+            {[
+              { id: 'chat', label: 'AI Tutor Chat', icon: MessageCircle },
+              { id: 'progress', label: 'Progress', icon: BarChart3 },
+              { id: 'settings', label: 'Session Setup', icon: Settings }
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id as any)}
+                className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                  activeTab === id
+                    ? 'bg-purple-500 text-white shadow-md'
+                    : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
+                }`}
+              >
+                <Icon className="h-5 w-5 mr-2" />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {/* Chat Tab */}
+          {activeTab === 'chat' && (
+            <motion.div
+              key="chat"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              {!currentSession ? (
+                /* Start Session UI */
+                <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200 text-center">
+                  <Bot className="h-16 w-16 text-purple-500 mx-auto mb-6" />
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    Ready to Start Your AI Tutoring Session?
+                  </h3>
+                  <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+                    Your personal AI tutor is ready to guide you through classical Roman culture, 
+                    providing explanations, cultural context, and personalized learning support.
                   </p>
-                  
-                  {/* Context Selection */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
-                    {learningContexts.map((ctx, index) => (
-                      <motion.div
-                        key={ctx.name}
-                        whileHover={{ scale: 1.02 }}
-                        className="cursor-pointer"
-                        onClick={() => handleStartSession(index)}
-                      >
-                        <Card className="transition-all duration-200 hover:shadow-lg border-2 hover:border-green-300">
-                          <CardHeader className="pb-3">
-                            <CardTitle className="text-lg">{ctx.name}</CardTitle>
-                            <CardDescription>
-                              {ctx.context.culturalTheme}
-                            </CardDescription>
-                          </CardHeader>
-                          <CardContent>
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between text-sm">
-                                <span>Difficulty:</span>
-                                <Badge variant="outline">
-                                  {ctx.context.difficulty < 0.4 ? 'Beginner' : 
-                                   ctx.context.difficulty < 0.7 ? 'Intermediate' : 'Advanced'}
-                                </Badge>
-                              </div>
-                              <div className="flex items-center justify-between text-sm">
-                                <span>Focus:</span>
-                                <span className="text-gray-600">{ctx.context.culturalTheme}</span>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </div>
-                  
-                  <Button
-                    onClick={() => handleStartSession(0)}
-                    size="lg"
-                    className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
+                  <button
+                    onClick={startSession}
+                    className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 text-lg"
                   >
-                    <Brain className="h-5 w-5 mr-2" />
-                    Start Quick Session
-                  </Button>
-                </motion.div>
+                    <Play className="h-6 w-6 mr-3" />
+                    Start AI Tutoring Session
+                  </button>
+                </div>
               ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                  {/* Chat Interface */}
-                  <div className="lg:col-span-3">
-                    <Card className="h-[600px] flex flex-col">
-                      <CardHeader className="flex-shrink-0 border-b">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <CardTitle className="flex items-center gap-2">
-                              <div className="h-3 w-3 bg-green-500 rounded-full animate-pulse"></div>
-                              AI Cultural Tutor
-                            </CardTitle>
-                            <CardDescription>
-                              {currentSession?.context.culturalTheme} • 
-                              {currentSession?.interactions.length || 0} interactions
-                            </CardDescription>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => setShowSettings(!showSettings)}
-                            >
-                              <Settings className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={handleEndSession}
-                            >
-                              End Session
-                            </Button>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      
-                      {/* Chat Messages */}
-                      <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
-                        <AnimatePresence>
-                          {chatMessages.map((message, index) => (
-                            <motion.div
-                              key={message.id}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: index * 0.1 }}
-                              className={`flex ${
-                                message.type === 'user' ? 'justify-end' : 'justify-start'
-                              }`}
-                            >
-                              <div className={`max-w-[80%] rounded-lg p-4 ${
-                                message.type === 'user' 
-                                  ? 'bg-green-500 text-white ml-4'
-                                  : 'bg-gray-100 text-gray-800 mr-4'
-                              }`}>
-                                <div className="mb-2">{message.content}</div>
-                                
-                                {/* Cultural Connections */}
-                                {message.response?.culturalConnections && message.response.culturalConnections.length > 0 && (
-                                  <div className="mt-3 pt-3 border-t border-gray-200">
-                                    <div className="text-sm font-medium mb-2">Cultural Connections:</div>
-                                    {message.response.culturalConnections.map((connection, idx) => (
-                                      <div key={idx} className="text-sm bg-white rounded p-2 mb-1">
-                                        <strong>{connection.ancientConcept}</strong> → {connection.modernParallel}
-                                      </div>
-                                    ))}
-                                  </div>
-                                )}
-                                
-                                {/* Modern Examples */}
-                                {message.response?.modernExamples && message.response.modernExamples.length > 0 && (
-                                  <div className="mt-2">
-                                    <div className="text-sm font-medium mb-1">Modern Examples:</div>
-                                    <div className="flex flex-wrap gap-1">
-                                      {message.response.modernExamples.map((example, idx) => (
-                                        <Badge key={idx} variant="secondary" className="text-xs">
-                                          {example}
-                                        </Badge>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-                                
-                                <div className="flex items-center justify-between mt-3 pt-2 border-t">
-                                  <div className="text-xs text-gray-500">
-                                    {formatTimestamp(message.timestamp)}
-                                  </div>
-                                  
-                                  {message.type === 'tutor' && (
-                                    <div className="flex items-center gap-1">
-                                      <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className={`h-6 w-6 p-0 ${
-                                          message.feedback === 'positive' ? 'text-green-600' : 'text-gray-400'
-                                        }`}
-                                        onClick={() => handleMessageFeedback(message.id, 'positive')}
-                                      >
-                                        <ThumbsUp className="h-3 w-3" />
-                                      </Button>
-                                      <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className={`h-6 w-6 p-0 ${
-                                          message.feedback === 'negative' ? 'text-red-600' : 'text-gray-400'
-                                        }`}
-                                        onClick={() => handleMessageFeedback(message.id, 'negative')}
-                                      >
-                                        <ThumbsDown className="h-3 w-3" />
-                                      </Button>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
-                          
-                          {/* Typing Indicator */}
-                          {isTyping && (
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              className="flex justify-start"
-                            >
-                              <div className="bg-gray-100 rounded-lg p-4 mr-4">
-                                <div className="flex items-center gap-1">
-                                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                        <div ref={chatEndRef} />
-                      </CardContent>
-                      
-                      {/* Message Input */}
-                      <div className="border-t p-4">
-                        <div className="flex items-center gap-2">
-                          <input
-                            ref={inputRef}
-                            type="text"
-                            value={inputMessage}
-                            onChange={(e) => setInputMessage(e.target.value)}
-                            onKeyPress={handleKeyPress}
-                            placeholder="Ask about Roman culture, request explanations, or get hints..."
-                            className="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                            disabled={!isActive || isTyping}
-                          />
-                          <Button
-                            onClick={handleSendMessage}
-                            disabled={!inputMessage.trim() || !isActive || isTyping}
-                            className="bg-green-500 hover:bg-green-600"
-                          >
-                            <Send className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            onClick={() => setIsListening(!isListening)}
-                            className={isListening ? 'bg-red-50 border-red-200' : ''}
-                          >
-                            {isListening ? <Mic className="h-4 w-4 text-red-500" /> : <MicOff className="h-4 w-4" />}
-                          </Button>
+                /* Chat Interface */
+                <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+                  {/* Chat Header */}
+                  <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <Bot className="h-8 w-8 mr-3" />
+                        <div>
+                          <h3 className="text-xl font-bold">AI Cultural Tutor</h3>
+                          <p className="text-purple-100 text-sm">
+                            Exploring {currentSession.topic} • {currentSession.language}
+                          </p>
                         </div>
                       </div>
-                    </Card>
+                      <div className="text-right">
+                        <div className="text-sm text-purple-100">Session Progress</div>
+                        <div className="text-lg font-semibold">
+                          {Math.round(currentSession.progress.overallComprehension * 100)}%
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  
-                  {/* Quick Actions Sidebar */}
-                  <div className="space-y-4">
-                    {/* Quick Concepts */}
-                    <Card>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-lg">Quick Concepts</CardTitle>
-                        <CardDescription>
-                          Click to get instant explanations
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2">
-                          {culturalConcepts.slice(0, 5).map((concept) => (
-                            <Button
-                              key={concept}
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleExplainConcept(concept)}
-                              className="w-full justify-start text-sm"
-                              disabled={!isActive || isTyping}
-                            >
-                              <BookOpen className="h-3 w-3 mr-2" />
-                              {concept}
-                            </Button>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                    
-                    {/* Quick Hints */}
-                    <Card>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-lg">Need Help?</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleGetHint('understanding concepts')}
-                            className="w-full justify-start"
-                            disabled={!isActive || isTyping}
-                          >
-                            <Lightbulb className="h-4 w-4 mr-2" />
-                            Get a Hint
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleGetHint('making connections')}
-                            className="w-full justify-start"
-                            disabled={!isActive || isTyping}
-                          >
-                            <Zap className="h-4 w-4 mr-2" />
-                            Cultural Connections
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleGetHint('modern relevance')}
-                            className="w-full justify-start"
-                            disabled={!isActive || isTyping}
-                          >
-                            <TrendingUp className="h-4 w-4 mr-2" />
-                            Modern Examples
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                    
-                    {/* Session Info */}
-                    {currentSession && (
-                      <Card>
-                        <CardHeader className="pb-3">
-                          <CardTitle className="text-lg">Session Info</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-3 text-sm">
-                            <div>
-                              <span className="font-medium">Theme:</span>
-                              <div className="text-gray-600">{currentSession.context.culturalTheme}</div>
+
+                  {/* Chat Messages */}
+                  <div className="h-96 overflow-y-auto p-6 space-y-4">
+                    {currentSession.interactions.map((interaction) => (
+                      <div
+                        key={interaction.id}
+                        className={`flex ${interaction.userInput ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div className={`max-w-3xl ${interaction.userInput ? 'order-2' : 'order-1'}`}>
+                          {/* User Message */}
+                          {interaction.userInput && (
+                            <div className="flex items-start justify-end mb-2">
+                              <div className="bg-purple-500 text-white rounded-lg px-4 py-2 mr-2">
+                                {interaction.userInput}
+                              </div>
+                              <User className="h-8 w-8 bg-purple-100 text-purple-600 rounded-full p-2 flex-shrink-0" />
                             </div>
-                            <div>
-                              <span className="font-medium">Difficulty:</span>
-                              <Progress value={currentSession.context.difficulty * 100} className="mt-1" />
-                            </div>
-                            <div>
-                              <span className="font-medium">Engagement:</span>
-                              <Progress value={currentSession.context.engagementLevel * 100} className="mt-1" />
-                            </div>
-                            <div>
-                              <span className="font-medium">Interactions:</span>
-                              <div className="text-gray-600">{currentSession.interactions.length}</div>
+                          )}
+                          
+                          {/* AI Response */}
+                          <div className="flex items-start">
+                            <Bot className="h-8 w-8 bg-purple-100 text-purple-600 rounded-full p-2 flex-shrink-0 mr-2" />
+                            <div className="bg-gray-100 rounded-lg px-4 py-2 flex-1">
+                              <p className="text-gray-800">{interaction.aiResponse}</p>
+                              
+                              {/* Cultural References */}
+                              {interaction.culturalReferences.length > 0 && (
+                                <div className="mt-3 flex flex-wrap gap-2">
+                                  {interaction.culturalReferences.map((ref, index) => (
+                                    <span key={index} className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
+                                      {ref}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                              
+                              {/* Follow-up Suggestions */}
+                              {interaction.followUpSuggestions.length > 0 && (
+                                <div className="mt-3">
+                                  <p className="text-xs text-gray-500 mb-2">Suggested follow-ups:</p>
+                                  <div className="space-y-1">
+                                    {interaction.followUpSuggestions.map((suggestion, index) => (
+                                      <button
+                                        key={index}
+                                        onClick={() => setChatInput(suggestion)}
+                                        className="block text-xs text-purple-600 hover:text-purple-800 hover:underline text-left"
+                                      >
+                                        • {suggestion}
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              
+                              <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
+                                <span>Confidence: {Math.round(interaction.confidence * 100)}%</span>
+                                <span>{interaction.timestamp.toLocaleTimeString()}</span>
+                              </div>
                             </div>
                           </div>
-                        </CardContent>
-                      </Card>
+                        </div>
+                      </div>
+                    ))}
+                    
+                    {/* Typing Indicator */}
+                    {isTyping && (
+                      <div className="flex items-start">
+                        <Bot className="h-8 w-8 bg-purple-100 text-purple-600 rounded-full p-2 flex-shrink-0 mr-2" />
+                        <div className="bg-gray-100 rounded-lg px-4 py-2">
+                          <div className="flex space-x-1">
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}} />
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}} />
+                          </div>
+                        </div>
+                      </div>
                     )}
+                    
+                    <div ref={chatEndRef} />
+                  </div>
+
+                  {/* Chat Input */}
+                  <div className="border-t border-gray-200 p-4">
+                    <div className="flex items-end space-x-3">
+                      <button
+                        onClick={getHint}
+                        className="p-3 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                        title="Get a hint"
+                      >
+                        <Lightbulb className="h-5 w-5" />
+                      </button>
+                      
+                      <div className="flex-1">
+                        <textarea
+                          value={chatInput}
+                          onChange={(e) => setChatInput(e.target.value)}
+                          onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), sendMessage())}
+                          placeholder="Ask about cultural practices, request explanations, or explore connections..."
+                          className="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          rows={2}
+                        />
+                      </div>
+                      
+                      <button
+                        onClick={sendMessage}
+                        disabled={!chatInput.trim() || isTyping}
+                        className="p-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        <Send className="h-5 w-5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
-            </TabsContent>
+            </motion.div>
+          )}
 
-            {/* Other tabs would be implemented similarly... */}
-            <TabsContent value="concepts" className="space-y-6">
-              <div className="text-center py-12">
-                <BookOpen className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-500 mb-2">Cultural Concepts Explorer</h3>
-                <p className="text-gray-400">Browse and learn about Roman cultural concepts (Coming Soon)</p>
-              </div>
-            </TabsContent>
+          {/* Progress Tab */}
+          {activeTab === 'progress' && currentSession && (
+            <motion.div
+              key="progress"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-8"
+            >
+              <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Session Progress</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="text-center p-6 bg-purple-50 rounded-lg border border-purple-200">
+                    <div className="text-3xl font-bold text-purple-600 mb-2">
+                      {Math.round(currentSession.progress.overallComprehension * 100)}%
+                    </div>
+                    <div className="text-sm text-gray-600">Overall Comprehension</div>
+                  </div>
+                  <div className="text-center p-6 bg-green-50 rounded-lg border border-green-200">
+                    <div className="text-3xl font-bold text-green-600 mb-2">
+                      {currentSession.progress.conceptsMastered.length}
+                    </div>
+                    <div className="text-sm text-gray-600">Concepts Mastered</div>
+                  </div>
+                  <div className="text-center p-6 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="text-3xl font-bold text-blue-600 mb-2">
+                      {Math.round(currentSession.progress.engagementLevel * 100)}%
+                    </div>
+                    <div className="text-sm text-gray-600">Engagement Level</div>
+                  </div>
+                </div>
 
-            <TabsContent value="guidance" className="space-y-6">
-              <div className="text-center py-12">
-                <Target className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-500 mb-2">Learning Guidance</h3>
-                <p className="text-gray-400">Personalized learning recommendations (Coming Soon)</p>
-              </div>
-            </TabsContent>
+                {/* Learning Objectives Progress */}
+                <div className="mb-8">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">Learning Objectives</h4>
+                  <div className="space-y-3">
+                    {currentSession.learningObjectives.map((objective, index) => {
+                      const isCompleted = currentSession.progress.conceptsMastered.includes(objective);
+                      const isInProgress = currentSession.progress.conceptsInProgress.includes(objective);
+                      
+                      return (
+                        <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200">
+                          {isCompleted ? (
+                            <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
+                          ) : isInProgress ? (
+                            <RefreshCw className="h-5 w-5 text-blue-500 mr-3" />
+                          ) : (
+                            <AlertCircle className="h-5 w-5 text-gray-400 mr-3" />
+                          )}
+                          <span className={`flex-1 ${isCompleted ? 'text-green-700 line-through' : 'text-gray-700'}`}>
+                            {objective}
+                          </span>
+                          {isCompleted && <span className="text-xs text-green-600 font-medium">Completed</span>}
+                          {isInProgress && <span className="text-xs text-blue-600 font-medium">In Progress</span>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
 
-            <TabsContent value="history" className="space-y-6">
-              <div className="text-center py-12">
-                <Clock className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-500 mb-2">Session History</h3>
-                <p className="text-gray-400">Review past tutoring sessions (Coming Soon)</p>
+                {/* Session Statistics */}
+                {sessionStats && (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Session Statistics</h4>
+                      <div className="space-y-3">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Total Interactions:</span>
+                          <span className="font-medium">{sessionStats.totalInteractions}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Average Confidence:</span>
+                          <span className="font-medium">{Math.round(sessionStats.averageConfidence * 100)}%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Cultural Contexts Explored:</span>
+                          <span className="font-medium">{sessionStats.culturalContextsExplored}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Questions Asked:</span>
+                          <span className="font-medium">{currentSession.progress.questionsAsked}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Hints Used:</span>
+                          <span className="font-medium">{currentSession.progress.hintsUsed}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Cultural Context</h4>
+                      <div className="space-y-2">
+                        {currentSession.culturalContext.map((context, index) => (
+                          <span key={index} className="inline-block bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm mr-2 mb-2">
+                            {context}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+            </motion.div>
+          )}
+
+          {/* Settings Tab */}
+          {activeTab === 'settings' && (
+            <motion.div
+              key="settings"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-8"
+            >
+              <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Session Configuration</h3>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Topic Selection */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                      Learning Topic
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                      {topics.map((topic) => (
+                        <button
+                          key={topic}
+                          onClick={() => setSelectedTopic(topic)}
+                          className={`p-3 text-left rounded-lg border-2 transition-all duration-300 ${
+                            selectedTopic === topic
+                              ? 'border-purple-500 bg-purple-50 text-purple-700'
+                              : 'border-gray-200 bg-white text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                          }`}
+                        >
+                          <div className="font-medium">{topic}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Difficulty Level */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                      Difficulty Level
+                    </label>
+                    <div className="space-y-3">
+                      {(['Beginner', 'Intermediate', 'Advanced', 'Expert'] as const).map((level) => (
+                        <button
+                          key={level}
+                          onClick={() => setSelectedDifficulty(level)}
+                          className={`w-full p-3 text-left rounded-lg border-2 transition-all duration-300 ${
+                            selectedDifficulty === level
+                              ? 'border-purple-500 bg-purple-50 text-purple-700'
+                              : 'border-gray-200 bg-white text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                          }`}
+                        >
+                          <div className="font-medium">{level}</div>
+                          <div className="text-sm text-gray-500">
+                            {level === 'Beginner' && 'Basic concepts and simple explanations'}
+                            {level === 'Intermediate' && 'Moderate complexity with cultural context'}
+                            {level === 'Advanced' && 'Complex analysis and deep cultural insights'}
+                            {level === 'Expert' && 'Scholarly discussion and advanced connections'}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Language Selection */}
+                <div className="mt-8">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Interface Language
+                  </label>
+                  <div className="flex space-x-4">
+                    {(['EN', 'DE', 'LA'] as const).map((lang) => (
+                      <button
+                        key={lang}
+                        onClick={() => setSelectedLanguage(lang)}
+                        className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                          selectedLanguage === lang
+                            ? 'bg-purple-500 text-white shadow-md'
+                            : 'bg-gray-100 text-gray-700 hover:bg-purple-100 hover:text-purple-700'
+                        }`}
+                      >
+                        {lang === 'EN' ? '🇬🇧 English' : lang === 'DE' ? '🇩🇪 Deutsch' : '🏛️ Latina'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Start Session Button */}
+                <div className="mt-8 text-center">
+                  {!currentSession ? (
+                    <button
+                      onClick={startSession}
+                      className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 text-lg"
+                    >
+                      <Play className="h-6 w-6 mr-3" />
+                      Start AI Tutoring Session
+                    </button>
+                  ) : (
+                    <div className="text-gray-600">
+                      Session is active. Go to Chat tab to continue learning.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Feature Highlights */}
+        <motion.div 
+          className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+            <MessageCircle className="h-12 w-12 text-purple-500 mx-auto mb-4" />
+            <h4 className="text-lg font-semibold text-gray-900 mb-3">Interactive Dialogue</h4>
+            <p className="text-gray-600">
+              Engage in natural conversation with AI that understands cultural context and adapts to your learning style.
+            </p>
+          </div>
+          
+          <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+            <Globe className="h-12 w-12 text-purple-500 mx-auto mb-4" />
+            <h4 className="text-lg font-semibold text-gray-900 mb-3">Cultural Bridge-Building</h4>
+            <p className="text-gray-600">
+              Connect ancient Roman practices to modern applications with intelligent cultural analysis and insights.
+            </p>
+          </div>
+          
+          <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+            <TrendingUp className="h-12 w-12 text-purple-500 mx-auto mb-4" />
+            <h4 className="text-lg font-semibold text-gray-900 mb-3">Adaptive Learning</h4>
+            <p className="text-gray-600">
+              AI adjusts explanations and difficulty based on your progress, ensuring optimal learning pace and comprehension.
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
-};
-
-export default AITutoringSystemSection;
+}
