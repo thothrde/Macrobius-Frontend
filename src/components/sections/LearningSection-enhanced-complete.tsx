@@ -445,7 +445,7 @@ export function LearningSection() {
           
           {activeTab === 'quiz' && (
             <div className="bg-white rounded-lg shadow-xl overflow-hidden">
-              <QuizSection language={language} />
+              <QuizSection language={language as "DE" | "EN" | "LA"} />
             </div>
           )}
           
@@ -459,13 +459,13 @@ export function LearningSection() {
 
           {activeTab === 'grammar' && (
             <div className="bg-white rounded-lg shadow-xl overflow-hidden">
-              <MacrobiusGrammarExplainer language={language} />
+              <MacrobiusGrammarExplainer language={language as "DE" | "EN" | "LA"} />
             </div>
           )}
 
           {activeTab === 'textprocessor' && (
             <div className="rounded-lg shadow-xl overflow-hidden">
-              <MacrobiusTextProcessor language={language.toLowerCase()} />
+              <MacrobiusTextProcessor language={language.toLowerCase() as "de" | "en" | "la"} />
             </div>
           )}
           
