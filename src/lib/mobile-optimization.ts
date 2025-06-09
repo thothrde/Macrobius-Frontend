@@ -3,6 +3,8 @@
  * Provides comprehensive mobile experience enhancements
  */
 
+import React from 'react';
+
 interface DeviceInfo {
   type: 'desktop' | 'tablet' | 'mobile';
   screenSize: { width: number; height: number };
@@ -469,16 +471,20 @@ class MobileOptimization {
   private setupReducedMotionSupport(): void {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     
-    const updateMotionPreference = (mediaQuery: MediaQueryList) => {
-      if (mediaQuery.matches || this.config.enableReducedMotion) {
+    const updateMotionPreference = (event: MediaQueryListEvent) => {
+      if (event.matches || this.config.enableReducedMotion) {
         document.documentElement.classList.add('reduce-motion');
       } else {
         document.documentElement.classList.remove('reduce-motion');
       }
     };
     
-    updateMotionPreference(prefersReducedMotion);
-    prefersReducedMotion.addListener(updateMotionPreference);
+    // Initial setup
+    if (prefersReducedMotion.matches || this.config.enableReducedMotion) {
+      document.documentElement.classList.add('reduce-motion');
+    }
+    
+    prefersReducedMotion.addEventListener('change', updateMotionPreference);
     
     // Add reduced motion styles
     const style = document.createElement('style');
