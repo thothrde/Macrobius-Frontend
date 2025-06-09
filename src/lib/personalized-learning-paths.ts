@@ -1636,7 +1636,6 @@ export function usePersonalizedLearningPaths(userId: string) {
 // ==================== EXPORTS ====================
 
 export default usePersonalizedLearningPaths;
-export type { PathGenerationOptions };
 
 // Additional utility exports for external use
 export const PathDifficulties = ['beginner', 'intermediate', 'advanced', 'expert'] as const;
