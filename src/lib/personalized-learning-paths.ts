@@ -13,7 +13,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { MacrobiusAPI } from './enhanced-api-client';
+import { apiClient } from './enhanced-api-client';
 
 // ==================== CORE TYPE DEFINITIONS ====================
 
@@ -1223,7 +1223,7 @@ export function usePersonalizedLearningPaths(userId: string) {
       localStorage.setItem(`learning_paths_${userId}`, JSON.stringify(paths));
       
       // TODO: API call to save to Oracle Cloud
-      // await MacrobiusAPI.learning.savePaths(userId, paths);
+      // await apiClient.learning.savePaths(userId, paths);
     } catch (error) {
       console.error('Failed to save paths:', error);
     }
