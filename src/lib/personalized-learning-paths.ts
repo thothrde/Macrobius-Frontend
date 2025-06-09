@@ -1223,7 +1223,7 @@ export function usePersonalizedLearningPaths(userId: string) {
       localStorage.setItem(`learning_paths_${userId}`, JSON.stringify(paths));
       
       // TODO: API call to save to Oracle Cloud
-      // await apiClient.learning.savePaths(userId, paths);
+      // await MacrobiusAPI.learning.savePaths(userId, paths);
     } catch (error) {
       console.error('Failed to save paths:', error);
     }
@@ -1653,3 +1653,5 @@ export const CulturalThemes = [
 export const LearningStyles = ['visual', 'auditory', 'kinesthetic', 'reading', 'mixed'] as const;
 export const StudySchedules = ['intensive', 'regular', 'casual'] as const;
 export const AssessmentFrequencies = ['low', 'medium', 'high'] as const;
+
+// PathGenerationOptions is already exported above in the interface definitions
