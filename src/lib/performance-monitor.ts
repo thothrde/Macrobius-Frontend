@@ -459,7 +459,7 @@ export function withPerformanceMonitoring<P extends object>(
       });
     });
 
-    return <WrappedComponent {...props} ref={ref} />;
+    return React.createElement(WrappedComponent, { ...props, ref } as any);
   });
   
   PerformanceWrappedComponent.displayName = `withPerformanceMonitoring(${componentName})`;
