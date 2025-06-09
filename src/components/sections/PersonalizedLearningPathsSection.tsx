@@ -22,14 +22,14 @@ import {
   ChevronRight,
   Plus,
   Settings,
-  BarChart3,
   Calendar,
   Lightbulb,
   Map,
   Trophy,
   RefreshCw,
   Pause,
-  ArrowRight
+  ArrowRight,
+  BarChart3
 } from 'lucide-react';
 import usePersonalizedLearningPaths, { 
   LearningPath, 
