@@ -825,8 +825,9 @@ class AILearningEngine {
       session.endTime = new Date();
       // Update user profile based on session
       this.updateUserProfile(session.userId, session);
+      return session;
     }
-    return session;
+    return null;
   }
 
   public addActivityToSession(sessionId: string, activity: LearningActivity): void {
