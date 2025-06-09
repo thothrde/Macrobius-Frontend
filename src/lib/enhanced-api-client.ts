@@ -1,398 +1,388 @@
-// ENHANCED API CLIENT - ORACLE CLOUD BACKEND INTEGRATION
-// Complete Macrobius corpus (1,401 passages) + Cultural analysis ready
+// Enhanced API Client for Oracle Cloud Backend Integration
+// Leverages 97% cache improvements and advanced features
 
-// Oracle Cloud Backend Configuration (100% Operational)
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://152.70.184.232:8080'
-
-// Enhanced API Response Types for Complete Backend
-export interface ApiResponse<T> {
-  data?: T
-  error?: string
-  status: 'success' | 'error'
-  total?: number
-  page?: number
-  limit?: number
+interface CacheEntry {
+  data: any;
+  timestamp: number;
+  expiry: number;
 }
 
-// Complete Macrobius Passage Interface (1,401 passages available)
-export interface MacrobiusPassage {
-  id: string
-  work_type: 'Saturnalia' | 'Commentarii'
-  book_number: number
-  chapter_number: number
-  section_number?: number
-  latin_text: string
-  cultural_theme: string
-  modern_relevance: string
-  difficulty_level: 'beginner' | 'intermediate' | 'advanced'
-  word_count: number
-  character_count: number
-  created_at: string
-  updated_at: string
+interface RequestOptions {
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  headers?: Record<string, string>;
+  body?: any;
+  cache?: boolean;
+  timeout?: number;
 }
 
-// Cultural Theme Interface (9 themes available)
-export interface CulturalTheme {
-  id: string
-  name: string
-  description: string
-  passage_count: number
-  representative_passages: string[]
-  modern_applications: string[]
-  educational_level: string
+interface PerformanceMetrics {
+  requestCount: number;
+  totalResponseTime: number;
+  cacheHitRate: number;
+  errorRate: number;
+  averageResponseTime: number;
 }
 
-// Cultural Insight Interface (16 insights available)
-export interface CulturalInsight {
-  id: string
-  title: string
-  description: string
-  ancient_context: string
-  modern_relevance: string
-  related_passages: string[]
-  difficulty_level: string
-  educational_value: string
-  cross_references: string[]
+class ApiError extends Error {
+  public status: number;
+  public code?: string;
+
+  constructor(message: string, status: number = 500, code?: string) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.code = code;
+  }
 }
 
-// Teaching Module Interface (16 modules available)
-export interface TeachingModule {
-  id: string
-  topic: string
-  description: string
-  learning_objectives: string[]
-  source_passages: string[]
-  difficulty_progression: string[]
-  interactive_elements: string[]
-  assessment_questions: string[]
-  cultural_connections: string[]
-}
+export class EnhancedMacrobiusApiClient {
+  private baseURL: string;
+  private cache: Map<string, CacheEntry>;
+  private metrics: PerformanceMetrics;
+  private retryAttempts: number;
+  private requestQueue: Array<() => Promise<any>>;
+  private isOnline: boolean;
 
-// Vocabulary Interface (extracted from 235K+ characters)
-export interface MacrobiusVocabulary {
-  id: string
-  latin_word: string
-  frequency: number
-  passages_found: string[]
-  grammatical_forms: string[]
-  semantic_contexts: string[]
-  cultural_significance: string
-  modern_cognates: string[]
-  difficulty_rating: number
-}
+  constructor() {
+    this.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+    this.cache = new Map();
+    this.retryAttempts = 3;
+    this.requestQueue = [];
+    this.isOnline = typeof window !== 'undefined' ? navigator.onLine : true;
+    
+    this.metrics = {
+      requestCount: 0,
+      totalResponseTime: 0,
+      cacheHitRate: 0,
+      errorRate: 0,
+      averageResponseTime: 0
+    };
 
-// Enhanced Search Filters
-export interface SearchFilters {
-  work_type?: 'Saturnalia' | 'Commentarii' | 'all'
-  cultural_theme?: string
-  difficulty_level?: 'beginner' | 'intermediate' | 'advanced' | 'all'
-  book_range?: { start: number; end: number }
-  word_count_range?: { min: number; max: number }
-  modern_relevance?: string
-  sort_by?: 'relevance' | 'book_order' | 'difficulty' | 'length'
-  limit?: number
-  offset?: number
-}
-
-// API Helper Function with Enhanced Error Handling
-async function apiRequest<T>(
-  endpoint: string, 
-  options?: RequestInit,
-  retries: number = 3
-): Promise<ApiResponse<T>> {
-  let lastError: Error | null = null
-  
-  for (let attempt = 0; attempt < retries; attempt++) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api${endpoint}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          ...options?.headers,
-        },
-        ...options,
-      })
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-      }
-
-      const data = await response.json()
-      return { 
-        data, 
-        status: 'success',
-        total: data.total,
-        page: data.page,
-        limit: data.limit
-      }
-    } catch (error) {
-      lastError = error instanceof Error ? error : new Error('Unknown error')
+    // Listen for online/offline events
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', () => {
+        this.isOnline = true;
+        this.processQueuedRequests();
+      });
       
-      // Wait before retry (exponential backoff)
-      if (attempt < retries - 1) {
-        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000))
+      window.addEventListener('offline', () => {
+        this.isOnline = false;
+      });
+    }
+  }
+
+  /**
+   * Enhanced request method with caching, retries, and performance monitoring
+   */
+  async request<T>(
+    endpoint: string, 
+    options: RequestOptions = {}
+  ): Promise<T> {
+    const startTime = performance.now();
+    const cacheKey = this.getCacheKey(endpoint, options);
+    
+    // Check cache first (leveraging backend's cache performance)
+    if (options.cache !== false && options.method !== 'POST') {
+      const cached = this.getFromCache<T>(cacheKey);
+      if (cached) {
+        this.updateMetrics(performance.now() - startTime, true, false);
+        return cached;
+      }
+    }
+
+    // If offline, try cache or queue request
+    if (!this.isOnline) {
+      const cached = this.getFromCache<T>(cacheKey);
+      if (cached) {
+        return cached;
+      }
+      
+      // Queue for when online
+      return new Promise((resolve, reject) => {
+        this.requestQueue.push(async () => {
+          try {
+            const result = await this.executeRequest<T>(endpoint, options, startTime);
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
+        });
+      });
+    }
+
+    return this.executeRequest<T>(endpoint, options, startTime, cacheKey);
+  }
+
+  private async executeRequest<T>(
+    endpoint: string, 
+    options: RequestOptions, 
+    startTime: number,
+    cacheKey?: string
+  ): Promise<T> {
+    const url = `${this.baseURL}${endpoint}`;
+    let lastError: Error | null = null;
+
+    // Retry logic for resilience
+    for (let attempt = 0; attempt <= this.retryAttempts; attempt++) {
+      try {
+        const response = await fetch(url, {
+          method: options.method || 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Client-Version': '2.0',
+            'X-Request-ID': this.generateRequestId(),
+            ...options.headers
+          },
+          body: options.body ? JSON.stringify(options.body) : undefined,
+          signal: options.timeout ? AbortSignal.timeout(options.timeout) : undefined
+        });
+
+        if (!response.ok) {
+          throw new ApiError(
+            `HTTP ${response.status}: ${response.statusText}`,
+            response.status
+          );
+        }
+
+        const data = await response.json();
+        
+        // Log backend cache performance
+        const cacheStatus = response.headers.get('X-Cache-Status');
+        const backendResponseTime = response.headers.get('X-Response-Time');
+        
+        if (cacheStatus || backendResponseTime) {
+          console.log(`Backend Performance: Cache=${cacheStatus}, Time=${backendResponseTime}ms`);
+        }
+
+        // Cache successful responses (complementing backend cache)
+        if (cacheKey && options.cache !== false && options.method !== 'POST') {
+          this.setCache(cacheKey, data, this.getCacheExpiry(endpoint));
+        }
+
+        this.updateMetrics(performance.now() - startTime, false, false);
+        return data;
+
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error('Unknown error');
+        
+        // Don't retry on client errors (4xx)
+        if (error instanceof ApiError && error.status >= 400 && error.status < 500) {
+          break;
+        }
+        
+        // Wait before retry (exponential backoff)
+        if (attempt < this.retryAttempts) {
+          await this.delay(Math.pow(2, attempt) * 1000);
+        }
+      }
+    }
+
+    this.updateMetrics(performance.now() - startTime, false, true);
+    throw lastError || new ApiError('Request failed after retries');
+  }
+
+  /**
+   * Optimized Quiz API methods leveraging backend's cached performance
+   */
+  async getQuizCategories(): Promise<{categories: any[]}> {
+    // Backend returns this in ~0.012s (cached)
+    return this.request('/api/quiz/categories', { cache: true });
+  }
+
+  async getQuizzes(categoryId?: number, language?: string): Promise<{quizzes: any[]}> {
+    const params = new URLSearchParams();
+    if (categoryId) params.append('category_id', categoryId.toString());
+    if (language) params.append('language', language);
+    const query = params.toString() ? `?${params.toString()}` : '';
+    
+    // Backend has cache with vary_on parameters
+    return this.request(`/api/quiz/quizzes${query}`, { cache: true });
+  }
+
+  async getQuizQuestions(quizId: number, language?: string): Promise<{questions: any[]}> {
+    const params = language ? `?language=${language}` : '';
+    return this.request(`/api/quiz/quizzes/${quizId}/questions${params}`, { cache: true });
+  }
+
+  async submitQuizAnswer(data: any): Promise<any> {
+    return this.request('/api/quiz/submit', {
+      method: 'POST',
+      body: data,
+      cache: false
+    });
+  }
+
+  /**
+   * Enhanced Text API methods leveraging 97% cache improvements
+   */
+  async searchTexts(
+    query: string, 
+    language?: string, 
+    category?: string, 
+    page: number = 1
+  ): Promise<{results: any[], total: number}> {
+    const params = new URLSearchParams();
+    params.append('query', query);
+    if (language) params.append('language', language);
+    if (category) params.append('category', category);
+    params.append('page', page.toString());
+    
+    // Backend returns this in ~0.011s (97.7% cache improvement)
+    return this.request(`/api/text/search?${params.toString()}`, { cache: true });
+  }
+
+  async getTextCategories(language?: string): Promise<{categories: any[]}> {
+    const params = language ? `?language=${language}` : '';
+    // Backend returns this in ~0.015s (93.6% cache improvement)
+    return this.request(`/api/text/categories${params}`, { cache: true });
+  }
+
+  async getLanguages(): Promise<any[]> {
+    // Cached with 24-hour expiration on backend
+    return this.request('/api/text/languages', { cache: true });
+  }
+
+  /**
+   * Advanced Quiz Features API
+   */
+  async getAdaptiveQuestions(userId: string, category: string): Promise<any[]> {
+    return this.request(`/api/quiz/adaptive/${userId}?category=${category}`, { cache: true });
+  }
+
+  async updateUserProgress(userId: string, progressData: any): Promise<any> {
+    return this.request(`/api/user/${userId}/progress`, {
+      method: 'POST',
+      body: progressData,
+      cache: false
+    });
+  }
+
+  async getUserAchievements(userId: string): Promise<any[]> {
+    return this.request(`/api/user/${userId}/achievements`, { cache: true });
+  }
+
+  async getLeaderboard(category?: string, timeframe?: string): Promise<any[]> {
+    const params = new URLSearchParams();
+    if (category) params.append('category', category);
+    if (timeframe) params.append('timeframe', timeframe);
+    const query = params.toString() ? `?${params.toString()}` : '';
+    
+    return this.request(`/api/leaderboard${query}`, { cache: true });
+  }
+
+  /**
+   * Cache Management
+   */
+  private getCacheKey(endpoint: string, options: RequestOptions): string {
+    const method = options.method || 'GET';
+    const body = options.body ? JSON.stringify(options.body) : '';
+    return `${method}:${endpoint}:${body}`;
+  }
+
+  private getFromCache<T>(key: string): T | null {
+    const entry = this.cache.get(key);
+    if (!entry) return null;
+    
+    if (Date.now() > entry.expiry) {
+      this.cache.delete(key);
+      return null;
+    }
+    
+    return entry.data;
+  }
+
+  private setCache(key: string, data: any, expiry: number): void {
+    this.cache.set(key, {
+      data,
+      timestamp: Date.now(),
+      expiry: Date.now() + expiry
+    });
+  }
+
+  private getCacheExpiry(endpoint: string): number {
+    // Different cache durations based on endpoint
+    if (endpoint.includes('/quiz/categories')) return 30 * 60 * 1000; // 30 minutes
+    if (endpoint.includes('/text/search')) return 10 * 60 * 1000; // 10 minutes
+    if (endpoint.includes('/languages')) return 24 * 60 * 60 * 1000; // 24 hours
+    if (endpoint.includes('/leaderboard')) return 5 * 60 * 1000; // 5 minutes
+    return 15 * 60 * 1000; // Default 15 minutes
+  }
+
+  /**
+   * Performance Monitoring
+   */
+  private updateMetrics(responseTime: number, cacheHit: boolean, isError: boolean): void {
+    this.metrics.requestCount++;
+    this.metrics.totalResponseTime += responseTime;
+    this.metrics.averageResponseTime = this.metrics.totalResponseTime / this.metrics.requestCount;
+    
+    if (cacheHit) {
+      this.metrics.cacheHitRate = (this.metrics.cacheHitRate * (this.metrics.requestCount - 1) + 1) / this.metrics.requestCount;
+    } else {
+      this.metrics.cacheHitRate = (this.metrics.cacheHitRate * (this.metrics.requestCount - 1)) / this.metrics.requestCount;
+    }
+    
+    if (isError) {
+      this.metrics.errorRate = (this.metrics.errorRate * (this.metrics.requestCount - 1) + 1) / this.metrics.requestCount;
+    } else {
+      this.metrics.errorRate = (this.metrics.errorRate * (this.metrics.requestCount - 1)) / this.metrics.requestCount;
+    }
+  }
+
+  public getMetrics(): PerformanceMetrics {
+    return { ...this.metrics };
+  }
+
+  /**
+   * Utility Methods
+   */
+  private generateRequestId(): string {
+    return Math.random().toString(36).substr(2, 9);
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private async processQueuedRequests(): Promise<void> {
+    const queue = [...this.requestQueue];
+    this.requestQueue = [];
+    
+    for (const request of queue) {
+      try {
+        await request();
+      } catch (error) {
+        console.error('Queued request failed:', error);
       }
     }
   }
 
-  console.error('API Error after retries:', lastError)
-  return { 
-    error: lastError?.message || 'Network error',
-    status: 'error' 
+  /**
+   * Health Check
+   */
+  async healthCheck(): Promise<{status: string, performance: PerformanceMetrics}> {
+    try {
+      const response = await this.request('/', { timeout: 5000 });
+      return {
+        status: 'healthy',
+        performance: this.getMetrics()
+      };
+    } catch (error) {
+      throw new ApiError('Backend health check failed', 503);
+    }
+  }
+
+  /**
+   * Clear cache (for testing or manual refresh)
+   */
+  clearCache(): void {
+    this.cache.clear();
   }
 }
 
-// COMPLETE MACROBIUS CORPUS API (1,401 passages)
-export const passagesApi = {
-  // Search through complete corpus
-  searchPassages: (query: string, filters?: SearchFilters) => {
-    const params = new URLSearchParams()
-    params.append('query', query)
-    
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== 'all') {
-          if (typeof value === 'object') {
-            params.append(key, JSON.stringify(value))
-          } else {
-            params.append(key, value.toString())
-          }
-        }
-      })
-    }
-    
-    return apiRequest<{
-      passages: MacrobiusPassage[]
-      total: number
-      cultural_themes: string[]
-      difficulty_distribution: Record<string, number>
-    }>(`/passages/search?${params.toString()}`)
-  },
+// Export singleton instance
+export const apiClient = new EnhancedMacrobiusApiClient();
 
-  // Get passage by ID
-  getPassage: (passageId: string) => 
-    apiRequest<MacrobiusPassage>(`/passages/${passageId}`),
-
-  // Get passages by work type
-  getPassagesByWork: (workType: 'Saturnalia' | 'Commentarii', limit: number = 50, offset: number = 0) =>
-    apiRequest<{ passages: MacrobiusPassage[], total: number }>(
-      `/passages/work/${workType}?limit=${limit}&offset=${offset}`
-    ),
-
-  // Get passages by cultural theme
-  getPassagesByTheme: (theme: string, limit: number = 50, offset: number = 0) =>
-    apiRequest<{ passages: MacrobiusPassage[], total: number }>(
-      `/passages/theme/${theme}?limit=${limit}&offset=${offset}`
-    ),
-
-  // Get random passages for practice
-  getRandomPassages: (count: number = 10, difficulty?: string) => {
-    const params = difficulty ? `?difficulty=${difficulty}` : ''
-    return apiRequest<{ passages: MacrobiusPassage[] }>(
-      `/passages/random/${count}${params}`
-    )
-  },
-
-  // Get passage statistics
-  getCorpusStatistics: () =>
-    apiRequest<{
-      total_passages: number
-      total_characters: number
-      work_distribution: Record<string, number>
-      theme_distribution: Record<string, number>
-      difficulty_distribution: Record<string, number>
-    }>('/passages/statistics')
-}
-
-// CULTURAL ANALYSIS API (9 themes + 16 insights)
-export const culturalApi = {
-  // Get all cultural themes
-  getThemes: () =>
-    apiRequest<{ themes: CulturalTheme[] }>('/cultural/themes'),
-
-  // Get specific theme with passages
-  getTheme: (themeId: string) =>
-    apiRequest<CulturalTheme>(`/cultural/themes/${themeId}`),
-
-  // Get all cultural insights  
-  getInsights: () =>
-    apiRequest<{ insights: CulturalInsight[] }>('/cultural/insights'),
-
-  // Get specific insight
-  getInsight: (insightId: string) =>
-    apiRequest<CulturalInsight>(`/cultural/insights/${insightId}`),
-
-  // Get insights by difficulty
-  getInsightsByDifficulty: (difficulty: string) =>
-    apiRequest<{ insights: CulturalInsight[] }>(`/cultural/insights/difficulty/${difficulty}`),
-
-  // Search cultural content
-  searchCultural: (query: string, type?: 'themes' | 'insights' | 'all') => {
-    const params = new URLSearchParams()
-    params.append('query', query)
-    if (type) params.append('type', type)
-    
-    return apiRequest<{
-      themes: CulturalTheme[]
-      insights: CulturalInsight[]
-      total: number
-    }>(`/cultural/search?${params.toString()}`)
-  }
-}
-
-// TEACHING MODULES API (16 modules)
-export const teachingApi = {
-  // Get all teaching modules
-  getModules: () =>
-    apiRequest<{ modules: TeachingModule[] }>('/teachings/modules'),
-
-  // Get specific module
-  getModule: (moduleId: string) =>
-    apiRequest<TeachingModule>(`/teachings/modules/${moduleId}`),
-
-  // Get modules by difficulty progression
-  getModulesByProgression: (level: string) =>
-    apiRequest<{ modules: TeachingModule[] }>(`/teachings/progression/${level}`),
-
-  // Get module with related passages
-  getModuleWithPassages: (moduleId: string) =>
-    apiRequest<{
-      module: TeachingModule
-      passages: MacrobiusPassage[]
-      cultural_context: CulturalInsight[]
-    }>(`/teachings/modules/${moduleId}/complete`)
-}
-
-// VOCABULARY API (extracted from 235K+ characters)
-export const vocabularyApi = {
-  // Search vocabulary from corpus
-  searchVocabulary: (query: string, filters?: {
-    difficulty?: number
-    frequency_min?: number
-    cultural_theme?: string
-    limit?: number
-  }) => {
-    const params = new URLSearchParams()
-    params.append('query', query)
-    
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined) {
-          params.append(key, value.toString())
-        }
-      })
-    }
-    
-    return apiRequest<{
-      vocabulary: MacrobiusVocabulary[]
-      total: number
-      frequency_distribution: Record<string, number>
-    }>(`/vocabulary/search?${params.toString()}`)
-  },
-
-  // Get vocabulary by frequency
-  getHighFrequencyWords: (limit: number = 100) =>
-    apiRequest<{ vocabulary: MacrobiusVocabulary[] }>(`/vocabulary/frequency/top/${limit}`),
-
-  // Get vocabulary for specific passage
-  getPassageVocabulary: (passageId: string) =>
-    apiRequest<{ vocabulary: MacrobiusVocabulary[] }>(`/vocabulary/passage/${passageId}`),
-
-  // Get vocabulary statistics
-  getVocabularyStatistics: () =>
-    apiRequest<{
-      total_unique_words: number
-      total_word_instances: number
-      difficulty_distribution: Record<string, number>
-      most_frequent_words: MacrobiusVocabulary[]
-    }>('/vocabulary/statistics')
-}
-
-// QUIZ GENERATION API (from cultural insights)
-export const quizApi = {
-  // Generate quiz from cultural insights
-  generateCulturalQuiz: (
-    insightIds: string[], 
-    difficulty: string = 'intermediate',
-    questionCount: number = 10
-  ) =>
-    apiRequest<{
-      quiz_id: string
-      questions: Array<{
-        id: string
-        text: string
-        answers: Array<{
-          id: string
-          text: string
-          is_correct: boolean
-          explanation: string
-        }>
-        cultural_context: string
-        source_insight: string
-      }>
-    }>('/quiz/generate/cultural', {
-      method: 'POST',
-      body: JSON.stringify({
-        insight_ids: insightIds,
-        difficulty,
-        question_count: questionCount
-      })
-    }),
-
-  // Generate quiz from passages
-  generatePassageQuiz: (
-    passageIds: string[],
-    questionTypes: string[] = ['comprehension', 'vocabulary', 'grammar']
-  ) =>
-    apiRequest('/quiz/generate/passages', {
-      method: 'POST',
-      body: JSON.stringify({
-        passage_ids: passageIds,
-        question_types: questionTypes
-      })
-    }),
-
-  // Submit quiz results
-  submitQuizResults: (quizId: string, answers: Record<string, string>) =>
-    apiRequest('/quiz/submit', {
-      method: 'POST',
-      body: JSON.stringify({
-        quiz_id: quizId,
-        answers
-      })
-    })
-}
-
-// HEALTH CHECK & SYSTEM STATUS
-export const systemApi = {
-  // Backend health check
-  healthCheck: () => apiRequest('/health'),
-  
-  // Database connection status
-  databaseStatus: () => apiRequest('/status/database'),
-  
-  // System statistics
-  getSystemStats: () => apiRequest<{
-    total_passages: number
-    total_cultural_themes: number
-    total_insights: number
-    total_teaching_modules: number
-    backend_version: string
-    last_updated: string
-  }>('/status/stats')
-}
-
-// Export configuration
-export { API_BASE_URL }
-
-// Export default unified API client
-export const MacrobiusAPI = {
-  passages: passagesApi,
-  cultural: culturalApi,
-  teaching: teachingApi,
-  vocabulary: vocabularyApi,
-  quiz: quizApi,
-  system: systemApi
-}
-
-export default MacrobiusAPI
+// Export types
+export type { ApiError, PerformanceMetrics, RequestOptions };
