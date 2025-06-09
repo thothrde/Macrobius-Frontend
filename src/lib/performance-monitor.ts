@@ -444,7 +444,7 @@ export function withPerformanceMonitoring<P extends object>(
   WrappedComponent: React.ComponentType<P>,
   componentName: string
 ): React.ComponentType<P> {
-  const PerformanceWrappedComponent = React.forwardRef<any, P>((props, ref) => {
+  const PerformanceWrappedComponent = (props: P) => {
     const renderStartTime = React.useRef<number>(0);
 
     React.useLayoutEffect(() => {
@@ -459,12 +459,12 @@ export function withPerformanceMonitoring<P extends object>(
       });
     });
 
-    return React.createElement(WrappedComponent, { ...props, ref } as any);
-  });
+    return React.createElement(WrappedComponent, props as any);
+  };
   
   PerformanceWrappedComponent.displayName = `withPerformanceMonitoring(${componentName})`;
   
-  return PerformanceWrappedComponent as React.ComponentType<P>;
+  return PerformanceWrappedComponent;
 }
 
 export default performanceMonitor;
