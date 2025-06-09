@@ -3,6 +3,8 @@
  * Provides sophisticated caching strategies for optimal performance
  */
 
+import React from 'react';
+
 interface CacheItem<T = any> {
   data: T;
   timestamp: number;
@@ -141,13 +143,16 @@ class AdvancedCacheManager {
 
   private simpleCompress(str: string): string {
     // Simple run-length encoding for demonstration
-    return '__compressed__' + str.replace(/(.)\1+/g, (match, char) => {
+    return '__compressed__' + str.replace(/(.)
+
++/g, (match, char) => {
       return match.length > 3 ? `${char}${match.length}` : match;
     });
   }
 
   private simpleDecompress(str: string): string {
-    return str.replace(/^__compressed__/, '').replace(/(.)\d+/g, (match, char) => {
+    return str.replace(/^__compressed__/, '').replace(/(.)
+d+/g, (match, char) => {
       const count = parseInt(match.slice(1));
       return char.repeat(count);
     });
@@ -279,7 +284,9 @@ class AdvancedCacheManager {
 
   public invalidateByTag(tag: string): number {
     let count = 0;
-    for (const [key, item] of this.cache.entries()) {
+    const entries = Array.from(this.cache.entries());
+    for (let i = 0; i < entries.length; i++) {
+      const [key, item] = entries[i];
       if (item.tags.includes(tag)) {
         this.delete(key);
         count++;
@@ -291,7 +298,9 @@ class AdvancedCacheManager {
 
   public invalidateByPattern(pattern: RegExp): number {
     let count = 0;
-    for (const key of this.cache.keys()) {
+    const keys = Array.from(this.cache.keys());
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
       if (pattern.test(key)) {
         this.delete(key);
         count++;
@@ -325,7 +334,9 @@ class AdvancedCacheManager {
 
   public getKeysByTag(tag: string): string[] {
     const keys: string[] = [];
-    for (const [key, item] of this.cache.entries()) {
+    const entries = Array.from(this.cache.entries());
+    for (let i = 0; i < entries.length; i++) {
+      const [key, item] = entries[i];
       if (item.tags.includes(tag)) {
         keys.push(key);
       }
@@ -430,7 +441,9 @@ class AdvancedCacheManager {
     const now = Date.now();
     const keysToDelete: string[] = [];
     
-    for (const [key, item] of this.cache.entries()) {
+    const entries = Array.from(this.cache.entries());
+    for (let i = 0; i < entries.length; i++) {
+      const [key, item] = entries[i];
       if (now - item.timestamp > item.ttl) {
         keysToDelete.push(key);
       }
