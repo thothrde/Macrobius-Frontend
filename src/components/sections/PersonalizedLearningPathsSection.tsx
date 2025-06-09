@@ -29,8 +29,7 @@ import {
   Trophy,
   RefreshCw,
   Pause,
-  ArrowRight,
-  BarChart3
+  ArrowRight
 } from 'lucide-react';
 import usePersonalizedLearningPaths, { 
   LearningPath, 
