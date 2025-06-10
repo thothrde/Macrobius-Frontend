@@ -63,13 +63,22 @@ export default function Home() {
       const starsContainer = document.getElementById('stars-container')
       if (!starsContainer) return
 
-      for (let i = 0; i < 200; i++) {
+      // Clear existing stars
+      starsContainer.innerHTML = ''
+
+      for (let i = 0; i < 150; i++) {
         const star = document.createElement('div')
-        star.className = 'star'
-        star.style.left = Math.random() * 100 + '%'
-        star.style.top = Math.random() * 100 + '%'
-        star.style.animationDelay = Math.random() * 3 + 's'
-        star.style.animationDuration = (Math.random() * 3 + 2) + 's'
+        star.style.cssText = `
+          position: absolute;
+          width: ${Math.random() > 0.5 ? '2px' : '1px'};
+          height: ${Math.random() > 0.5 ? '2px' : '1px'};
+          background: ${Math.random() > 0.7 ? '#FFD700' : 'white'};
+          border-radius: 50%;
+          left: ${Math.random() * 100}%;
+          top: ${Math.random() * 100}%;
+          animation: twinkle ${Math.random() * 3 + 2}s ease-in-out infinite;
+          animation-delay: ${Math.random() * 3}s;
+        `
         starsContainer.appendChild(star)
       }
     }
@@ -93,40 +102,75 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="min-h-screen bg-azure overflow-hidden relative">
+      <div 
+        style={{
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #007BC7 0%, #005A9C 100%)',
+          overflow: 'hidden',
+          position: 'relative'
+        }}
+      >
         {/* Animated Stars Background */}
-        <div id="stars-container" className="fixed inset-0 z-0"></div>
+        <div 
+          id="stars-container" 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1
+          }}
+        ></div>
 
         {/* Astrolab Background */}
         <div 
-          className="fixed inset-0 z-10 opacity-10 flex items-center justify-center"
-          style={{ 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 2,
+            opacity: 0.15,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             transform: `rotate(${astrolabRotation}deg)`,
             transition: 'transform 500ms ease-in-out'
           }}
         >
-          <div className="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] relative">
+          <div style={{ width: '80vw', height: '80vw', maxWidth: '800px', maxHeight: '800px', position: 'relative' }}>
             <Image
-              src="/astrolab.jpg"
+              src="/Astrolab.jpg"
               alt="Astrolab"
               fill
-              className="object-contain opacity-30"
+              style={{ objectFit: 'contain', opacity: 0.6 }}
               priority
             />
           </div>
         </div>
 
         {/* Language Selector */}
-        <div className="fixed top-4 right-4 z-40 flex gap-2">
+        <div style={{ position: 'fixed', top: '1rem', right: '1rem', zIndex: 50, display: 'flex', gap: '0.5rem' }}>
           {(['de', 'en', 'la'] as const).map((lang) => (
             <button
               key={lang}
               onClick={() => setLanguage(lang)}
-              className={`px-3 py-1 rounded-md text-sm font-medium transition-all duration-300 ${
-                language === lang
-                  ? 'bg-wine text-gold scale-105'
-                  : 'bg-white/20 text-white hover:bg-white/30'
-              }`}
+              style={{
+                padding: '0.5rem 0.75rem',
+                borderRadius: '0.375rem',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                transition: 'all 300ms',
+                border: 'none',
+                cursor: 'pointer',
+                ...(language === lang 
+                  ? {
+                      backgroundColor: '#722F37',
+                      color: '#FFD700',
+                      transform: 'scale(1.05)'
+                    }
+                  : {
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                      color: 'white'
+                    }
+                )
+              }}
             >
               {lang.toUpperCase()}
             </button>
@@ -134,189 +178,282 @@ export default function Home() {
         </div>
 
         {/* Main Content */}
-        <div className="relative z-20 min-h-screen flex flex-col">
+        <div style={{ position: 'relative', zIndex: 10, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
           {/* Hero Section */}
-          <section className="flex-1 flex items-center justify-center px-4 py-12">
-            <div className="max-w-4xl mx-auto text-center text-white">
+          <section style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '3rem 1rem' }}>
+            <div style={{ maxWidth: '64rem', margin: '0 auto', textAlign: 'center', color: 'white' }}>
               {/* Bottle Image */}
-              <div className="mb-8 relative">
-                <div className="w-32 h-32 mx-auto relative animate-float">
+              <div style={{ marginBottom: '2rem', position: 'relative' }}>
+                <div 
+                  style={{
+                    width: '8rem',
+                    height: '8rem',
+                    margin: '0 auto',
+                    position: 'relative',
+                    animation: 'float 4s ease-in-out infinite'
+                  }}
+                >
                   <Image
                     src="/MacrobiusBottle.jpg"
                     alt="Macrobius Flaschenpost"
                     fill
-                    className="object-contain rounded-full"
+                    style={{ objectFit: 'contain', borderRadius: '50%' }}
                   />
                 </div>
               </div>
 
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gold animate-text-reveal">
+              <h1 
+                style={{
+                  fontSize: 'clamp(2rem, 8vw, 4rem)',
+                  fontWeight: 'bold',
+                  marginBottom: '1rem',
+                  color: '#FFD700',
+                  animation: 'textReveal 1s ease-out'
+                }}
+              >
                 {t.title}
               </h1>
               
-              <h2 className="text-xl md:text-2xl mb-8 opacity-90 animate-text-reveal-delay">
+              <h2 
+                style={{
+                  fontSize: 'clamp(1.25rem, 4vw, 1.5rem)',
+                  marginBottom: '2rem',
+                  opacity: 0.9,
+                  animation: 'textReveal 1s ease-out 0.3s both'
+                }}
+              >
                 {t.subtitle}
               </h2>
 
               {/* Story Section */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 md:p-8 mb-8 animate-fade-in">
-                <div className="grid md:grid-cols-3 gap-6 mb-6">
+              <div 
+                style={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(10px)',
+                  borderRadius: '0.5rem',
+                  padding: '2rem',
+                  marginBottom: '2rem',
+                  animation: 'fadeIn 1s ease-out 0.6s both'
+                }}
+              >
+                <div 
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gap: '1.5rem',
+                    marginBottom: '1.5rem'
+                  }}
+                >
                   {/* Rome Under */}
-                  <div className="relative h-32 rounded-lg overflow-hidden">
+                  <div style={{ position: 'relative', height: '8rem', borderRadius: '0.5rem', overflow: 'hidden' }}>
                     <Image
                       src="/Rome-under.jpg"
                       alt="Untergang Roms"
                       fill
-                      className="object-cover"
+                      style={{ objectFit: 'cover' }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5), transparent)' }}></div>
                   </div>
 
                   {/* Macrobius */}
-                  <div className="relative h-32 rounded-lg overflow-hidden">
+                  <div style={{ position: 'relative', height: '8rem', borderRadius: '0.5rem', overflow: 'hidden' }}>
                     <Image
                       src="/Macrobius-and-Eustachius.jpg"
                       alt="Macrobius und Eustachius"
                       fill
-                      className="object-cover"
+                      style={{ objectFit: 'cover' }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5), transparent)' }}></div>
                   </div>
 
                   {/* Tycho Assistant */}
-                  <div className="relative h-32 rounded-lg overflow-hidden">
+                  <div style={{ position: 'relative', height: '8rem', borderRadius: '0.5rem', overflow: 'hidden' }}>
                     <Image
                       src="/TychoAssistent.jpg"
                       alt="Tychos Assistent"
                       fill
-                      className="object-cover"
+                      style={{ objectFit: 'cover' }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5), transparent)' }}></div>
                   </div>
                 </div>
 
-                <p className="text-sm md:text-base leading-relaxed text-left">
+                <p style={{ fontSize: '0.95rem', lineHeight: 1.6, textAlign: 'left' }}>
                   {t.description}
                 </p>
 
                 {/* Book Images */}
-                <div className="grid md:grid-cols-2 gap-4 mt-6">
-                  <div className="relative h-24 rounded-lg overflow-hidden">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+                  <div style={{ position: 'relative', height: '6rem', borderRadius: '0.5rem', overflow: 'hidden' }}>
                     <Image
                       src="/MacrobiI.JPG"
                       alt="Macrobius Buch"
                       fill
-                      className="object-cover"
+                      style={{ objectFit: 'cover' }}
                     />
                   </div>
-                  <div className="relative h-24 rounded-lg overflow-hidden">
+                  <div style={{ position: 'relative', height: '6rem', borderRadius: '0.5rem', overflow: 'hidden' }}>
                     <Image
                       src="/MacrobiRegal.jpg"
                       alt="Buch im Regal"
                       fill
-                      className="object-cover"
+                      style={{ objectFit: 'cover' }}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Navigation Sections */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
                 {sections.map((section) => {
                   const Icon = section.icon
                   return (
                     <button
                       key={section.id}
                       onClick={() => setActiveSection(section.id)}
-                      className="btn-wine group relative overflow-hidden"
+                      style={{
+                        padding: '1.5rem 1rem',
+                        backgroundColor: '#722F37',
+                        color: '#FFD700',
+                        borderRadius: '0.5rem',
+                        fontWeight: '500',
+                        border: '2px solid #FFD700',
+                        cursor: 'pointer',
+                        transition: 'all 300ms',
+                        position: 'relative',
+                        overflow: 'hidden'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.05)'
+                        e.currentTarget.style.backgroundColor = '#8B3A42'
+                        e.currentTarget.style.boxShadow = '0 10px 25px rgba(114, 47, 55, 0.4)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)'
+                        e.currentTarget.style.backgroundColor = '#722F37'
+                        e.currentTarget.style.boxShadow = 'none'
+                      }}
                     >
-                      <div className="flex flex-col items-center gap-2 relative z-10">
-                        <Icon className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
-                        <span className="text-sm font-medium">
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', position: 'relative', zIndex: 10 }}>
+                        <Icon size={24} />
+                        <span style={{ fontSize: '0.875rem', fontWeight: '500' }}>
                           {t[section.nameKey as keyof typeof t]}
                         </span>
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-r from-gold/20 to-gold/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </button>
                   )
                 })}
               </div>
 
               {/* Explore Button */}
-              <button className="btn-wine-large group">
-                <span className="mr-2">{t.exploreBtn}</span>
-                <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform duration-300" />
+              <button 
+                style={{
+                  padding: '1rem 2rem',
+                  backgroundColor: '#722F37',
+                  color: '#FFD700',
+                  borderRadius: '0.5rem',
+                  fontWeight: '500',
+                  fontSize: '1.125rem',
+                  border: '2px solid #FFD700',
+                  cursor: 'pointer',
+                  transition: 'all 300ms',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.05)'
+                  e.currentTarget.style.backgroundColor = '#8B3A42'
+                  e.currentTarget.style.boxShadow = '0 15px 35px rgba(114, 47, 55, 0.5)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)'
+                  e.currentTarget.style.backgroundColor = '#722F37'
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
+              >
+                <span style={{ marginRight: '0.5rem' }}>{t.exploreBtn}</span>
+                <ChevronDown size={20} />
               </button>
             </div>
           </section>
 
           {/* Additional Sections Preview */}
           {activeSection && (
-            <section className="bg-white/5 backdrop-blur-sm border-t border-white/20 p-8 animate-slide-up">
-              <div className="max-w-4xl mx-auto text-center text-white">
-                <h3 className="text-2xl font-bold mb-4 text-gold">
+            <section 
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                backdropFilter: 'blur(10px)',
+                borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+                padding: '2rem',
+                animation: 'slideUp 0.5s ease-out'
+              }}
+            >
+              <div style={{ maxWidth: '64rem', margin: '0 auto', textAlign: 'center', color: 'white' }}>
+                <h3 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem', color: '#FFD700' }}>
                   {t[sections.find(s => s.id === activeSection)?.nameKey as keyof typeof t]}
                 </h3>
                 
                 {/* Section-specific content preview */}
                 {activeSection === 'worldmap' && (
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="relative h-48 rounded-lg overflow-hidden">
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+                    <div style={{ position: 'relative', height: '12rem', borderRadius: '0.5rem', overflow: 'hidden' }}>
                       <Image
                         src="/Macrobius-Erdkarte.jpg"
                         alt="Macrobius Erdkarte"
                         fill
-                        className="object-cover"
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
-                    <div className="relative h-48 rounded-lg overflow-hidden">
+                    <div style={{ position: 'relative', height: '12rem', borderRadius: '0.5rem', overflow: 'hidden' }}>
                       <Image
                         src="/mappa-mundi.jpg"
                         alt="Mappa Mundi"
                         fill
-                        className="object-cover"
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
                   </div>
                 )}
 
                 {activeSection === 'cosmos' && (
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="relative h-48 rounded-lg overflow-hidden">
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+                    <div style={{ position: 'relative', height: '12rem', borderRadius: '0.5rem', overflow: 'hidden' }}>
                       <Image
                         src="/Macrobius-universe.jpg"
                         alt="Macrobius Universum"
                         fill
-                        className="object-cover"
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
-                    <div className="relative h-48 rounded-lg overflow-hidden">
+                    <div style={{ position: 'relative', height: '12rem', borderRadius: '0.5rem', overflow: 'hidden' }}>
                       <Image
                         src="/Macrobius-Zeichnung-Eklipse.jpg"
                         alt="Macrobius Eklipse"
                         fill
-                        className="object-cover"
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
                   </div>
                 )}
 
                 {activeSection === 'banquet' && (
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="relative h-48 rounded-lg overflow-hidden">
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+                    <div style={{ position: 'relative', height: '12rem', borderRadius: '0.5rem', overflow: 'hidden' }}>
                       <Image
                         src="/WandSymposion.jpg"
                         alt="Wandgemälde Symposion"
                         fill
-                        className="object-cover"
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
-                    <div className="relative h-48 rounded-lg overflow-hidden">
+                    <div style={{ position: 'relative', height: '12rem', borderRadius: '0.5rem', overflow: 'hidden' }}>
                       <Image
                         src="/Symposion-2.jpg"
                         alt="Symposion"
                         fill
-                        className="object-cover"
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
                   </div>
@@ -328,94 +465,29 @@ export default function Home() {
       </div>
 
       <style jsx>{`
-        .bg-azure {
-          background: #007BC7;
-          background: linear-gradient(135deg, #007BC7 0%, #005A9C 100%);
-        }
-
-        .btn-wine {
-          @apply px-6 py-3 bg-wine text-gold rounded-lg font-medium;
-          @apply hover:scale-105 active:scale-95;
-          @apply transition-all duration-300;
-          @apply shadow-lg hover:shadow-xl;
-          background-color: #722F37;
-          color: #FFD700;
-        }
-
-        .btn-wine-large {
-          @apply px-8 py-4 bg-wine text-gold rounded-lg font-medium text-lg;
-          @apply hover:scale-105 active:scale-95;
-          @apply transition-all duration-300;
-          @apply shadow-lg hover:shadow-xl;
-          @apply flex items-center justify-center;
-          background-color: #722F37;
-          color: #FFD700;
-        }
-
-        .text-gold {
-          color: #FFD700;
-        }
-
-        .text-wine {
-          color: #722F37;
-        }
-
-        .bg-wine {
-          background-color: #722F37;
-        }
-
-        .star {
-          position: absolute;
-          width: 2px;
-          height: 2px;
-          background: white;
-          border-radius: 50%;
-          animation: twinkle infinite ease-in-out;
-        }
-
         @keyframes twinkle {
           0%, 100% { opacity: 0; transform: scale(0.5); }
           50% { opacity: 1; transform: scale(1); }
         }
 
         @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-15px) rotate(5deg); }
         }
 
-        @keyframes text-reveal {
-          0% { opacity: 0; transform: translateY(30px); }
-          100% { opacity: 1; transform: translateY(0); }
+        @keyframes textReveal {
+          0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @keyframes slide-up {
+        @keyframes slideUp {
           0% { opacity: 0; transform: translateY(50px); }
           100% { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes fade-in {
-          0% { opacity: 0; }
-          100% { opacity: 1; }
-        }
-
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
-        }
-
-        .animate-text-reveal {
-          animation: text-reveal 1s ease-out;
-        }
-
-        .animate-text-reveal-delay {
-          animation: text-reveal 1s ease-out 0.3s both;
-        }
-
-        .animate-slide-up {
-          animation: slide-up 0.5s ease-out;
-        }
-
-        .animate-fade-in {
-          animation: fade-in 1s ease-out 0.6s both;
+        @keyframes fadeIn {
+          0% { opacity: 0; transform: scale(0.98); }
+          100% { opacity: 1; transform: scale(1); }
         }
       `}</style>
     </>
