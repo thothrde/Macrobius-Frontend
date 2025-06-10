@@ -134,7 +134,8 @@ class AdvancedCacheValidationTester {
       const latencies: number[] = [];
 
       // Test cache coordination scenarios
-      for (const [key, value] of this.testData.entries()) {
+      const testDataEntries = Array.from(this.testData.entries());
+      for (const [key, value] of testDataEntries) {
         if (totalCoordinations >= 20) break;
         
         const coordinationStart = performance.now();
