@@ -16,7 +16,8 @@ type TranslationKey =
   | 'thematic_heatmap' | 'theme_relationships' | 'explore_texts' | 'about_macrobius' 
   | 'search_placeholder' | 'quiz_question' | 'quiz_a' | 'quiz_b' | 'quiz_c' 
   | 'quiz_answer' | 'cosmos_description' | 'worldmap_description' | 'banquet_description' 
-  | 'learning_tools' | 'story';
+  | 'learning_tools' | 'story' | 'about_title' | 'about_subtitle' | 'about_biography' 
+  | 'about_works' | 'about_legacy' | 'about_influence' | 'close_modal';
 
 type TranslationTexts = Record<TranslationKey, string>;
 type Translations = Record<'DE' | 'EN' | 'LA', TranslationTexts>;
@@ -72,7 +73,14 @@ const translations: Translations = {
     worldmap_description: "Entdecken Sie die antike Weltsicht durch Macrobius' geografische Beschreibungen",
     banquet_description: "Tauchen Sie ein in die Gespräche der Gelehrten beim Gastmahl der Saturnalien",
     learning_tools: "Lernwerkzeuge für das Studium der lateinischen Sprache und antiken Kultur",
-    story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle. Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`
+    story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle. Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
+    about_title: "Macrobius Ambrosius Theodosius",
+    about_subtitle: "Philosoph, Grammatiker und Bewahrer antiker Weisheit (ca. 385-430 n. Chr.)",
+    about_biography: `Macrobius Ambrosius Theodosius war ein spätantiker römischer Beamter, Philosoph und Schriftsteller, der um 385-430 n. Chr. lebte. Er stammte wahrscheinlich aus Nordafrika und bekleidete hohe Verwaltungsämter im spätrömischen Reich. Als Praefectus praetorio per Hispanias verwaltete er die iberische Halbinsel und war eine der einflussreichsten Persönlichkeiten seiner Zeit. Macrobius verkörperte die letzte Blüte der klassischen römischen Bildung, bevor das Weströmische Reich zusammenbrach.`,
+    about_works: `Seine beiden Hauptwerke sind die 'Saturnalia' - ein gelehrtes Symposium über römische Religion, Geschichte und Literatur - und der 'Commentarii in Somnium Scipionis', ein neuplatonischer Kommentar zu Ciceros Traumerzählung. Diese Werke bewahrten jahrhundertelang antikes Wissen und beeinflussten mittelalterliche Gelehrte von Isidor von Sevilla bis Thomas von Aquin.`,
+    about_legacy: `Macrobius schuf eine Brücke zwischen der antiken und mittelalterlichen Welt. Seine Werke überstanden die dunklen Jahrhunderte und wurden zu Grundtexten der Bildung in Klöstern und Kathedralsschulen. Sie trugen wesentlich zur Bewahrung und Weitergabe des klassischen Erbes bei.`,
+    about_influence: `Sein Einfluss reichte von den karolingischen Gelehrten über die Scholastiker bis hin zu Renaissance-Humanisten wie Marsilio Ficino. Noch heute gilt er als einer der wichtigsten Vermittler zwischen Antike und Moderne.`,
+    close_modal: "Schließen"
   },
   EN: {
     title: "An Ancient Message in a Bottle",
@@ -102,7 +110,14 @@ const translations: Translations = {
     worldmap_description: "Discover the ancient worldview through Macrobius' geographical descriptions",
     banquet_description: "Immerse yourself in the scholars' conversations at the Saturnalia banquet",
     learning_tools: "Learning tools for studying Latin language and ancient culture",
-    story: `1500 years ago, as the Roman Empire was facing its decline, Macrobius, a leading administrative official and scholar in northern Italy, created a message in a bottle to the future. This message consisted of two texts: a casual conversation among educated Romans and a dream commentary. In both, Macrobius tried to package what was important to him about the declining civilization of antiquity in a way that would survive the approaching dark centuries and inspire future readers to restart the civilization process with the memory of ancient civilization as encouragement and source material. 500 years ago this new beginning started. In Denmark through astronomical observations by Tycho Brahe, who thus laid the foundation for Kepler's work and the emergence of modern natural sciences. An assistant of Tycho remembered Macrobius's message in a bottle and compiled the first reliable and annotated complete edition. This book came into my hands and gave me the idea to create a small app for you about this story.... Have fun!`
+    story: `1500 years ago, as the Roman Empire was facing its decline, Macrobius, a leading administrative official and scholar in northern Italy, created a message in a bottle to the future. This message consisted of two texts: a casual conversation among educated Romans and a dream commentary. In both, Macrobius tried to package what was important to him about the declining civilization of antiquity in a way that would survive the approaching dark centuries and inspire future readers to restart the civilization process with the memory of ancient civilization as encouragement and source material. 500 years ago this new beginning started. In Denmark through astronomical observations by Tycho Brahe, who thus laid the foundation for Kepler's work and the emergence of modern natural sciences. An assistant of Tycho remembered Macrobius's message in a bottle and compiled the first reliable and annotated complete edition. This book came into my hands and gave me the idea to create a small app for you about this story.... Have fun!`,
+    about_title: "Macrobius Ambrosius Theodosius",
+    about_subtitle: "Philosopher, Grammarian and Preserver of Ancient Wisdom (ca. 385-430 AD)",
+    about_biography: `Macrobius Ambrosius Theodosius was a late-antique Roman official, philosopher, and writer who lived around 385-430 AD. He probably came from North Africa and held high administrative offices in the late Roman Empire. As Praefectus praetorio per Hispanias, he governed the Iberian Peninsula and was one of the most influential personalities of his time. Macrobius embodied the last flowering of classical Roman education before the collapse of the Western Roman Empire.`,
+    about_works: `His two main works are the 'Saturnalia' - a learned symposium on Roman religion, history, and literature - and the 'Commentarii in Somnium Scipionis', a Neoplatonic commentary on Cicero's dream narrative. These works preserved ancient knowledge for centuries and influenced medieval scholars from Isidore of Seville to Thomas Aquinas.`,
+    about_legacy: `Macrobius created a bridge between the ancient and medieval worlds. His works survived the dark centuries and became foundational texts for education in monasteries and cathedral schools. They contributed significantly to the preservation and transmission of the classical heritage.`,
+    about_influence: `His influence extended from Carolingian scholars through scholastics to Renaissance humanists like Marsilio Ficino. Even today, he is considered one of the most important mediators between antiquity and modernity.`,
+    close_modal: "Close"
   },
   LA: {
     title: "Antiqua Epistula in Ampulla",
@@ -132,7 +147,14 @@ const translations: Translations = {
     worldmap_description: "Inveni mundi antiqui visionem per descriptiones geographicas Macrobii",
     banquet_description: "Immerge te in colloquia eruditorum apud convivium Saturnaliorum",
     learning_tools: "Instrumenta discendi pro studio linguae Latinae et culturae antiquae",
-    story: `Ante annos mille quingentos, cum Imperium Romanum interitu appropinquante laboraret, Macrobius, praefectus principalis et eruditus in Italia septentrionali, epistulam in ampulla ad futurum fecit. Haec epistula ex duobus textibus constabat: sermone inter Romanos eruditos et commentario somnii. In utrisque Macrobius id quod de civilizatione antiqua occidenti sibi carum erat, ita colligere conatus est ut saecula tenebrosa ventura superaret et lectores futuros ad processum civilizationis renovandum cum memoria civilizationis antiquae ut solatio et fonte materiae incitaret. Ante annos quingentos hic novus exortus coepit. In Dania per observationes astronomicas Tychonis Brahe, qui sic fundamentum posuit operibus Kepleri et ortui scientiarum naturalium modernarum. Adjutor Tychonis epistulae Macrobii in ampulla recordatus est et primam fidelem annotatamque editionem completam composuit. Hic liber in manus meas venit et mihi ideam dedit parvam applicationem vobis de hac historia facere.... Bene fruimini!`
+    story: `Ante annos mille quingentos, cum Imperium Romanum interitu appropinquante laboraret, Macrobius, praefectus principalis et eruditus in Italia septentrionali, epistulam in ampulla ad futurum fecit. Haec epistula ex duobus textibus constabat: sermone inter Romanos eruditos et commentario somnii. In utrisque Macrobius id quod de civilizatione antiqua occidenti sibi carum erat, ita colligere conatus est ut saecula tenebrosa ventura superaret et lectores futuros ad processum civilizationis renovandum cum memoria civilizationis antiquae ut solatio et fonte materiae incitaret. Ante annos quingentos hic novus exortus coepit. In Dania per observationes astronomicas Tychonis Brahe, qui sic fundamentum posuit operibus Kepleri et ortui scientiarum naturalium modernarum. Adjutor Tychonis epistulae Macrobii in ampulla recordatus est et primam fidelem annotatamque editionem completam composuit. Hic liber in manus meas venit et mihi ideam dedit parvam applicationem vobis de hac historia facere.... Bene fruimini!`,
+    about_title: "Macrobius Ambrosius Theodosius",
+    about_subtitle: "Philosophus, Grammaticus et Sapientiae Antiquae Custos (ca. 385-430 p. Chr. n.)",
+    about_biography: `Macrobius Ambrosius Theodosius fuit magistratus Romanus, philosophus et scriptor sero antiquitatis, qui circa annos 385-430 post Christum natum vixit. Ex Africa septentrionali probabiliter oriundus, altos magistratus in Imperio Romano sero tenuit. Praefectus praetorio per Hispanias peninsulam Ibericam administravit et inter personas aetatis suae influentiores numerandus est. Macrobius ultimum florem educationis Romanae classicae antequam Imperium Romanum Occidentale concideret repraesentavit.`,
+    about_works: `Duo eius opera principalia sunt 'Saturnalia' - symposium eruditum de religione, historia et litteris Romanis - et 'Commentarii in Somnium Scipionis', commentarius Neoplatonicus ad narrationem somnii Ciceronis. Haec opera per saecula scientiam antiquam conservaverunt et eruditos medii aevi ab Isidoro Hispalensi usque ad Thomam Aquinatem influentia exercuerunt.`,
+    about_legacy: `Macrobius pontem inter mundum antiquum et medium aevum construxit. Opera eius saecula tenebrosa supervixerunt et textes fundamentales educationis in monasteriis et scholis cathedralibus facta sunt. Ad conservationem et traditionem hereditatis classicae magnopere contribuerunt.`,
+    about_influence: `Eius influentia ab eruditis Carolingis per scholasticos usque ad humanistas Renascentiae sicut Marsilius Ficinus se extendit. Etiam hodie inter mediatores inter antiquitatem et modernitatem gravissimos numeratur.`,
+    close_modal: "Claudere"
   }
 };
 
@@ -146,6 +168,10 @@ export default function MacrobiusAntiquaFlaschenpost() {
   const [quizAnswer, setQuizAnswer] = useState('');
   const [showQuizResult, setShowQuizResult] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState('');
+  const [showAboutModal, setShowAboutModal] = useState(false);
 
   const t = (key: TranslationKey) => translations[language][key] || key;
 
@@ -238,6 +264,80 @@ export default function MacrobiusAntiquaFlaschenpost() {
     setQuizAnswer(answer);
     setShowQuizResult(true);
     setTimeout(() => setShowQuizResult(false), 8000);
+  }, []);
+
+  // Button handlers
+  const handleExploreTexts = useCallback(() => {
+    handleSectionChange('search');
+  }, [handleSectionChange]);
+
+  const handleAboutMacrobius = useCallback(() => {
+    setShowAboutModal(true);
+  }, []);
+
+  const handleCloseAbout = useCallback(() => {
+    setShowAboutModal(false);
+  }, []);
+
+  // Enhanced search functionality
+  const handleSearch = useCallback(async () => {
+    if (!searchQuery.trim()) return;
+    
+    setIsSearching(true);
+    setSearchError('');
+    
+    try {
+      // Mock search results for demonstration - will connect to Oracle Cloud backend
+      await new Promise(resolve => setTimeout(resolve, 800)); // Simulate API delay
+      
+      const mockResults = [
+        {
+          id: 1,
+          work_type: 'Saturnalia',
+          book_number: 1,
+          chapter_number: 2,
+          latin_text: `Saturno autem eo tempore quo ${searchQuery.toLowerCase()} mencio fit, cum terra adhuc informis esset...`,
+          cultural_theme: 'Religious Practices',
+          modern_relevance: 'Ancient religious customs and their modern interpretations'
+        },
+        {
+          id: 2,
+          work_type: 'Commentarii',
+          book_number: 2,
+          chapter_number: 1,
+          latin_text: `In somnio Scipionis Cicero ${searchQuery.toLowerCase()} demonstrat quod animae post mortem...`,
+          cultural_theme: 'Philosophy',
+          modern_relevance: 'Neoplatonic philosophy and dream interpretation'
+        },
+        {
+          id: 3,
+          work_type: 'Saturnalia',
+          book_number: 3,
+          chapter_number: 4,
+          latin_text: `Convivium illud ${searchQuery.toLowerCase()} ostendit mores antiquos Romanorum...`,
+          cultural_theme: 'Social Customs',
+          modern_relevance: 'Roman banquet culture and social hierarchy'
+        }
+      ];
+      
+      setSearchResults(mockResults);
+    } catch (error) {
+      setSearchError('Fehler bei der Suche. Bitte versuchen Sie es erneut.');
+    } finally {
+      setIsSearching(false);
+    }
+  }, [searchQuery]);
+
+  const handleSearchKeyPress = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  }, [handleSearch]);
+
+  const clearSearch = useCallback(() => {
+    setSearchQuery('');
+    setSearchResults([]);
+    setSearchError('');
   }, []);
 
   const sections = [
@@ -680,31 +780,160 @@ export default function MacrobiusAntiquaFlaschenpost() {
                     transition={{ delay: 0.2 }}
                   >
                     <h2 className="text-4xl font-bold text-yellow-400 mb-6">{t('section_search')}</h2>
-                    <div className="max-w-2xl mx-auto">
-                      <motion.input
-                        type="text"
-                        placeholder={t('search_placeholder')}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full py-4 px-6 text-lg rounded-lg bg-white/20 border-2 border-yellow-400 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 backdrop-blur-md"
-                        whileFocus={{ scale: 1.02 }}
-                      />
-                      <motion.button
-                        className="btn-wine mt-4 px-8 py-3 rounded-lg font-semibold"
-                        style={{
-                          backgroundColor: '#722F37',
-                          color: '#FFD700',
-                          border: '2px solid #FFD700'
-                        }}
-                        whileHover={{ 
-                          scale: 1.05,
-                          backgroundColor: '#FFD700',
-                          color: '#722F37'
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Suchen
-                      </motion.button>
+                    
+                    {/* Enhanced Search Interface */}
+                    <div className="max-w-4xl mx-auto">
+                      <div className="flex flex-col md:flex-row gap-4 mb-6">
+                        <motion.input
+                          type="text"
+                          placeholder={t('search_placeholder')}
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          onKeyPress={handleSearchKeyPress}
+                          className="flex-1 py-4 px-6 text-lg rounded-lg bg-white/20 border-2 border-yellow-400 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 backdrop-blur-md"
+                          whileFocus={{ scale: 1.02 }}
+                          disabled={isSearching}
+                        />
+                        <motion.button
+                          onClick={handleSearch}
+                          disabled={isSearching || !searchQuery.trim()}
+                          className="btn-wine px-8 py-3 rounded-lg font-semibold border-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                          style={{
+                            backgroundColor: '#722F37',
+                            color: '#FFD700',
+                            border: '2px solid #FFD700'
+                          }}
+                          whileHover={{ 
+                            scale: isSearching || !searchQuery.trim() ? 1 : 1.05,
+                            backgroundColor: isSearching || !searchQuery.trim() ? '#722F37' : '#FFD700',
+                            color: isSearching || !searchQuery.trim() ? '#FFD700' : '#722F37'
+                          }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          {isSearching ? '🔍 Suche...' : 'Suchen'}
+                        </motion.button>
+                        {(searchQuery || searchResults.length > 0) && (
+                          <motion.button
+                            onClick={clearSearch}
+                            className="px-6 py-3 rounded-lg font-semibold border-2 border-red-400 text-red-400 hover:bg-red-400 hover:text-white transition-all duration-300"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            Löschen
+                          </motion.button>
+                        )}
+                      </div>
+
+                      {/* Search Error */}
+                      {searchError && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg"
+                        >
+                          <p className="text-red-100">{searchError}</p>
+                        </motion.div>
+                      )}
+
+                      {/* Search Results */}
+                      {searchResults.length > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="space-y-4 text-left"
+                        >
+                          <h3 className="text-2xl font-semibold text-yellow-400 text-center mb-6">
+                            🏛️ Suchergebnisse ({searchResults.length} gefunden)
+                          </h3>
+                          
+                          {searchResults.map((result, index) => (
+                            <motion.div
+                              key={result.id}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300"
+                              whileHover={{ scale: 1.02, y: -2 }}
+                            >
+                              <div className="flex flex-wrap items-center gap-2 mb-4">
+                                <span className="px-3 py-1 bg-yellow-400/20 border border-yellow-400/50 rounded-full text-yellow-300 text-sm font-medium">
+                                  {result.work_type}
+                                </span>
+                                <span className="px-3 py-1 bg-blue-400/20 border border-blue-400/50 rounded-full text-blue-300 text-sm">
+                                  Buch {result.book_number}, Kapitel {result.chapter_number}
+                                </span>
+                                <span className="px-3 py-1 bg-green-400/20 border border-green-400/50 rounded-full text-green-300 text-sm">
+                                  {result.cultural_theme}
+                                </span>
+                              </div>
+                              
+                              <blockquote className="text-white/90 italic text-lg leading-relaxed mb-4 border-l-4 border-yellow-400 pl-4">
+                                "{result.latin_text}"
+                              </blockquote>
+                              
+                              <p className="text-white/70 text-sm">
+                                <strong className="text-yellow-300">Moderne Relevanz:</strong> {result.modern_relevance}
+                              </p>
+                            </motion.div>
+                          ))}
+                          
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                            className="text-center mt-8 p-4 bg-blue-500/10 border border-blue-400/30 rounded-lg"
+                          >
+                            <p className="text-blue-200 text-sm">
+                              💡 <strong>Demo-Modus:</strong> Diese Suchergebnisse sind Beispieldaten. 
+                              Die vollständige Integration mit 1.401 authentischen lateinischen Textpassagen 
+                              aus der Oracle Cloud erfolgt in der nächsten Entwicklungsphase.
+                            </p>
+                          </motion.div>
+                        </motion.div>
+                      )}
+                      
+                      {/* No Results */}
+                      {!isSearching && searchQuery && searchResults.length === 0 && !searchError && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-center py-8"
+                        >
+                          <p className="text-white/70 text-lg">🔍 Keine Ergebnisse für "{searchQuery}" gefunden.</p>
+                          <p className="text-white/50 text-sm mt-2">Versuchen Sie andere Suchbegriffe oder lateinische Wörter.</p>
+                        </motion.div>
+                      )}
+                      
+                      {/* Search Tips */}
+                      {!searchQuery && searchResults.length === 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+                        >
+                          <h4 className="text-xl font-semibold text-yellow-400 mb-4">🔍 Suchhinweise</h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                            <div>
+                              <h5 className="text-white font-medium mb-2">📚 Beispiel-Suchbegriffe:</h5>
+                              <ul className="text-white/70 text-sm space-y-1">
+                                <li>• convivium (Gastmahl)</li>
+                                <li>• somnium (Traum)</li>
+                                <li>• philosophia (Philosophie)</li>
+                                <li>• astronomia (Astronomie)</li>
+                              </ul>
+                            </div>
+                            <div>
+                              <h5 className="text-white font-medium mb-2">🎯 Themensuche:</h5>
+                              <ul className="text-white/70 text-sm space-y-1">
+                                <li>• Religiöse Praktiken</li>
+                                <li>• Soziale Bräuche</li>
+                                <li>• Philosophische Konzepte</li>
+                                <li>• Astronomisches Wissen</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
                     </div>
                   </motion.div>
                 )}
@@ -780,34 +1009,192 @@ export default function MacrobiusAntiquaFlaschenpost() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              {[t('explore_texts'), t('about_macrobius')].map((buttonText, index) => (
-                <motion.button 
-                  key={index}
-                  className="btn-wine px-8 py-4 rounded-xl font-semibold border-2 transition-all duration-300 backdrop-blur-sm"
-                  style={{ 
-                    backgroundColor: '#722F37',
-                    color: '#FFD700',
-                    borderColor: '#FFD700',
-                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)'
-                  }}
-                  whileHover={{ 
-                    scale: 1.05,
-                    backgroundColor: '#FFD700',
-                    color: '#722F37',
-                    borderColor: '#722F37',
-                    boxShadow: '0 10px 25px rgba(255, 215, 0, 0.3)'
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 + 0.9 }}
-                >
-                  {buttonText}
-                </motion.button>
-              ))}
+              <motion.button 
+                onClick={handleExploreTexts}
+                className="btn-wine px-8 py-4 rounded-xl font-semibold border-2 transition-all duration-300 backdrop-blur-sm"
+                style={{ 
+                  backgroundColor: '#722F37',
+                  color: '#FFD700',
+                  borderColor: '#FFD700',
+                  textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)'
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  backgroundColor: '#FFD700',
+                  color: '#722F37',
+                  borderColor: '#722F37',
+                  boxShadow: '0 10px 25px rgba(255, 215, 0, 0.3)'
+                }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9 }}
+              >
+                {t('explore_texts')}
+              </motion.button>
+              <motion.button 
+                onClick={handleAboutMacrobius}
+                className="btn-wine px-8 py-4 rounded-xl font-semibold border-2 transition-all duration-300 backdrop-blur-sm"
+                style={{ 
+                  backgroundColor: '#722F37',
+                  color: '#FFD700',
+                  borderColor: '#FFD700',
+                  textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)'
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  backgroundColor: '#FFD700',
+                  color: '#722F37',
+                  borderColor: '#722F37',
+                  boxShadow: '0 10px 25px rgba(255, 215, 0, 0.3)'
+                }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.0 }}
+              >
+                {t('about_macrobius')}
+              </motion.button>
             </motion.div>
           </motion.div>
         </div>
+
+        {/* About Macrobius Modal */}
+        <AnimatePresence>
+          {showAboutModal && (
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleCloseAbout}
+            >
+              {/* Backdrop */}
+              <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+              
+              {/* Modal Content */}
+              <motion.div
+                className="relative bg-white/10 backdrop-blur-md rounded-3xl p-8 max-w-4xl mx-auto border border-white/30 shadow-2xl overflow-hidden"
+                initial={{ scale: 0.8, y: 50 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.8, y: 50 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Animated background pattern */}
+                <div className="absolute inset-0 opacity-5">
+                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-yellow-200 via-transparent to-blue-200 animate-pulse" />
+                </div>
+
+                {/* Close button */}
+                <motion.button
+                  onClick={handleCloseAbout}
+                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center text-white/80 hover:bg-white/30 transition-all duration-300"
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <span className="text-lg">×</span>
+                </motion.button>
+
+                {/* Modal header */}
+                <div className="text-center mb-8">
+                  <motion.h2 
+                    className="text-4xl md:text-5xl font-bold text-yellow-400 mb-4"
+                    style={{ 
+                      textShadow: '0 0 20px rgba(255, 215, 0, 0.6)',
+                      fontFamily: 'serif'
+                    }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    {t('about_title')}
+                  </motion.h2>
+                  <motion.p 
+                    className="text-xl text-yellow-300/90 font-medium"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    {t('about_subtitle')}
+                  </motion.p>
+                </div>
+
+                {/* Modal content */}
+                <div className="space-y-8 max-h-96 overflow-y-auto custom-scrollbar">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <h3 className="text-2xl font-semibold text-yellow-400 mb-4">📜 Biographie</h3>
+                    <p className="text-white/90 leading-relaxed text-justify">
+                      {t('about_biography')}
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <h3 className="text-2xl font-semibold text-yellow-400 mb-4">📚 Hauptwerke</h3>
+                    <p className="text-white/90 leading-relaxed text-justify">
+                      {t('about_works')}
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <h3 className="text-2xl font-semibold text-yellow-400 mb-4">🏛️ Vermächtnis</h3>
+                    <p className="text-white/90 leading-relaxed text-justify">
+                      {t('about_legacy')}
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                  >
+                    <h3 className="text-2xl font-semibold text-yellow-400 mb-4">🌟 Einfluss</h3>
+                    <p className="text-white/90 leading-relaxed text-justify">
+                      {t('about_influence')}
+                    </p>
+                  </motion.div>
+                </div>
+
+                {/* Modal footer */}
+                <motion.div 
+                  className="mt-8 text-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <motion.button
+                    onClick={handleCloseAbout}
+                    className="btn-wine px-8 py-3 rounded-xl font-semibold border-2 transition-all duration-300"
+                    style={{
+                      backgroundColor: '#722F37',
+                      color: '#FFD700',
+                      borderColor: '#FFD700'
+                    }}
+                    whileHover={{ 
+                      scale: 1.05,
+                      backgroundColor: '#FFD700',
+                      color: '#722F37'
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {t('close_modal')}
+                  </motion.button>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Enhanced CSS animations with 500ms timing consistency */}
         <style jsx>{`
