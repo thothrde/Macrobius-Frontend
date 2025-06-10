@@ -1,525 +1,423 @@
-/**
- * 🚀 MACROBIUS AI PLATFORM - REVOLUTIONARY INTEGRATION COMPLETE
- * World's most advanced AI-powered cultural education platform
- * Complete integration of all 4 AI systems with Oracle Cloud backend
- */
+import { useState, useEffect } from 'react'
+import Head from 'next/head'
+import Image from 'next/image'
+import { ChevronDown, Book, Map, Star, Globe, Users, Scroll, GraduationCap } from 'lucide-react'
 
-import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
-import { motion } from 'framer-motion';
-import { 
-  Brain, 
-  Target, 
-  BookOpen, 
-  Sparkles, 
-  Database, 
-  Zap,
-  Globe,
-  Users,
-  Trophy,
-  Star,
-  ChevronRight,
-  ExternalLink
-} from 'lucide-react';
-
-// Import all sections
-import HeroSection from '../components/sections/HeroSection';
-import IntroSection from '../components/sections/IntroSection';
-import LearningSection from '../components/sections/LearningSection-enhanced-complete';
-import CosmosSection from '../components/sections/CosmosSection';
-import BanquetSection from '../components/sections/BanquetSection';
-import WorldMapSection from '../components/sections/WorldMapSection';
-import TextSearchSection from '../components/sections/TextSearchSection';
-
-// Import AI Systems
-import AICulturalAnalysisSection from '../components/sections/AICulturalAnalysisSection';
-import PersonalizedLearningPathsSection from '../components/sections/PersonalizedLearningPathsSection';
-import AITutoringSystemSection from '../components/sections/AITutoringSystemSection';
-import AdvancedCulturalModulesSection from '../components/sections/AdvancedCulturalModulesSection';
-
-// Translation types for type safety
-type TranslationKey = 
-  | 'nav.home'
-  | 'nav.intro'
-  | 'nav.ai-systems'
-  | 'nav.ai-cultural'
-  | 'nav.ai-learning'
-  | 'nav.ai-tutoring'
-  | 'nav.ai-modules'
-  | 'nav.learning'
-  | 'nav.cosmos'
-  | 'nav.worldmap'
-  | 'nav.banquet'
-  | 'nav.textsearch'
-  | 'title.main'
-  | 'subtitle.main';
-
-type TranslationDict = Record<TranslationKey, string>;
-type Translations = Record<'EN' | 'DE' | 'LA', TranslationDict>;
-
-// Language context (simplified for this integration)
-interface LanguageContextType {
-  language: 'EN' | 'DE' | 'LA';
-  setLanguage: (lang: 'EN' | 'DE' | 'LA') => void;
-  t: (key: TranslationKey) => string;
+// Translation strings
+const translations = {
+  de: {
+    title: "Eine antike Flaschenpost",
+    subtitle: "Macrobius und die Überlieferung antiken Wissens",
+    description: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle. Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
+    quiz: "Interaktives Quiz",
+    worldmap: "Weltkarte",
+    cosmos: "Kosmos",
+    banquet: "Gastmahl",
+    texts: "Textsuche", 
+    learning: "Lernen",
+    exploreBtn: "Entdecken"
+  },
+  en: {
+    title: "An Ancient Message in a Bottle",
+    subtitle: "Macrobius and the Transmission of Ancient Knowledge",
+    description: `1500 years ago, as the Roman Empire was approaching its end, Macrobius, a leading administrator and scholar in northern Italy, crafted a message in a bottle to the future. This message consisted of two texts: a casual conversation among educated Romans and a dream commentary. In both, Macrobius tried to package what was important to him about the declining civilization of antiquity in a way that would survive the approaching dark centuries and inspire future readers to restart the process of civilization, with the memory of ancient civilization as encouragement and source material. 500 years ago, this new beginning started. In Denmark through astronomical observations by Tycho Brahe, who thus laid the foundation for Kepler's work and the emergence of modern natural sciences. An assistant of Tycho remembered Macrobius' message in a bottle and compiled the first reliable and annotated complete edition. This book came into my hands and gave me the idea to create a small app for you about this story.... Have fun!`,
+    quiz: "Interactive Quiz",
+    worldmap: "World Map", 
+    cosmos: "Cosmos",
+    banquet: "Banquet",
+    texts: "Text Search",
+    learning: "Learning",
+    exploreBtn: "Explore"
+  },
+  la: {
+    title: "Antiqua Epistula in Ampulla",
+    subtitle: "Macrobius et Traditio Sapientiae Antiquae",
+    description: `Ante mille quingentos annos, cum Imperium Romanum ad occasum vergeret, Macrobius, praefectus doctusque in Italia septentrionali, epistulam in ampulla ad futuram aetatem confecit. Haec epistula duobus textibus constabat: colloquio libero eruditorum Romanorum et commentario somnii. In utroque Macrobius id quod de cadente antiquitatis civilizatione sibi carum erat ita includere conatus est ut tenebricosa saecula ventura superaret futurosque lectores ad civilizationis processum renovandum incitaret, memoria antiquae civilizationis ut hortamento materiaque fonte. Ante quingentos annos hic novus initium coepit. In Dania per observationes astronomicas Tychonis Brahe, qui sic fundamentum Kepleri operibus modernaeque scientiae naturalis ortu posuit. Tychonis adiutor Macrobii ampullae recordatus est primamque fidelem annotatamque editionem completam composuit. Hic liber in meas manus venit ideamque dedit parvam applicationem vobis de hac historia facere.... Fruamini!`,
+    quiz: "Certamen Interactivum", 
+    worldmap: "Mappa Mundi",
+    cosmos: "Cosmos",
+    banquet: "Convivium",
+    texts: "Textuum Investigatio",
+    learning: "Discendi Ratio",
+    exploreBtn: "Explora"
+  }
 }
 
-// Simple translations with proper typing
-const translations: Translations = {
-  EN: {
-    'nav.home': 'Home',
-    'nav.intro': 'Intro', 
-    'nav.ai-systems': 'AI Systems',
-    'nav.ai-cultural': 'Cultural Analysis',
-    'nav.ai-learning': 'Learning Paths',
-    'nav.ai-tutoring': 'AI Tutoring',
-    'nav.ai-modules': 'Cultural Modules',
-    'nav.learning': 'Learning',
-    'nav.cosmos': 'Cosmos',
-    'nav.worldmap': 'World Map',
-    'nav.banquet': 'Banquet',
-    'nav.textsearch': 'Text Search',
-    'title.main': 'Macrobius AI Platform',
-    'subtitle.main': 'Revolutionary AI-Powered Cultural Education'
-  },
-  DE: {
-    'nav.home': 'Startseite',
-    'nav.intro': 'Einführung',
-    'nav.ai-systems': 'KI-Systeme', 
-    'nav.ai-cultural': 'Kulturanalyse',
-    'nav.ai-learning': 'Lernpfade',
-    'nav.ai-tutoring': 'KI-Tutoring',
-    'nav.ai-modules': 'Kultur-Module',
-    'nav.learning': 'Lernen',
-    'nav.cosmos': 'Kosmos',
-    'nav.worldmap': 'Weltkarte',
-    'nav.banquet': 'Gastmahl',
-    'nav.textsearch': 'Textsuche',
-    'title.main': 'Macrobius KI-Plattform',
-    'subtitle.main': 'Revolutionäre KI-gestützte Kulturbildung'
-  },
-  LA: {
-    'nav.home': 'Domus',
-    'nav.intro': 'Introductio',
-    'nav.ai-systems': 'Systemata AI',
-    'nav.ai-cultural': 'Analysis Culturalis',
-    'nav.ai-learning': 'Semitae Discendi',
-    'nav.ai-tutoring': 'Tutoring AI',
-    'nav.ai-modules': 'Moduli Culturales',
-    'nav.learning': 'Discere',
-    'nav.cosmos': 'Cosmographia',
-    'nav.worldmap': 'Mappa Mundi',
-    'nav.banquet': 'Convivium',
-    'nav.textsearch': 'Quaestio Textuum',
-    'title.main': 'Platforma AI Macrobii',
-    'subtitle.main': 'Educatio Culturalis AI Revolutionaria'
-  }
-};
+const sections = [
+  { id: 'quiz', icon: Book, nameKey: 'quiz' },
+  { id: 'worldmap', icon: Map, nameKey: 'worldmap' },
+  { id: 'cosmos', icon: Star, nameKey: 'cosmos' },
+  { id: 'banquet', icon: Users, nameKey: 'banquet' },
+  { id: 'texts', icon: Scroll, nameKey: 'texts' },
+  { id: 'learning', icon: GraduationCap, nameKey: 'learning' }
+]
 
-export default function HomePage() {
-  const [currentLanguage, setCurrentLanguage] = useState<'EN' | 'DE' | 'LA'>('EN');
-  const [activeAISection, setActiveAISection] = useState<string | null>(null);
+export default function Home() {
+  const [language, setLanguage] = useState<'de' | 'en' | 'la'>('de')
+  const [activeSection, setActiveSection] = useState<string>('')
+  const [astrolabRotation, setAstrolabRotation] = useState(0)
 
-  // Simple translation function with type safety
-  const t = (key: TranslationKey): string => {
-    return translations[currentLanguage][key] || key;
-  };
+  // Animated stars effect
+  useEffect(() => {
+    const createStars = () => {
+      const starsContainer = document.getElementById('stars-container')
+      if (!starsContainer) return
 
-  // Language context
-  const languageContext: LanguageContextType = {
-    language: currentLanguage,
-    setLanguage: setCurrentLanguage,
-    t
-  };
-
-  // AI Systems data
-  const aiSystems = [
-    {
-      id: 'cultural-analysis',
-      title: t('nav.ai-cultural'),
-      subtitle: 'Intelligent Cultural Theme Detection',
-      description: 'Advanced AI engine that analyzes cultural themes, identifies patterns, and provides modern relevance insights.',
-      icon: Brain,
-      gradient: 'from-blue-500 to-cyan-500',
-      bgColor: 'bg-blue-50',
-      features: ['Theme Detection', 'Pattern Recognition', 'Modern Connections', 'Cultural Insights'],
-      status: 'Production Ready',
-      lines: '36K+ lines'
-    },
-    {
-      id: 'learning-paths',
-      title: t('nav.ai-learning'),
-      subtitle: 'Adaptive Learning Path Generation',
-      description: 'Personalized AI system that creates custom learning journeys based on your goals and progress.',
-      icon: Target,
-      gradient: 'from-green-500 to-emerald-500',
-      bgColor: 'bg-green-50',
-      features: ['AI Path Creation', 'Adaptive Progression', 'Goal Optimization', 'Progress Tracking'],
-      status: 'Production Ready',
-      lines: '1,800+ lines'
-    },
-    {
-      id: 'ai-tutoring',
-      title: t('nav.ai-tutoring'),
-      subtitle: 'Intelligent Learning Assistant',
-      description: 'Context-aware AI tutor that provides personalized guidance and cultural explanations.',
-      icon: Sparkles,
-      gradient: 'from-purple-500 to-violet-500',
-      bgColor: 'bg-purple-50',
-      features: ['Smart Assistance', 'Cultural Context', 'Adaptive Hints', 'Session Management'],
-      status: 'Production Ready',
-      lines: '36K+ lines'
-    },
-    {
-      id: 'cultural-modules',
-      title: t('nav.ai-modules'),
-      subtitle: 'Advanced Cultural Exploration',
-      description: 'Comprehensive framework for deep cultural competency development and assessment.',
-      icon: BookOpen,
-      gradient: 'from-amber-500 to-orange-500',
-      bgColor: 'bg-amber-50',
-      features: ['Cultural Framework', 'Competency Tracking', '3D Visualizations', 'Assessment System'],
-      status: 'Framework Ready',
-      lines: '28K+ lines'
+      for (let i = 0; i < 200; i++) {
+        const star = document.createElement('div')
+        star.className = 'star'
+        star.style.left = Math.random() * 100 + '%'
+        star.style.top = Math.random() * 100 + '%'
+        star.style.animationDelay = Math.random() * 3 + 's'
+        star.style.animationDuration = (Math.random() * 3 + 2) + 's'
+        starsContainer.appendChild(star)
+      }
     }
-  ];
+
+    createStars()
+  }, [])
+
+  // Astrolab rotation on section change
+  useEffect(() => {
+    setAstrolabRotation(prev => prev + 45)
+  }, [activeSection])
+
+  const t = translations[language]
 
   return (
     <>
       <Head>
-        <title>{t('title.main')} - {t('subtitle.main')}</title>
-        <meta name="description" content="Revolutionary AI-powered platform for classical cultural education featuring advanced cultural analysis, personalized learning paths, and intelligent tutoring." />
+        <title>{t.title}</title>
+        <meta name="description" content={t.description.slice(0, 160)} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-        {/* Language Selector */}
-        <div className="fixed top-4 right-4 z-50">
-          <select 
-            value={currentLanguage} 
-            onChange={(e) => setCurrentLanguage(e.target.value as 'EN' | 'DE' | 'LA')}
-            className="px-4 py-2 border-2 border-blue-300 rounded-lg bg-white/90 backdrop-blur-sm shadow-lg text-black font-semibold hover:bg-white transition-all duration-300"
-          >
-            <option value="EN">🇬🇧 English</option>
-            <option value="DE">🇩🇪 Deutsch</option>
-            <option value="LA">🏛️ Latina</option>
-          </select>
+      <div className="min-h-screen bg-azure overflow-hidden relative">
+        {/* Animated Stars Background */}
+        <div id="stars-container" className="fixed inset-0 z-0"></div>
+
+        {/* Astrolab Background */}
+        <div 
+          className="fixed inset-0 z-10 opacity-10 flex items-center justify-center"
+          style={{ 
+            transform: `rotate(${astrolabRotation}deg)`,
+            transition: 'transform 500ms ease-in-out'
+          }}
+        >
+          <div className="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] relative">
+            <Image
+              src="/astrolab.jpg"
+              alt="Astrolab"
+              fill
+              className="object-contain opacity-30"
+              priority
+            />
+          </div>
         </div>
 
-        {/* Revolutionary AI Navigation Menu */}
-        <nav className="fixed top-4 left-4 z-50 bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-xl border border-blue-200/50 max-h-[90vh] overflow-y-auto">
-          <div className="flex flex-col space-y-3 min-w-[200px]">
-            {/* Platform Branding */}
-            <div className="text-center pb-3 border-b border-gray-200">
-              <div className="flex items-center justify-center mb-1">
-                <Zap className="h-5 w-5 text-blue-600 mr-1" />
-                <span className="font-bold text-blue-600 text-sm">AI Platform</span>
-              </div>
-              <div className="text-xs text-gray-500">4 AI Systems Integrated</div>
-            </div>
-
-            {/* Core Navigation */}
-            <div className="space-y-1">
-              <a href="#hero" className="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 text-sm font-semibold text-black transition-all duration-300">
-                <span className="mr-2">🏠</span> {t('nav.home')}
-              </a>
-              <a href="#intro" className="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 text-sm font-semibold text-black transition-all duration-300">
-                <span className="mr-2">📖</span> {t('nav.intro')}
-              </a>
-            </div>
-
-            {/* AI Systems Section */}
-            <div className="border-t pt-3">
-              <div className="flex items-center mb-2 px-3">
-                <Brain className="h-4 w-4 text-blue-600 mr-2" />
-                <span className="text-sm font-bold text-blue-600">{t('nav.ai-systems')}</span>
-              </div>
-              <div className="space-y-1 pl-2">
-                <a href="#ai-cultural" className="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 text-sm font-medium text-gray-700 transition-all duration-300">
-                  <Brain className="h-3 w-3 text-blue-500 mr-2" />
-                  {t('nav.ai-cultural')}
-                </a>
-                <a href="#ai-learning" className="flex items-center px-3 py-2 rounded-lg hover:bg-green-100 text-sm font-medium text-gray-700 transition-all duration-300">
-                  <Target className="h-3 w-3 text-green-500 mr-2" />
-                  {t('nav.ai-learning')}
-                </a>
-                <a href="#ai-tutoring" className="flex items-center px-3 py-2 rounded-lg hover:bg-purple-100 text-sm font-medium text-gray-700 transition-all duration-300">
-                  <Sparkles className="h-3 w-3 text-purple-500 mr-2" />
-                  {t('nav.ai-tutoring')}
-                </a>
-                <a href="#ai-modules" className="flex items-center px-3 py-2 rounded-lg hover:bg-amber-100 text-sm font-medium text-gray-700 transition-all duration-300">
-                  <BookOpen className="h-3 w-3 text-amber-500 mr-2" />
-                  {t('nav.ai-modules')}
-                </a>
-              </div>
-            </div>
-
-            {/* Traditional Sections */}
-            <div className="border-t pt-3">
-              <div className="text-xs text-gray-500 mb-2 px-3">Traditional Sections</div>
-              <div className="space-y-1">
-                <a href="#learning" className="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 text-sm font-medium text-gray-700 transition-all duration-300">
-                  <span className="mr-2">🎯</span> {t('nav.learning')}
-                </a>
-                <a href="#cosmos" className="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 text-sm font-medium text-gray-700 transition-all duration-300">
-                  <span className="mr-2">🌌</span> {t('nav.cosmos')}
-                </a>
-                <a href="#worldmap" className="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 text-sm font-medium text-gray-700 transition-all duration-300">
-                  <span className="mr-2">🗺️</span> {t('nav.worldmap')}
-                </a>
-                <a href="#banquet" className="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 text-sm font-medium text-gray-700 transition-all duration-300">
-                  <span className="mr-2">🍷</span> {t('nav.banquet')}
-                </a>
-                <a href="#text-search" className="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 text-sm font-medium text-gray-700 transition-all duration-300">
-                  <span className="mr-2">🔍</span> {t('nav.textsearch')}
-                </a>
-              </div>
-            </div>
-
-            {/* Oracle Cloud Status */}
-            <div className="border-t pt-3">
-              <div className="flex items-center justify-center px-3 py-2 bg-green-50 border border-green-200 rounded-lg">
-                <Database className="h-4 w-4 text-green-600 mr-2" />
-                <div className="text-center">
-                  <div className="text-xs font-semibold text-green-700">Oracle Cloud</div>
-                  <div className="text-xs text-green-600">Ready for Integration</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav>
-
-        {/* Hero Section */}
-        <section id="hero" className="relative min-h-screen flex items-center justify-center">
-          <HeroSection />
-        </section>
-
-        {/* AI Platform Overview Section */}
-        <section className="py-20 bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 text-white">
-          <div className="container mx-auto px-4 max-w-7xl">
-            <motion.div 
-              className="text-center mb-16"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+        {/* Language Selector */}
+        <div className="fixed top-4 right-4 z-40 flex gap-2">
+          {(['de', 'en', 'la'] as const).map((lang) => (
+            <button
+              key={lang}
+              onClick={() => setLanguage(lang)}
+              className={`px-3 py-1 rounded-md text-sm font-medium transition-all duration-300 ${
+                language === lang
+                  ? 'bg-wine text-gold scale-105'
+                  : 'bg-white/20 text-white hover:bg-white/30'
+              }`}
             >
-              <div className="flex items-center justify-center mb-6">
-                <div className="p-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-4">
-                  <Zap className="h-12 w-12 text-white" />
+              {lang.toUpperCase()}
+            </button>
+          ))}
+        </div>
+
+        {/* Main Content */}
+        <div className="relative z-20 min-h-screen flex flex-col">
+          {/* Hero Section */}
+          <section className="flex-1 flex items-center justify-center px-4 py-12">
+            <div className="max-w-4xl mx-auto text-center text-white">
+              {/* Bottle Image */}
+              <div className="mb-8 relative">
+                <div className="w-32 h-32 mx-auto relative animate-float">
+                  <Image
+                    src="/MacrobiusBottle.jpg"
+                    alt="Macrobius Flaschenpost"
+                    fill
+                    className="object-contain rounded-full"
+                  />
                 </div>
-                <h2 className="text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  Revolutionary AI Platform
-                </h2>
               </div>
-              <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-                The world's most advanced AI-powered cultural education platform featuring 4 comprehensive AI systems
-                working in perfect harmony to deliver an unprecedented learning experience.
-              </p>
+
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gold animate-text-reveal">
+                {t.title}
+              </h1>
               
-              {/* Platform Stats */}
-              <div className="flex justify-center mt-8 space-x-12">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-blue-400">4</div>
-                  <div className="text-sm text-gray-400">AI Systems</div>
+              <h2 className="text-xl md:text-2xl mb-8 opacity-90 animate-text-reveal-delay">
+                {t.subtitle}
+              </h2>
+
+              {/* Story Section */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 md:p-8 mb-8 animate-fade-in">
+                <div className="grid md:grid-cols-3 gap-6 mb-6">
+                  {/* Rome Under */}
+                  <div className="relative h-32 rounded-lg overflow-hidden">
+                    <Image
+                      src="/Rome-under.jpg"
+                      alt="Untergang Roms"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  </div>
+
+                  {/* Macrobius */}
+                  <div className="relative h-32 rounded-lg overflow-hidden">
+                    <Image
+                      src="/Macrobius-and-Eustachius.jpg"
+                      alt="Macrobius und Eustachius"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  </div>
+
+                  {/* Tycho Assistant */}
+                  <div className="relative h-32 rounded-lg overflow-hidden">
+                    <Image
+                      src="/TychoAssistent.jpg"
+                      alt="Tychos Assistent"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-green-400">1,401</div>
-                  <div className="text-sm text-gray-400">Latin Passages</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-purple-400">100%</div>
-                  <div className="text-sm text-gray-400">Production Ready</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-amber-400">∞</div>
-                  <div className="text-sm text-gray-400">Learning Paths</div>
+
+                <p className="text-sm md:text-base leading-relaxed text-left">
+                  {t.description}
+                </p>
+
+                {/* Book Images */}
+                <div className="grid md:grid-cols-2 gap-4 mt-6">
+                  <div className="relative h-24 rounded-lg overflow-hidden">
+                    <Image
+                      src="/MacrobiI.JPG"
+                      alt="Macrobius Buch"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="relative h-24 rounded-lg overflow-hidden">
+                    <Image
+                      src="/MacrobiRegal.jpg"
+                      alt="Buch im Regal"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                 </div>
               </div>
-            </motion.div>
 
-            {/* AI Systems Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {aiSystems.map((system, index) => {
-                const IconComponent = system.icon;
-                return (
-                  <motion.div
-                    key={system.id}
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="group"
-                  >
-                    <div className={`relative p-8 rounded-2xl bg-gradient-to-br ${system.bgColor} border border-white/10 backdrop-blur-sm hover:scale-105 transition-all duration-300 cursor-pointer`}>
-                      {/* System Header */}
-                      <div className="flex items-start justify-between mb-6">
-                        <div className="flex items-center">
-                          <div className={`p-3 rounded-xl bg-gradient-to-r ${system.gradient} mr-4`}>
-                            <IconComponent className="h-8 w-8 text-white" />
-                          </div>
-                          <div>
-                            <h3 className="text-xl font-bold text-gray-800 group-hover:text-gray-900 transition-colors">
-                              {system.title}
-                            </h3>
-                            <p className="text-sm text-gray-600">{system.subtitle}</p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className={`text-xs px-2 py-1 rounded-full ${
-                            system.status === 'Production Ready' 
-                              ? 'bg-green-100 text-green-700' 
-                              : 'bg-blue-100 text-blue-700'
-                          }`}>
-                            {system.status}
-                          </div>
-                          <div className="text-xs text-gray-500 mt-1">{system.lines}</div>
-                        </div>
+              {/* Navigation Sections */}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                {sections.map((section) => {
+                  const Icon = section.icon
+                  return (
+                    <button
+                      key={section.id}
+                      onClick={() => setActiveSection(section.id)}
+                      className="btn-wine group relative overflow-hidden"
+                    >
+                      <div className="flex flex-col items-center gap-2 relative z-10">
+                        <Icon className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
+                        <span className="text-sm font-medium">
+                          {t[section.nameKey as keyof typeof t]}
+                        </span>
                       </div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-gold/20 to-gold/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </button>
+                  )
+                })}
+              </div>
 
-                      {/* System Description */}
-                      <p className="text-gray-700 mb-6 leading-relaxed">
-                        {system.description}
-                      </p>
+              {/* Explore Button */}
+              <button className="btn-wine-large group">
+                <span className="mr-2">{t.exploreBtn}</span>
+                <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform duration-300" />
+              </button>
+            </div>
+          </section>
 
-                      {/* Features */}
-                      <div className="grid grid-cols-2 gap-3 mb-6">
-                        {system.features.map((feature, idx) => (
-                          <div key={idx} className="flex items-center text-sm text-gray-600">
-                            <Star className="h-3 w-3 text-amber-500 mr-2 flex-shrink-0" />
-                            <span>{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Action Button */}
-                      <a 
-                        href={`#ai-${system.id.replace('-', '')}`}
-                        className={`inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r ${system.gradient} text-white font-medium hover:shadow-lg transition-all duration-300`}
-                      >
-                        Explore System
-                        <ChevronRight className="h-4 w-4 ml-2" />
-                      </a>
+          {/* Additional Sections Preview */}
+          {activeSection && (
+            <section className="bg-white/5 backdrop-blur-sm border-t border-white/20 p-8 animate-slide-up">
+              <div className="max-w-4xl mx-auto text-center text-white">
+                <h3 className="text-2xl font-bold mb-4 text-gold">
+                  {t[sections.find(s => s.id === activeSection)?.nameKey as keyof typeof t]}
+                </h3>
+                
+                {/* Section-specific content preview */}
+                {activeSection === 'worldmap' && (
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="relative h-48 rounded-lg overflow-hidden">
+                      <Image
+                        src="/Macrobius-Erdkarte.jpg"
+                        alt="Macrobius Erdkarte"
+                        fill
+                        className="object-cover"
+                      />
                     </div>
-                  </motion.div>
-                );
-              })}
-            </div>
+                    <div className="relative h-48 rounded-lg overflow-hidden">
+                      <Image
+                        src="/mappa-mundi.jpg"
+                        alt="Mappa Mundi"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
 
-            {/* Integration Notice */}
-            <div className="mt-16 text-center">
-              <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-400/30 rounded-full">
-                <Trophy className="h-5 w-5 text-green-400 mr-3" />
-                <span className="text-green-400 font-medium">All AI Systems Successfully Integrated & Production Ready</span>
+                {activeSection === 'cosmos' && (
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="relative h-48 rounded-lg overflow-hidden">
+                      <Image
+                        src="/Macrobius-universe.jpg"
+                        alt="Macrobius Universum"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="relative h-48 rounded-lg overflow-hidden">
+                      <Image
+                        src="/Macrobius-Zeichnung-Eklipse.jpg"
+                        alt="Macrobius Eklipse"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === 'banquet' && (
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="relative h-48 rounded-lg overflow-hidden">
+                      <Image
+                        src="/WandSymposion.jpg"
+                        alt="Wandgemälde Symposion"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="relative h-48 rounded-lg overflow-hidden">
+                      <Image
+                        src="/Symposion-2.jpg"
+                        alt="Symposion"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          </div>
-        </section>
+            </section>
+          )}
+        </div>
+      </div>
 
-        {/* Intro Section */}
-        <section id="intro" className="py-24">
-          <IntroSection language={currentLanguage} />
-        </section>
+      <style jsx>{`
+        .bg-azure {
+          background: #007BC7;
+          background: linear-gradient(135deg, #007BC7 0%, #005A9C 100%);
+        }
 
-        {/* AI SYSTEMS SECTIONS */}
-        {/* AI Cultural Analysis Section */}
-        <section id="ai-cultural" className="scroll-mt-20">
-          <AICulturalAnalysisSection />
-        </section>
+        .btn-wine {
+          @apply px-6 py-3 bg-wine text-gold rounded-lg font-medium;
+          @apply hover:scale-105 active:scale-95;
+          @apply transition-all duration-300;
+          @apply shadow-lg hover:shadow-xl;
+          background-color: #722F37;
+          color: #FFD700;
+        }
 
-        {/* Personalized Learning Paths Section */}
-        <section id="ai-learning" className="scroll-mt-20">
-          <PersonalizedLearningPathsSection />
-        </section>
+        .btn-wine-large {
+          @apply px-8 py-4 bg-wine text-gold rounded-lg font-medium text-lg;
+          @apply hover:scale-105 active:scale-95;
+          @apply transition-all duration-300;
+          @apply shadow-lg hover:shadow-xl;
+          @apply flex items-center justify-center;
+          background-color: #722F37;
+          color: #FFD700;
+        }
 
-        {/* AI Tutoring System Section */}
-        <section id="ai-tutoring" className="scroll-mt-20">
-          <AITutoringSystemSection />
-        </section>
+        .text-gold {
+          color: #FFD700;
+        }
 
-        {/* Advanced Cultural Modules Section */}
-        <section id="ai-modules" className="scroll-mt-20">
-          <AdvancedCulturalModulesSection />
-        </section>
+        .text-wine {
+          color: #722F37;
+        }
 
-        {/* Traditional Learning Section */}
-        <section id="learning" className="scroll-mt-20">
-          <LearningSection />
-        </section>
+        .bg-wine {
+          background-color: #722F37;
+        }
 
-        {/* Cosmos Section */}
-        <section id="cosmos" className="scroll-mt-20">
-          <CosmosSection language={currentLanguage} />
-        </section>
+        .star {
+          position: absolute;
+          width: 2px;
+          height: 2px;
+          background: white;
+          border-radius: 50%;
+          animation: twinkle infinite ease-in-out;
+        }
 
-        {/* World Map Section */}
-        <section id="worldmap" className="scroll-mt-20">
-          <WorldMapSection language={currentLanguage} />
-        </section>
+        @keyframes twinkle {
+          0%, 100% { opacity: 0; transform: scale(0.5); }
+          50% { opacity: 1; transform: scale(1); }
+        }
 
-        {/* Banquet Section */}
-        <section id="banquet" className="scroll-mt-20">
-          <BanquetSection language={{ code: currentLanguage.toLowerCase(), name: currentLanguage }} />
-        </section>
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
 
-        {/* Text Search Section */}
-        <section id="text-search" className="scroll-mt-20">
-          <TextSearchSection language={currentLanguage.toLowerCase()} />
-        </section>
+        @keyframes text-reveal {
+          0% { opacity: 0; transform: translateY(30px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
 
-        {/* Platform Achievement Footer */}
-        <section className="py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 text-white">
-          <div className="container mx-auto px-4 max-w-6xl text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl font-bold mb-6">🏆 Revolutionary Achievement Complete</h2>
-              <p className="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
-                The Macrobius platform now represents the perfect fusion of ancient wisdom and cutting-edge artificial intelligence,
-                creating an unprecedented educational experience that makes classical culture accessible, engaging, and profoundly relevant.
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                <div className="p-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <div className="text-3xl mb-3">🏛️</div>
-                  <h3 className="text-lg font-semibold mb-2">Authentic Classical Content</h3>
-                  <p className="text-sm text-gray-300">
-                    Complete 1,401-passage Macrobius corpus with advanced cultural analysis and modern applications
-                  </p>
-                </div>
-                
-                <div className="p-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <div className="text-3xl mb-3">🤖</div>
-                  <h3 className="text-lg font-semibold mb-2">Revolutionary AI Technology</h3>
-                  <p className="text-sm text-gray-300">
-                    4 comprehensive AI systems with advanced algorithms for personalized cultural education
-                  </p>
-                </div>
-                
-                <div className="p-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                  <div className="text-3xl mb-3">🌍</div>
-                  <h3 className="text-lg font-semibold mb-2">Global Cultural Bridge</h3>
-                  <p className="text-sm text-gray-300">
-                    Multi-language support connecting ancient wisdom to modern multicultural understanding
-                  </p>
-                </div>
-              </div>
+        @keyframes slide-up {
+          0% { opacity: 0; transform: translateY(50px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
 
-              <div className="mt-12 flex items-center justify-center">
-                <div className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-blue-500 rounded-full">
-                  <Database className="h-5 w-5 text-white mr-3" />
-                  <span className="text-white font-medium">Ready for Oracle Cloud Integration</span>
-                  <ExternalLink className="h-4 w-4 text-white ml-2" />
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-      </main>
+        @keyframes fade-in {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        .animate-text-reveal {
+          animation: text-reveal 1s ease-out;
+        }
+
+        .animate-text-reveal-delay {
+          animation: text-reveal 1s ease-out 0.3s both;
+        }
+
+        .animate-slide-up {
+          animation: slide-up 0.5s ease-out;
+        }
+
+        .animate-fade-in {
+          animation: fade-in 1s ease-out 0.6s both;
+        }
+      `}</style>
     </>
-  );
+  )
 }
