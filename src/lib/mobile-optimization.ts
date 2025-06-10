@@ -5,7 +5,7 @@
 
 import React from 'react';
 
-interface DeviceInfo {
+export interface DeviceInfo {
   type: 'desktop' | 'tablet' | 'mobile';
   screenSize: { width: number; height: number };
   orientation: 'portrait' | 'landscape';
@@ -19,7 +19,11 @@ interface DeviceInfo {
   } | null;
 }
 
-interface MobileOptimizationConfig {
+// Export types for compatibility
+export type DeviceType = DeviceInfo['type'];
+export type OrientationMode = DeviceInfo['orientation'];
+
+export interface MobileOptimizationConfig {
   enableLazyLoading: boolean;
   enableImageOptimization: boolean;
   enableTouchOptimizations: boolean;
@@ -29,7 +33,7 @@ interface MobileOptimizationConfig {
   preloadCriticalResources: boolean;
 }
 
-interface TouchGesture {
+export interface TouchGesture {
   type: 'tap' | 'double-tap' | 'long-press' | 'swipe' | 'pinch' | 'rotate';
   element: HTMLElement;
   callback: (event: TouchEvent | MouseEvent, data?: any) => void;
@@ -822,4 +826,6 @@ export function useMobileOptimization() {
   };
 }
 
+// Export both as named and default export for compatibility
+export { MobileOptimization as MobileOptimizer };
 export default MobileOptimization;
