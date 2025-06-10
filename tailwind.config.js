@@ -8,95 +8,136 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Macrobius Color System
-        'azure-blue': '#007BC7',
-        'wine-red': '#722F37',
-        'gold': '#FFD700',
-        'dark-gold': '#B8860B',
-        'light-azure': '#4A9FD4',
-        'deep-wine': '#5A2429',
-        
-        // Extended palette
-        'ai-pulse': '#00FF87',
-        'oracle-connection': '#FF6B35',
-        'realtime-indicator': '#FF0080',
+        azure: {
+          DEFAULT: '#007BC7',
+          50: '#E5F4FF',
+          100: '#CCE9FF',
+          200: '#99D3FF',
+          300: '#66BDFF',
+          400: '#33A7FF',
+          500: '#007BC7',
+          600: '#0066A3',
+          700: '#00527F',
+          800: '#003D5C',
+          900: '#002938'
+        },
+        wine: {
+          DEFAULT: '#722F37',
+          50: '#F5E6E8',
+          100: '#EBCDD1',
+          200: '#D79BA3',
+          300: '#C36975',
+          400: '#AF3747',
+          500: '#722F37',
+          600: '#5B252C',
+          700: '#441C21',
+          800: '#2D1216',
+          900: '#16090B'
+        },
+        gold: {
+          DEFAULT: '#FFD700',
+          50: '#FFFEF0',
+          100: '#FFFDE0',
+          200: '#FFFBC2',
+          300: '#FFF9A3',
+          400: '#FFF785',
+          500: '#FFD700',
+          600: '#E6C200',
+          700: '#CCAD00',
+          800: '#B39900',
+          900: '#998400'
+        }
       },
       fontFamily: {
-        'latin': ['Times New Roman', 'Trajan Pro', 'serif'],
+        'serif': ['Crimson Text', 'Georgia', 'serif'],
+        'sans': ['Inter', 'system-ui', 'sans-serif'],
+        'latin': ['Trajan Pro', 'Cinzel', 'serif']
       },
       animation: {
-        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-        'stars-animation': 'starsAnimation 20s linear infinite',
-        'astrolabe-rotation': 'astrolabeRotation 60s linear infinite',
-        'golden-pulse': 'goldenPulse 2s ease-in-out infinite alternate',
-        'ai-pulse': 'aiPulse 1.5s ease-in-out infinite alternate',
-        'connection-pulse': 'connectionPulse 2s ease-in-out infinite',
-        'staggered-reveal': 'fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+        'twinkle': 'twinkle 3s ease-in-out infinite',
+        'float': 'float 4s ease-in-out infinite',
+        'text-reveal': 'text-reveal 1s ease-out',
+        'slide-up': 'slide-up 0.6s ease-out',
+        'fade-in': 'fade-in 1.2s ease-out',
+        'astrolab-rotate': 'astrolab-rotate 60s linear infinite',
+        'planet-rotate': 'planet-rotate 20s linear infinite',
+        'pulse-gold': 'pulse-gold 2s infinite',
+        'stagger-text': 'stagger-text 0.5s ease-out both'
       },
       keyframes: {
-        fadeInUp: {
-          '0%': {
-            opacity: '0',
-            transform: 'translateY(40px) scale(0.95)',
-          },
-          '100%': {
-            opacity: '1',
-            transform: 'translateY(0) scale(1)',
-          },
+        twinkle: {
+          '0%, 100%': { opacity: '0', transform: 'scale(0.5)' },
+          '50%': { opacity: '1', transform: 'scale(1)' }
         },
-        starsAnimation: {
-          '0%': {
-            transform: 'translateX(0)',
-          },
-          '100%': {
-            transform: 'translateX(-400px)',
-          },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+          '50%': { transform: 'translateY(-15px) rotate(5deg)' }
         },
-        astrolabeRotation: {
-          '0%': {
-            transform: 'translate(-50%, -50%) rotate(0deg)',
-          },
-          '100%': {
-            transform: 'translate(-50%, -50%) rotate(360deg)',
-          },
+        'text-reveal': {
+          '0%': { opacity: '0', transform: 'translateY(30px) scale(0.95)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' }
         },
-        goldenPulse: {
-          '0%': {
-            opacity: '0.7',
-          },
-          '100%': {
-            opacity: '1',
-          },
+        'slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(50px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
         },
-        aiPulse: {
-          '0%': {
-            opacity: '0.6',
-            transform: 'scale(1)',
-          },
-          '100%': {
-            opacity: '1',
-            transform: 'scale(1.2)',
-          },
+        'fade-in': {
+          '0%': { opacity: '0', transform: 'scale(0.98)' },
+          '100%': { opacity: '1', transform: 'scale(1)' }
         },
-        connectionPulse: {
-          '0%, 100%': {
-            opacity: '1',
-          },
-          '50%': {
-            opacity: '0.6',
-          },
+        'astrolab-rotate': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' }
         },
+        'planet-rotate': {
+          '0%': { transform: 'rotate(0deg) translateX(50px) rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg) translateX(50px) rotate(-360deg)' }
+        },
+        'pulse-gold': {
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(255, 215, 0, 0.4)' },
+          '50%': { boxShadow: '0 0 0 20px rgba(255, 215, 0, 0)' }
+        },
+        'stagger-text': {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        }
       },
       backdropBlur: {
-        xs: '2px',
+        'enhanced': '12px'
       },
       boxShadow: {
-        'golden': '0 0 35px rgba(255, 215, 0, 0.5)',
-        'wine': '0 10px 30px rgba(114, 47, 55, 0.4)',
+        'wine': '0 10px 25px rgba(114, 47, 55, 0.4)',
+        'gold': '0 10px 25px rgba(255, 215, 0, 0.3)',
+        'azure': '0 10px 25px rgba(0, 123, 199, 0.3)'
       },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem'
+      },
+      transitionDuration: {
+        '400': '400ms',
+        '600': '600ms'
+      }
     },
   },
-  plugins: [
-    require('tailwindcss-animate'),
-  ],
+  plugins: [],
+  safelist: [
+    'bg-azure',
+    'bg-wine',
+    'bg-gold',
+    'text-wine',
+    'text-gold',
+    'btn-wine',
+    'btn-wine-large',
+    'animate-twinkle',
+    'animate-float',
+    'animate-text-reveal',
+    'animate-slide-up',
+    'animate-fade-in',
+    'animate-astrolab-rotate',
+    'animate-planet-rotate',
+    'animate-pulse-gold',
+    'animate-stagger-text'
+  ]
 }
