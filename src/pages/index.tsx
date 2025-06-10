@@ -1,14 +1,14 @@
 /**
  * 🏛️ MACROBIUS - EINE ANTIKE FLASCHENPOST
- * Enhanced Astronomical Design - Advanced Visual Effects & Interactions
- * Message in a Bottle from Antiquity to the Future
+ * Enhanced Astronomical Design - Message in a Bottle from Antiquity to the Future
+ * Visual Excellence with Historical Authenticity
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Translation system for multilingual support
+// Enhanced translation system
 const translations = {
   DE: {
     title: "Eine antike Flaschenpost",
@@ -21,7 +21,11 @@ const translations = {
     section_search: "Textsuche",
     section_learning: "Lernen",
     section_visualizations: "Visualisierungen",
-    story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle. Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
+    timeline: "Zeitleiste",
+    interactive_map: "Interaktive Karte",
+    character_network: "Charakternetzwerk",
+    thematic_heatmap: "Thematische Heatmap",
+    theme_relationships: "Themen-Beziehungen",
     explore_texts: "Erkunden Sie die Texte",
     about_macrobius: "Mehr über Macrobius",
     search_placeholder: "Suche in Macrobius-Texten...",
@@ -29,10 +33,12 @@ const translations = {
     quiz_a: "A) Scipios Traum",
     quiz_b: "B) Caesars Traum", 
     quiz_c: "C) Ciceros Traum",
-    timeline: "Zeitleiste",
-    interactive_map: "Interaktive Karte",
-    character_network: "Charakternetzwerk",
-    thematic_heatmap: "Thematische Heatmap"
+    quiz_answer: "Richtige Antwort: A) Scipios Traum - Das 'Somnium Scipionis' war ein berühmter Text von Cicero, den Macrobius ausführlich kommentierte.",
+    cosmos_description: "Erkunden Sie Macrobius' faszinierende Darstellung des Kosmos und der Himmelskörper",
+    worldmap_description: "Entdecken Sie die antike Weltsicht durch Macrobius' geografische Beschreibungen",
+    banquet_description: "Tauchen Sie ein in die Gespräche der Gelehrten beim Gastmahl der Saturnalien",
+    learning_tools: "Lernwerkzeuge für das Studium der lateinischen Sprache und antiken Kultur",
+    story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle. Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`
   },
   EN: {
     title: "An Ancient Message in a Bottle",
@@ -45,7 +51,11 @@ const translations = {
     section_search: "Text Search",
     section_learning: "Learning",
     section_visualizations: "Visualizations",
-    story: `1500 years ago, as the Roman Empire was facing its decline, Macrobius, a leading administrative official and scholar in northern Italy, created a message in a bottle to the future. This message consisted of two texts: a casual conversation among educated Romans and a dream commentary. In both, Macrobius tried to package what was important to him about the declining civilization of antiquity in a way that would survive the approaching dark centuries and inspire future readers to restart the civilization process with the memory of ancient civilization as encouragement and source material. 500 years ago this new beginning started. In Denmark through astronomical observations by Tycho Brahe, who thus laid the foundation for Kepler's work and the emergence of modern natural sciences. An assistant of Tycho remembered Macrobius's message in a bottle and compiled the first reliable and annotated complete edition. This book came into my hands and gave me the idea to create a small app for you about this story.... Have fun!`,
+    timeline: "Timeline",
+    interactive_map: "Interactive Map",
+    character_network: "Character Network",
+    thematic_heatmap: "Thematic Heatmap",
+    theme_relationships: "Theme Relationships",
     explore_texts: "Explore the Texts",
     about_macrobius: "About Macrobius",
     search_placeholder: "Search in Macrobius texts...",
@@ -53,10 +63,12 @@ const translations = {
     quiz_a: "A) Scipio's Dream",
     quiz_b: "B) Caesar's Dream",
     quiz_c: "C) Cicero's Dream",
-    timeline: "Timeline",
-    interactive_map: "Interactive Map",
-    character_network: "Character Network",
-    thematic_heatmap: "Thematic Heatmap"
+    quiz_answer: "Correct Answer: A) Scipio's Dream - The 'Somnium Scipionis' was a famous text by Cicero that Macrobius extensively commented on.",
+    cosmos_description: "Explore Macrobius' fascinating depiction of the cosmos and celestial bodies",
+    worldmap_description: "Discover the ancient worldview through Macrobius' geographical descriptions",
+    banquet_description: "Immerse yourself in the scholars' conversations at the Saturnalia banquet",
+    learning_tools: "Learning tools for studying Latin language and ancient culture",
+    story: `1500 years ago, as the Roman Empire was facing its decline, Macrobius, a leading administrative official and scholar in northern Italy, created a message in a bottle to the future. This message consisted of two texts: a casual conversation among educated Romans and a dream commentary. In both, Macrobius tried to package what was important to him about the declining civilization of antiquity in a way that would survive the approaching dark centuries and inspire future readers to restart the civilization process with the memory of ancient civilization as encouragement and source material. 500 years ago this new beginning started. In Denmark through astronomical observations by Tycho Brahe, who thus laid the foundation for Kepler's work and the emergence of modern natural sciences. An assistant of Tycho remembered Macrobius's message in a bottle and compiled the first reliable and annotated complete edition. This book came into my hands and gave me the idea to create a small app for you about this story.... Have fun!`
   },
   LA: {
     title: "Antiqua Epistula in Ampulla",
@@ -69,7 +81,11 @@ const translations = {
     section_search: "Quaestio Textuum",
     section_learning: "Discere",
     section_visualizations: "Visualizationes",
-    story: `Ante annos mille quingentos, cum Imperium Romanum interitu appropinquante laboraret, Macrobius, praefectus principalis et eruditus in Italia septentrionali, epistulam in ampulla ad futurum fecit. Haec epistula ex duobus textibus constabat: sermone inter Romanos eruditos et commentario somnii. In utrisque Macrobius id quod de civilizatione antiqua occidenti sibi carum erat, ita colligere conatus est ut saecula tenebrosa ventura superaret et lectores futuros ad processum civilizationis renovandum cum memoria civilizationis antiquae ut solatio et fonte materiae incitaret. Ante annos quingentos hic novus exortus coepit. In Dania per observationes astronomicas Tychonis Brahe, qui sic fundamentum posuit operibus Kepleri et ortui scientiarum naturalium modernarum. Adjutor Tychonis epistulae Macrobii in ampulla recordatus est et primam fidelem annotatamque editionem completam composuit. Hic liber in manus meas venit et mihi ideam deam parvam applicationem vobis de hac historia facere.... Bene fruimini!`,
+    timeline: "Temporum Ordo",
+    interactive_map: "Mappa Interactiva",
+    character_network: "Rete Personarum",
+    thematic_heatmap: "Mappa Thermica",
+    theme_relationships: "Relationes Thematum",
     explore_texts: "Explora Textus",
     about_macrobius: "De Macrobio",
     search_placeholder: "Quaere in textibus Macrobii...",
@@ -77,119 +93,118 @@ const translations = {
     quiz_a: "A) Somnium Scipionis",
     quiz_b: "B) Somnium Caesaris",
     quiz_c: "C) Somnium Ciceronis",
-    timeline: "Temporum Ordo",
-    interactive_map: "Mappa Interactiva",
-    character_network: "Rete Personarum",
-    thematic_heatmap: "Mappa Thermica"
+    quiz_answer: "Responsum Correctum: A) Somnium Scipionis - 'Somnium Scipionis' textus celebris Ciceronis erat quem Macrobius diligenter commentatus est.",
+    cosmos_description: "Explora descriptionem fascinaventem Macrobii de cosmo et corporibus caelestibus",
+    worldmap_description: "Inveni mundi antiqui visionem per descriptiones geographicas Macrobii",
+    banquet_description: "Immerge te in colloquia eruditorum apud convivium Saturnaliorum",
+    learning_tools: "Instrumenta discendi pro studio linguae Latinae et culturae antiquae",
+    story: `Ante annos mille quingentos, cum Imperium Romanum interitu appropinquante laboraret, Macrobius, praefectus principalis et eruditus in Italia septentrionali, epistulam in ampulla ad futurum fecit. Haec epistula ex duobus textibus constabat: sermone inter Romanos eruditos et commentario somnii. In utrisque Macrobius id quod de civilizatione antiqua occidenti sibi carum erat, ita colligere conatus est ut saecula tenebrosa ventura superaret et lectores futuros ad processum civilizationis renovandum cum memoria civilizationis antiquae ut solatio et fonte materiae incitaret. Ante annos quingentos hic novus exortus coepit. In Dania per observationes astronomicas Tychonis Brahe, qui sic fundamentum posuit operibus Kepleri et ortui scientiarum naturalium modernarum. Adjutor Tychonis epistulae Macrobii in ampulla recordatus est et primam fidelem annotatamque editionem completam composuit. Hic liber in manus meas venit et mihi ideam dedit parvam applicationem vobis de hac historia facere.... Bene fruimini!`
   }
 };
 
-export default function EnhancedMacrobiusApp() {
+export default function MacrobiusAntiquaFlaschenpost() {
   const [language, setLanguage] = useState('DE');
   const [activeSection, setActiveSection] = useState('intro');
   const [astrolabRotation, setAstrolabRotation] = useState(0);
   const [stars, setStars] = useState([]);
   const [shootingStars, setShootingStars] = useState([]);
-  const [constellations, setConstellations] = useState([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [quizAnswer, setQuizAnswer] = useState('');
+  const [showQuizResult, setShowQuizResult] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const t = (key) => translations[language][key];
+  const t = (key) => translations[language][key] || key;
 
-  // Enhanced star generation with different types and sizes
+  // Enhanced star generation system
   useEffect(() => {
     const newStars = [];
-    const newConstellations = [];
     
-    // Generate main stars (smaller, numerous)
-    for (let i = 0; i < 120; i++) {
+    // Generate normal twinkling stars
+    for (let i = 0; i < 100; i++) {
       newStars.push({
         id: i,
         left: Math.random() * 100,
         top: Math.random() * 100,
-        size: Math.random() * 2.5 + 0.8,
-        delay: Math.random() * 6,
-        duration: Math.random() * 4 + 2,
+        size: Math.random() * 2 + 0.5,
+        delay: Math.random() * 5,
+        duration: Math.random() * 3 + 2,
         intensity: Math.random() * 0.6 + 0.4,
         type: 'normal'
       });
     }
 
-    // Generate brighter guide stars (larger, fewer)
-    for (let i = 120; i < 135; i++) {
+    // Generate bright guide stars
+    for (let i = 100; i < 120; i++) {
       newStars.push({
         id: i,
         left: Math.random() * 100,
         top: Math.random() * 100,
-        size: Math.random() * 3 + 2,
-        delay: Math.random() * 8,
-        duration: Math.random() * 5 + 3,
+        size: Math.random() * 2.5 + 1.5,
+        delay: Math.random() * 7,
+        duration: Math.random() * 4 + 3,
         intensity: Math.random() * 0.4 + 0.7,
         type: 'bright'
       });
     }
 
-    // Generate constellation connections
-    for (let i = 0; i < 8; i++) {
-      const constellation = [];
-      const numStars = Math.floor(Math.random() * 4) + 3;
-      for (let j = 0; j < numStars; j++) {
-        constellation.push({
-          x: Math.random() * 100,
-          y: Math.random() * 100
-        });
-      }
-      newConstellations.push(constellation);
-    }
-
     setStars(newStars);
-    setConstellations(newConstellations);
   }, []);
 
-  // Generate shooting stars occasionally
+  // Shooting stars system
   useEffect(() => {
     const interval = setInterval(() => {
-      if (Math.random() < 0.3) { // 30% chance every 8 seconds
+      if (Math.random() < 0.25) {
         const shootingStar = {
           id: Date.now(),
           startX: Math.random() * 100,
           startY: Math.random() * 30,
           endX: Math.random() * 100,
           endY: Math.random() * 70 + 30,
-          duration: Math.random() * 2 + 1
+          duration: Math.random() * 2 + 1.5
         };
         
         setShootingStars(prev => [...prev, shootingStar]);
         
-        // Remove shooting star after animation
         setTimeout(() => {
           setShootingStars(prev => prev.filter(star => star.id !== shootingStar.id));
         }, shootingStar.duration * 1000 + 500);
       }
-    }, 8000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Track mouse movement for subtle parallax effects
+  // Mouse tracking for parallax
   useEffect(() => {
     const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20
-      });
+      if (typeof window !== 'undefined') {
+        setMousePosition({
+          x: (e.clientX / window.innerWidth - 0.5) * 15,
+          y: (e.clientY / window.innerHeight - 0.5) * 15
+        });
+      }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => window.removeEventListener('mousemove', handleMouseMove);
+    }
   }, []);
 
-  // Enhanced section change with smoother astrolab rotation
+  // Section change handler with astrolab rotation
   const handleSectionChange = useCallback((section) => {
     if (section !== activeSection) {
       setActiveSection(section);
       setAstrolabRotation(prev => prev + 45);
     }
   }, [activeSection]);
+
+  // Quiz handling
+  const handleQuizAnswer = useCallback((answer) => {
+    setQuizAnswer(answer);
+    setShowQuizResult(true);
+    setTimeout(() => setShowQuizResult(false), 8000);
+  }, []);
 
   const sections = [
     { id: 'intro', label: t('section_intro'), icon: '📜' },
@@ -199,7 +214,7 @@ export default function EnhancedMacrobiusApp() {
     { id: 'banquet', label: t('section_banquet'), icon: '🍷' },
     { id: 'search', label: t('section_search'), icon: '🔍' },
     { id: 'learning', label: t('section_learning'), icon: '📚' },
-    { id: 'visualizations', label: t('section_visualizations'), icon: '📈' }
+    { id: 'visualizations', label: t('section_visualizations'), icon: '📊' }
   ];
 
   return (
@@ -217,12 +232,14 @@ export default function EnhancedMacrobiusApp() {
           background: 'linear-gradient(135deg, #007BC7 0%, #004080 50%, #005A9C 100%)'
         }}
       >
-        {/* Enhanced animated stars with different types */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Enhanced animated star field */}
+        <div className="absolute inset-0 overflow-hidden">
           {stars.map(star => (
-            <div
+            <motion.div
               key={star.id}
-              className={`absolute rounded-full ${star.type === 'bright' ? 'bg-yellow-200' : 'bg-white'}`}
+              className={`absolute rounded-full ${
+                star.type === 'bright' ? 'bg-yellow-200' : 'bg-white'
+              }`}
               style={{
                 left: `${star.left + mousePosition.x * 0.02}%`,
                 top: `${star.top + mousePosition.y * 0.02}%`,
@@ -235,34 +252,6 @@ export default function EnhancedMacrobiusApp() {
             />
           ))}
         </div>
-
-        {/* Constellation lines */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
-          {constellations.map((constellation, idx) => (
-            <g key={idx}>
-              {constellation.map((star, starIdx) => {
-                if (starIdx < constellation.length - 1) {
-                  const nextStar = constellation[starIdx + 1];
-                  return (
-                    <line
-                      key={starIdx}
-                      x1={`${star.x}%`}
-                      y1={`${star.y}%`}
-                      x2={`${nextStar.x}%`}
-                      y2={`${nextStar.y}%`}
-                      stroke="rgba(255, 255, 255, 0.3)"
-                      strokeWidth="1"
-                      style={{
-                        animation: `fadeInOut ${Math.random() * 10 + 5}s ease-in-out infinite`
-                      }}
-                    />
-                  );
-                }
-                return null;
-              })}
-            </g>
-          ))}
-        </svg>
 
         {/* Shooting stars */}
         <AnimatePresence>
@@ -287,23 +276,28 @@ export default function EnhancedMacrobiusApp() {
           ))}
         </AnimatePresence>
 
-        {/* Enhanced rotating astrolab with parallax */}
+        {/* Enhanced Astrolab background with improved image */}
         <div 
-          className="absolute inset-0 bg-center bg-no-repeat bg-contain transition-transform duration-700 ease-out"
+          className="absolute inset-0 bg-center bg-no-repeat bg-contain transition-transform duration-500 ease-out"
           style={{
             backgroundImage: 'url(/Astrolab.jpg)',
-            opacity: 0.15,
-            transform: `rotate(${astrolabRotation}deg) translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px) scale(1.1)`,
-            filter: 'sepia(20%) hue-rotate(200deg)'
+            opacity: 0.12,
+            transform: `rotate(${astrolabRotation}deg) translate(${mousePosition.x * 0.3}px, ${mousePosition.y * 0.3}px) scale(1.1)`,
+            filter: 'sepia(15%) hue-rotate(190deg) brightness(1.1)'
           }}
         />
 
-        {/* Enhanced language selector */}
-        <div className="absolute top-6 right-6 z-50">
+        {/* Language selector with enhanced styling */}
+        <motion.div 
+          className="absolute top-6 right-6 z-50"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1 }}
+        >
           <motion.select 
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="px-4 py-2 bg-white/95 backdrop-blur-md border-2 border-yellow-400 rounded-lg shadow-xl font-semibold text-gray-800 hover:bg-white transition-all duration-300 hover:shadow-2xl"
+            className="px-4 py-2 bg-white/95 backdrop-blur-md border-2 border-yellow-400 rounded-lg shadow-xl font-semibold text-gray-800 hover:bg-white transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -311,16 +305,16 @@ export default function EnhancedMacrobiusApp() {
             <option value="EN">🇬🇧 English</option>
             <option value="LA">🏛️ Latina</option>
           </motion.select>
-        </div>
+        </motion.div>
 
-        {/* Enhanced navigation with improved styling */}
+        {/* Enhanced navigation with wine/gold theme */}
         <nav className="absolute top-6 left-6 z-40 bg-white/15 backdrop-blur-md rounded-xl p-4 border border-white/30 shadow-2xl">
           <div className="flex flex-col space-y-3">
             {sections.map((section, index) => (
               <motion.button
                 key={section.id}
                 onClick={() => handleSectionChange(section.id)}
-                className={`flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-500 ${
+                className={`btn-wine flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-500 ${
                   activeSection === section.id 
                     ? 'shadow-xl transform scale-105' 
                     : 'hover:bg-white/20 hover:scale-102'
@@ -349,23 +343,23 @@ export default function EnhancedMacrobiusApp() {
           </div>
         </nav>
 
-        {/* Enhanced main content area */}
+        {/* Enhanced main content area with parallax */}
         <div className="relative z-30 min-h-screen flex items-center justify-center p-8">
           <motion.div 
-            className="max-w-5xl mx-auto text-center"
+            className="max-w-6xl mx-auto text-center"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
             style={{
-              transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
+              transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`
             }}
           >
-            {/* Enhanced floating bottle with improved animation */}
+            {/* Enhanced floating bottle with magical aura */}
             <motion.div
               className="mb-12 flex justify-center relative"
               animate={{ 
-                y: [0, -25, 0],
-                rotate: [0, 3, -3, 0]
+                y: [0, -20, 0],
+                rotate: [0, 2, -2, 0]
               }}
               transition={{ 
                 duration: 6,
@@ -377,33 +371,33 @@ export default function EnhancedMacrobiusApp() {
                 <img 
                   src="/MacrobiusBottle.jpg"
                   alt="Macrobius Bottle"
-                  className="w-52 h-52 object-cover rounded-full shadow-2xl border-4 border-yellow-400 relative z-10"
+                  className="w-48 h-48 object-cover rounded-full shadow-2xl border-4 border-yellow-400 relative z-10"
                   onError={(e) => e.target.style.display = 'none'}
                   style={{
                     filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.4))'
                   }}
                 />
-                {/* Magical aura effect */}
+                {/* Enhanced magical aura rings */}
                 <div 
-                  className="absolute inset-0 rounded-full border-2 border-yellow-300 opacity-50"
+                  className="absolute inset-0 rounded-full border-2 border-yellow-300 opacity-60"
                   style={{
                     animation: 'pulse 3s ease-in-out infinite',
-                    transform: 'scale(1.1)'
+                    transform: 'scale(1.15)'
                   }}
                 />
                 <div 
-                  className="absolute inset-0 rounded-full border-2 border-yellow-200 opacity-30"
+                  className="absolute inset-0 rounded-full border-2 border-yellow-200 opacity-40"
                   style={{
                     animation: 'pulse 3s ease-in-out infinite 1.5s',
-                    transform: 'scale(1.2)'
+                    transform: 'scale(1.3)'
                   }}
                 />
               </div>
             </motion.div>
 
-            {/* Enhanced main title with text effects */}
+            {/* Enhanced main title with sparkle effects */}
             <motion.h1 
-              className="text-7xl font-bold mb-8 text-center relative"
+              className="text-6xl md:text-7xl font-bold mb-8 text-center relative"
               style={{ 
                 color: '#FFD700',
                 textShadow: '0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.3)',
@@ -414,7 +408,7 @@ export default function EnhancedMacrobiusApp() {
               transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
             >
               {t('title')}
-              {/* Sparkle effects around title */}
+              {/* Sparkle effects */}
               <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-300 rounded-full opacity-70 animate-ping" />
               <div className="absolute top-4 -left-4 w-3 h-3 bg-yellow-200 rounded-full opacity-60 animate-pulse" />
               <div className="absolute -bottom-1 right-8 w-2 h-2 bg-yellow-400 rounded-full opacity-80 animate-bounce" />
@@ -422,7 +416,7 @@ export default function EnhancedMacrobiusApp() {
 
             {/* Enhanced subtitle */}
             <motion.p 
-              className="text-2xl mb-12 text-white/95 font-medium leading-relaxed"
+              className="text-xl md:text-2xl mb-12 text-white/95 font-medium leading-relaxed"
               style={{ textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -431,22 +425,22 @@ export default function EnhancedMacrobiusApp() {
               {t('intro')}
             </motion.p>
 
-            {/* Enhanced content sections with better transitions */}
+            {/* Enhanced content sections with smooth transitions */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSection}
                 initial={{ opacity: 0, y: 30, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -30, scale: 1.05 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="bg-white/15 backdrop-blur-md rounded-3xl p-8 border border-white/25 shadow-2xl relative overflow-hidden"
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="bg-white/15 backdrop-blur-md rounded-3xl p-6 md:p-8 border border-white/25 shadow-2xl relative overflow-hidden"
               >
                 {/* Animated background pattern */}
                 <div className="absolute inset-0 opacity-5">
                   <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-yellow-200 via-transparent to-blue-200 animate-pulse" />
                 </div>
 
-                {/* Section content based on activeSection */}
+                {/* Section content with enhanced layouts */}
                 {activeSection === 'intro' && (
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -457,48 +451,256 @@ export default function EnhancedMacrobiusApp() {
                       <div className="space-y-6">
                         <motion.img 
                           src="/Rome-under.jpg" 
-                          alt="Fall of Rome"
-                          className="w-full rounded-xl shadow-xl transition-transform duration-300 hover:scale-105"
+                          alt="Untergang der antiken Kultur"
+                          className="w-full rounded-xl shadow-xl"
                           onError={(e) => e.target.style.display = 'none'}
-                          whileHover={{ scale: 1.02 }}
+                          whileHover={{ scale: 1.02, rotateY: 5 }}
+                          transition={{ duration: 0.3 }}
                         />
                         <motion.img 
                           src="/Macrobius-and-Eustachius.jpg"
-                          alt="Macrobius and Eustachius" 
-                          className="w-full rounded-xl shadow-xl transition-transform duration-300 hover:scale-105"
+                          alt="Macrobius und sein Sohn Eustachius" 
+                          className="w-full rounded-xl shadow-xl"
                           onError={(e) => e.target.style.display = 'none'}
-                          whileHover={{ scale: 1.02 }}
+                          whileHover={{ scale: 1.02, rotateY: -5 }}
+                          transition={{ duration: 0.3 }}
                         />
                       </div>
                       <div className="space-y-6">
                         <motion.img 
                           src="/TychoAssistent.jpg"
-                          alt="Tycho's Assistant"
-                          className="w-full rounded-xl shadow-xl transition-transform duration-300 hover:scale-105"
+                          alt="Tychos Assistent"
+                          className="w-full rounded-xl shadow-xl"
                           onError={(e) => e.target.style.display = 'none'}
-                          whileHover={{ scale: 1.02 }}
+                          whileHover={{ scale: 1.02, rotateY: 5 }}
+                          transition={{ duration: 0.3 }}
                         />
                         <div className="grid grid-cols-2 gap-4">
                           <motion.img 
-                            src="/MacrobiI.JPG"
-                            alt="Macrobius Book"
-                            className="w-full rounded-xl shadow-xl transition-transform duration-300 hover:scale-105"
+                            src="/MacrobI.JPG"
+                            alt="Macrobius Buch"
+                            className="w-full rounded-xl shadow-xl"
                             onError={(e) => e.target.style.display = 'none'}
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.05, rotateZ: 2 }}
                           />
                           <motion.img 
                             src="/MacrobiRegal.jpg"
-                            alt="Book on Shelf"
-                            className="w-full rounded-xl shadow-xl transition-transform duration-300 hover:scale-105"
+                            alt="Buch im Regal"
+                            className="w-full rounded-xl shadow-xl"
                             onError={(e) => e.target.style.display = 'none'}
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.05, rotateZ: -2 }}
                           />
                         </div>
                       </div>
                     </div>
-                    <p className="text-lg text-white leading-relaxed text-justify max-w-4xl mx-auto" style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)' }}>
+                    <p className="text-lg text-white leading-relaxed text-justify max-w-4xl mx-auto" 
+                       style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)' }}>
                       {t('story')}
                     </p>
+                  </motion.div>
+                )}
+
+                {activeSection === 'quiz' && (
+                  <motion.div 
+                    className="text-center space-y-6"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <h2 className="text-3xl font-bold text-yellow-400 mb-6">{t('section_quiz')}</h2>
+                    <div className="bg-white/10 rounded-2xl p-6 max-w-2xl mx-auto">
+                      <p className="text-xl text-white mb-6">{t('quiz_question')}</p>
+                      <div className="space-y-3">
+                        {['quiz_a', 'quiz_b', 'quiz_c'].map((option, index) => (
+                          <motion.button
+                            key={option}
+                            onClick={() => handleQuizAnswer(option)}
+                            className="btn-wine w-full py-3 px-6 rounded-lg text-white font-medium transition-all duration-300"
+                            style={{
+                              backgroundColor: quizAnswer === option ? '#722F37' : 'rgba(114, 47, 55, 0.3)',
+                              borderColor: '#FFD700',
+                              border: '2px solid'
+                            }}
+                            whileHover={{ 
+                              scale: 1.02,
+                              backgroundColor: '#722F37',
+                              color: '#FFD700'
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            {t(option)}
+                          </motion.button>
+                        ))}
+                      </div>
+                      <AnimatePresence>
+                        {showQuizResult && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            className="mt-6 p-4 bg-green-500/20 border border-green-400/50 rounded-lg"
+                          >
+                            <p className="text-green-100">{t('quiz_answer')}</p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </motion.div>
+                )}
+
+                {activeSection === 'cosmos' && (
+                  <motion.div 
+                    className="text-center space-y-8"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <h2 className="text-4xl font-bold text-yellow-400 mb-6">{t('section_cosmos')}</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <motion.img 
+                        src="/Macrobius-universe.jpg"
+                        alt="Macrobius Kosmologie"
+                        className="w-full rounded-xl shadow-xl"
+                        onError={(e) => e.target.style.display = 'none'}
+                        whileHover={{ scale: 1.03, rotateY: 5 }}
+                      />
+                      <motion.img 
+                        src="/Macrobius-Zeichnung-Eklipse.jpg"
+                        alt="Astronomische Zeichnung - Eklipse"
+                        className="w-full rounded-xl shadow-xl"
+                        onError={(e) => e.target.style.display = 'none'}
+                        whileHover={{ scale: 1.03, rotateY: -5 }}
+                      />
+                    </div>
+                    <p className="text-lg text-white leading-relaxed max-w-3xl mx-auto">
+                      {t('cosmos_description')}
+                    </p>
+                  </motion.div>
+                )}
+
+                {activeSection === 'worldmap' && (
+                  <motion.div 
+                    className="text-center space-y-8"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <h2 className="text-4xl font-bold text-yellow-400 mb-6">{t('section_worldmap')}</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <motion.img 
+                        src="/Macrobius-Erdkarte.jpg"
+                        alt="Macrobius Erdkarte"
+                        className="w-full rounded-xl shadow-xl"
+                        onError={(e) => e.target.style.display = 'none'}
+                        whileHover={{ scale: 1.03 }}
+                      />
+                      <motion.img 
+                        src="/mappa-mundi.jpg"
+                        alt="Mappa Mundi"
+                        className="w-full rounded-xl shadow-xl"
+                        onError={(e) => e.target.style.display = 'none'}
+                        whileHover={{ scale: 1.03 }}
+                      />
+                    </div>
+                    <p className="text-lg text-white leading-relaxed max-w-3xl mx-auto">
+                      {t('worldmap_description')}
+                    </p>
+                  </motion.div>
+                )}
+
+                {activeSection === 'banquet' && (
+                  <motion.div 
+                    className="text-center space-y-8"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <h2 className="text-4xl font-bold text-yellow-400 mb-6">{t('section_banquet')}</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <motion.img 
+                        src="/WandSymposion.jpg"
+                        alt="Wandgemälde Symposion"
+                        className="w-full rounded-xl shadow-xl"
+                        onError={(e) => e.target.style.display = 'none'}
+                        whileHover={{ scale: 1.03, rotateY: 3 }}
+                      />
+                      <motion.img 
+                        src="/Symposion-2.jpg"
+                        alt="Symposion Darstellung"
+                        className="w-full rounded-xl shadow-xl"
+                        onError={(e) => e.target.style.display = 'none'}
+                        whileHover={{ scale: 1.03, rotateY: -3 }}
+                      />
+                    </div>
+                    <p className="text-lg text-white leading-relaxed max-w-3xl mx-auto">
+                      {t('banquet_description')}
+                    </p>
+                  </motion.div>
+                )}
+
+                {activeSection === 'search' && (
+                  <motion.div 
+                    className="text-center space-y-6"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <h2 className="text-4xl font-bold text-yellow-400 mb-6">{t('section_search')}</h2>
+                    <div className="max-w-2xl mx-auto">
+                      <motion.input
+                        type="text"
+                        placeholder={t('search_placeholder')}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full py-4 px-6 text-lg rounded-lg bg-white/20 border-2 border-yellow-400 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 backdrop-blur-md"
+                        whileFocus={{ scale: 1.02 }}
+                      />
+                      <motion.button
+                        className="btn-wine mt-4 px-8 py-3 rounded-lg font-semibold"
+                        style={{
+                          backgroundColor: '#722F37',
+                          color: '#FFD700',
+                          border: '2px solid #FFD700'
+                        }}
+                        whileHover={{ 
+                          scale: 1.05,
+                          backgroundColor: '#FFD700',
+                          color: '#722F37'
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Suchen
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {activeSection === 'learning' && (
+                  <motion.div 
+                    className="text-center space-y-6"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <h2 className="text-4xl font-bold text-yellow-400 mb-6">{t('section_learning')}</h2>
+                    <p className="text-lg text-white leading-relaxed max-w-3xl mx-auto mb-8">
+                      {t('learning_tools')}
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {['Vokabeltrainer', 'Grammatikerklärungen'].map((tool, index) => (
+                        <motion.div 
+                          key={tool}
+                          className="bg-white/10 rounded-xl p-6 backdrop-blur-sm border border-white/20"
+                          whileHover={{ scale: 1.03, y: -5 }}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 + 0.3 }}
+                        >
+                          <h3 className="text-xl font-semibold text-yellow-400 mb-3">{tool}</h3>
+                          <p className="text-white/80">Pädagogische Werkzeuge für das Lateinstudium</p>
+                        </motion.div>
+                      ))}
+                    </div>
                   </motion.div>
                 )}
 
@@ -510,15 +712,16 @@ export default function EnhancedMacrobiusApp() {
                     transition={{ delay: 0.2 }}
                   >
                     <h2 className="text-4xl font-bold text-yellow-400 mb-8">{t('section_visualizations')}</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {[
-                        { icon: '📈', label: t('timeline') },
-                        { icon: '🗺️', label: t('interactive_map') },
-                        { icon: '👥', label: t('character_network') },
-                        { icon: '🔥', label: t('thematic_heatmap') }
+                        { icon: '📈', label: t('timeline'), key: 'timeline' },
+                        { icon: '🗺️', label: t('interactive_map'), key: 'map' },
+                        { icon: '👥', label: t('character_network'), key: 'network' },
+                        { icon: '🔥', label: t('thematic_heatmap'), key: 'heatmap' },
+                        { icon: '🔗', label: t('theme_relationships'), key: 'relations' }
                       ].map((viz, index) => (
                         <motion.div 
-                          key={index}
+                          key={viz.key}
                           className="bg-white/10 rounded-xl p-6 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300"
                           whileHover={{ scale: 1.05, y: -5 }}
                           initial={{ opacity: 0, y: 20 }}
@@ -533,179 +736,10 @@ export default function EnhancedMacrobiusApp() {
                     </div>
                   </motion.div>
                 )}
-
-                {activeSection === 'cosmos' && (
-                  <motion.div 
-                    className="space-y-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400 mb-8">Macrobius' Kosmos</h2>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                      <motion.img 
-                        src="/Macrobius-universe.jpg"
-                        alt="Macrobius Universe"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
-                        whileHover={{ scale: 1.02 }}
-                      />
-                      <motion.img 
-                        src="/Macrobius-Zeichnung-Eklipse.jpg"
-                        alt="Eclipse Drawing"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
-                        whileHover={{ scale: 1.02 }}
-                      />
-                    </div>
-                    <p className="text-white text-lg leading-relaxed max-w-3xl mx-auto">
-                      Die Struktur des Universums nach dem Kommentar zu Scipios Traum. Entdecken Sie Macrobius' Verständnis von Himmelssphären, Planetenbewegungen und kosmischer Harmonie.
-                    </p>
-                  </motion.div>
-                )}
-
-                {/* Add other sections with similar enhanced styling */}
-                {activeSection === 'worldmap' && (
-                  <motion.div 
-                    className="space-y-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400 mb-8">Macrobius' Weltkarte</h2>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                      <motion.img 
-                        src="/Macrobius-Erdkarte.jpg"
-                        alt="Macrobius Earth Map"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
-                        whileHover={{ scale: 1.02 }}
-                      />
-                      <motion.img 
-                        src="/mappa-mundi.jpg"
-                        alt="Medieval World Map"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
-                        whileHover={{ scale: 1.02 }}
-                      />
-                    </div>
-                    <p className="text-white text-lg leading-relaxed max-w-3xl mx-auto">
-                      Entdecken Sie Macrobius' Verständnis der Welt durch seine geografischen Beschreibungen und kosmografischen Konzepte.
-                    </p>
-                  </motion.div>
-                )}
-
-                {activeSection === 'banquet' && (
-                  <motion.div 
-                    className="space-y-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400 mb-8">Saturnalia Symposion</h2>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                      <motion.img 
-                        src="/WandSymposion.jpg"
-                        alt="Wall Symposium"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
-                        whileHover={{ scale: 1.02 }}
-                      />
-                      <motion.img 
-                        src="/Symposion-2.jpg"
-                        alt="Banquet Scene"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
-                        whileHover={{ scale: 1.02 }}
-                      />
-                    </div>
-                    <p className="text-white text-lg leading-relaxed max-w-3xl mx-auto">
-                      Erleben Sie das Gastmahl des Macrobius. Darstellung und Analyse der Gastmahlszenen mit mehrsprachigen Textpassagen.
-                    </p>
-                  </motion.div>
-                )}
-
-                {activeSection === 'quiz' && (
-                  <motion.div 
-                    className="text-center space-y-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400">Interaktives Quiz</h2>
-                    <p className="text-white text-lg">Testen Sie Ihr Wissen über Macrobius und die antike Kultur.</p>
-                    <div className="bg-white/10 rounded-xl p-6">
-                      <p className="text-white mb-4">{t('quiz_question')}</p>
-                      <div className="space-y-3">
-                        {[t('quiz_a'), t('quiz_b'), t('quiz_c')].map((answer, index) => (
-                          <motion.button 
-                            key={index}
-                            className="block w-full p-3 rounded-lg transition-all duration-300 text-white"
-                            style={{ backgroundColor: '#722F37' }}
-                            whileHover={{ 
-                              scale: 1.02,
-                              backgroundColor: '#FFD700',
-                              color: '#722F37'
-                            }}
-                            whileTap={{ scale: 0.98 }}
-                          >
-                            {answer}
-                          </motion.button>
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {activeSection === 'search' && (
-                  <motion.div 
-                    className="text-center space-y-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400">Textsuche</h2>
-                    <p className="text-white text-lg">Fortgeschrittene Textanalyse und Suchfunktionen in verschiedenen Sprachen.</p>
-                    <div className="bg-white/10 rounded-xl p-6">
-                      <input 
-                        type="text"
-                        placeholder={t('search_placeholder')}
-                        className="w-full p-4 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50 transition-all duration-300"
-                      />
-                    </div>
-                  </motion.div>
-                )}
-
-                {activeSection === 'learning' && (
-                  <motion.div 
-                    className="text-center space-y-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400">Lernwerkzeuge</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <motion.div 
-                        className="bg-white/10 rounded-xl p-6"
-                        whileHover={{ scale: 1.02, y: -5 }}
-                      >
-                        <h3 className="text-xl font-bold text-yellow-400 mb-4">📚 Vokabeltrainer</h3>
-                        <p className="text-white">Lernen Sie lateinische Vokabeln aus den authentischen Macrobius-Texten.</p>
-                      </motion.div>
-                      <motion.div 
-                        className="bg-white/10 rounded-xl p-6"
-                        whileHover={{ scale: 1.02, y: -5 }}
-                      >
-                        <h3 className="text-xl font-bold text-yellow-400 mb-4">📖 Grammatik-Erklärer</h3>
-                        <p className="text-white">Verstehen Sie lateinische Grammatik anhand echter Textbeispiele.</p>
-                      </motion.div>
-                    </div>
-                  </motion.div>
-                )}
               </motion.div>
             </AnimatePresence>
 
-            {/* Enhanced action buttons */}
+            {/* Enhanced action buttons with wine theme */}
             <motion.div 
               className="mt-12 flex flex-wrap justify-center gap-6"
               initial={{ opacity: 0, y: 20 }}
@@ -715,7 +749,7 @@ export default function EnhancedMacrobiusApp() {
               {[t('explore_texts'), t('about_macrobius')].map((buttonText, index) => (
                 <motion.button 
                   key={index}
-                  className="px-8 py-4 rounded-xl font-semibold border-2 transition-all duration-300 backdrop-blur-sm"
+                  className="btn-wine px-8 py-4 rounded-xl font-semibold border-2 transition-all duration-300 backdrop-blur-sm"
                   style={{ 
                     backgroundColor: '#722F37',
                     color: '#FFD700',
@@ -741,26 +775,25 @@ export default function EnhancedMacrobiusApp() {
           </motion.div>
         </div>
 
-        {/* Enhanced CSS animations */}
+        {/* Enhanced CSS animations with 500ms timing consistency */}
         <style jsx>{`
           @keyframes twinkle {
             0% { opacity: 0.3; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.3); }
-          }
-          
-          @keyframes fadeInOut {
-            0%, 100% { opacity: 0.1; }
-            50% { opacity: 0.4; }
+            100% { opacity: 1; transform: scale(1.2); }
           }
           
           @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
+            0%, 100% { transform: scale(1); opacity: 0.6; }
             50% { transform: scale(1.05); opacity: 0.3; }
           }
           
-          @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+          .btn-wine {
+            transition: all 0.5s ease;
+          }
+          
+          .btn-wine:hover {
+            transform: translateY(-2px);
+            filter: drop-shadow(0 8px 16px rgba(255, 215, 0, 0.3));
           }
         `}</style>
       </div>
