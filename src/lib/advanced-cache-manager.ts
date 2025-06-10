@@ -5,7 +5,7 @@
 
 import React from 'react';
 
-interface CacheItem<T = any> {
+export interface CacheItem<T = any> {
   data: T;
   timestamp: number;
   ttl: number;
@@ -16,7 +16,10 @@ interface CacheItem<T = any> {
   tags: string[];
 }
 
-interface CacheConfig {
+// Export as CacheEntry for compatibility with tests
+export type CacheEntry<T = any> = CacheItem<T>;
+
+export interface CacheConfig {
   defaultTTL: number;
   maxSize: number;
   maxItems: number;
@@ -25,7 +28,7 @@ interface CacheConfig {
   compressionEnabled: boolean;
 }
 
-interface CacheStats {
+export interface CacheStats {
   hits: number;
   misses: number;
   hitRate: number;
@@ -35,7 +38,10 @@ interface CacheStats {
   evictions: number;
 }
 
-type CacheStrategy = 'lru' | 'lfu' | 'fifo' | 'priority' | 'smart';
+// Export as CacheMetrics for compatibility with tests
+export type CacheMetrics = CacheStats;
+
+export type CacheStrategy = 'lru' | 'lfu' | 'fifo' | 'priority' | 'smart';
 
 class AdvancedCacheManager {
   private cache: Map<string, CacheItem>;
@@ -143,16 +149,13 @@ class AdvancedCacheManager {
 
   private simpleCompress(str: string): string {
     // Simple run-length encoding for demonstration
-    return '__compressed__' + str.replace(/(.)
-
-+/g, (match, char) => {
+    return '__compressed__' + str.replace(/(.)+/g, (match, char) => {
       return match.length > 3 ? `${char}${match.length}` : match;
     });
   }
 
   private simpleDecompress(str: string): string {
-    return str.replace(/^__compressed__/, '').replace(/(.)
-d+/g, (match, char) => {
+    return str.replace(/^__compressed__/, '').replace(/(.)+/g, (match, char) => {
       const count = parseInt(match.slice(1));
       return char.repeat(count);
     });
@@ -617,4 +620,6 @@ export function useAdvancedCache(cacheInstance: AdvancedCacheManager = apiCache)
   };
 }
 
+// Export both as named and default export for compatibility
+export { AdvancedCacheManager };
 export default AdvancedCacheManager;
