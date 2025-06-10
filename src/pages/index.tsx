@@ -24,12 +24,12 @@ import {
 
 // Import all sections
 import HeroSection from '../components/sections/HeroSection';
-import { IntroSection } from '../components/sections/IntroSection';
+import IntroSection from '../components/sections/IntroSection';
 import LearningSection from '../components/sections/LearningSection-enhanced-complete';
-import { CosmosSection } from '../components/sections/CosmosSection';
+import CosmosSection from '../components/sections/CosmosSection';
 import BanquetSection from '../components/sections/BanquetSection';
-import { WorldMapSection } from '../components/sections/WorldMapSection';
-import { TextSearchSection } from '../components/sections/TextSearchSection';
+import WorldMapSection from '../components/sections/WorldMapSection';
+import TextSearchSection from '../components/sections/TextSearchSection';
 
 // Import AI Systems
 import AICulturalAnalysisSection from '../components/sections/AICulturalAnalysisSection';
@@ -37,15 +37,35 @@ import PersonalizedLearningPathsSection from '../components/sections/Personalize
 import AITutoringSystemSection from '../components/sections/AITutoringSystemSection';
 import AdvancedCulturalModulesSection from '../components/sections/AdvancedCulturalModulesSection';
 
+// Translation types for type safety
+type TranslationKey = 
+  | 'nav.home'
+  | 'nav.intro'
+  | 'nav.ai-systems'
+  | 'nav.ai-cultural'
+  | 'nav.ai-learning'
+  | 'nav.ai-tutoring'
+  | 'nav.ai-modules'
+  | 'nav.learning'
+  | 'nav.cosmos'
+  | 'nav.worldmap'
+  | 'nav.banquet'
+  | 'nav.textsearch'
+  | 'title.main'
+  | 'subtitle.main';
+
+type TranslationDict = Record<TranslationKey, string>;
+type Translations = Record<'EN' | 'DE' | 'LA', TranslationDict>;
+
 // Language context (simplified for this integration)
 interface LanguageContextType {
   language: 'EN' | 'DE' | 'LA';
   setLanguage: (lang: 'EN' | 'DE' | 'LA') => void;
-  t: (key: string) => string;
+  t: (key: TranslationKey) => string;
 }
 
-// Simple translations
-const translations = {
+// Simple translations with proper typing
+const translations: Translations = {
   EN: {
     'nav.home': 'Home',
     'nav.intro': 'Intro', 
@@ -100,8 +120,8 @@ export default function HomePage() {
   const [currentLanguage, setCurrentLanguage] = useState<'EN' | 'DE' | 'LA'>('EN');
   const [activeAISection, setActiveAISection] = useState<string | null>(null);
 
-  // Simple translation function
-  const t = (key: string): string => {
+  // Simple translation function with type safety
+  const t = (key: TranslationKey): string => {
     return translations[currentLanguage][key] || key;
   };
 
