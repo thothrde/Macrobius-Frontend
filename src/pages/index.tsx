@@ -8,8 +8,42 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Translation types
+type TranslationKey = 
+  | 'title' | 'intro' | 'section_intro' | 'section_quiz' | 'section_worldmap' 
+  | 'section_cosmos' | 'section_banquet' | 'section_search' | 'section_learning' 
+  | 'section_visualizations' | 'timeline' | 'interactive_map' | 'character_network' 
+  | 'thematic_heatmap' | 'theme_relationships' | 'explore_texts' | 'about_macrobius' 
+  | 'search_placeholder' | 'quiz_question' | 'quiz_a' | 'quiz_b' | 'quiz_c' 
+  | 'quiz_answer' | 'cosmos_description' | 'worldmap_description' | 'banquet_description' 
+  | 'learning_tools' | 'story';
+
+type TranslationTexts = Record<TranslationKey, string>;
+type Translations = Record<'DE' | 'EN' | 'LA', TranslationTexts>;
+
+// Star and animation types
+interface Star {
+  id: number;
+  left: number;
+  top: number;
+  size: number;
+  delay: number;
+  duration: number;
+  intensity: number;
+  type: 'normal' | 'bright';
+}
+
+interface ShootingStar {
+  id: number;
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  duration: number;
+}
+
 // Enhanced translation system
-const translations = {
+const translations: Translations = {
   DE: {
     title: "Eine antike Flaschenpost",
     intro: "Eine Nachricht aus der Antike an die Zukunft",
@@ -103,17 +137,17 @@ const translations = {
 };
 
 export default function MacrobiusAntiquaFlaschenpost() {
-  const [language, setLanguage] = useState('DE');
+  const [language, setLanguage] = useState<'DE' | 'EN' | 'LA'>('DE');
   const [activeSection, setActiveSection] = useState('intro');
   const [astrolabRotation, setAstrolabRotation] = useState(0);
-  const [stars, setStars] = useState([]);
-  const [shootingStars, setShootingStars] = useState([]);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [stars, setStars] = useState<Star[]>([]);
+  const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
+  const [mousePosition, setMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [quizAnswer, setQuizAnswer] = useState('');
   const [showQuizResult, setShowQuizResult] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const t = (key) => translations[language][key] || key;
+  const t = (key: TranslationKey) => translations[language][key] || key;
 
   // Enhanced star generation system
   useEffect(() => {
@@ -129,7 +163,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
         delay: Math.random() * 5,
         duration: Math.random() * 3 + 2,
         intensity: Math.random() * 0.6 + 0.4,
-        type: 'normal'
+        type: 'normal' as const
       });
     }
 
@@ -143,7 +177,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
         delay: Math.random() * 7,
         duration: Math.random() * 4 + 3,
         intensity: Math.random() * 0.4 + 0.7,
-        type: 'bright'
+        type: 'bright' as const
       });
     }
 
@@ -176,7 +210,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
 
   // Mouse tracking for parallax
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (typeof window !== 'undefined') {
         setMousePosition({
           x: (e.clientX / window.innerWidth - 0.5) * 15,
@@ -192,7 +226,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
   }, []);
 
   // Section change handler with astrolab rotation
-  const handleSectionChange = useCallback((section) => {
+  const handleSectionChange = useCallback((section: string) => {
     if (section !== activeSection) {
       setActiveSection(section);
       setAstrolabRotation(prev => prev + 45);
@@ -200,7 +234,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
   }, [activeSection]);
 
   // Quiz handling
-  const handleQuizAnswer = useCallback((answer) => {
+  const handleQuizAnswer = useCallback((answer: string) => {
     setQuizAnswer(answer);
     setShowQuizResult(true);
     setTimeout(() => setShowQuizResult(false), 8000);
@@ -296,7 +330,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
         >
           <motion.select 
             value={language}
-            onChange={(e) => setLanguage(e.target.value)}
+            onChange={(e) => setLanguage(e.target.value as 'DE' | 'EN' | 'LA')}
             className="px-4 py-2 bg-white/95 backdrop-blur-md border-2 border-yellow-400 rounded-lg shadow-xl font-semibold text-gray-800 hover:bg-white transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
@@ -372,7 +406,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
                   src="/MacrobiusBottle.jpg"
                   alt="Macrobius Bottle"
                   className="w-48 h-48 object-cover rounded-full shadow-2xl border-4 border-yellow-400 relative z-10"
-                  onError={(e) => e.target.style.display = 'none'}
+                  onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                   style={{
                     filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.4))'
                   }}
@@ -453,7 +487,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
                           src="/Rome-under.jpg" 
                           alt="Untergang der antiken Kultur"
                           className="w-full rounded-xl shadow-xl"
-                          onError={(e) => e.target.style.display = 'none'}
+                          onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                           whileHover={{ scale: 1.02, rotateY: 5 }}
                           transition={{ duration: 0.3 }}
                         />
@@ -461,7 +495,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
                           src="/Macrobius-and-Eustachius.jpg"
                           alt="Macrobius und sein Sohn Eustachius" 
                           className="w-full rounded-xl shadow-xl"
-                          onError={(e) => e.target.style.display = 'none'}
+                          onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                           whileHover={{ scale: 1.02, rotateY: -5 }}
                           transition={{ duration: 0.3 }}
                         />
@@ -471,7 +505,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
                           src="/TychoAssistent.jpg"
                           alt="Tychos Assistent"
                           className="w-full rounded-xl shadow-xl"
-                          onError={(e) => e.target.style.display = 'none'}
+                          onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                           whileHover={{ scale: 1.02, rotateY: 5 }}
                           transition={{ duration: 0.3 }}
                         />
@@ -480,14 +514,14 @@ export default function MacrobiusAntiquaFlaschenpost() {
                             src="/MacrobI.JPG"
                             alt="Macrobius Buch"
                             className="w-full rounded-xl shadow-xl"
-                            onError={(e) => e.target.style.display = 'none'}
+                            onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                             whileHover={{ scale: 1.05, rotateZ: 2 }}
                           />
                           <motion.img 
                             src="/MacrobiRegal.jpg"
                             alt="Buch im Regal"
                             className="w-full rounded-xl shadow-xl"
-                            onError={(e) => e.target.style.display = 'none'}
+                            onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                             whileHover={{ scale: 1.05, rotateZ: -2 }}
                           />
                         </div>
@@ -528,7 +562,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
                             }}
                             whileTap={{ scale: 0.98 }}
                           >
-                            {t(option)}
+                            {t(option as TranslationKey)}
                           </motion.button>
                         ))}
                       </div>
@@ -561,14 +595,14 @@ export default function MacrobiusAntiquaFlaschenpost() {
                         src="/Macrobius-universe.jpg"
                         alt="Macrobius Kosmologie"
                         className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
+                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                         whileHover={{ scale: 1.03, rotateY: 5 }}
                       />
                       <motion.img 
                         src="/Macrobius-Zeichnung-Eklipse.jpg"
                         alt="Astronomische Zeichnung - Eklipse"
                         className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
+                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                         whileHover={{ scale: 1.03, rotateY: -5 }}
                       />
                     </div>
@@ -591,14 +625,14 @@ export default function MacrobiusAntiquaFlaschenpost() {
                         src="/Macrobius-Erdkarte.jpg"
                         alt="Macrobius Erdkarte"
                         className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
+                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                         whileHover={{ scale: 1.03 }}
                       />
                       <motion.img 
                         src="/mappa-mundi.jpg"
                         alt="Mappa Mundi"
                         className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
+                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                         whileHover={{ scale: 1.03 }}
                       />
                     </div>
@@ -621,14 +655,14 @@ export default function MacrobiusAntiquaFlaschenpost() {
                         src="/WandSymposion.jpg"
                         alt="Wandgemälde Symposion"
                         className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
+                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                         whileHover={{ scale: 1.03, rotateY: 3 }}
                       />
                       <motion.img 
                         src="/Symposion-2.jpg"
                         alt="Symposion Darstellung"
                         className="w-full rounded-xl shadow-xl"
-                        onError={(e) => e.target.style.display = 'none'}
+                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                         whileHover={{ scale: 1.03, rotateY: -3 }}
                       />
                     </div>
