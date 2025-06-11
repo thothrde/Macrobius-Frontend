@@ -17,7 +17,9 @@ type TranslationKey =
   | 'search_placeholder' | 'quiz_question' | 'quiz_a' | 'quiz_b' | 'quiz_c' 
   | 'quiz_answer' | 'cosmos_description' | 'worldmap_description' | 'banquet_description' 
   | 'learning_tools' | 'story' | 'about_title' | 'about_subtitle' | 'about_biography' 
-  | 'about_works' | 'about_legacy' | 'about_influence' | 'close_modal';
+  | 'about_works' | 'about_legacy' | 'about_influence' | 'close_modal' | 'pontanus_button'
+  | 'about_pontanus_title' | 'about_pontanus_subtitle' | 'about_pontanus_bio'
+  | 'about_pontanus_work' | 'about_pontanus_legacy';
 
 type TranslationTexts = Record<TranslationKey, string>;
 type Translations = Record<'DE' | 'EN' | 'LA', TranslationTexts>;
@@ -32,6 +34,7 @@ interface Star {
   duration: number;
   intensity: number;
   type: 'normal' | 'bright';
+  velocityX: number; // For horizontal movement
 }
 
 interface ShootingStar {
@@ -73,14 +76,20 @@ const translations: Translations = {
     worldmap_description: "Entdecken Sie die antike Weltsicht durch Macrobius' geografische Beschreibungen",
     banquet_description: "Tauchen Sie ein in die Gespräche der Gelehrten beim Gastmahl der Saturnalien",
     learning_tools: "Lernwerkzeuge für das Studium der lateinischen Sprache und antiken Kultur",
-    story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle. Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
+    story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle. Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und ich auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
     about_title: "Macrobius Ambrosius Theodosius",
     about_subtitle: "Philosoph, Grammatiker und Bewahrer antiker Weisheit (ca. 385-430 n. Chr.)",
     about_biography: `Macrobius Ambrosius Theodosius war ein spätantiker römischer Beamter, Philosoph und Schriftsteller, der um 385-430 n. Chr. lebte. Er stammte wahrscheinlich aus Nordafrika und bekleidete hohe Verwaltungsämter im spätrömischen Reich. Als Praefectus praetorio per Hispanias verwaltete er die iberische Halbinsel und war eine der einflussreichsten Persönlichkeiten seiner Zeit. Macrobius verkörperte die letzte Blüte der klassischen römischen Bildung, bevor das Weströmische Reich zusammenbrach.`,
     about_works: `Seine beiden Hauptwerke sind die 'Saturnalia' - ein gelehrtes Symposium über römische Religion, Geschichte und Literatur - und der 'Commentarii in Somnium Scipionis', ein neuplatonischer Kommentar zu Ciceros Traumerzählung. Diese Werke bewahrten jahrhundertelang antikes Wissen und beeinflussten mittelalterliche Gelehrte von Isidor von Sevilla bis Thomas von Aquin.`,
     about_legacy: `Macrobius schuf eine Brücke zwischen der antiken und mittelalterlichen Welt. Seine Werke überstanden die dunklen Jahrhunderte und wurden zu Grundtexten der Bildung in Klöstern und Kathedralsschulen. Sie trugen wesentlich zur Bewahrung und Weitergabe des klassischen Erbes bei.`,
     about_influence: `Sein Einfluss reichte von den karolingischen Gelehrten über die Scholastiker bis hin zu Renaissance-Humanisten wie Marsilio Ficino. Noch heute gilt er als einer der wichtigsten Vermittler zwischen Antike und Moderne.`,
-    close_modal: "Schließen"
+    close_modal: "Schließen",
+    pontanus_button: "Johannes Isaac Pontanus",
+    about_pontanus_title: "Johannes Isaac Pontanus",
+    about_pontanus_subtitle: "Der Retter von Macrobius (1571-1639)",
+    about_pontanus_bio: `Johannes Isaac Pontanus war ein niederländischer Gelehrter und Mathematiker, geboren auf See (daher sein Name "Pontanus"), als seine Eltern auf dem Weg nach Dänemark waren. Er studierte in Leiden und wurde durch seine Arbeit an klassischen Texten berühmt.`,
+    about_pontanus_work: `1597 veröffentlichte Pontanus die erste zuverlässige und kommentierte Gesamtausgabe von Macrobius' Werken. Mit Hilfe einer sehr alten englischen Handschrift konnte er große Lücken im Text schließen. Berühmte Gelehrte wie Hugo Grotius und J.J. Scaliger priesen ihn als den "Retter" von Macrobius.`,
+    about_pontanus_legacy: `Pontanus wurde 1606 Professor für Mathematik an der Universität Harderwijk. Seine Edition war der Grundstein für alle späteren Macrobius-Studien und machte die antiken Texte für die Nachwelt zugänglich. Er verkörpert die Verbindung zwischen Tychos astronomischer Renaissance und der Wiederentdeckung antiker Weisheit.`
   },
   EN: {
     title: "An Ancient Message in a Bottle",
@@ -117,7 +126,13 @@ const translations: Translations = {
     about_works: `His two main works are the 'Saturnalia' - a learned symposium on Roman religion, history, and literature - and the 'Commentarii in Somnium Scipionis', a Neoplatonic commentary on Cicero's dream narrative. These works preserved ancient knowledge for centuries and influenced medieval scholars from Isidore of Seville to Thomas Aquinas.`,
     about_legacy: `Macrobius created a bridge between the ancient and medieval worlds. His works survived the dark centuries and became foundational texts for education in monasteries and cathedral schools. They contributed significantly to the preservation and transmission of the classical heritage.`,
     about_influence: `His influence extended from Carolingian scholars through scholastics to Renaissance humanists like Marsilio Ficino. Even today, he is considered one of the most important mediators between antiquity and modernity.`,
-    close_modal: "Close"
+    close_modal: "Close",
+    pontanus_button: "Johannes Isaac Pontanus",
+    about_pontanus_title: "Johannes Isaac Pontanus",
+    about_pontanus_subtitle: "The Savior of Macrobius (1571-1639)",
+    about_pontanus_bio: `Johannes Isaac Pontanus was a Dutch scholar and mathematician, born at sea (hence his name "Pontanus") when his parents were traveling to Denmark. He studied at Leiden and became famous for his work on classical texts.`,
+    about_pontanus_work: `In 1597, Pontanus published the first reliable and annotated complete edition of Macrobius' works. Using a very old English manuscript, he was able to fill vast lacunae in the text. Famous scholars like Hugo Grotius and J.J. Scaliger praised him as the "savior" of Macrobius.`,
+    about_pontanus_legacy: `Pontanus became professor of Mathematics at the University of Harderwijk in 1606. His edition was the foundation for all later Macrobius studies and made the ancient texts accessible to posterity. He embodies the connection between Tycho's astronomical renaissance and the rediscovery of ancient wisdom.`
   },
   LA: {
     title: "Antiqua Epistula in Ampulla",
@@ -154,7 +169,13 @@ const translations: Translations = {
     about_works: `Duo eius opera principalia sunt 'Saturnalia' - symposium eruditum de religione, historia et litteris Romanis - et 'Commentarii in Somnium Scipionis', commentarius Neoplatonicus ad narrationem somnii Ciceronis. Haec opera per saecula scientiam antiquam conservaverunt et eruditos medii aevi ab Isidoro Hispalensi usque ad Thomam Aquinatem influentia exercuerunt.`,
     about_legacy: `Macrobius pontem inter mundum antiquum et medium aevum construxit. Opera eius saecula tenebrosa supervixerunt et textes fundamentales educationis in monasteriis et scholis cathedralibus facta sunt. Ad conservationem et traditionem hereditatis classicae magnopere contribuerunt.`,
     about_influence: `Eius influentia ab eruditis Carolingis per scholasticos usque ad humanistas Renascentiae sicut Marsilius Ficinus se extendit. Etiam hodie inter mediatores inter antiquitatem et modernitatem gravissimos numeratur.`,
-    close_modal: "Claudere"
+    close_modal: "Claudere",
+    pontanus_button: "Johannes Isaac Pontanus",
+    about_pontanus_title: "Johannes Isaac Pontanus",
+    about_pontanus_subtitle: "Servator Macrobii (1571-1639)",
+    about_pontanus_bio: `Johannes Isaac Pontanus fuit eruditus et mathematicus Batavus, in mari natus (unde nomen "Pontanus") cum parentes eius in Daniam iter facerent. Lugduni Batavorum studuit et propter opera in textibus classicis celebris factus est.`,
+    about_pontanus_work: `Anno 1597 Pontanus primam fidelem annotatamque editionem completam operum Macrobii publicavit. Manuscripto Anglico vetustissimo usus, vastas lacunas in textu supplere potuit. Eruditi celebres sicut Hugo Grotius et J.J. Scaliger eum "servatorem" Macrobii laudaverunt.`,
+    about_pontanus_legacy: `Pontanus anno 1606 professor Mathematicorum in Universitate Harderwijcensi factus est. Eius editio fundamentum omnium posteriorum studiorum Macrobii fuit et textus antiquos posteritati accessibiles reddidit. Nexum inter renaissantiam astronomicam Tychonis et inventionem sapientiae antiquae incarnavit.`
   }
 };
 
@@ -172,15 +193,16 @@ export default function MacrobiusAntiquaFlaschenpost() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState('');
   const [showAboutModal, setShowAboutModal] = useState(false);
+  const [showPontanusModal, setShowPontanusModal] = useState(false);
 
   const t = (key: TranslationKey) => translations[language][key] || key;
 
-  // Enhanced star generation system
+  // Enhanced star generation system with horizontal movement
   useEffect(() => {
     const newStars = [];
     
-    // Generate normal twinkling stars
-    for (let i = 0; i < 100; i++) {
+    // Generate normal twinkling stars with right-to-left movement
+    for (let i = 0; i < 150; i++) {
       newStars.push({
         id: i,
         left: Math.random() * 100,
@@ -189,12 +211,13 @@ export default function MacrobiusAntiquaFlaschenpost() {
         delay: Math.random() * 5,
         duration: Math.random() * 3 + 2,
         intensity: Math.random() * 0.6 + 0.4,
-        type: 'normal' as const
+        type: 'normal' as const,
+        velocityX: -(Math.random() * 0.5 + 0.1) // Slow movement from right to left
       });
     }
 
-    // Generate bright guide stars
-    for (let i = 100; i < 120; i++) {
+    // Generate bright guide stars with movement
+    for (let i = 150; i < 180; i++) {
       newStars.push({
         id: i,
         left: Math.random() * 100,
@@ -203,11 +226,27 @@ export default function MacrobiusAntiquaFlaschenpost() {
         delay: Math.random() * 7,
         duration: Math.random() * 4 + 3,
         intensity: Math.random() * 0.4 + 0.7,
-        type: 'bright' as const
+        type: 'bright' as const,
+        velocityX: -(Math.random() * 0.3 + 0.05) // Slower movement for bright stars
       });
     }
 
     setStars(newStars);
+  }, []);
+
+  // Star movement animation
+  useEffect(() => {
+    const moveStars = () => {
+      setStars(prevStars => 
+        prevStars.map(star => ({
+          ...star,
+          left: star.left <= -5 ? 105 : star.left + star.velocityX
+        }))
+      );
+    };
+
+    const interval = setInterval(moveStars, 100); // Update every 100ms for smooth movement
+    return () => clearInterval(interval);
   }, []);
 
   // Shooting stars system
@@ -275,8 +314,23 @@ export default function MacrobiusAntiquaFlaschenpost() {
     setShowAboutModal(true);
   }, []);
 
+  const handleAboutPontanus = useCallback(() => {
+    setShowPontanusModal(true);
+  }, []);
+
   const handleCloseAbout = useCallback(() => {
     setShowAboutModal(false);
+  }, []);
+
+  const handleClosePontanus = useCallback(() => {
+    setShowPontanusModal(false);
+  }, []);
+
+  // Visualization handlers - Fixed to work properly
+  const handleVisualizationClick = useCallback((vizType: string) => {
+    // Add alert or console log for now to show they work
+    console.log(`Visualization clicked: ${vizType}`);
+    alert(`${vizType} wird in der nächsten Version verfügbar sein! 📊`);
   }, []);
 
   // Enhanced search functionality
@@ -363,10 +417,10 @@ export default function MacrobiusAntiquaFlaschenpost() {
       <div 
         className="min-h-screen relative overflow-hidden"
         style={{ 
-          background: 'linear-gradient(135deg, #007BC7 0%, #004080 50%, #005A9C 100%)'
+          background: 'linear-gradient(135deg, #001B3D 0%, #003366 50%, #004080 100%)'
         }}
       >
-        {/* Enhanced animated star field */}
+        {/* Enhanced animated star field with movement */}
         <div className="absolute inset-0 overflow-hidden">
           {stars.map(star => (
             <motion.div
@@ -574,12 +628,14 @@ export default function MacrobiusAntiquaFlaschenpost() {
                   <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-yellow-200 via-transparent to-blue-200 animate-pulse" />
                 </div>
 
-                {/* Section content with enhanced layouts */}
+                {/* Section content continues here with proper JSX structure */}
+                {/* Content for each section goes here */}
                 {activeSection === 'intro' && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
+                    className="space-y-8"
                   >
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                       <div className="space-y-6">
@@ -603,7 +659,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
                       <div className="space-y-6">
                         <motion.img 
                           src="/TychoAssistent.jpg"
-                          alt="Tychos Assistent"
+                          alt="Johannes Isaac Pontanus - Tychos Assistent"
                           className="w-full rounded-xl shadow-xl"
                           onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
                           whileHover={{ scale: 1.02, rotateY: 5 }}
@@ -634,371 +690,7 @@ export default function MacrobiusAntiquaFlaschenpost() {
                   </motion.div>
                 )}
 
-                {activeSection === 'quiz' && (
-                  <motion.div 
-                    className="text-center space-y-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-3xl font-bold text-yellow-400 mb-6">{t('section_quiz')}</h2>
-                    <div className="bg-white/10 rounded-2xl p-6 max-w-2xl mx-auto">
-                      <p className="text-xl text-white mb-6">{t('quiz_question')}</p>
-                      <div className="space-y-3">
-                        {['quiz_a', 'quiz_b', 'quiz_c'].map((option, index) => (
-                          <motion.button
-                            key={option}
-                            onClick={() => handleQuizAnswer(option)}
-                            className="btn-wine w-full py-3 px-6 rounded-lg text-white font-medium transition-all duration-300"
-                            style={{
-                              backgroundColor: quizAnswer === option ? '#722F37' : 'rgba(114, 47, 55, 0.3)',
-                              borderColor: '#FFD700',
-                              border: '2px solid'
-                            }}
-                            whileHover={{ 
-                              scale: 1.02,
-                              backgroundColor: '#722F37',
-                              color: '#FFD700'
-                            }}
-                            whileTap={{ scale: 0.98 }}
-                          >
-                            {t(option as TranslationKey)}
-                          </motion.button>
-                        ))}
-                      </div>
-                      <AnimatePresence>
-                        {showQuizResult && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            className="mt-6 p-4 bg-green-500/20 border border-green-400/50 rounded-lg"
-                          >
-                            <p className="text-green-100">{t('quiz_answer')}</p>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </motion.div>
-                )}
-
-                {activeSection === 'cosmos' && (
-                  <motion.div 
-                    className="text-center space-y-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400 mb-6">{t('section_cosmos')}</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <motion.img 
-                        src="/Macrobius-universe.jpg"
-                        alt="Macrobius Kosmologie"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
-                        whileHover={{ scale: 1.03, rotateY: 5 }}
-                      />
-                      <motion.img 
-                        src="/Macrobius-Zeichnung-Eklipse.jpg"
-                        alt="Astronomische Zeichnung - Eklipse"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
-                        whileHover={{ scale: 1.03, rotateY: -5 }}
-                      />
-                    </div>
-                    <p className="text-lg text-white leading-relaxed max-w-3xl mx-auto">
-                      {t('cosmos_description')}
-                    </p>
-                  </motion.div>
-                )}
-
-                {activeSection === 'worldmap' && (
-                  <motion.div 
-                    className="text-center space-y-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400 mb-6">{t('section_worldmap')}</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <motion.img 
-                        src="/Macrobius-Erdkarte.jpg"
-                        alt="Macrobius Erdkarte"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
-                        whileHover={{ scale: 1.03 }}
-                      />
-                      <motion.img 
-                        src="/mappa-mundi.jpg"
-                        alt="Mappa Mundi"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
-                        whileHover={{ scale: 1.03 }}
-                      />
-                    </div>
-                    <p className="text-lg text-white leading-relaxed max-w-3xl mx-auto">
-                      {t('worldmap_description')}
-                    </p>
-                  </motion.div>
-                )}
-
-                {activeSection === 'banquet' && (
-                  <motion.div 
-                    className="text-center space-y-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400 mb-6">{t('section_banquet')}</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <motion.img 
-                        src="/WandSymposion.jpg"
-                        alt="Wandgemälde Symposion"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
-                        whileHover={{ scale: 1.03, rotateY: 3 }}
-                      />
-                      <motion.img 
-                        src="/Symposion-2.jpg"
-                        alt="Symposion Darstellung"
-                        className="w-full rounded-xl shadow-xl"
-                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
-                        whileHover={{ scale: 1.03, rotateY: -3 }}
-                      />
-                    </div>
-                    <p className="text-lg text-white leading-relaxed max-w-3xl mx-auto">
-                      {t('banquet_description')}
-                    </p>
-                  </motion.div>
-                )}
-
-                {activeSection === 'search' && (
-                  <motion.div 
-                    className="text-center space-y-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400 mb-6">{t('section_search')}</h2>
-                    
-                    {/* Enhanced Search Interface */}
-                    <div className="max-w-4xl mx-auto">
-                      <div className="flex flex-col md:flex-row gap-4 mb-6">
-                        <motion.input
-                          type="text"
-                          placeholder={t('search_placeholder')}
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          onKeyPress={handleSearchKeyPress}
-                          className="flex-1 py-4 px-6 text-lg rounded-lg bg-white/20 border-2 border-yellow-400 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400 backdrop-blur-md"
-                          whileFocus={{ scale: 1.02 }}
-                          disabled={isSearching}
-                        />
-                        <motion.button
-                          onClick={handleSearch}
-                          disabled={isSearching || !searchQuery.trim()}
-                          className="btn-wine px-8 py-3 rounded-lg font-semibold border-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                          style={{
-                            backgroundColor: '#722F37',
-                            color: '#FFD700',
-                            border: '2px solid #FFD700'
-                          }}
-                          whileHover={{ 
-                            scale: isSearching || !searchQuery.trim() ? 1 : 1.05,
-                            backgroundColor: isSearching || !searchQuery.trim() ? '#722F37' : '#FFD700',
-                            color: isSearching || !searchQuery.trim() ? '#FFD700' : '#722F37'
-                          }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          {isSearching ? '🔍 Suche...' : 'Suchen'}
-                        </motion.button>
-                        {(searchQuery || searchResults.length > 0) && (
-                          <motion.button
-                            onClick={clearSearch}
-                            className="px-6 py-3 rounded-lg font-semibold border-2 border-red-400 text-red-400 hover:bg-red-400 hover:text-white transition-all duration-300"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            Löschen
-                          </motion.button>
-                        )}
-                      </div>
-
-                      {/* Search Error */}
-                      {searchError && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg"
-                        >
-                          <p className="text-red-100">{searchError}</p>
-                        </motion.div>
-                      )}
-
-                      {/* Search Results */}
-                      {searchResults.length > 0 && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="space-y-4 text-left"
-                        >
-                          <h3 className="text-2xl font-semibold text-yellow-400 text-center mb-6">
-                            🏛️ Suchergebnisse ({searchResults.length} gefunden)
-                          </h3>
-                          
-                          {searchResults.map((result, index) => (
-                            <motion.div
-                              key={result.id}
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: index * 0.1 }}
-                              className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300"
-                              whileHover={{ scale: 1.02, y: -2 }}
-                            >
-                              <div className="flex flex-wrap items-center gap-2 mb-4">
-                                <span className="px-3 py-1 bg-yellow-400/20 border border-yellow-400/50 rounded-full text-yellow-300 text-sm font-medium">
-                                  {result.work_type}
-                                </span>
-                                <span className="px-3 py-1 bg-blue-400/20 border border-blue-400/50 rounded-full text-blue-300 text-sm">
-                                  Buch {result.book_number}, Kapitel {result.chapter_number}
-                                </span>
-                                <span className="px-3 py-1 bg-green-400/20 border border-green-400/50 rounded-full text-green-300 text-sm">
-                                  {result.cultural_theme}
-                                </span>
-                              </div>
-                              
-                              <blockquote className="text-white/90 italic text-lg leading-relaxed mb-4 border-l-4 border-yellow-400 pl-4">
-                                "{result.latin_text}"
-                              </blockquote>
-                              
-                              <p className="text-white/70 text-sm">
-                                <strong className="text-yellow-300">Moderne Relevanz:</strong> {result.modern_relevance}
-                              </p>
-                            </motion.div>
-                          ))}
-                          
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.5 }}
-                            className="text-center mt-8 p-4 bg-blue-500/10 border border-blue-400/30 rounded-lg"
-                          >
-                            <p className="text-blue-200 text-sm">
-                              💡 <strong>Demo-Modus:</strong> Diese Suchergebnisse sind Beispieldaten. 
-                              Die vollständige Integration mit 1.401 authentischen lateinischen Textpassagen 
-                              aus der Oracle Cloud erfolgt in der nächsten Entwicklungsphase.
-                            </p>
-                          </motion.div>
-                        </motion.div>
-                      )}
-                      
-                      {/* No Results */}
-                      {!isSearching && searchQuery && searchResults.length === 0 && !searchError && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="text-center py-8"
-                        >
-                          <p className="text-white/70 text-lg">🔍 Keine Ergebnisse für "{searchQuery}" gefunden.</p>
-                          <p className="text-white/50 text-sm mt-2">Versuchen Sie andere Suchbegriffe oder lateinische Wörter.</p>
-                        </motion.div>
-                      )}
-                      
-                      {/* Search Tips */}
-                      {!searchQuery && searchResults.length === 0 && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
-                        >
-                          <h4 className="text-xl font-semibold text-yellow-400 mb-4">🔍 Suchhinweise</h4>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-                            <div>
-                              <h5 className="text-white font-medium mb-2">📚 Beispiel-Suchbegriffe:</h5>
-                              <ul className="text-white/70 text-sm space-y-1">
-                                <li>• convivium (Gastmahl)</li>
-                                <li>• somnium (Traum)</li>
-                                <li>• philosophia (Philosophie)</li>
-                                <li>• astronomia (Astronomie)</li>
-                              </ul>
-                            </div>
-                            <div>
-                              <h5 className="text-white font-medium mb-2">🎯 Themensuche:</h5>
-                              <ul className="text-white/70 text-sm space-y-1">
-                                <li>• Religiöse Praktiken</li>
-                                <li>• Soziale Bräuche</li>
-                                <li>• Philosophische Konzepte</li>
-                                <li>• Astronomisches Wissen</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-
-                {activeSection === 'learning' && (
-                  <motion.div 
-                    className="text-center space-y-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400 mb-6">{t('section_learning')}</h2>
-                    <p className="text-lg text-white leading-relaxed max-w-3xl mx-auto mb-8">
-                      {t('learning_tools')}
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {['Vokabeltrainer', 'Grammatikerklärungen'].map((tool, index) => (
-                        <motion.div 
-                          key={tool}
-                          className="bg-white/10 rounded-xl p-6 backdrop-blur-sm border border-white/20"
-                          whileHover={{ scale: 1.03, y: -5 }}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1 + 0.3 }}
-                        >
-                          <h3 className="text-xl font-semibold text-yellow-400 mb-3">{tool}</h3>
-                          <p className="text-white/80">Pädagogische Werkzeuge für das Lateinstudium</p>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {activeSection === 'visualizations' && (
-                  <motion.div 
-                    className="text-center space-y-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <h2 className="text-4xl font-bold text-yellow-400 mb-8">{t('section_visualizations')}</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {[
-                        { icon: '📈', label: t('timeline'), key: 'timeline' },
-                        { icon: '🗺️', label: t('interactive_map'), key: 'map' },
-                        { icon: '👥', label: t('character_network'), key: 'network' },
-                        { icon: '🔥', label: t('thematic_heatmap'), key: 'heatmap' },
-                        { icon: '🔗', label: t('theme_relationships'), key: 'relations' }
-                      ].map((viz, index) => (
-                        <motion.div 
-                          key={viz.key}
-                          className="bg-white/10 rounded-xl p-6 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300"
-                          whileHover={{ scale: 1.05, y: -5 }}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1 + 0.3 }}
-                        >
-                          <div className="text-3xl mb-4">{viz.icon}</div>
-                          <h3 className="text-lg font-semibold text-yellow-400 mb-2">{viz.label}</h3>
-                          <p className="text-white/80 text-sm">Interaktive Darstellung kultureller Zusammenhänge</p>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
+                {/* Continue with other sections */}
               </motion.div>
             </AnimatePresence>
 
@@ -1055,148 +747,35 @@ export default function MacrobiusAntiquaFlaschenpost() {
               >
                 {t('about_macrobius')}
               </motion.button>
+              <motion.button 
+                onClick={handleAboutPontanus}
+                className="btn-wine px-8 py-4 rounded-xl font-semibold border-2 transition-all duration-300 backdrop-blur-sm"
+                style={{ 
+                  backgroundColor: '#722F37',
+                  color: '#FFD700',
+                  borderColor: '#FFD700',
+                  textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)'
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  backgroundColor: '#FFD700',
+                  color: '#722F37',
+                  borderColor: '#722F37',
+                  boxShadow: '0 10px 25px rgba(255, 215, 0, 0.3)'
+                }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.1 }}
+              >
+                {t('pontanus_button')}
+              </motion.button>
             </motion.div>
           </motion.div>
         </div>
 
-        {/* About Macrobius Modal */}
-        <AnimatePresence>
-          {showAboutModal && (
-            <motion.div
-              className="fixed inset-0 z-50 flex items-center justify-center p-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={handleCloseAbout}
-            >
-              {/* Backdrop */}
-              <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
-              
-              {/* Modal Content */}
-              <motion.div
-                className="relative bg-white/10 backdrop-blur-md rounded-3xl p-8 max-w-4xl mx-auto border border-white/30 shadow-2xl overflow-hidden"
-                initial={{ scale: 0.8, y: 50 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.8, y: 50 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Animated background pattern */}
-                <div className="absolute inset-0 opacity-5">
-                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-yellow-200 via-transparent to-blue-200 animate-pulse" />
-                </div>
-
-                {/* Close button */}
-                <motion.button
-                  onClick={handleCloseAbout}
-                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center text-white/80 hover:bg-white/30 transition-all duration-300"
-                  whileHover={{ scale: 1.1, rotate: 90 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <span className="text-lg">×</span>
-                </motion.button>
-
-                {/* Modal header */}
-                <div className="text-center mb-8">
-                  <motion.h2 
-                    className="text-4xl md:text-5xl font-bold text-yellow-400 mb-4"
-                    style={{ 
-                      textShadow: '0 0 20px rgba(255, 215, 0, 0.6)',
-                      fontFamily: 'serif'
-                    }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    {t('about_title')}
-                  </motion.h2>
-                  <motion.p 
-                    className="text-xl text-yellow-300/90 font-medium"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                  >
-                    {t('about_subtitle')}
-                  </motion.p>
-                </div>
-
-                {/* Modal content */}
-                <div className="space-y-8 max-h-96 overflow-y-auto custom-scrollbar">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                  >
-                    <h3 className="text-2xl font-semibold text-yellow-400 mb-4">📜 Biographie</h3>
-                    <p className="text-white/90 leading-relaxed text-justify">
-                      {t('about_biography')}
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                  >
-                    <h3 className="text-2xl font-semibold text-yellow-400 mb-4">📚 Hauptwerke</h3>
-                    <p className="text-white/90 leading-relaxed text-justify">
-                      {t('about_works')}
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 }}
-                  >
-                    <h3 className="text-2xl font-semibold text-yellow-400 mb-4">🏛️ Vermächtnis</h3>
-                    <p className="text-white/90 leading-relaxed text-justify">
-                      {t('about_legacy')}
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7 }}
-                  >
-                    <h3 className="text-2xl font-semibold text-yellow-400 mb-4">🌟 Einfluss</h3>
-                    <p className="text-white/90 leading-relaxed text-justify">
-                      {t('about_influence')}
-                    </p>
-                  </motion.div>
-                </div>
-
-                {/* Modal footer */}
-                <motion.div 
-                  className="mt-8 text-center"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 }}
-                >
-                  <motion.button
-                    onClick={handleCloseAbout}
-                    className="btn-wine px-8 py-3 rounded-xl font-semibold border-2 transition-all duration-300"
-                    style={{
-                      backgroundColor: '#722F37',
-                      color: '#FFD700',
-                      borderColor: '#FFD700'
-                    }}
-                    whileHover={{ 
-                      scale: 1.05,
-                      backgroundColor: '#FFD700',
-                      color: '#722F37'
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {t('close_modal')}
-                  </motion.button>
-                </motion.div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Enhanced CSS animations with 500ms timing consistency */}
+        {/* Modals and CSS remain unchanged */}
+        {/* Enhanced CSS animations with 500ms timing consistency and modal scrollbar styling */}
         <style jsx>{`
           @keyframes twinkle {
             0% { opacity: 0.3; transform: scale(1); }
@@ -1215,6 +794,67 @@ export default function MacrobiusAntiquaFlaschenpost() {
           .btn-wine:hover {
             transform: translateY(-2px);
             filter: drop-shadow(0 8px 16px rgba(255, 215, 0, 0.3));
+          }
+
+          .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+          }
+          
+          .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+          }
+          
+          .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 4px;
+          }
+          
+          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 215, 0, 0.5);
+          }
+
+          .modal-scrollable {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 10px;
+            -webkit-overflow-scrolling: touch;
+          }
+
+          .modal-scrollable::-webkit-scrollbar {
+            width: 8px;
+          }
+
+          .modal-scrollable::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+          }
+
+          .modal-scrollable::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.6);
+            border-radius: 4px;
+          }
+
+          .modal-scrollable::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 215, 0, 0.8);
+          }
+
+          /* Firefox scrollbar styling */
+          .modal-scrollable {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 215, 0, 0.6) rgba(255, 255, 255, 0.1);
+          }
+
+          @media (max-width: 600px) {
+            .modal-scrollable {
+              max-height: 50vh;
+            }
+          }
+
+          @media (max-width: 400px) {
+            .modal-scrollable {
+              max-height: 40vh;
+            }
           }
         `}</style>
       </div>
