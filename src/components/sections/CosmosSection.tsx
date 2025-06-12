@@ -273,6 +273,4 @@ function CosmosSection({ isActive, t }: CosmosSectionProps) {
   );
 }
 
-// Export both named and default for compatibility
-export { CosmosSection };
 export default CosmosSection;
