@@ -3,7 +3,7 @@
  * Enhanced Astronomical Design - Message in a Bottle from Antiquity to the Future
  * Visual Excellence with Historical Authenticity
  * 
- * UPDATED: June 12, 2025 - Integrated Enhanced Learning Section
+ * UPDATED: June 12, 2025 - Integrated Enhanced Learning Section + Fixed Build Issues
  * Architecture: Complete modular architecture with enhanced educational components
  */
 
@@ -15,6 +15,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import HeroSection from '../components/sections/HeroSection';
 import BanquetSection from '../components/sections/BanquetSection';
 import EnhancedLearningSection from '../components/sections/EnhancedLearningSection';
+import CosmosSection from '../components/sections/CosmosSection';
+import TextSearchSection from '../components/sections/TextSearchSection';
+import VisualizationsSection from '../components/sections/VisualizationsSection';
 
 // Translation types
 type TranslationKey = 
@@ -867,85 +870,30 @@ export default function MacrobiusApp() {
             </section>
           )}
 
+          {/* Cosmos Section */}
+          {activeSection === 'cosmos' && (
+            <CosmosSection isActive={true} t={t} />
+          )}
+
           {/* Banquet Section */}
           {activeSection === 'banquet' && (
             <BanquetSection isActive={true} t={t} />
           )}
 
-          {/* Enhanced Learning Section - NEW */}
+          {/* Enhanced Learning Section */}
           {activeSection === 'learning' && (
             <EnhancedLearningSection isActive={true} t={t} />
           )}
 
-          {/* Cosmos Section Placeholder */}
-          {activeSection === 'cosmos' && (
-            <section className="min-h-screen flex items-center justify-center px-4 py-20">
-              <div className="max-w-4xl mx-auto text-center">
-                <motion.div
-                  className="card-hover p-8"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  <h2 className="text-4xl font-bold text-yellow-400 mb-8">
-                    {t('section_cosmos')}
-                  </h2>
-                  <p className="text-xl text-white/90 mb-8">
-                    {t('cosmos_description')}
-                  </p>
-                  <div className="text-white/70">
-                    <p>🚧 Diese Sektion wird in der nächsten Version implementiert.</p>
-                    <p>Hier werden Sie Macrobius' astronomische Einsichten aus dem Traumkommentar erkunden können.</p>
-                  </div>
-                </motion.div>
-              </div>
-            </section>
-          )}
-
-          {/* Search Section Placeholder */}
+          {/* Search Section */}
           {activeSection === 'search' && (
-            <section className="min-h-screen flex items-center justify-center px-4 py-20">
-              <div className="max-w-4xl mx-auto text-center">
-                <motion.div
-                  className="card-hover p-8"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  <h2 className="text-4xl font-bold text-yellow-400 mb-8">
-                    {t('section_search')}
-                  </h2>
-                  <div className="text-white/70">
-                    <p>🚧 Diese Sektion wird in der nächsten Version implementiert.</p>
-                    <p>Hier können Sie durch das vollständige Macrobius-Korpus mit 1.401 lateinischen Passagen suchen.</p>
-                  </div>
-                </motion.div>
-              </div>
-            </section>
+            <TextSearchSection isActive={true} t={t} />
           )}
 
-          {/* Visualizations Section Placeholder */}
+          {/* Visualizations Section */}
           {activeSection === 'visualizations' && (
-            <section className="min-h-screen flex items-center justify-center px-4 py-20">
-              <div className="max-w-4xl mx-auto text-center">
-                <motion.div
-                  className="card-hover p-8"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  <h2 className="text-4xl font-bold text-yellow-400 mb-8">
-                    {t('section_visualizations')}
-                  </h2>
-                  <div className="text-white/70">
-                    <p>🚧 Diese Sektion wird in der nächsten Version implementiert.</p>
-                    <p>Hier finden Sie interaktive Visualisierungen, Zeitleisten und thematische Analysen.</p>
-                  </div>
-                </motion.div>
-              </div>
-            </section>
+            <VisualizationsSection isActive={true} t={t} />
           )}
-          
         </main>
 
         {/* About Macrobius Modal */}
