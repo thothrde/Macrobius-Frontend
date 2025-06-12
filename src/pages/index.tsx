@@ -3,17 +3,23 @@
  * Enhanced Astronomical Design - Message in a Bottle from Antiquity to the Future
  * Visual Excellence with Historical Authenticity
  * 
- * RECONSTRUCTED: June 12, 2025 - Complete modular architecture
- * Architecture: Using separate section components for maintainability
+ * UPDATED: June 12, 2025 - Integrated HeroSection and BanquetSection
+ * Architecture: Complete modular architecture with all core components
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Import new section components
+import HeroSection from '../components/sections/HeroSection';
+import BanquetSection from '../components/sections/BanquetSection';
+
 // Translation types
 type TranslationKey = 
-  | 'title' | 'intro' | 'section_intro' | 'section_quiz' | 'section_worldmap' 
+  | 'title' | 'intro' | 'nav_hero' | 'nav_intro' | 'nav_quiz' | 'nav_worldmap' 
+  | 'nav_cosmos' | 'nav_banquet' | 'nav_search' | 'nav_learning' | 'nav_visualizations'
+  | 'section_intro' | 'section_quiz' | 'section_worldmap' 
   | 'section_cosmos' | 'section_banquet' | 'section_search' | 'section_learning' 
   | 'section_visualizations' | 'timeline' | 'interactive_map' | 'character_network' 
   | 'thematic_heatmap' | 'theme_relationships' | 'explore_texts' | 'about_macrobius' 
@@ -22,7 +28,17 @@ type TranslationKey =
   | 'learning_tools' | 'story' | 'about_title' | 'about_subtitle' | 'about_biography' 
   | 'about_works' | 'about_legacy' | 'about_influence' | 'close_modal' | 'pontanus_button'
   | 'about_pontanus_title' | 'about_pontanus_subtitle' | 'about_pontanus_bio'
-  | 'about_pontanus_work' | 'about_pontanus_legacy';
+  | 'about_pontanus_work' | 'about_pontanus_legacy'
+  // New HeroSection keys
+  | 'hero_title_line1' | 'hero_title_line2' | 'hero_subtitle' | 'hero_cta_start' | 'hero_cta_explore'
+  | 'hero_scroll_discover' | 'hero_feature_texts_title' | 'hero_feature_texts_desc'
+  | 'hero_feature_worldmap_title' | 'hero_feature_worldmap_desc' | 'hero_feature_cosmos_title'
+  | 'hero_feature_cosmos_desc' | 'hero_feature_banquet_title' | 'hero_feature_banquet_desc'
+  | 'hero_feature_learning_title' | 'hero_feature_learning_desc' | 'hero_feature_quiz_title'
+  | 'hero_feature_quiz_desc'
+  // New BanquetSection keys
+  | 'banquet_title' | 'banquet_subtitle' | 'banquet_phase_arrival' | 'banquet_phase_conversation'
+  | 'banquet_phase_reflection' | 'banquet_cultural_context';
 
 type TranslationTexts = Record<TranslationKey, string>;
 type Translations = Record<'DE' | 'EN' | 'LA', TranslationTexts>;
@@ -37,7 +53,7 @@ interface Star {
   duration: number;
   intensity: number;
   type: 'normal' | 'bright';
-  velocityX: number; // For horizontal movement
+  velocityX: number;
 }
 
 interface ShootingStar {
@@ -95,11 +111,20 @@ const imageDetails = {
   }
 };
 
-// Enhanced translation system
+// Enhanced translation system with new component translations
 const translations: Translations = {
   DE: {
     title: "Eine antike Flaschenpost",
     intro: "Eine Nachricht aus der Antike an die Zukunft",
+    nav_hero: "Startseite",
+    nav_intro: "Einführung",
+    nav_quiz: "Quiz",
+    nav_worldmap: "Weltkarte", 
+    nav_cosmos: "Kosmos",
+    nav_banquet: "Gastmahl",
+    nav_search: "Textsuche",
+    nav_learning: "Lernen",
+    nav_visualizations: "Visualisierungen",
     section_intro: "Einführung",
     section_quiz: "Quiz",
     section_worldmap: "Weltkarte", 
@@ -138,11 +163,46 @@ const translations: Translations = {
     about_pontanus_subtitle: "Dänischer Gelehrter und Herausgeber (1571-1639)",
     about_pontanus_bio: `Johannes Isaac Pontanus war ein dänischer Humanist, Historiker und Philologe, der eine entscheidende Rolle bei der Bewahrung und Verbreitung von Macrobius' Werken spielte. Geboren 1571 in Helsingör, war er ein Zeitgenosse des berühmten Astronomen Tycho Brahe und bewegte sich in den gleichen gelehrten Kreisen des dänischen Hofes.`,
     about_pontanus_work: `Pontanus' größter Beitrag zur Macrobius-Forschung war seine sorgfältige Edition der gesammelten Werke von 1597. Diese kritische Ausgabe, die in Frankfurt erschien, wurde zur Standardreferenz für Jahrhunderte. Er korrigierte zahlreiche Textfehler früherer Manuskripte und fügte umfangreiche Kommentare hinzu, die das Verständnis der komplexen antiken Texte erheblich erleichterten.`,
-    about_pontanus_legacy: `Durch seine akribische philologische Arbeit rettete Pontanus Macrobius' "antike Flaschenpost" vor dem Vergessen und machte sie für die Gelehrten der Renaissance und der frühen Neuzeit zugänglich. Seine Edition inspirierte eine neue Generation von Wissenschaftlern und trug zur Wiedergeburt des Interesses an klassischer Astronomie und Philosophie bei.`
+    about_pontanus_legacy: `Durch seine akribische philologische Arbeit rettete Pontanus Macrobius' "antike Flaschenpost" vor dem Vergessen und machte sie für die Gelehrten der Renaissance und der frühen Neuzeit zugänglich. Seine Edition inspirierte eine neue Generation von Wissenschaftlern und trug zur Wiedergeburt des Interesses an klassischer Astronomie und Philosophie bei.`,
+    // HeroSection translations
+    hero_title_line1: "MACROBIUS",
+    hero_title_line2: "Digitale Weisheit",
+    hero_subtitle: "Entdecke antike Weisheit durch interaktive gelehrte Gespräche",
+    hero_cta_start: "Reise beginnen",
+    hero_cta_explore: "Texte erkunden",
+    hero_scroll_discover: "Scrollen zum Entdecken",
+    hero_feature_texts_title: "Authentische Texte",
+    hero_feature_texts_desc: "Durchsuche 1.401 lateinische Passagen aus dem vollständigen Macrobius-Korpus",
+    hero_feature_worldmap_title: "Römische Welt",
+    hero_feature_worldmap_desc: "Erkunde den geografischen Kontext antiker Gelehrsamkeit",
+    hero_feature_cosmos_title: "Kosmische Weisheit",
+    hero_feature_cosmos_desc: "Entdecke astronomische Einsichten aus Scipios Traum",
+    hero_feature_banquet_title: "Gelehrtes Gastmahl",
+    hero_feature_banquet_desc: "Nimm an den Saturnalia-Gesprächen gelehrter Römer teil",
+    hero_feature_learning_title: "Latein lernen",
+    hero_feature_learning_desc: "Meistere klassisches Latein durch authentische antike Texte",
+    hero_feature_quiz_title: "Wissen testen",
+    hero_feature_quiz_desc: "Interaktive Quiz basierend auf echten klassischen Inhalten",
+    // BanquetSection translations
+    banquet_title: "Saturnalia-Symposium",
+    banquet_subtitle: "Nimm an den gelehrten Gesprächen der Römer während des Saturn-Festes teil",
+    banquet_phase_arrival: "Gäste treffen ein...",
+    banquet_phase_conversation: "Gelehrter Diskurs beginnt",
+    banquet_phase_reflection: "Tiefe Weisheit entfaltet sich",
+    banquet_cultural_context: "Die Saturnalien waren ein römisches Fest zu Ehren Saturns, geprägt von sozialer Rollenumkehr und gelehrten Diskussionen, die Macrobius für die Nachwelt bewahrt hat."
   },
   EN: {
     title: "An Ancient Message in a Bottle",
     intro: "A message from antiquity to the future",
+    nav_hero: "Home",
+    nav_intro: "Introduction",
+    nav_quiz: "Quiz",
+    nav_worldmap: "World Map",
+    nav_cosmos: "Cosmos",
+    nav_banquet: "Banquet",
+    nav_search: "Text Search",
+    nav_learning: "Learning",
+    nav_visualizations: "Visualizations",
     section_intro: "Introduction",
     section_quiz: "Quiz",
     section_worldmap: "World Map",
@@ -181,11 +241,46 @@ const translations: Translations = {
     about_pontanus_subtitle: "Danish Scholar and Editor (1571-1639)",
     about_pontanus_bio: `Johannes Isaac Pontanus was a Danish humanist, historian, and philologist who played a crucial role in preserving and disseminating Macrobius' works. Born in 1571 in Helsingør, he was a contemporary of the famous astronomer Tycho Brahe and moved in the same scholarly circles of the Danish court.`,
     about_pontanus_work: `Pontanus' greatest contribution to Macrobius research was his careful edition of the collected works from 1597. This critical edition, published in Frankfurt, became the standard reference for centuries. He corrected numerous textual errors from earlier manuscripts and added extensive commentaries that greatly facilitated understanding of the complex ancient texts.`,
-    about_pontanus_legacy: `Through his meticulous philological work, Pontanus saved Macrobius' "ancient message in a bottle" from oblivion and made it accessible to Renaissance and early modern scholars. His edition inspired a new generation of scientists and contributed to the revival of interest in classical astronomy and philosophy.`
+    about_pontanus_legacy: `Through his meticulous philological work, Pontanus saved Macrobius' "ancient message in a bottle" from oblivion and made it accessible to Renaissance and early modern scholars. His edition inspired a new generation of scientists and contributed to the revival of interest in classical astronomy and philosophy.`,
+    // HeroSection translations
+    hero_title_line1: "MACROBIUS",
+    hero_title_line2: "Digital Wisdom",
+    hero_subtitle: "Explore ancient wisdom through interactive scholarly conversations",
+    hero_cta_start: "Begin Journey",
+    hero_cta_explore: "Explore Texts",
+    hero_scroll_discover: "Scroll to Discover",
+    hero_feature_texts_title: "Authentic Texts",
+    hero_feature_texts_desc: "Search 1,401 Latin passages from the complete Macrobius corpus",
+    hero_feature_worldmap_title: "Roman World",
+    hero_feature_worldmap_desc: "Explore the geographical context of ancient scholarship",
+    hero_feature_cosmos_title: "Cosmic Wisdom",
+    hero_feature_cosmos_desc: "Discover astronomical insights from Scipio's Dream",
+    hero_feature_banquet_title: "Scholarly Banquet",
+    hero_feature_banquet_desc: "Join the Saturnalia conversations of learned Romans",
+    hero_feature_learning_title: "Learn Latin",
+    hero_feature_learning_desc: "Master classical Latin through authentic ancient texts",
+    hero_feature_quiz_title: "Test Knowledge",
+    hero_feature_quiz_desc: "Interactive quizzes based on real classical content",
+    // BanquetSection translations
+    banquet_title: "Saturnalia Symposium",
+    banquet_subtitle: "Join the scholarly conversations of learned Romans during the festival of Saturn",
+    banquet_phase_arrival: "Guests are arriving...",
+    banquet_phase_conversation: "Scholarly discourse begins",
+    banquet_phase_reflection: "Deep wisdom emerges",
+    banquet_cultural_context: "The Saturnalia was a Roman festival celebrating Saturn, characterized by social role reversals and scholarly discussions that Macrobius preserved for posterity."
   },
   LA: {
     title: "Epistula Antiqua in Lagena",
     intro: "Nuntius ab antiquitate ad futurum",
+    nav_hero: "Domus",
+    nav_intro: "Introductio",
+    nav_quiz: "Quaestiones",
+    nav_worldmap: "Mappa Mundi",
+    nav_cosmos: "Cosmos",
+    nav_banquet: "Convivium",
+    nav_search: "Textus Quaerere",
+    nav_learning: "Discere",
+    nav_visualizations: "Imagines",
     section_intro: "Introductio",
     section_quiz: "Quaestiones",
     section_worldmap: "Mappa Mundi",
@@ -224,7 +319,33 @@ const translations: Translations = {
     about_pontanus_subtitle: "Eruditus Danicus et Editor (1571-1639)",
     about_pontanus_bio: `Johannes Isaac Pontanus humanista, historicus et philologus Danicus fuit qui partem crucialem in Macrobii operum conservatione et disseminatione gessit. Anno 1571 Helsingörae natus, contemporaneus celebris astronomi Tychonis Brahe fuit et in eisdem eruditis Danicae aulae circulis versabatur.`,
     about_pontanus_work: `Pontani maximum ad Macrobii studia contributum fuit accurata collectorum operum editio anni 1597. Haec critica editio, Francofurti publicata, per saecula norma referentiae facta est. Numerosos textuum errores ex anterioribus manuscriptis correxit et amplus commentarios addidit qui complexorum antiquorum textuum intellectum magnopere facilitetuberunt.`,
-    about_pontanus_legacy: `Per suum accuratum philologicum laborem, Pontanus Macrobii "antiquam epistulam in lagena" ab oblivione servavit eamque Renaissance et modernis temporibus eruditis accessibilem fecit. Eius editio novam scientiarum generationem inspiravit et ad classicae astronomiae philosophiaeque studii renovationem contribuit.`
+    about_pontanus_legacy: `Per suum accuratum philologicum laborem, Pontanus Macrobii "antiquam epistulam in lagena" ab oblivione servavit eamque Renaissance et modernis temporibus eruditis accessibilem fecit. Eius editio novam scientiarum generationem inspiravit et ad classicae astronomiae philosophiaeque studii renovationem contribuit.`,
+    // HeroSection translations
+    hero_title_line1: "MACROBIUS",
+    hero_title_line2: "Sapientia Digitalis",
+    hero_subtitle: "Explora antiquam sapientiam per sermones eruditos interactivos",
+    hero_cta_start: "Iter Incipe",
+    hero_cta_explore: "Textus Explora",
+    hero_scroll_discover: "Volve ad Detegendum",
+    hero_feature_texts_title: "Textus Authentici",
+    hero_feature_texts_desc: "Quaere in 1.401 Latinis passagibus ex completo Macrobii corpore",
+    hero_feature_worldmap_title: "Mundus Romanus",
+    hero_feature_worldmap_desc: "Explora geographicum contextum antiquae eruditionis",
+    hero_feature_cosmos_title: "Sapientia Cosmica",
+    hero_feature_cosmos_desc: "Invenire astronomicas perceptiones ex Somnio Scipionis",
+    hero_feature_banquet_title: "Convivium Eruditum",
+    hero_feature_banquet_desc: "Participa in Saturnalium colloquiis doctorum Romanorum",
+    hero_feature_learning_title: "Linguam Latinam Discere",
+    hero_feature_learning_desc: "Classicam Latinam per authenticos antiquos textus magistrare",
+    hero_feature_quiz_title: "Scientiam Probare",
+    hero_feature_quiz_desc: "Quaestiones interactivae ex veris classicis contentis basatae",
+    // BanquetSection translations
+    banquet_title: "Saturnalium Symposium",
+    banquet_subtitle: "Participa in doctorum Romanorum colloquiis durante Saturni festo",
+    banquet_phase_arrival: "Hospites adveniunt...",
+    banquet_phase_conversation: "Eruditus sermo incipit",
+    banquet_phase_reflection: "Profunda sapientia emergit",
+    banquet_cultural_context: "Saturnalia festum Romanum Saturno celebratum erat, societatis mutationes et docta colloquia characterizatum, quae Macrobius posteritati servavit."
   }
 };
 
@@ -233,8 +354,8 @@ export default function MacrobiusApp() {
   // Language state
   const [currentLang, setCurrentLang] = useState<'DE' | 'EN' | 'LA'>('DE');
   
-  // Navigation state
-  const [activeSection, setActiveSection] = useState<string>('intro');
+  // Navigation state - Updated to start with 'hero' section
+  const [activeSection, setActiveSection] = useState<string>('hero');
   
   // Modal states
   const [showAboutModal, setShowAboutModal] = useState(false);
@@ -524,19 +645,20 @@ export default function MacrobiusApp() {
           </div>
         </div>
 
-        {/* Navigation */}
+        {/* Navigation - Updated with new sections */}
         <nav className="fixed top-4 left-4 z-50">
           <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
             <div className="flex flex-col space-y-2">
               {[
-                { id: 'intro', label: t('section_intro') },
-                { id: 'quiz', label: t('section_quiz') },
-                { id: 'worldmap', label: t('section_worldmap') },
-                { id: 'cosmos', label: t('section_cosmos') },
-                { id: 'banquet', label: t('section_banquet') },
-                { id: 'search', label: t('section_search') },
-                { id: 'learning', label: t('section_learning') },
-                { id: 'visualizations', label: t('section_visualizations') }
+                { id: 'hero', label: t('nav_hero') },
+                { id: 'intro', label: t('nav_intro') },
+                { id: 'quiz', label: t('nav_quiz') },
+                { id: 'worldmap', label: t('nav_worldmap') },
+                { id: 'cosmos', label: t('nav_cosmos') },
+                { id: 'banquet', label: t('nav_banquet') },
+                { id: 'search', label: t('nav_search') },
+                { id: 'learning', label: t('nav_learning') },
+                { id: 'visualizations', label: t('nav_visualizations') }
               ].map((section) => (
                 <button
                   key={section.id}
@@ -555,59 +677,15 @@ export default function MacrobiusApp() {
         </nav>
 
         {/* Main content */}
-        <main className="relative z-10 pt-20 pb-20">
-          {/* Hero Section */}
-          <section className="min-h-screen flex items-center justify-center px-4">
-            <div className="text-center max-w-4xl mx-auto">
-              <motion.h1
-                className="text-6xl md:text-8xl font-bold text-gradient mb-8"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1 }}
-              >
-                Macrobius
-              </motion.h1>
-              
-              <motion.h2
-                className="text-2xl md:text-4xl text-yellow-300 mb-12 font-light"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.3 }}
-              >
-                {t('title')}
-              </motion.h2>
-              
-              <motion.p
-                className="text-xl md:text-2xl text-white/90 mb-16 max-w-2xl mx-auto leading-relaxed"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.6 }}
-              >
-                {t('intro')}
-              </motion.p>
-              
-              <motion.div
-                className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.9 }}
-              >
-                <button
-                  onClick={() => setShowAboutModal(true)}
-                  className="btn-wine px-8 py-4 text-lg"
-                >
-                  {t('about_macrobius')}
-                </button>
-                
-                <button
-                  onClick={() => setShowPontanusModal(true)}
-                  className="btn-wine px-8 py-4 text-lg"
-                >
-                  {t('pontanus_button')}
-                </button>
-              </motion.div>
-            </div>
-          </section>
+        <main className="relative z-10">
+          {/* Hero Section - NEW */}
+          {activeSection === 'hero' && (
+            <HeroSection 
+              isActive={true} 
+              t={t} 
+              onNavigateToSection={handleSectionChange}
+            />
+          )}
 
           {/* Introduction Section */}
           {activeSection === 'intro' && (
@@ -788,7 +866,104 @@ export default function MacrobiusApp() {
             </section>
           )}
 
-          {/* Additional sections would be implemented here... */}
+          {/* Banquet Section - NEW */}
+          {activeSection === 'banquet' && (
+            <BanquetSection isActive={true} t={t} />
+          )}
+
+          {/* Cosmos Section Placeholder */}
+          {activeSection === 'cosmos' && (
+            <section className="min-h-screen flex items-center justify-center px-4 py-20">
+              <div className="max-w-4xl mx-auto text-center">
+                <motion.div
+                  className="card-hover p-8"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <h2 className="text-4xl font-bold text-yellow-400 mb-8">
+                    {t('section_cosmos')}
+                  </h2>
+                  <p className="text-xl text-white/90 mb-8">
+                    {t('cosmos_description')}
+                  </p>
+                  <div className="text-white/70">
+                    <p>🚧 Diese Sektion wird in der nächsten Version implementiert.</p>
+                    <p>Hier werden Sie Macrobius' astronomische Einsichten aus dem Traumkommentar erkunden können.</p>
+                  </div>
+                </motion.div>
+              </div>
+            </section>
+          )}
+
+          {/* Search Section Placeholder */}
+          {activeSection === 'search' && (
+            <section className="min-h-screen flex items-center justify-center px-4 py-20">
+              <div className="max-w-4xl mx-auto text-center">
+                <motion.div
+                  className="card-hover p-8"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <h2 className="text-4xl font-bold text-yellow-400 mb-8">
+                    {t('section_search')}
+                  </h2>
+                  <div className="text-white/70">
+                    <p>🚧 Diese Sektion wird in der nächsten Version implementiert.</p>
+                    <p>Hier können Sie durch das vollständige Macrobius-Korpus mit 1.401 lateinischen Passagen suchen.</p>
+                  </div>
+                </motion.div>
+              </div>
+            </section>
+          )}
+
+          {/* Learning Section Placeholder */}
+          {activeSection === 'learning' && (
+            <section className="min-h-screen flex items-center justify-center px-4 py-20">
+              <div className="max-w-4xl mx-auto text-center">
+                <motion.div
+                  className="card-hover p-8"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <h2 className="text-4xl font-bold text-yellow-400 mb-8">
+                    {t('section_learning')}
+                  </h2>
+                  <p className="text-xl text-white/90 mb-8">
+                    {t('learning_tools')}
+                  </p>
+                  <div className="text-white/70">
+                    <p>🚧 Diese Sektion wird in der nächsten Version implementiert.</p>
+                    <p>Hier finden Sie Lernwerkzeuge für Vokabeltraining, Grammatik und kulturellen Kontext.</p>
+                  </div>
+                </motion.div>
+              </div>
+            </section>
+          )}
+
+          {/* Visualizations Section Placeholder */}
+          {activeSection === 'visualizations' && (
+            <section className="min-h-screen flex items-center justify-center px-4 py-20">
+              <div className="max-w-4xl mx-auto text-center">
+                <motion.div
+                  className="card-hover p-8"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <h2 className="text-4xl font-bold text-yellow-400 mb-8">
+                    {t('section_visualizations')}
+                  </h2>
+                  <div className="text-white/70">
+                    <p>🚧 Diese Sektion wird in der nächsten Version implementiert.</p>
+                    <p>Hier finden Sie interaktive Visualisierungen, Zeitleisten und thematische Analysen.</p>
+                  </div>
+                </motion.div>
+              </div>
+            </section>
+          )}
           
         </main>
 
