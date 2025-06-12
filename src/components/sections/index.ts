@@ -8,6 +8,7 @@ export { default as CosmosSection } from './CosmosSection';
 export { default as TextSearchSection } from './TextSearchSection';
 export { default as WorldMapSection } from './WorldMapSection';
 export { default as QuizSection } from './QuizSection';
+export { default as VisualizationsSection } from './VisualizationsSection';
 
 // Advanced educational components (Oracle Cloud ready)
 export { default as VocabularyTrainerCorpus } from './VocabularyTrainer-corpus-integrated';
