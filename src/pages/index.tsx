@@ -3,17 +3,18 @@
  * Enhanced Astronomical Design - Message in a Bottle from Antiquity to the Future
  * Visual Excellence with Historical Authenticity
  * 
- * UPDATED: June 12, 2025 - Integrated HeroSection and BanquetSection
- * Architecture: Complete modular architecture with all core components
+ * UPDATED: June 12, 2025 - Integrated Enhanced Learning Section
+ * Architecture: Complete modular architecture with enhanced educational components
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Import new section components
+// Import section components
 import HeroSection from '../components/sections/HeroSection';
 import BanquetSection from '../components/sections/BanquetSection';
+import EnhancedLearningSection from '../components/sections/EnhancedLearningSection';
 
 // Translation types
 type TranslationKey = 
@@ -131,7 +132,7 @@ const translations: Translations = {
     section_cosmos: "Kosmos",
     section_banquet: "Gastmahl",
     section_search: "Textsuche",
-    section_learning: "Lernen",
+    section_learning: "Erweiterte Lernplattform",
     section_visualizations: "Visualisierungen",
     timeline: "Zeitleiste",
     interactive_map: "Interaktive Karte",
@@ -149,7 +150,7 @@ const translations: Translations = {
     cosmos_description: "Erkunden Sie Macrobius' faszinierende Darstellung des Kosmos und der Himmelskörper",
     worldmap_description: "Entdecken Sie die antike Weltsicht durch Macrobius' geografische Beschreibungen",
     banquet_description: "Tauchen Sie ein in die Gespräche der Gelehrten beim Gastmahl der Saturnalien",
-    learning_tools: "Lernwerkzeuge für das Studium der lateinischen Sprache und antiken Kultur",
+    learning_tools: "Vollständige Lernplattform mit Vokabeltraining, Grammatik-Explorer, Textanalyse und Fortschrittsverfolgung",
     story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle. Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und ich auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
     about_title: "Macrobius Ambrosius Theodosius",
     about_subtitle: "Philosoph, Grammatiker und Bewahrer antiker Weisheit (ca. 385-430 n. Chr.)",
@@ -209,7 +210,7 @@ const translations: Translations = {
     section_cosmos: "Cosmos",
     section_banquet: "Banquet",
     section_search: "Text Search",
-    section_learning: "Learning",
+    section_learning: "Enhanced Learning Platform",
     section_visualizations: "Visualizations",
     timeline: "Timeline",
     interactive_map: "Interactive Map",
@@ -227,7 +228,7 @@ const translations: Translations = {
     cosmos_description: "Explore Macrobius' fascinating representation of the cosmos and celestial bodies",
     worldmap_description: "Discover the ancient worldview through Macrobius' geographical descriptions",
     banquet_description: "Immerse yourself in the scholarly conversations at the Saturnalia banquet",
-    learning_tools: "Learning tools for studying Latin language and ancient culture",
+    learning_tools: "Complete learning platform with vocabulary training, grammar explorer, text analysis, and progress tracking",
     story: `1500 years ago, as the Roman Empire faced its decline, Macrobius, a leading administrator and scholar in northern Italy, created a message in a bottle to the future. This message consisted of two texts: casual conversations among educated Romans and a dream commentary. In both, Macrobius tried to preserve what he considered important about the declining civilization of antiquity, packaged in a way that would survive the approaching dark centuries and inspire future readers to restart the civilizational process with the memory of ancient civilization as encouragement and source material. 500 years ago, this renaissance began. In Denmark through Tycho Brahe's astronomical observations, which laid the foundation for Kepler's work and the emergence of modern natural sciences. An assistant of Tycho remembered Macrobius' message in a bottle and compiled the first reliable and annotated complete edition. This book came into my hands and gave me the idea to create a small app for you about this story... Have fun!`,
     about_title: "Macrobius Ambrosius Theodosius",
     about_subtitle: "Philosopher, Grammarian and Preserver of Ancient Wisdom (ca. 385-430 AD)",
@@ -287,7 +288,7 @@ const translations: Translations = {
     section_cosmos: "Cosmos",
     section_banquet: "Convivium",
     section_search: "Textus Quaerere",
-    section_learning: "Discere",
+    section_learning: "Suggestus Discendi Auctus",
     section_visualizations: "Imagines",
     timeline: "Temporum Ordo",
     interactive_map: "Mappa Interactiva",
@@ -305,7 +306,7 @@ const translations: Translations = {
     cosmos_description: "Explorare Macrobii miram cosmorum et astrorum descriptionem",
     worldmap_description: "Invenire antiquam mundi visionem per Macrobii geographicas descriptiones",
     banquet_description: "Immergere in doctorum colloquia in Saturnalium convivio",
-    learning_tools: "Instrumenta discendi linguae Latinae et antiquae culturae",
+    learning_tools: "Suggestus discendi completus cum exercitatione vocabulorum, exploratore grammatico, analysi textuum et progressu sequendo",
     story: `Ante annos mille quingentos, cum Imperium Romanum ruinae appropinquaret, Macrobius, praecipuus administrator et eruditus in Italia septentrionali, lagena cum epistula ad futurum confecit. Haec epistula duobus textibus constabat: colloquiis liberis eruditorum Romanorum et commentario somnii. In utrisque Macrobius id quod de cadente antiquitatis civilizatione sibi important videbatur, eo modo involvere conatus est qui saecula tenebrosa supervicturus esset futurosque lectores ad processum civilizationis renovandum incitaret, memoria antiquae civilizationis ut solacium fontesque materiae. Ante quingentos annos haec renaissance coepit. In Dania per observationes astronomicas Tychonis Brahe, qui fundamenta pro Kepleri labore et scientiarum naturalium modernorum ortu posuit. Tychonis adiutor Macrobii epistulam in lagena recordatus est primamque fidelem et adnotatam completam editionem composuit. Hic liber in meas manus venit et ideam mihi dedit parvam applicationem vobis de hac historia construendi... Bene valete!`,
     about_title: "Macrobius Ambrosius Theodosius",
     about_subtitle: "Philosophus, Grammaticus et Antiquae Sapientiae Custos (ca. 385-430 p.C.)",
@@ -678,7 +679,7 @@ export default function MacrobiusApp() {
 
         {/* Main content */}
         <main className="relative z-10">
-          {/* Hero Section - NEW */}
+          {/* Hero Section */}
           {activeSection === 'hero' && (
             <HeroSection 
               isActive={true} 
@@ -866,9 +867,14 @@ export default function MacrobiusApp() {
             </section>
           )}
 
-          {/* Banquet Section - NEW */}
+          {/* Banquet Section */}
           {activeSection === 'banquet' && (
             <BanquetSection isActive={true} t={t} />
+          )}
+
+          {/* Enhanced Learning Section - NEW */}
+          {activeSection === 'learning' && (
+            <EnhancedLearningSection isActive={true} t={t} />
           )}
 
           {/* Cosmos Section Placeholder */}
@@ -912,31 +918,6 @@ export default function MacrobiusApp() {
                   <div className="text-white/70">
                     <p>🚧 Diese Sektion wird in der nächsten Version implementiert.</p>
                     <p>Hier können Sie durch das vollständige Macrobius-Korpus mit 1.401 lateinischen Passagen suchen.</p>
-                  </div>
-                </motion.div>
-              </div>
-            </section>
-          )}
-
-          {/* Learning Section Placeholder */}
-          {activeSection === 'learning' && (
-            <section className="min-h-screen flex items-center justify-center px-4 py-20">
-              <div className="max-w-4xl mx-auto text-center">
-                <motion.div
-                  className="card-hover p-8"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  <h2 className="text-4xl font-bold text-yellow-400 mb-8">
-                    {t('section_learning')}
-                  </h2>
-                  <p className="text-xl text-white/90 mb-8">
-                    {t('learning_tools')}
-                  </p>
-                  <div className="text-white/70">
-                    <p>🚧 Diese Sektion wird in der nächsten Version implementiert.</p>
-                    <p>Hier finden Sie Lernwerkzeuge für Vokabeltraining, Grammatik und kulturellen Kontext.</p>
                   </div>
                 </motion.div>
               </div>
