@@ -1,23 +1,29 @@
 // Export all section components
 export { default as HeroSection } from './HeroSection';
-export { IntroSection } from './IntroSection';
-export { default as QuizSection } from './QuizSection-enhanced';
+export { default as IntroSection } from './IntroSection';
+export { default as QuizSection } from './QuizSection';
 export { default as BanquetSection } from './BanquetSection';
 export { default as CosmosSection } from './CosmosSection';
 export { default as TextSearchSection } from './TextSearchSection';
-export { default as VocabularyTrainerSection } from './VocabularyTrainerSection';
 export { default as WorldMapSection } from './WorldMapSection';
+export { default as EnhancedLearningSection } from './EnhancedLearningSection';
 
-// Heavy component - Use dynamic import to reduce initial bundle size
-export { default as ThreeDVisualizationSection } from './ThreeDVisualizationSection.dynamic';
+// Advanced educational components (Oracle Cloud ready)
+export { default as VocabularyTrainerCorpus } from './VocabularyTrainer-corpus-integrated';
+export { default as GrammarExplainerCorpus } from './GrammarExplainer-corpus-integrated';
+export { default as MacrobiusTextProcessorBackend } from './MacrobiusTextProcessor-backend-integrated';
+export { default as LearningEnhancedComplete } from './LearningSection-enhanced-complete';
 
-// Advanced demo components (6 of 7 complete in GitHub)
-export { default as AILearningEngineDemo } from './AILearningEngineDemo';
-export { default as WebSocketRealTimeDemo } from './WebSocketRealTimeDemo';
-export { default as PWAFunctionalityDemo } from './PWAFunctionalityDemo';
-export { default as AdvancedCacheManagerDemo } from './AdvancedCacheManagerDemo';
+// AI-powered components
+export { default as AICulturalAnalysisSection } from './AICulturalAnalysisSection';
+export { default as AITutoringSystemSection } from './AITutoringSystemSection';
+export { default as PersonalizedLearningPathsSection } from './PersonalizedLearningPathsSection';
+export { default as AdvancedCulturalModulesSection } from './AdvancedCulturalModulesSection';
+
+// Enhanced versions
+export { default as QuizSectionCultural } from './QuizSection-cultural-insights-integrated';
+export { default as MacrobiusTextProcessorEnhanced } from './MacrobiusTextProcessor-enhanced';
+
+// Performance components
 export { default as MobileOptimizationDemo } from './MobileOptimizationDemo';
 export { default as PerformanceMonitorDemo } from './PerformanceMonitorDemo';
-
-// Missing component (needs implementation)
-export const AccessibilityEnhancementDemo = () => "Accessibility Enhancement Demo - NEEDS IMPLEMENTATION";
