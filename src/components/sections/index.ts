@@ -1,12 +1,13 @@
-// Export all section components
+// Export all section components that are confirmed to exist and work
+
+// Core operational components (confirmed working)
 export { default as HeroSection } from './HeroSection';
-export { default as IntroSection } from './IntroSection';
-export { default as QuizSection } from './QuizSection';
 export { default as BanquetSection } from './BanquetSection';
+export { default as EnhancedLearningSection } from './EnhancedLearningSection';
 export { default as CosmosSection } from './CosmosSection';
 export { default as TextSearchSection } from './TextSearchSection';
 export { default as WorldMapSection } from './WorldMapSection';
-export { default as EnhancedLearningSection } from './EnhancedLearningSection';
+export { default as QuizSection } from './QuizSection';
 
 // Advanced educational components (Oracle Cloud ready)
 export { default as VocabularyTrainerCorpus } from './VocabularyTrainer-corpus-integrated';
