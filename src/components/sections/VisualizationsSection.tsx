@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 interface VisualizationsSectionProps {
   isActive: boolean;
   t: (key: string) => string;
+  language?: 'DE' | 'EN' | 'LA';
 }
 
-function VisualizationsSection({ isActive, t }: VisualizationsSectionProps) {
+function VisualizationsSection({ isActive, t, language = 'DE' }: VisualizationsSectionProps) {
   const [selectedViz, setSelectedViz] = useState<string | null>(null);
 
   if (!isActive) return null;
@@ -51,6 +52,7 @@ function VisualizationsSection({ isActive, t }: VisualizationsSectionProps) {
             </h3>
             <div className="text-white/70">
               <p>🚧 Diese Visualisierung wird in der nächsten Version implementiert.</p>
+              <p>Hier wird die Oracle Cloud-Integration mit echten Daten aus 1.401 lateinischen Passagen erfolgen.</p>
             </div>
           </div>
         )}

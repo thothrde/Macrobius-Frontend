@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 interface CosmosSectionProps {
   isActive: boolean;
   t: (key: string) => string;
+  language?: 'DE' | 'EN' | 'LA';
 }
 
 interface CelestialBody {
-  id: string;
-  name: string;
-  radius: number;
-  color: string;
-  description: string;
-  distance: number;
+  id: string
+  name: string
+  radius: number
+  color: string
+  description: string
+  distance: number
 }
 
-function CosmosSection({ isActive, t }: CosmosSectionProps) {
-  const [selectedBody, setSelectedBody] = useState<CelestialBody | null>(null);
-  const [isRotating, setIsRotating] = useState(false);
-  const [showOrbits, setShowOrbits] = useState(true);
+function CosmosSection({ isActive, t, language = 'DE' }: CosmosSectionProps) {
+  const [selectedBody, setSelectedBody] = useState<CelestialBody | null>(null)
+  const [isRotating, setIsRotating] = useState(false)
+  const [showOrbits, setShowOrbits] = useState(true)
 
   const celestialBodies: CelestialBody[] = [
     {
@@ -76,7 +77,7 @@ function CosmosSection({ isActive, t }: CosmosSectionProps) {
       description: 'Die nächste Sphäre zur Erde, Grenze zwischen Himmel und Erde.',
       distance: 40
     }
-  ];
+  ]
 
   if (!isActive) return null;
 
