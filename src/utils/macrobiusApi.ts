@@ -71,16 +71,37 @@ class MacrobiusApiClient {
     this.baseUrl = baseUrl;
   }
 
+  // Utility function for fetch with timeout
+  private async fetchWithTimeout(
+    url: string, 
+    options: RequestInit = {}, 
+    timeoutMs: number = 10000
+  ): Promise<Response> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+      return response;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      throw error;
+    }
+  }
+
   // Test connection to Oracle Cloud database
   async testConnection(): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseUrl}/health`, {
+      const response = await this.fetchWithTimeout(`${this.baseUrl}/health`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        timeout: 5000, // 5 second timeout
-      });
+      }, 5000); // 5 second timeout
       
       return response.ok;
     } catch (error) {
@@ -103,7 +124,7 @@ class MacrobiusApiClient {
       if (difficulty) params.append('difficulty', difficulty);
       params.append('limit', limit.toString());
 
-      const response = await fetch(`${this.baseUrl}/passages/search?${params}`, {
+      const response = await this.fetchWithTimeout(`${this.baseUrl}/passages/search?${params}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
