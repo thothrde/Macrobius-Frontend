@@ -1,387 +1,713 @@
-import React, { useState } from 'react'
-import { Card } from '../ui/card'
-import { Button } from '../ui/button'
-import { Badge } from '../ui/badge'
-import { 
-  Map, 
-  Globe, 
-  MapPin, 
-  Info, 
-  Navigation,
-  Compass,
-  Mountain,
-  Waves
-} from 'lucide-react'
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Map, Globe, Compass, Mountain, Waves, Sun, Snowflake, Thermometer, Shield, Crown, Scroll, Navigation } from 'lucide-react';
 
 interface WorldMapSectionProps {
-  language: 'DE' | 'EN' | 'LA'
+  isActive: boolean;
+  t: (key: string) => string;
+  language?: 'DE' | 'EN' | 'LA';
 }
 
-const translations = {
-  DE: {
-    title: 'Macrobius\' Weltkarte',
-    subtitle: 'Erkunde Die Antike Geographie Und Kosmographie',
-    description: 'Entdecke Macrobius\' Verständnis der Welt durch seine geografischen Beschreibungen und kosmographischen Konzepte.',
-    regions: {
-      title: 'Bekannte Regionen',
-      europe: 'Europa',
-      asia: 'Asien',
-      africa: 'Afrika',
-      oceanus: 'Okeanos'
-    },
-    features: {
-      climate: 'Klimazonen',
-      inhabited: 'Bewohnte Gebiete',
-      unknown: 'Unbekannte Länder',
-      sacred: 'Heilige Orte'
-    },
-    info: {
-      spherical: 'Sphärische Erde',
-      sphericalDesc: 'Macrobius beschrieb die Erde als Kugel, geteilt in klimatische Zonen.',
-      zones: 'Fünf Zonen',
-      zonesDesc: 'Zwei polare, zwei gemäßigte und eine äquatoriale Zone.',
-      antipodes: 'Antipoden',
-      antipodesDesc: 'Theorie über Bewohner auf der gegenüberliegenden Seite der Erde.'
-    },
-    explore: 'Region Erkunden',
-    learnMore: 'Mehr Erfahren'
-  },
-  EN: {
-    title: 'Macrobius\' World Map',
-    subtitle: 'Explore Ancient Geography And Cosmography',
-    description: 'Discover Macrobius\' understanding of the world through his geographical descriptions and cosmographical concepts.',
-    regions: {
-      title: 'Known Regions',
-      europe: 'Europe',
-      asia: 'Asia',
-      africa: 'Africa',
-      oceanus: 'Oceanus'
-    },
-    features: {
-      climate: 'Climate Zones',
-      inhabited: 'Inhabited Areas',
-      unknown: 'Unknown Lands',
-      sacred: 'Sacred Places'
-    },
-    info: {
-      spherical: 'Spherical Earth',
-      sphericalDesc: 'Macrobius described the Earth as a sphere, divided into climatic zones.',
-      zones: 'Five Zones',
-      zonesDesc: 'Two polar, two temperate, and one equatorial zone.',
-      antipodes: 'Antipodes',
-      antipodesDesc: 'Theory about inhabitants on the opposite side of the Earth.'
-    },
-    explore: 'Explore Region',
-    learnMore: 'Learn More'
-  },
-  LA: {
-    title: 'Mappa Mundi Macrobii',
-    subtitle: 'Geographiam Antiquam Et Cosmographiam Explora',
-    description: 'Intellectum Macrobii mundi per descriptiones geographicas et conceptus cosmographicos disce.',
-    regions: {
-      title: 'Regiones Notae',
-      europe: 'Europa',
-      asia: 'Asia',
-      africa: 'Africa',
-      oceanus: 'Oceanus'
-    },
-    features: {
-      climate: 'Zonae Climaticae',
-      inhabited: 'Loca Habitata',
-      unknown: 'Terrae Ignotae',
-      sacred: 'Loca Sacra'
-    },
-    info: {
-      spherical: 'Terra Sphaerica',
-      sphericalDesc: 'Macrobius Terram ut sphaeram descripsit, in zonas climaticas divisam.',
-      zones: 'Quinque Zonae',
-      zonesDesc: 'Duae polares, duae temperatae, et una aequatorialis zona.',
-      antipodes: 'Antipodes',
-      antipodesDesc: 'Theoria de habitatoribus in opposita parte Terrae.'
-    },
-    explore: 'Regionem Explorare',
-    learnMore: 'Plura Discere'
-  }
+interface ClimateZone {
+  id: string;
+  name: string;
+  latinName: string;
+  description: string;
+  culturalSignificance: string;
+  macrobiusQuote: string;
+  translation: string;
+  color: string;
+  yPosition: number;
+  temperature: string;
+  inhabitants: string;
+  romanUnderstanding: string;
+  medievalInfluence: string;
 }
 
-interface MapRegion {
-  id: string
-  name: string
-  description: string
-  color: string
-  coordinates: { x: number; y: number }
+interface GeographicalConcept {
+  id: string;
+  title: string;
+  latinTerm: string;
+  description: string;
+  macrobiusText: string;
+  culturalContext: string;
+  medievalLegacy: string;
+  icon: any;
 }
 
-function WorldMapSection({ language }: WorldMapSectionProps) {
-  const [selectedRegion, setSelectedRegion] = useState<MapRegion | null>(null)
-  const [activeFeature, setActiveFeature] = useState<string | null>(null)
-  
-  const t = translations[language]
+interface TerritorialRegion {
+  id: string;
+  name: string;
+  latinName: string;
+  description: string;
+  administration: string;
+  culturalRole: string;
+  coordinates: { x: number; y: number };
+  color: string;
+}
 
-  const regions: MapRegion[] = [
+function EnhancedWorldMapSection({ isActive, t, language = 'DE' }: WorldMapSectionProps) {
+  const [selectedZone, setSelectedZone] = useState<ClimateZone | null>(null);
+  const [selectedConcept, setSelectedConcept] = useState<string | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<TerritorialRegion | null>(null);
+  const [viewMode, setViewMode] = useState<'climate' | 'territories' | 'concepts'>('climate');
+  const [animationPhase, setAnimationPhase] = useState<'intro' | 'zones' | 'complete'>('intro');
+
+  // The Five Climate Zones according to Macrobius
+  const climateZones: ClimateZone[] = [
     {
-      id: 'europe',
-      name: t.regions.europe,
-      description: 'Die nördliche bewohnte Region mit gemäßigtem Klima.',
-      color: '#3B82F6',
-      coordinates: { x: 45, y: 35 }
+      id: 'arcticus',
+      name: 'Nördliche Eiszone',
+      latinName: 'Zona Glacialis Septentrionalis',
+      description: 'Die nördlichste Zone, von ewigem Eis bedeckt und unbewohnbar',
+      culturalSignificance: 'Symbol für die Grenzen der bewohnbaren Welt und römischen Macht',
+      macrobiusQuote: 'Zona glacialis propter nimium frigus inhabitabilis',
+      translation: 'Die Eiszone ist wegen der übermäßigen Kälte unbewohnbar',
+      color: '#E0F2FE',
+      yPosition: 10,
+      temperature: 'Extremkälte',
+      inhabitants: 'Unbewohnt',
+      romanUnderstanding: 'Für die Römer repräsentierte diese Zone die absolute Grenze der zivilisierten Welt. Jenseits des Hadrian\'s Wall in Britannien und des Rheins lagen diese mythischen Eiswüsten.',
+      medievalInfluence: 'Mittelalterliche Karten zeigten diese Zone als Reich mythischer Kreaturen und das Ende der bekannten Welt - direkt basierend auf Macrobius\' Beschreibungen.'
     },
     {
-      id: 'asia',
-      name: t.regions.asia,
-      description: 'Die große östliche Landmasse mit verschiedenen Klimazonen.',
-      color: '#10B981',
-      coordinates: { x: 65, y: 35 }
+      id: 'temperata_borealis',
+      name: 'Nördliche Gemäßigte Zone',
+      latinName: 'Zona Temperata Septentrionalis',
+      description: 'Die bewohnbare nördliche Zone - Heimat der römischen Zivilisation',
+      culturalSignificance: 'Das Herz des römischen Imperiums und der klassischen Kultur',
+      macrobiusQuote: 'Zona temperata septentrionalis, in qua nos habitamus',
+      translation: 'Die nördliche gemäßigte Zone, in der wir leben',
+      color: '#22C55E',
+      yPosition: 30,
+      temperature: 'Gemäßigt',
+      inhabitants: 'Römer und Barbaren',
+      romanUnderstanding: 'Diese Zone umfasste das gesamte römische Reich von Britannien bis zum Schwarzen Meer. Macrobius sah sie als von der Vorsehung für die Zivilisation bestimmt - weder zu heiß noch zu kalt für menschliche Entfaltung.',
+      medievalInfluence: 'Diese römische Zoneneinteilung beeinflusste die mittelalterliche Geographie fundamental. Isidor von Sevilla und spätere Kartographen übernahmen Macrobius\' Beschreibung fast wörtlich.'
     },
     {
-      id: 'africa',
-      name: t.regions.africa,
-      description: 'Die südliche Region, teilweise durch die heiße Zone getrennt.',
+      id: 'torrida',
+      name: 'Brennende Zone',
+      latinName: 'Zona Torrida',
+      description: 'Die äquatoriale Zone, zu heiß für dauerhafte Besiedlung',
+      culturalSignificance: 'Barriere zwischen der römischen und der südlichen Welt',
+      macrobiusQuote: 'Zona torrida solis ardore inhabitabilis',
+      translation: 'Die brennende Zone ist durch die Glut der Sonne unbewohnbar',
+      color: '#EF4444',
+      yPosition: 50,
+      temperature: 'Extreme Hitze',
+      inhabitants: 'Vereinzelte Nomaden',
+      romanUnderstanding: 'Die Sahara und äquatoriale Regionen galten als unüberwindbare Barriere. Römer sahen diese Zone als gottgegebene Grenze ihrer Welt - was erklärte, warum Afrika südlich der Sahara unzugänglich blieb.',
+      medievalInfluence: 'Mittelalterliche Weltkarten zeigten diese Zone als Feuerring um die Erde. Erst im 13. Jahrhundert wagten europäische Entdecker, diese "unmögliche" Zone zu durchqueren.'
+    },
+    {
+      id: 'temperata_australis',
+      name: 'Südliche Gemäßigte Zone',
+      latinName: 'Zona Temperata Australis',
+      description: 'Die hypothetische bewohnbare Zone jenseits der Wüste',
+      culturalSignificance: 'Theoretische Heimat der mysteriösen Antipoden',
+      macrobiusQuote: 'Zona temperata australis, forsan habitabilis',
+      translation: 'Die südliche gemäßigte Zone, möglicherweise bewohnbar',
       color: '#F59E0B',
-      coordinates: { x: 50, y: 55 }
+      yPosition: 70,
+      temperature: 'Gemäßigt (theoretisch)',
+      inhabitants: 'Antipoden (spekulativ)',
+      romanUnderstanding: 'Diese Zone existierte nur in der Theorie. Macrobius spekulierte über Bewohner, die "verkehrt herum" an der Erdkugel hingen - eine revolutionäre Vorstellung für die Antike.',
+      medievalInfluence: 'Die Antipoden-Theorie wurde im Mittelalter kontrovers diskutiert. Die Kirche lehnte sie oft ab, aber Gelehrte wie Gerbert von Aurillac (später Papst Silvester II.) verteidigten Macrobius\' wissenschaftliche Sicht.'
     },
     {
-      id: 'oceanus',
-      name: t.regions.oceanus,
-      description: 'Der große Ozean, der die bewohnte Welt umgibt.',
-      color: '#06B6D4',
-      coordinates: { x: 50, y: 50 }
+      id: 'antarcticus',
+      name: 'Südliche Eiszone',
+      latinName: 'Zona Glacialis Australis',
+      description: 'Die südlichste Zone, spiegelbildlich zur nördlichen Eiszone',
+      culturalSignificance: 'Symbol für die vollständige, symmetrische Weltordnung',
+      macrobiusQuote: 'Zona glacialis australis, frigore perpetuo inhabitabilis',
+      translation: 'Die südliche Eiszone, durch ewige Kälte unbewohnbar',
+      color: '#A5F3FC',
+      yPosition: 90,
+      temperature: 'Extremkälte',
+      inhabitants: 'Unbewohnt',
+      romanUnderstanding: 'Diese Zone komplettierte Macrobius\' symmetrische Weltsicht. Die Erde war ein perfekter Kosmos mit ausgewogenen Gegensätzen - typisch für spätantikes neuplatonisches Denken.',
+      medievalInfluence: 'Mittelalterliche T-O-Karten ignorierten oft diese Zone, aber wissenschaftlich orientierte Kartographen wie die der Schule von Chartres bewahrten Macrobius\' vollständiges System.'
     }
-  ]
+  ];
 
-  const features = [
-    { id: 'climate', name: t.features.climate, icon: Mountain, color: 'bg-blue-500' },
-    { id: 'inhabited', name: t.features.inhabited, icon: MapPin, color: 'bg-green-500' },
-    { id: 'unknown', name: t.features.unknown, icon: Compass, color: 'bg-gray-500' },
-    { id: 'sacred', name: t.features.sacred, icon: Navigation, color: 'bg-purple-500' }
-  ]
-
-  const concepts = [
+  // Geographical concepts from Macrobius
+  const geographicalConcepts: GeographicalConcept[] = [
     {
-      title: t.info.spherical,
-      description: t.info.sphericalDesc,
+      id: 'orbis_terrarum',
+      title: 'Orbis Terrarum - Der Erdkreis',
+      latinTerm: 'Orbis Terrarum',
+      description: 'Macrobius\' Konzept der bewohnbaren Welt als zusammenhängende Scheibe',
+      macrobiusText: '"Orbis terrarum quem nos incolimus, pars est totius terrae"',
+      culturalContext: 'Der "Erdkreis" war mehr als geographischer Begriff - er definierte die Grenzen der Zivilisation. Alles innerhalb war "römisch", alles außerhalb "barbarisch". Diese Sichtweise legitimierte römische Expansion als "Zivilisierungsmission".',
+      medievalLegacy: 'Das Konzept überlebte als "Christlicher Erdkreis" (Orbis Christianus). Mittelalterliche Herrscher sahen sich als Erben römischer Weltordnung.',
       icon: Globe
     },
     {
-      title: t.info.zones,
-      description: t.info.zonesDesc,
-      icon: Waves
+      id: 'antipodes',
+      title: 'Antipodes - Die Gegenfüßler',
+      latinTerm: 'Antipodes',
+      description: 'Hypothetische Bewohner auf der gegenüberliegenden Seite der Erdkugel',
+      macrobiusText: '"Antipodes nostri pedibus adversis calcant terram"',
+      culturalContext: 'Die Antipoden-Theorie war revolutionär: Sie implizierte eine runde Erde und andere Zivilisationen. Für Römer war dies philosophische Spekulation, aber auch Warnung vor den Grenzen ihres Wissens.',
+      medievalLegacy: 'Die Kirche debattierte heftig über Antipoden: Wenn sie existierten, waren sie von Christus\' Erlösung ausgeschlossen? Diese Frage beeinflusste mittelalterliche Theologie nachhaltig.',
+      icon: Navigation
     },
     {
-      title: t.info.antipodes,
-      description: t.info.antipodesDesc,
-      icon: Navigation
+      id: 'clima',
+      title: 'Clima - Klimatische Regionen',
+      latinTerm: 'Climate',
+      description: 'Einteilung der Erde nach Sonneneinstrahlung und Tageslänge',
+      macrobiusText: '"Climate vocatur inclinatio caeli diversa"',
+      culturalContext: 'Macrobius\' Klima-Konzept war wissenschaftlich fortschrittlich: Er erkannte, dass geographische Breite das Klima bestimmt. Dies erklärte kulturelle Unterschiede "natürlich" - Nordvölker waren "kalt" und kriegerisch, Südvölker "heiß" und leidenschaftlich.',
+      medievalLegacy: 'Mittelalterliche Medizin und Astrologie übernahmen diese Klima-Lehre. Noch Montesquieu im 18. Jahrhundert argumentierte mit ähnlichen klimatischen Determinismus.',
+      icon: Thermometer
+    },
+    {
+      id: 'oceanus',
+      title: 'Oceanus - Der Weltumfassende Ozean',
+      latinTerm: 'Oceanus',
+      description: 'Der mythische Ozean, der die bewohnbare Welt ringförmig umschließt',
+      macrobiusText: '"Oceanus terram nostram undique circumfluens"',
+      culturalContext: 'Der Oceanus war geographische und mythologische Grenze zugleich. Jenseits lag das Unbekannte - Reich der Götter, Monster und Wunder. Diese Vorstellung prägte römische Expansion: Das Mittelmeer war "unser Meer" (Mare Nostrum), der Atlantik blieb fremd.',
+      medievalLegacy: 'Mittelalterliche Karten zeigten den Oceanus als kreisförmigen Rahmen um die T-O-Darstellung der Welt. Columbus suchte den Weg nach Asien durch diesen "Ocean Sea".',
+      icon: Waves
     }
-  ]
+  ];
+
+  // Roman territorial administration regions
+  const territorialRegions: TerritorialRegion[] = [
+    {
+      id: 'gallia',
+      name: 'Gallien',
+      latinName: 'Gallia',
+      description: 'Die westlichen Provinzen des Reiches',
+      administration: 'Praefectus Praetorio Galliarum',
+      culturalRole: 'Bollwerk gegen germanische Stämme und keltische Traditionen',
+      coordinates: { x: 30, y: 35 },
+      color: '#3B82F6'
+    },
+    {
+      id: 'hispania',
+      name: 'Hispanien', 
+      latinName: 'Hispania',
+      description: 'Die iberische Halbinsel unter Macrobius\' Verwaltung',
+      administration: 'Praefectus Praetorio per Hispanias (Macrobius selbst!)',
+      culturalRole: 'Reiche Provinz mit alter römischer Tradition und Goldbergbau',
+      coordinates: { x: 25, y: 45 },
+      color: '#F59E0B'
+    },
+    {
+      id: 'italia',
+      name: 'Italien',
+      latinName: 'Italia',
+      description: 'Das Kernland des Imperiums',
+      administration: 'Vicarius Urbis Romae',
+      culturalRole: 'Kulturelles und politisches Zentrum der römischen Welt',
+      coordinates: { x: 45, y: 40 },
+      color: '#10B981'
+    },
+    {
+      id: 'oriens',
+      name: 'Orient',
+      latinName: 'Oriens',
+      description: 'Die östlichen Provinzen',
+      administration: 'Praefectus Praetorio Orientis',
+      culturalRole: 'Verbindung zu griechischer Philosophie und östlicher Weisheit',
+      coordinates: { x: 70, y: 35 },
+      color: '#8B5CF6'
+    }
+  ];
+
+  useEffect(() => {
+    if (!isActive) return;
+    
+    const timer1 = setTimeout(() => setAnimationPhase('zones'), 2000);
+    const timer2 = setTimeout(() => setAnimationPhase('complete'), 5000);
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [isActive]);
+
+  if (!isActive) return null;
 
   return (
-    <section id="worldmap" className="py-20 bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            {t.title}
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
-            {t.subtitle}
-          </p>
-          <p className="text-gray-700 max-w-4xl mx-auto">
-            {t.description}
-          </p>
-        </div>
+    <motion.section
+      className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      {/* Enhanced Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-cyan-950 to-teal-900" />
+      
+      {/* Animated Map Elements */}
+      <div className="absolute inset-0 opacity-10">
+        {[...Array(50)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-cyan-400 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              opacity: [0.3, 0.8, 0.3],
+              scale: [0.5, 1.2, 0.5]
+            }}
+            transition={{
+              duration: 4 + Math.random() * 3,
+              repeat: Infinity,
+              delay: Math.random() * 5
+            }}
+          />
+        ))}
+      </div>
 
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            {/* Interactive Map */}
-            <div className="xl:col-span-2">
-              <Card className="p-8 shadow-lg">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 flex items-center">
-                    <Map className="h-6 w-6 mr-2 text-blue-500" />
-                    Orbis Terrarum
-                  </h3>
-                  <div className="flex space-x-2">
-                    {features.map((feature) => {
-                      const Icon = feature.icon
-                      return (
-                        <Button
-                          key={feature.id}
-                          variant={activeFeature === feature.id ? "default" : "outline"}
-                          size="sm"
-                          className={`${activeFeature === feature.id ? feature.color : ''}`}
-                          onClick={() => setActiveFeature(activeFeature === feature.id ? null : feature.id)}
-                        >
-                          <Icon className="h-4 w-4 mr-1" />
-                          {feature.name}
-                        </Button>
-                      )
-                    })}
+      <div className="relative z-10 w-full max-w-8xl mx-auto">
+        {/* Enhanced Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-blue-100 to-teal-200 mb-6">
+            Macrobius' Weltkarte
+          </h1>
+          <h2 className="text-2xl md:text-3xl text-cyan-200 mb-8">
+            Römische Geographie der Spätantike
+          </h2>
+          <p className="text-lg md:text-xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">
+            Im 5. Jahrhundert dokumentierte Macrobius als Praefectus praetorio per Hispanias nicht nur 
+            das römische Verwaltungssystem, sondern auch das geographische Weltverständnis der Spätantike. 
+            Seine Beschreibung der fünf Klimazonen prägte über 1000 Jahre die europäische Kartographie 
+            und beeinflusste mittelalterliche Weltkarten von den T-O-Darstellungen bis zu den detaillierten 
+            Portolan-Karten der Renaissance.
+          </p>
+          
+          {/* Cultural Context Introduction */}
+          <motion.div
+            className="bg-gradient-to-br from-teal-900/20 to-cyan-950/20 rounded-xl border border-teal-500/20 p-6 max-w-5xl mx-auto"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+          >
+            <h3 className="text-xl font-semibold text-teal-200 mb-4">🗺️ Geographisches Erbe</h3>
+            <p className="text-teal-100/90 leading-relaxed">
+              Macrobius' geographisches System war revolutionär: Als einer der wenigen Römer beschrieb er 
+              die Erde als perfekte Kugel mit symmetrischen Klimazonen. Seine "Antipoden"-Theorie inspirierte 
+              mittelalterliche Gelehrte und Renaissance-Entdecker. Von der Schule von Chartres über Gerbert 
+              von Aurillac bis zu den Kartographen, die Columbus' Reisen ermöglichten - alle stützten sich 
+              auf Macrobius' geographische Weisheit.
+            </p>
+          </motion.div>
+        </motion.div>
+
+        {/* View Mode Switcher */}
+        <motion.div
+          className="flex justify-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <div className="bg-white/10 backdrop-blur-md rounded-xl p-2 border border-white/20">
+            {[
+              { id: 'climate', label: 'Klimazonen', icon: Thermometer },
+              { id: 'territories', label: 'Verwaltung', icon: Shield },
+              { id: 'concepts', label: 'Konzepte', icon: Scroll }
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => setViewMode(id as any)}
+                className={`px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2 ${
+                  viewMode === id
+                    ? 'bg-cyan-500 text-white shadow-lg'
+                    : 'text-cyan-200 hover:bg-white/10'
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+                {label}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+          {/* Central Map Visualization - Different views based on mode */}
+          <div className="xl:col-span-2 order-2 xl:order-1">
+            <motion.div
+              className="bg-white/5 backdrop-blur-md rounded-xl border border-white/10 p-8"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1, duration: 0.8 }}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-cyan-100 flex items-center gap-2">
+                  <Map className="w-6 h-6" />
+                  {viewMode === 'climate' && 'Quinque Climate - Die Fünf Zonen'}
+                  {viewMode === 'territories' && 'Imperium Romanum - Verwaltungsgliederung'}
+                  {viewMode === 'concepts' && 'Geografia Macrobii - Geographische Konzepte'}
+                </h3>
+              </div>
+
+              {/* Climate Zones View */}
+              {viewMode === 'climate' && (
+                <div className="relative bg-gradient-to-b from-blue-900 via-green-800 to-blue-900 rounded-xl p-8 min-h-[500px] overflow-hidden">
+                  {/* Climate Zones Visualization */}
+                  <div className="relative w-full h-full">
+                    {climateZones.map((zone, index) => (
+                      <motion.div
+                        key={zone.id}
+                        className={`absolute left-0 right-0 cursor-pointer transition-all duration-300 hover:z-20 ${
+                          selectedZone?.id === zone.id ? 'z-10 ring-2 ring-white/50' : ''
+                        }`}
+                        style={{
+                          top: `${zone.yPosition}%`,
+                          height: '15%',
+                          backgroundColor: zone.color,
+                          opacity: selectedZone?.id === zone.id ? 0.9 : 0.7
+                        }}
+                        onClick={() => setSelectedZone(zone)}
+                        initial={{ opacity: 0, x: -100 }}
+                        animate={{ opacity: animationPhase === 'zones' ? 0.7 : 0.3, x: 0 }}
+                        transition={{ delay: index * 0.3, duration: 0.8 }}
+                        whileHover={{ opacity: 0.9, scale: 1.02 }}
+                      >
+                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                          <h4 className="font-bold text-black text-lg">{zone.name}</h4>
+                          <p className="text-black/80 text-sm">{zone.latinName}</p>
+                        </div>
+                        
+                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                          <div className="flex items-center gap-2">
+                            {zone.id.includes('glacialis') && <Snowflake className="w-5 h-5 text-blue-700" />}
+                            {zone.id.includes('temperata') && <Sun className="w-5 h-5 text-green-700" />}
+                            {zone.id === 'torrida' && <Sun className="w-5 h-5 text-red-700" />}
+                            <span className="text-black font-medium text-sm">{zone.temperature}</span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                    
+                    {/* Earth indicator at center */}
+                    <motion.div
+                      className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-blue-600 rounded-full border-2 border-green-400 flex items-center justify-center z-30"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    >
+                      🌍
+                    </motion.div>
                   </div>
                 </div>
+              )}
 
-                {/* Stylized World Map */}
-                <div className="relative bg-gradient-to-b from-blue-100 to-blue-200 rounded-xl p-8 min-h-96">
-                  {/* Ocean Background */}
-                  <div className="absolute inset-4 bg-gradient-to-br from-blue-300 to-blue-400 rounded-lg opacity-30" />
-                  
-                  {/* Continents */}
-                  <svg viewBox="0 0 100 70" className="w-full h-full relative z-10">
-                    {/* Europe */}
+              {/* Territories View */}
+              {viewMode === 'territories' && (
+                <div className="relative bg-gradient-to-br from-amber-900 via-amber-800 to-amber-900 rounded-xl p-8 min-h-[500px] overflow-hidden">
+                  <svg viewBox="0 0 100 70" className="w-full h-full">
+                    {/* Roman Empire outline */}
                     <path
-                      d="M35 25 Q45 20 55 25 Q60 30 55 35 Q45 40 35 35 Q30 30 35 25"
-                      fill={selectedRegion?.id === 'europe' ? '#2563EB' : '#4ADE80'}
-                      stroke="#1F2937"
-                      strokeWidth="0.5"
-                      className="cursor-pointer hover:opacity-80 transition-opacity"
-                      onClick={() => setSelectedRegion(regions.find(r => r.id === 'europe') || null)}
+                      d="M10 30 Q30 25 50 30 Q70 25 90 35 Q85 50 70 55 Q50 60 30 55 Q15 45 10 30"
+                      fill="rgba(217, 119, 6, 0.3)"
+                      stroke="#D97706"
+                      strokeWidth="2"
+                      className="animate-pulse"
                     />
                     
-                    {/* Asia */}
-                    <path
-                      d="M55 25 Q75 20 85 30 Q80 40 70 35 Q60 30 55 25"
-                      fill={selectedRegion?.id === 'asia' ? '#2563EB' : '#10B981'}
-                      stroke="#1F2937"
-                      strokeWidth="0.5"
-                      className="cursor-pointer hover:opacity-80 transition-opacity"
-                      onClick={() => setSelectedRegion(regions.find(r => r.id === 'asia') || null)}
-                    />
-                    
-                    {/* Africa */}
-                    <path
-                      d="M40 35 Q50 30 60 40 Q55 55 45 50 Q35 45 40 35"
-                      fill={selectedRegion?.id === 'africa' ? '#2563EB' : '#F59E0B'}
-                      stroke="#1F2937"
-                      strokeWidth="0.5"
-                      className="cursor-pointer hover:opacity-80 transition-opacity"
-                      onClick={() => setSelectedRegion(regions.find(r => r.id === 'africa') || null)}
-                    />
-
-                    {/* Climate Zone Lines */}
-                    {activeFeature === 'climate' && (
-                      <g>
-                        <line x1="0" y1="15" x2="100" y2="15" stroke="#EF4444" strokeWidth="1" strokeDasharray="2,2" />
-                        <line x1="0" y1="30" x2="100" y2="30" stroke="#22C55E" strokeWidth="1" strokeDasharray="2,2" />
-                        <line x1="0" y1="45" x2="100" y2="45" stroke="#EF4444" strokeWidth="1" strokeDasharray="2,2" />
-                        <line x1="0" y1="55" x2="100" y2="55" stroke="#EF4444" strokeWidth="1" strokeDasharray="2,2" />
-                      </g>
-                    )}
-
-                    {/* Region Markers */}
-                    {regions.map((region) => (
+                    {/* Territorial regions */}
+                    {territorialRegions.map((region, index) => (
                       <g key={region.id}>
                         <circle
                           cx={region.coordinates.x}
                           cy={region.coordinates.y}
-                          r="2"
+                          r="8"
                           fill={region.color}
-                          className="cursor-pointer hover:r-3 transition-all"
+                          stroke="white"
+                          strokeWidth="2"
+                          className="cursor-pointer hover:r-10 transition-all"
                           onClick={() => setSelectedRegion(region)}
                         />
+                        <text
+                          x={region.coordinates.x}
+                          y={region.coordinates.y + 15}
+                          textAnchor="middle"
+                          className="fill-white text-xs font-bold"
+                        >
+                          {region.name}
+                        </text>
                         {selectedRegion?.id === region.id && (
                           <circle
                             cx={region.coordinates.x}
                             cy={region.coordinates.y}
-                            r="4"
+                            r="12"
                             fill="none"
-                            stroke={region.color}
-                            strokeWidth="2"
+                            stroke="white"
+                            strokeWidth="3"
                             className="animate-ping"
                           />
                         )}
                       </g>
                     ))}
                   </svg>
-
-                  {/* Legend */}
-                  <div className="absolute bottom-4 left-4 bg-white bg-opacity-90 rounded-lg p-3">
-                    <h4 className="font-semibold text-sm mb-2">{t.regions.title}</h4>
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      {regions.slice(0, 3).map((region) => (
-                        <div key={region.id} className="flex items-center">
-                          <div 
-                            className="w-3 h-3 rounded-full mr-2" 
-                            style={{ backgroundColor: region.color }}
-                          />
-                          <span>{region.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
                 </div>
+              )}
 
-                {/* Selected Region Info */}
-                {selectedRegion && (
-                  <Card className="mt-4 p-4 border-l-4" style={{ borderLeftColor: selectedRegion.color }}>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h4 className="font-bold text-lg mb-2">{selectedRegion.name}</h4>
-                        <p className="text-gray-600">{selectedRegion.description}</p>
-                      </div>
-                      <Button size="sm" variant="outline">
-                        {t.explore}
-                      </Button>
-                    </div>
-                  </Card>
-                )}
-              </Card>
-            </div>
-
-            {/* Concepts Sidebar */}
-            <div className="space-y-6">
-              <Card className="p-6 shadow-lg">
-                <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                  <Info className="h-5 w-5 mr-2 text-blue-500" />
-                  Macrobius' Konzepte
-                </h3>
-                <div className="space-y-4">
-                  {concepts.map((concept, index) => {
-                    const Icon = concept.icon
+              {/* Concepts View */}
+              {viewMode === 'concepts' && (
+                <div className="grid grid-cols-2 gap-4">
+                  {geographicalConcepts.map((concept, index) => {
+                    const Icon = concept.icon;
                     return (
-                      <div key={index} className="border-b border-gray-200 last:border-b-0 pb-4 last:pb-0">
-                        <div className="flex items-start">
-                          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-1">
-                            <Icon className="h-4 w-4 text-blue-600" />
+                      <button
+                        key={concept.id}
+                        onClick={() => setSelectedConcept(selectedConcept === concept.id ? null : concept.id)}
+                        className={`p-6 rounded-xl border transition-all duration-300 text-left ${
+                          selectedConcept === concept.id
+                            ? 'bg-cyan-500/20 border-cyan-500/40'
+                            : 'bg-white/5 border-white/10 hover:bg-white/10'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-8 h-8 bg-cyan-500/20 rounded-full flex items-center justify-center">
+                            <Icon className="w-4 h-4 text-cyan-300" />
                           </div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900 mb-2">{concept.title}</h4>
-                            <p className="text-sm text-gray-600">{concept.description}</p>
-                          </div>
+                          <h4 className="font-semibold text-cyan-100">{concept.title}</h4>
                         </div>
-                      </div>
-                    )
+                        <p className="text-cyan-200/80 text-sm">{concept.latinTerm}</p>
+                      </button>
+                    );
                   })}
                 </div>
-              </Card>
+              )}
 
-              {/* Quick Stats */}
-              <Card className="p-6 shadow-lg">
-                <h4 className="font-bold text-gray-900 mb-4">Geographische Daten</h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Klimazonen</span>
-                    <Badge variant="secondary">5</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Bekannte Kontinente</span>
-                    <Badge variant="secondary">3</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Erdumfang</span>
-                    <Badge variant="outline">~250k Stadien</Badge>
-                  </div>
-                </div>
-                <Button className="w-full mt-4" variant="outline">
-                  {t.learnMore}
-                </Button>
-              </Card>
-            </div>
+              {/* Selected Item Details */}
+              <AnimatePresence>
+                {(selectedZone || selectedRegion || selectedConcept) && (
+                  <motion.div
+                    className="mt-6 p-6 bg-gradient-to-br from-slate-900/40 to-slate-950/40 rounded-xl border border-slate-500/20"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {selectedZone && (
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-4">
+                          <div 
+                            className="w-8 h-8 rounded-full"
+                            style={{ backgroundColor: selectedZone.color }}
+                          />
+                          <div>
+                            <h4 className="text-xl font-bold text-slate-100">{selectedZone.name}</h4>
+                            <p className="text-slate-300 text-sm italic">{selectedZone.latinName}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4">
+                          <h5 className="font-semibold text-amber-200 mb-2">Macrobius' Beschreibung</h5>
+                          <blockquote className="text-amber-100 italic text-sm mb-2">
+                            "{selectedZone.macrobiusQuote}"
+                          </blockquote>
+                          <p className="text-amber-200/80 text-xs">{selectedZone.translation}</p>
+                        </div>
+                        
+                        <div>
+                          <h5 className="font-semibold text-slate-200 mb-2">Römisches Verständnis</h5>
+                          <p className="text-slate-300 text-sm leading-relaxed">{selectedZone.romanUnderstanding}</p>
+                        </div>
+                        
+                        <div>
+                          <h5 className="font-semibold text-slate-200 mb-2">Mittelalterlicher Einfluss</h5>
+                          <p className="text-slate-300 text-sm leading-relaxed">{selectedZone.medievalInfluence}</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {selectedRegion && (
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-4">
+                          <div 
+                            className="w-8 h-8 rounded-full"
+                            style={{ backgroundColor: selectedRegion.color }}
+                          />
+                          <div>
+                            <h4 className="text-xl font-bold text-slate-100">{selectedRegion.name}</h4>
+                            <p className="text-slate-300 text-sm italic">{selectedRegion.latinName}</p>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <h5 className="font-semibold text-slate-200 mb-2">Verwaltung</h5>
+                          <p className="text-slate-300 text-sm">{selectedRegion.administration}</p>
+                        </div>
+                        
+                        <div>
+                          <h5 className="font-semibold text-slate-200 mb-2">Kulturelle Rolle</h5>
+                          <p className="text-slate-300 text-sm leading-relaxed">{selectedRegion.culturalRole}</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {selectedConcept && (
+                      <div className="space-y-4">
+                        {geographicalConcepts.find(c => c.id === selectedConcept) && (
+                          <>
+                            <h4 className="text-xl font-bold text-slate-100">
+                              {geographicalConcepts.find(c => c.id === selectedConcept)!.title}
+                            </h4>
+                            
+                            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                              <h5 className="font-semibold text-blue-200 mb-2">Macrobius' Text</h5>
+                              <blockquote className="text-blue-100 italic text-sm">
+                                "{geographicalConcepts.find(c => c.id === selectedConcept)!.macrobiusText}"
+                              </blockquote>
+                            </div>
+                            
+                            <div>
+                              <h5 className="font-semibold text-slate-200 mb-2">Kultureller Kontext</h5>
+                              <p className="text-slate-300 text-sm leading-relaxed">
+                                {geographicalConcepts.find(c => c.id === selectedConcept)!.culturalContext}
+                              </p>
+                            </div>
+                            
+                            <div>
+                              <h5 className="font-semibold text-slate-200 mb-2">Mittelalterliches Erbe</h5>
+                              <p className="text-slate-300 text-sm leading-relaxed">
+                                {geographicalConcepts.find(c => c.id === selectedConcept)!.medievalLegacy}
+                              </p>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+
+          {/* Left Sidebar - Climate Zones List */}
+          <div className="xl:col-span-1 order-1 xl:order-1 space-y-6">
+            <motion.div
+              className="bg-white/5 backdrop-blur-md rounded-xl border border-white/10 p-6"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.2, duration: 0.8 }}
+            >
+              <h3 className="text-xl font-bold text-cyan-100 mb-6 flex items-center gap-2">
+                <Compass className="w-5 h-5" />
+                Die Fünf Zonen
+              </h3>
+              <div className="space-y-3">
+                {climateZones.map((zone, index) => (
+                  <button
+                    key={zone.id}
+                    onClick={() => setSelectedZone(zone)}
+                    className={`w-full text-left p-3 rounded-lg transition-all duration-300 ${
+                      selectedZone?.id === zone.id
+                        ? 'bg-white/20 border border-white/30'
+                        : 'bg-white/5 hover:bg-white/10'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div 
+                        className="w-4 h-4 rounded-full"
+                        style={{ backgroundColor: zone.color }}
+                      />
+                      <div>
+                        <div className="text-sm font-medium text-white">{zone.name}</div>
+                        <div className="text-xs text-white/60">{zone.inhabitants}</div>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right Sidebar - Cultural Context */}
+          <div className="xl:col-span-1 order-3 xl:order-3 space-y-6">
+            <motion.div
+              className="bg-gradient-to-br from-emerald-900/20 to-emerald-950/20 rounded-xl border border-emerald-500/20 p-6"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.4, duration: 0.8 }}
+            >
+              <h4 className="font-bold text-emerald-200 mb-4 flex items-center gap-2">
+                <Globe className="w-4 h-4" />
+                Kulturelles Vermächtnis
+              </h4>
+              <div className="space-y-4 text-sm text-emerald-100/90 leading-relaxed">
+                <p>
+                  <strong className="text-emerald-200">Administratives Erbe:</strong> Als Praefectus praetorio 
+                  per Hispanias kannte Macrobius die praktischen Herausforderungen römischer Territorialverwaltung 
+                  aus erster Hand.
+                </p>
+                <p>
+                  <strong className="text-emerald-200">Wissenschaftliche Revolution:</strong> Seine Beschreibung 
+                  der Erdkugel mit Antipoden war wissenschaftlich revolutionär und inspirierte Renaissance-Entdecker.
+                </p>
+                <p>
+                  <strong className="text-emerald-200">Kartographischer Einfluss:</strong> Von mittelalterlichen 
+                  T-O-Karten bis zu den Portolan-Karten der Renaissance - alle stützten sich auf Macrobius' 
+                  geographische Systematik.
+                </p>
+                <p>
+                  <strong className="text-emerald-200">Moderne Relevanz:</strong> Macrobius' Klimazonensystem 
+                  ist der Vorläufer moderner Klimaklassifikation und Geozonen-Einteilung.
+                </p>
+              </div>
+            </motion.div>
           </div>
         </div>
+
+        {/* Bottom Summary */}
+        <motion.div
+          className="mt-16 bg-gradient-to-br from-indigo-900/20 to-purple-950/20 rounded-xl border border-indigo-500/20 p-8"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2, duration: 1 }}
+        >
+          <h3 className="text-2xl font-bold text-indigo-200 mb-6 text-center">🗺️ Geographisches Erbe durch die Jahrhunderte</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-4xl mb-4">🏛️</div>
+              <h4 className="font-semibold text-indigo-200 mb-2">Römische Verwaltung</h4>
+              <p className="text-indigo-100/80 text-sm leading-relaxed">
+                Macrobius' praktische Erfahrung als Präfekt prägte sein geographisches Verständnis
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-4">🗺️</div>
+              <h4 className="font-semibold text-indigo-200 mb-2">Mittelalterliche Karten</h4>
+              <p className="text-indigo-100/80 text-sm leading-relaxed">
+                T-O-Karten und Mappa Mundi übernahmen Macrobius' Zonensystem direkt
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-4">🧭</div>
+              <h4 className="font-semibold text-indigo-200 mb-2">Renaissance-Entdeckungen</h4>
+              <p className="text-indigo-100/80 text-sm leading-relaxed">
+                Columbus und andere Entdecker stützten sich auf Macrobius' Antipoden-Theorie
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-4">🌡️</div>
+              <h4 className="font-semibold text-indigo-200 mb-2">Moderne Klimatologie</h4>
+              <p className="text-indigo-100/80 text-sm leading-relaxed">
+                Seine Klimazonen sind Vorläufer heutiger Klimaklassifikationssysteme
+              </p>
+            </div>
+          </div>
+        </motion.div>
       </div>
-    </section>
-  )
+    </motion.section>
+  );
 }
 
-// Export both named and default for compatibility
-export { WorldMapSection };
-export default WorldMapSection;
+export default EnhancedWorldMapSection;
