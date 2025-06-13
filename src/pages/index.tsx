@@ -207,7 +207,7 @@ const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, cla
 
 // Main CULTURAL EDUCATION application
 export default function MacrobiusCulturalApp() {
-  // Language state - Fix TypeScript
+  // Language state - Fix TypeScript by being explicit about the type
   const [currentLang, setCurrentLang] = useState<Language>('DE');
   
   // Navigation state
@@ -562,12 +562,12 @@ export default function MacrobiusCulturalApp() {
 
           {/* Oracle Cloud-Integrated Sections - CULTURAL FOCUS - Fix: Pass language prop correctly */}
           {activeSection === 'search' && (
-            <TextSearchSection isActive={true} t={tAdapter} language={currentLang as any} />
+            <TextSearchSection isActive={true} t={tAdapter} language={currentLang} />
           )}
 
           {activeSection === 'cosmos' && (
             <div>
-              <CosmosSection isActive={true} t={tAdapter} language={currentLang as any} />
+              <CosmosSection isActive={true} t={tAdapter} language={currentLang} />
               {/* Add clickable images to Cosmos section */}
               {cosmosImages.length > 0 && (
                 <div className="fixed bottom-4 right-4 z-40">
@@ -629,7 +629,7 @@ export default function MacrobiusCulturalApp() {
 
           {activeSection === 'worldmap' && (
             <div>
-              <WorldMapSection isActive={true} t={tAdapter} language={currentLang as any} />
+              <WorldMapSection isActive={true} t={tAdapter} language={currentLang} />
               {/* Add clickable images to WorldMap section */}
               {worldmapImages.length > 0 && (
                 <div className="fixed bottom-4 right-4 z-40">
@@ -663,7 +663,7 @@ export default function MacrobiusCulturalApp() {
           )}
 
           {activeSection === 'learning' && (
-            <LearningSection isActive={true} t={tAdapter} language={currentLang as any} />
+            <LearningSection isActive={true} t={tAdapter} language={currentLang} />
           )}
 
           {activeSection === 'visualizations' && (
