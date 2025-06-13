@@ -562,12 +562,12 @@ export default function MacrobiusCulturalApp() {
 
           {/* Oracle Cloud-Integrated Sections - CULTURAL FOCUS - Fix: Pass language prop correctly */}
           {activeSection === 'search' && (
-            <TextSearchSection isActive={true} t={tAdapter} language={currentLang} />
+            <TextSearchSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
 
           {activeSection === 'cosmos' && (
             <div>
-              <CosmosSection isActive={true} t={tAdapter} language={currentLang} />
+              <CosmosSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
               {/* Add clickable images to Cosmos section */}
               {cosmosImages.length > 0 && (
                 <div className="fixed bottom-4 right-4 z-40">
@@ -598,7 +598,7 @@ export default function MacrobiusCulturalApp() {
 
           {activeSection === 'banquet' && (
             <div>
-              <BanquetSection isActive={true} t={tAdapter} language={currentLang} />
+              <BanquetSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
               {/* Add clickable images to Banquet section */}
               {banquetImages.length > 0 && (
                 <div className="fixed bottom-4 right-4 z-40">
@@ -629,7 +629,7 @@ export default function MacrobiusCulturalApp() {
 
           {activeSection === 'worldmap' && (
             <div>
-              <WorldMapSection isActive={true} t={tAdapter} language={currentLang} />
+              <WorldMapSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
               {/* Add clickable images to WorldMap section */}
               {worldmapImages.length > 0 && (
                 <div className="fixed bottom-4 right-4 z-40">
@@ -663,12 +663,12 @@ export default function MacrobiusCulturalApp() {
           )}
 
           {activeSection === 'learning' && (
-            <LearningSection isActive={true} t={tAdapter} language={currentLang} />
+            <LearningSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
 
           {activeSection === 'visualizations' && (
             <div>
-              <VisualizationsSection isActive={true} t={tAdapter} language={currentLang} />
+              <VisualizationsSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
               {/* Add clickable images to Visualizations section */}
               {visualizationImages.length > 0 && (
                 <div className="fixed bottom-4 right-4 z-40">
@@ -699,19 +699,19 @@ export default function MacrobiusCulturalApp() {
 
           {/* AI Systems Sections */}
           {activeSection === 'ai-cultural' && (
-            <AICulturalAnalysisSection isActive={true} t={tAdapter} language={currentLang} />
+            <AICulturalAnalysisSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
 
           {activeSection === 'ai-learning' && (
-            <PersonalizedLearningPathsSection isActive={true} t={tAdapter} language={currentLang} />
+            <PersonalizedLearningPathsSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
 
           {activeSection === 'ai-tutoring' && (
-            <AITutoringSystemSection isActive={true} t={tAdapter} language={currentLang} />
+            <AITutoringSystemSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
 
           {activeSection === 'ai-modules' && (
-            <AdvancedCulturalModulesSection isActive={true} t={tAdapter} language={currentLang} />
+            <AdvancedCulturalModulesSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
         </main>
 
