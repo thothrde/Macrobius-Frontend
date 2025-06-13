@@ -153,8 +153,13 @@ const translations: Translations = {
   }
 };
 
-// Translation function type
-type TranslationFunction = (key: string) => string;
+// Translation function - Create a wrapper that bypasses TypeScript inference issues
+function createTranslationFunction(currentLang: 'DE' | 'EN' | 'LA'): (key: string) => string {
+  return (key: string): string => {
+    const translationKey = key as TranslationKey;
+    return translations[currentLang][translationKey] || key;
+  };
+}
 
 // Main application component with Oracle Cloud integration
 export default function MacrobiusApp() {
@@ -168,10 +173,8 @@ export default function MacrobiusApp() {
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showPontanusModal, setShowPontanusModal] = useState(false);
 
-  // Translation helper - Explicitly typed to accept any string
-  const t: TranslationFunction = useCallback((key: string): string => {
-    return translations[currentLang][key as TranslationKey] || key;
-  }, [currentLang]);
+  // Translation helper - Using the wrapper function to avoid type inference issues
+  const t = useCallback(() => createTranslationFunction(currentLang), [currentLang])();
 
   // Event handlers
   const handleLanguageChange = (lang: 'DE' | 'EN' | 'LA') => {
