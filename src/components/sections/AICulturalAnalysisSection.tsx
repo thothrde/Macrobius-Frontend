@@ -469,7 +469,7 @@ export default function AICulturalAnalysisSection({ className = '' }: AnalysisPr
                     <h4 className="text-lg font-semibold text-gray-900 mb-4">Theme Distribution</h4>
                     <div className="space-y-3">
                       {Object.entries(statistics.themeDistribution).map(([theme, count]) => {
-                        const percentage = Math.round((count / statistics.totalPassages) * 100);
+                        const percentage = Math.round(((count as number) / statistics.totalPassages) * 100);
                         return (
                           <div key={theme} className="flex items-center">
                             <div className="w-24 text-sm text-gray-600 capitalize">{theme}</div>
@@ -481,7 +481,7 @@ export default function AICulturalAnalysisSection({ className = '' }: AnalysisPr
                                 />
                               </div>
                             </div>
-                            <div className="text-sm font-medium text-gray-900 w-16">{count} ({percentage}%)</div>
+                            <div className="text-sm font-medium text-gray-900 w-16">{count as number} ({percentage}%)</div>
                           </div>
                         );
                       })}
@@ -493,7 +493,7 @@ export default function AICulturalAnalysisSection({ className = '' }: AnalysisPr
                     <h4 className="text-lg font-semibold text-gray-900 mb-4">Difficulty Distribution</h4>
                     <div className="space-y-3">
                       {Object.entries(statistics.difficultyDistribution).map(([difficulty, count]) => {
-                        const percentage = Math.round((count / statistics.totalPassages) * 100);
+                        const percentage = Math.round(((count as number) / statistics.totalPassages) * 100);
                         const colors = {
                           'Beginner': 'bg-green-500',
                           'Intermediate': 'bg-blue-500', 
@@ -511,7 +511,7 @@ export default function AICulturalAnalysisSection({ className = '' }: AnalysisPr
                                 />
                               </div>
                             </div>
-                            <div className="text-sm font-medium text-gray-900 w-16">{count} ({percentage}%)</div>
+                            <div className="text-sm font-medium text-gray-900 w-16">{count as number} ({percentage}%)</div>
                           </div>
                         );
                       })}
