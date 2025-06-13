@@ -29,9 +29,9 @@ import {
 } from 'lucide-react';
 import { 
   aiTutoringSystem, 
-  TutoringSession, 
-  TutoringInteraction, 
-  SessionProgress 
+  TutorSession, 
+  TutorInteraction, 
+  SessionSummary 
 } from '@/lib/ai-tutoring-system';
 
 interface TutoringProps {
@@ -39,7 +39,7 @@ interface TutoringProps {
 }
 
 export default function AITutoringSystemSection({ className = '' }: TutoringProps) {
-  const [currentSession, setCurrentSession] = useState<TutoringSession | null>(null);
+  const [currentSession, setCurrentSession] = useState<TutorSession | null>(null);
   const [chatInput, setChatInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [sessionStats, setSessionStats] = useState<any>(null);
@@ -83,11 +83,16 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
 
   const startSession = async () => {
     try {
-      const session = await aiTutoringSystem.startSession(
+      const session = await aiTutoringSystem.startTutoringSession(
         'user_001',
-        selectedTopic,
-        selectedDifficulty,
-        selectedLanguage,
+        {
+          culturalTheme: selectedTopic,
+          difficulty: selectedDifficulty === 'Beginner' ? 0.3 : selectedDifficulty === 'Intermediate' ? 0.6 : selectedDifficulty === 'Advanced' ? 0.8 : 0.9,
+          userStruggleAreas: [],
+          recentPerformance: [],
+          timeInSession: 0,
+          engagementLevel: 0.8
+        },
         [`Learn about ${selectedTopic}`, 'Understand cultural context', 'Connect to modern relevance']
       );
       
@@ -100,12 +105,16 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
     }
   };
 
-  const endSession = () => {
+  const endSession = async () => {
     if (currentSession) {
-      const finalProgress = aiTutoringSystem.endSession(currentSession.id);
-      setCurrentSession(null);
-      setIsSessionActive(false);
-      setSessionTime(0);
+      try {
+        await aiTutoringSystem.endTutoringSession(currentSession.userId);
+        setCurrentSession(null);
+        setIsSessionActive(false);
+        setSessionTime(0);
+      } catch (error) {
+        console.error('Failed to end session:', error);
+      }
     }
   };
 
@@ -117,11 +126,23 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
     setIsTyping(true);
 
     try {
-      const interaction = await aiTutoringSystem.processUserInput(
-        currentSession.id,
+      const response = await aiTutoringSystem.processUserQuestion(
+        currentSession.userId,
         userMessage,
-        selectedTopic
+        { culturalTheme: selectedTopic }
       );
+
+      // Create interaction object
+      const interaction: TutorInteraction = {
+        id: `interaction-${Date.now()}`,
+        timestamp: new Date(),
+        type: 'question',
+        userInput: userMessage,
+        tutorResponse: response,
+        culturalContext: selectedTopic,
+        effectiveness: response.confidence,
+        followUpNeeded: false
+      };
 
       // Update session in state
       setCurrentSession(prev => {
@@ -131,10 +152,6 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
           interactions: [...prev.interactions, interaction]
         };
       });
-
-      // Update statistics
-      const stats = aiTutoringSystem.getSessionStatistics(currentSession.id);
-      setSessionStats(stats);
 
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -147,10 +164,10 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
     if (!currentSession) return;
 
     try {
-      const hint = await aiTutoringSystem.getHint(
-        currentSession.id,
+      const hint = await aiTutoringSystem.provideContextualHint(
+        currentSession.userId,
         chatInput || selectedTopic,
-        'conceptual'
+        'moderate'
       );
 
       if (hint) {
@@ -215,7 +232,7 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
                   <Target className="h-4 w-4 mr-1" />
-                  {currentSession.topic} - {currentSession.difficulty}
+                  {currentSession.context.culturalTheme} - {selectedDifficulty}
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
                   <MessageCircle className="h-4 w-4 mr-1" />
@@ -304,14 +321,14 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                         <div>
                           <h3 className="text-xl font-bold">AI Cultural Tutor</h3>
                           <p className="text-purple-100 text-sm">
-                            Exploring {currentSession.topic} • {currentSession.language}
+                            Exploring {currentSession.context.culturalTheme} • {selectedLanguage}
                           </p>
                         </div>
                       </div>
                       <div className="text-right">
                         <div className="text-sm text-purple-100">Session Progress</div>
                         <div className="text-lg font-semibold">
-                          {Math.round(currentSession.progress.overallComprehension * 100)}%
+                          {Math.round(currentSession.context.engagementLevel * 100)}%
                         </div>
                       </div>
                     </div>
@@ -339,39 +356,35 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                           <div className="flex items-start">
                             <Bot className="h-8 w-8 bg-purple-100 text-purple-600 rounded-full p-2 flex-shrink-0 mr-2" />
                             <div className="bg-gray-100 rounded-lg px-4 py-2 flex-1">
-                              <p className="text-gray-800">{interaction.aiResponse}</p>
+                              <p className="text-gray-800">{interaction.tutorResponse.content}</p>
                               
                               {/* Cultural References */}
-                              {interaction.culturalReferences.length > 0 && (
+                              {interaction.tutorResponse.culturalConnections.length > 0 && (
                                 <div className="mt-3 flex flex-wrap gap-2">
-                                  {interaction.culturalReferences.map((ref, index) => (
+                                  {interaction.tutorResponse.culturalConnections.map((conn, index) => (
                                     <span key={index} className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
-                                      {ref}
+                                      {conn.ancientConcept}
                                     </span>
                                   ))}
                                 </div>
                               )}
                               
-                              {/* Follow-up Suggestions */}
-                              {interaction.followUpSuggestions.length > 0 && (
+                              {/* Modern Examples */}
+                              {interaction.tutorResponse.modernExamples.length > 0 && (
                                 <div className="mt-3">
-                                  <p className="text-xs text-gray-500 mb-2">Suggested follow-ups:</p>
+                                  <p className="text-xs text-gray-500 mb-2">Modern connections:</p>
                                   <div className="space-y-1">
-                                    {interaction.followUpSuggestions.map((suggestion, index) => (
-                                      <button
-                                        key={index}
-                                        onClick={() => setChatInput(suggestion)}
-                                        className="block text-xs text-purple-600 hover:text-purple-800 hover:underline text-left"
-                                      >
-                                        • {suggestion}
-                                      </button>
+                                    {interaction.tutorResponse.modernExamples.map((example, index) => (
+                                      <div key={index} className="text-xs text-green-600">
+                                        • {example}
+                                      </div>
                                     ))}
                                   </div>
                                 </div>
                               )}
                               
                               <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
-                                <span>Confidence: {Math.round(interaction.confidence * 100)}%</span>
+                                <span>Confidence: {Math.round(interaction.tutorResponse.confidence * 100)}%</span>
                                 <span>{interaction.timestamp.toLocaleTimeString()}</span>
                               </div>
                             </div>
@@ -449,46 +462,42 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   <div className="text-center p-6 bg-purple-50 rounded-lg border border-purple-200">
                     <div className="text-3xl font-bold text-purple-600 mb-2">
-                      {Math.round(currentSession.progress.overallComprehension * 100)}%
-                    </div>
-                    <div className="text-sm text-gray-600">Overall Comprehension</div>
-                  </div>
-                  <div className="text-center p-6 bg-green-50 rounded-lg border border-green-200">
-                    <div className="text-3xl font-bold text-green-600 mb-2">
-                      {currentSession.progress.conceptsMastered.length}
-                    </div>
-                    <div className="text-sm text-gray-600">Concepts Mastered</div>
-                  </div>
-                  <div className="text-center p-6 bg-blue-50 rounded-lg border border-blue-200">
-                    <div className="text-3xl font-bold text-blue-600 mb-2">
-                      {Math.round(currentSession.progress.engagementLevel * 100)}%
+                      {Math.round(currentSession.context.engagementLevel * 100)}%
                     </div>
                     <div className="text-sm text-gray-600">Engagement Level</div>
                   </div>
+                  <div className="text-center p-6 bg-green-50 rounded-lg border border-green-200">
+                    <div className="text-3xl font-bold text-green-600 mb-2">
+                      {currentSession.learningGoals.length}
+                    </div>
+                    <div className="text-sm text-gray-600">Learning Goals</div>
+                  </div>
+                  <div className="text-center p-6 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="text-3xl font-bold text-blue-600 mb-2">
+                      {currentSession.interactions.length}
+                    </div>
+                    <div className="text-sm text-gray-600">Total Interactions</div>
+                  </div>
                 </div>
 
-                {/* Learning Objectives Progress */}
+                {/* Learning Goals Progress */}
                 <div className="mb-8">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-4">Learning Objectives</h4>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">Learning Goals</h4>
                   <div className="space-y-3">
-                    {currentSession.learningObjectives.map((objective, index) => {
-                      const isCompleted = currentSession.progress.conceptsMastered.includes(objective);
-                      const isInProgress = currentSession.progress.conceptsInProgress.includes(objective);
+                    {currentSession.learningGoals.map((goal, index) => {
+                      const isActive = index < currentSession.interactions.length;
                       
                       return (
                         <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200">
-                          {isCompleted ? (
-                            <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                          ) : isInProgress ? (
+                          {isActive ? (
                             <RefreshCw className="h-5 w-5 text-blue-500 mr-3" />
                           ) : (
                             <AlertCircle className="h-5 w-5 text-gray-400 mr-3" />
                           )}
-                          <span className={`flex-1 ${isCompleted ? 'text-green-700 line-through' : 'text-gray-700'}`}>
-                            {objective}
+                          <span className={`flex-1 text-gray-700`}>
+                            {goal}
                           </span>
-                          {isCompleted && <span className="text-xs text-green-600 font-medium">Completed</span>}
-                          {isInProgress && <span className="text-xs text-blue-600 font-medium">In Progress</span>}
+                          {isActive && <span className="text-xs text-blue-600 font-medium">Active</span>}
                         </div>
                       );
                     })}
@@ -496,46 +505,48 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                 </div>
 
                 {/* Session Statistics */}
-                {sessionStats && (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Session Statistics</h4>
-                      <div className="space-y-3">
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Total Interactions:</span>
-                          <span className="font-medium">{sessionStats.totalInteractions}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Average Confidence:</span>
-                          <span className="font-medium">{Math.round(sessionStats.averageConfidence * 100)}%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Cultural Contexts Explored:</span>
-                          <span className="font-medium">{sessionStats.culturalContextsExplored}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Questions Asked:</span>
-                          <span className="font-medium">{currentSession.progress.questionsAsked}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Hints Used:</span>
-                          <span className="font-medium">{currentSession.progress.hintsUsed}</span>
-                        </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4">Session Statistics</h4>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Total Interactions:</span>
+                        <span className="font-medium">{currentSession.interactions.length}</span>
                       </div>
-                    </div>
-                    
-                    <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Cultural Context</h4>
-                      <div className="space-y-2">
-                        {currentSession.culturalContext.map((context, index) => (
-                          <span key={index} className="inline-block bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm mr-2 mb-2">
-                            {context}
-                          </span>
-                        ))}
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Average Confidence:</span>
+                        <span className="font-medium">
+                          {currentSession.interactions.length > 0 
+                            ? Math.round(currentSession.interactions.reduce((sum, int) => sum + int.tutorResponse.confidence, 0) / currentSession.interactions.length * 100)
+                            : 0}%
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Cultural Focus:</span>
+                        <span className="font-medium">{currentSession.culturalFocus.length}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Session Duration:</span>
+                        <span className="font-medium">{formatTime(sessionTime)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Engagement Level:</span>
+                        <span className="font-medium">{Math.round(currentSession.context.engagementLevel * 100)}%</span>
                       </div>
                     </div>
                   </div>
-                )}
+                  
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4">Cultural Focus</h4>
+                    <div className="space-y-2">
+                      {currentSession.culturalFocus.map((focus, index) => (
+                        <span key={index} className="inline-block bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm mr-2 mb-2">
+                          {focus}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </motion.div>
           )}
