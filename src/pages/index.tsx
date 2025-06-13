@@ -11,10 +11,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Import Oracle Cloud-integrated components with correct names
+// Import Oracle Cloud-integrated components with correct names from index
 import CosmosSection from '../components/sections/CosmosSection';
 import TextSearchSection from '../components/sections/TextSearchSection';  
-import ThreeDVisualizationSection from '../components/sections/ThreeDVisualizationSection';
+import VisualizationsSection from '../components/sections/VisualizationsSection';
 import VocabularyTrainer from '../components/sections/VocabularyTrainer';
 
 // Translation types
@@ -153,6 +153,9 @@ const translations: Translations = {
   }
 };
 
+// Translation function type
+type TranslationFunction = (key: string) => string;
+
 // Main application component with Oracle Cloud integration
 export default function MacrobiusApp() {
   // Language state
@@ -165,8 +168,8 @@ export default function MacrobiusApp() {
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showPontanusModal, setShowPontanusModal] = useState(false);
 
-  // Translation helper - Updated to accept any string key for component compatibility
-  const t = useCallback((key: string): string => {
+  // Translation helper - Explicitly typed to accept any string
+  const t: TranslationFunction = useCallback((key: string): string => {
     return translations[currentLang][key as TranslationKey] || key;
   }, [currentLang]);
 
@@ -341,7 +344,7 @@ export default function MacrobiusApp() {
           )}
 
           {activeSection === 'visualizations' && (
-            <ThreeDVisualizationSection isActive={true} t={t} language={currentLang} />
+            <VisualizationsSection isActive={true} t={t} language={currentLang} />
           )}
 
           {activeSection === 'vocabulary' && (
