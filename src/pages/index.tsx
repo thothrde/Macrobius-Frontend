@@ -1,7 +1,7 @@
 /**
  * 🏛️ MACROBIUS - CULTURAL EDUCATION PLATFORM
  * Late Antiquity Cultural Wisdom through Complete Corpus
- * ENHANCED: Rich Clickable Image System + Cultural Education Focus
+ * ENHANCED: Rich Clickable Image System + AI Systems + Cultural Education Focus
  * 
  * MISSION: Transform components to teach what Macrobius reveals about late antiquity culture (PRIMARY)
  * with Latin as supporting tool (SECONDARY)
@@ -10,7 +10,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, Image as ImageIcon, Book, Star, Eye, Maximize } from 'lucide-react';
+import { Camera, Image as ImageIcon, Book, Star, Eye, Maximize, Brain, Target, BookOpen, Sparkles } from 'lucide-react';
 
 // Enhanced Image System
 import ImageModal from '../components/ui/ImageModal';
@@ -24,7 +24,17 @@ import VocabularyTrainer from '../components/sections/VocabularyTrainer';
 import BanquetSection from '../components/sections/BanquetSection';
 import WorldMapSection from '../components/sections/WorldMapSection';
 import LearningSection from '../components/sections/LearningSection-enhanced-complete';
-import QuizSection from '../components/sections/QuizSection-enhanced';
+// Fix: Import correct QuizSection
+import QuizSection from '../components/sections/QuizSection';
+
+// AI Systems Components
+import AICulturalAnalysisSection from '../components/sections/AICulturalAnalysisSection';
+import PersonalizedLearningPathsSection from '../components/sections/PersonalizedLearningPathsSection';
+import AITutoringSystemSection from '../components/sections/AITutoringSystemSection';
+import AdvancedCulturalModulesSection from '../components/sections/AdvancedCulturalModulesSection';
+
+// Language type - Fix TypeScript issues
+type Language = 'DE' | 'EN' | 'LA';
 
 // Translation types
 type TranslationKey = 
@@ -34,10 +44,11 @@ type TranslationKey =
   | 'search_placeholder' | 'cultural_story' | 'cultural_focus' | 'late_antiquity_wisdom'
   | 'about_title' | 'about_subtitle' | 'about_biography' | 'about_works' | 'about_legacy' 
   | 'close_modal' | 'pontanus_button' | 'about_pontanus_title' | 'about_pontanus_subtitle' 
-  | 'about_pontanus_bio' | 'about_pontanus_work' | 'about_pontanus_legacy';
+  | 'about_pontanus_bio' | 'about_pontanus_work' | 'about_pontanus_legacy'
+  | 'section_ai_cultural' | 'section_ai_learning' | 'section_ai_tutoring' | 'section_ai_modules';
 
 type TranslationTexts = Record<TranslationKey, string>;
-type Translations = Record<'DE' | 'EN' | 'LA', TranslationTexts>;
+type Translations = Record<Language, TranslationTexts>;
 
 // Enhanced CULTURAL EDUCATION translation system
 const translations: Translations = {
@@ -53,6 +64,10 @@ const translations: Translations = {
     section_learning: "📚 LERNEN",
     section_visualizations: "📊 VISUALISIERUNGEN",
     section_vocabulary: "📖 VOKABELN",
+    section_ai_cultural: "🧠 KI-KULTURANALYSE",
+    section_ai_learning: "🎯 LERNPFADE",
+    section_ai_tutoring: "📖 KI-TUTOR",
+    section_ai_modules: "✨ KULTURMODULE",
     explore_texts: "Erkunden Sie die Texte",
     about_macrobius: "Über Macrobius",
     search_placeholder: "Suche in 1.401 authentischen Passagen...",
@@ -84,6 +99,10 @@ const translations: Translations = {
     section_learning: "📚 LEARNING",
     section_visualizations: "📊 VISUALIZATIONS",
     section_vocabulary: "📖 VOCABULARY",
+    section_ai_cultural: "🧠 AI CULTURAL ANALYSIS",
+    section_ai_learning: "🎯 LEARNING PATHS",
+    section_ai_tutoring: "📖 AI TUTOR",
+    section_ai_modules: "✨ CULTURAL MODULES",
     explore_texts: "Explore the Texts",
     about_macrobius: "About Macrobius", 
     search_placeholder: "Search through 1,401 authentic passages...",
@@ -115,11 +134,15 @@ const translations: Translations = {
     section_learning: "📚 DISCERE",
     section_visualizations: "📊 IMAGINES",
     section_vocabulary: "📖 VOCABULARIUM",
+    section_ai_cultural: "🧠 AI ANALYSIS CULTURALIS",
+    section_ai_learning: "🎯 SEMITAE DISCENDI",
+    section_ai_tutoring: "📖 AI PRAECEPTOR",
+    section_ai_modules: "✨ MODULI CULTURALES",
     explore_texts: "Textus Explorare",
     about_macrobius: "De Macrobio",
     search_placeholder: "Quaerere in 1401 textibus authenticis...",
     cultural_story: `Ante 1500 annos, cum Imperium Romanum fini appropinquaret, Macrobius, praefectus et eruditus in Italia septentrionali, epistulam in lagena ad futurum condidit. Haec epistula ex duobus textibus constabat: colloquio informali eruditorum Romanorum et commentario somnii. In utrisque Macrobius id quod de civilizatione antiqua cadente sibi carum erat, ita componere studuit ut saecula tenebrosa superaret et lectores futuros ad civilizationis processum renovandum incitaret. Ante 500 annos hoc renovamen incepit. In Dania per observationes astronomicas Tychonis Brahe, qui fundamenta Kepleri operis et scientiarum naturalium modernarum posuit. Tychonis adiutor Macrobii epistulam recordatus primam editionem completam et annotatam composuit. Hic liber in manus meas venit et mihi idea venit hanc parvam applicationem de hac historia facere.... Gaude!`,
-    cultural_focus: "Quid Macrobius de Cultura Antiquitatis Serae Docet",
+    cultural_focus: "Quid Macrobius de Cultura Antiquitatis Serae Doceat",
     late_antiquity_wisdom: "Sapientia Antiquitatis Serae pro Mundo Moderno",
     about_title: "Macrobius Ambrosius Theodosius",
     about_subtitle: "Culturae Custos Mundi Antiquitatis Serae (ca. 385-430 p.C.)",
@@ -184,8 +207,8 @@ const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, cla
 
 // Main CULTURAL EDUCATION application
 export default function MacrobiusCulturalApp() {
-  // Language state
-  const [currentLang, setCurrentLang] = useState<'DE' | 'EN' | 'LA'>('DE');
+  // Language state - Fix TypeScript
+  const [currentLang, setCurrentLang] = useState<Language>('DE');
   
   // Navigation state
   const [activeSection, setActiveSection] = useState<string>('hero');
@@ -206,7 +229,7 @@ export default function MacrobiusCulturalApp() {
     return translations[currentLang][key] || key;
   }, [currentLang]);
 
-  // Type adapter for components
+  // Type adapter for components - Fix the type issue
   const tAdapter = useCallback((key: string): string => {
     if (key in translations[currentLang]) {
       return translations[currentLang][key as TranslationKey];
@@ -243,7 +266,7 @@ export default function MacrobiusCulturalApp() {
   }, []);
 
   // Event handlers
-  const handleLanguageChange = (lang: 'DE' | 'EN' | 'LA') => {
+  const handleLanguageChange = (lang: Language) => {
     setCurrentLang(lang);
   };
 
@@ -251,8 +274,12 @@ export default function MacrobiusCulturalApp() {
     setActiveSection(section);
   };
 
-  // Get intro section images
+  // Get images for different sections
   const introImages = getImagesBySection('intro');
+  const cosmosImages = getImagesBySection('cosmos') || [];
+  const worldmapImages = getImagesBySection('worldmap') || [];
+  const banquetImages = getImagesBySection('banquet') || [];
+  const visualizationImages = getImagesBySection('visualizations') || [];
 
   return (
     <>
@@ -337,10 +364,11 @@ export default function MacrobiusCulturalApp() {
           </div>
         </div>
 
-        {/* RESTORED: Wine-Red Navigation Sidebar */}
+        {/* ENHANCED: Navigation Sidebar with AI Systems */}
         <nav className="fixed top-4 left-4 z-50">
           <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
             <div className="flex flex-col space-y-2">
+              {/* Core Sections */}
               {[
                 { id: 'hero', label: t('section_intro'), icon: '🏛️' },
                 { id: 'quiz', label: t('section_quiz'), icon: '📝' },
@@ -368,6 +396,34 @@ export default function MacrobiusCulturalApp() {
                   <span>{section.label}</span>
                 </button>
               ))}
+              
+              {/* AI Systems Separator */}
+              <div className="border-t border-white/20 pt-2 mt-2">
+                <p className="text-yellow-200/60 text-xs px-2 mb-2">KI-SYSTEME</p>
+                {[
+                  { id: 'ai-cultural', label: t('section_ai_cultural'), icon: '🧠' },
+                  { id: 'ai-learning', label: t('section_ai_learning'), icon: '🎯' },
+                  { id: 'ai-tutoring', label: t('section_ai_tutoring'), icon: '📖' },
+                  { id: 'ai-modules', label: t('section_ai_modules'), icon: '✨' }
+                ].map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => handleSectionChange(section.id)}
+                    className={`w-full px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300 text-left flex items-center space-x-2 btn-wine ${
+                      activeSection === section.id
+                        ? 'bg-blue-400 text-gray-800 shadow-lg'
+                        : 'text-blue-300 hover:bg-white/20'
+                    }`}
+                    style={{
+                      backgroundColor: activeSection === section.id ? '#60A5FA' : 'rgba(59, 130, 246, 0.2)',
+                      color: activeSection === section.id ? '#1a1a1a' : '#93C5FD',
+                    }}
+                  >
+                    <span>{section.icon}</span>
+                    <span>{section.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Oracle Cloud Status */}
@@ -504,33 +560,158 @@ export default function MacrobiusCulturalApp() {
             </section>
           )}
 
-          {/* Oracle Cloud-Integrated Sections - CULTURAL FOCUS */}
+          {/* Oracle Cloud-Integrated Sections - CULTURAL FOCUS - Fix: Pass language prop correctly */}
           {activeSection === 'search' && (
-            <TextSearchSection isActive={true} t={tAdapter} language={currentLang} />
+            <TextSearchSection isActive={true} t={tAdapter} language={currentLang as any} />
           )}
 
           {activeSection === 'cosmos' && (
-            <CosmosSection isActive={true} t={tAdapter} language={currentLang} />
+            <div>
+              <CosmosSection isActive={true} t={tAdapter} language={currentLang as any} />
+              {/* Add clickable images to Cosmos section */}
+              {cosmosImages.length > 0 && (
+                <div className="fixed bottom-4 right-4 z-40">
+                  <motion.div
+                    className="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
+                    <div className="flex flex-col space-y-2">
+                      <h4 className="text-yellow-200 text-sm font-semibold">🌌 Kosmos Bilder</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {cosmosImages.slice(0, 4).map((image, index) => (
+                          <img
+                            key={image.id}
+                            src={image.src}
+                            alt={image.title}
+                            className="w-12 h-12 object-cover rounded cursor-pointer hover:scale-110 transition-transform"
+                            onClick={() => handleImageClick(image)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </div>
           )}
 
           {activeSection === 'banquet' && (
-            <BanquetSection isActive={true} t={tAdapter} language={currentLang} />
+            <div>
+              <BanquetSection isActive={true} t={tAdapter} language={currentLang} />
+              {/* Add clickable images to Banquet section */}
+              {banquetImages.length > 0 && (
+                <div className="fixed bottom-4 right-4 z-40">
+                  <motion.div
+                    className="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
+                    <div className="flex flex-col space-y-2">
+                      <h4 className="text-yellow-200 text-sm font-semibold">🍷 Gastmahl Bilder</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {banquetImages.slice(0, 4).map((image, index) => (
+                          <img
+                            key={image.id}
+                            src={image.src}
+                            alt={image.title}
+                            className="w-12 h-12 object-cover rounded cursor-pointer hover:scale-110 transition-transform"
+                            onClick={() => handleImageClick(image)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </div>
           )}
 
           {activeSection === 'worldmap' && (
-            <WorldMapSection isActive={true} t={tAdapter} language={currentLang} />
+            <div>
+              <WorldMapSection isActive={true} t={tAdapter} language={currentLang as any} />
+              {/* Add clickable images to WorldMap section */}
+              {worldmapImages.length > 0 && (
+                <div className="fixed bottom-4 right-4 z-40">
+                  <motion.div
+                    className="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
+                    <div className="flex flex-col space-y-2">
+                      <h4 className="text-yellow-200 text-sm font-semibold">🗺️ Weltkarte Bilder</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {worldmapImages.slice(0, 4).map((image, index) => (
+                          <img
+                            key={image.id}
+                            src={image.src}
+                            alt={image.title}
+                            className="w-12 h-12 object-cover rounded cursor-pointer hover:scale-110 transition-transform"
+                            onClick={() => handleImageClick(image)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </div>
           )}
 
           {activeSection === 'quiz' && (
-            <QuizSection isActive={true} t={tAdapter} language={currentLang} />
+            <QuizSection isActive={true} t={tAdapter} />
           )}
 
           {activeSection === 'learning' && (
-            <LearningSection isActive={true} t={tAdapter} language={currentLang} />
+            <LearningSection isActive={true} t={tAdapter} language={currentLang as any} />
           )}
 
           {activeSection === 'visualizations' && (
-            <VisualizationsSection isActive={true} t={tAdapter} language={currentLang} />
+            <div>
+              <VisualizationsSection isActive={true} t={tAdapter} language={currentLang} />
+              {/* Add clickable images to Visualizations section */}
+              {visualizationImages.length > 0 && (
+                <div className="fixed bottom-4 right-4 z-40">
+                  <motion.div
+                    className="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
+                    <div className="flex flex-col space-y-2">
+                      <h4 className="text-yellow-200 text-sm font-semibold">📊 Visualisierungen</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {visualizationImages.slice(0, 4).map((image, index) => (
+                          <img
+                            key={image.id}
+                            src={image.src}
+                            alt={image.title}
+                            className="w-12 h-12 object-cover rounded cursor-pointer hover:scale-110 transition-transform"
+                            onClick={() => handleImageClick(image)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* AI Systems Sections */}
+          {activeSection === 'ai-cultural' && (
+            <AICulturalAnalysisSection isActive={true} t={tAdapter} language={currentLang} />
+          )}
+
+          {activeSection === 'ai-learning' && (
+            <PersonalizedLearningPathsSection isActive={true} t={tAdapter} language={currentLang} />
+          )}
+
+          {activeSection === 'ai-tutoring' && (
+            <AITutoringSystemSection isActive={true} t={tAdapter} language={currentLang} />
+          )}
+
+          {activeSection === 'ai-modules' && (
+            <AdvancedCulturalModulesSection isActive={true} t={tAdapter} language={currentLang} />
           )}
         </main>
 
