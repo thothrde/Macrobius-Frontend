@@ -663,7 +663,7 @@ export default function MacrobiusCulturalApp() {
           )}
 
           {activeSection === 'learning' && (
-            <LearningSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
+            <LearningSection />
           )}
 
           {activeSection === 'visualizations' && (
@@ -699,19 +699,19 @@ export default function MacrobiusCulturalApp() {
 
           {/* AI Systems Sections */}
           {activeSection === 'ai-cultural' && (
-            <AICulturalAnalysisSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
+            <AICulturalAnalysisSection />
           )}
 
           {activeSection === 'ai-learning' && (
-            <PersonalizedLearningPathsSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
+            <PersonalizedLearningPathsSection />
           )}
 
           {activeSection === 'ai-tutoring' && (
-            <AITutoringSystemSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
+            <AITutoringSystemSection />
           )}
 
           {activeSection === 'ai-modules' && (
-            <AdvancedCulturalModulesSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
+            <AdvancedCulturalModulesSection />
           )}
         </main>
 
