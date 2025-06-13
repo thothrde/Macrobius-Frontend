@@ -3,12 +3,12 @@
 
 import React from 'react';
 
-// Test imports for all enhanced components
-import { QuizSection } from '../src/components/sections/QuizSection-enhanced';
-import VocabularyTrainerSection from '../src/components/sections/VocabularyTrainerSection';
-import MacrobiusGrammarExplainer from '../src/components/sections/GrammarExplainer-enhanced';
+// Test imports for all enhanced components - CORRECTED PATHS
+import QuizSection from '../src/components/sections/QuizSection';
+import VocabularyTrainer from '../src/components/sections/VocabularyTrainer';
 import MacrobiusTextProcessor from '../src/components/sections/MacrobiusTextProcessor-enhanced';
 import LearningSection from '../src/components/sections/LearningSection-enhanced-complete';
+import GrammarExplainer from '../src/components/sections/GrammarExplainer-corpus-integrated';
 
 interface ComponentTestResult {
   component: string;
@@ -20,10 +20,10 @@ interface ComponentTestResult {
 class MacrobiusComponentTester {
   private results: ComponentTestResult[] = [];
 
-  // Test QuizSection-enhanced component
+  // Test QuizSection component
   testQuizSystem(): ComponentTestResult {
     const result: ComponentTestResult = {
-      component: 'QuizSection-enhanced',
+      component: 'QuizSection',
       status: 'PASS',
       features: [
         '✅ 30+ authentic Macrobius questions',
@@ -62,7 +62,7 @@ class MacrobiusComponentTester {
   // Test VocabularyTrainer component
   testVocabularyTrainer(): ComponentTestResult {
     const result: ComponentTestResult = {
-      component: 'VocabularyTrainerSection',
+      component: 'VocabularyTrainer',
       status: 'PASS',
       features: [
         '✅ 27+ Latin terms from Macrobius texts',
@@ -96,10 +96,10 @@ class MacrobiusComponentTester {
     return result;
   }
 
-  // Test GrammarExplainer-enhanced component
+  // Test GrammarExplainer component
   testGrammarExplainer(): ComponentTestResult {
     const result: ComponentTestResult = {
-      component: 'GrammarExplainer-enhanced',
+      component: 'GrammarExplainer-corpus-integrated',
       status: 'PASS',
       features: [
         '✅ 5+ authentic Macrobius text passages',
@@ -218,7 +218,7 @@ class MacrobiusComponentTester {
   runAllTests(): ComponentTestResult[] {
     console.log('🧪 Starting Macrobius Frontend Component Testing...\n');
 
-    // Test all 4 main components
+    // Test all 5 main components
     this.results.push(this.testQuizSystem());
     this.results.push(this.testVocabularyTrainer());
     this.results.push(this.testGrammarExplainer());
