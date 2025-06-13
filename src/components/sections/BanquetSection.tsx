@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wine, Crown, Scroll, Users, Clock, Book, Star, Globe, MessageCircle, Play, Pause } from 'lucide-react';
 
+// Fix: Add language prop to interface
 interface BanquetSectionProps {
   isActive: boolean;
   t: (key: string) => string;
+  language: 'DE' | 'EN' | 'LA';
 }
 
 interface Character {
@@ -494,7 +496,8 @@ const ConversationPanel: React.FC<ConversationPanelProps> = ({ topic, onClose, c
   );
 };
 
-export default function BanquetSection({ isActive, t }: BanquetSectionProps) {
+// Fix: Add language prop to component signature
+export default function BanquetSection({ isActive, t, language }: BanquetSectionProps) {
   const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<ConversationTopic | null>(null);
   const [highlightedCharacters, setHighlightedCharacters] = useState<string[]>([]);
@@ -578,10 +581,10 @@ export default function BanquetSection({ isActive, t }: BanquetSectionProps) {
           transition={{ duration: 1 }}
         >
           <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-100 to-yellow-300 mb-4">
-            {t('banquet_title')}
+            {t('banquet_title') || (language === 'LA' ? 'Convivium Doctorum' : language === 'EN' ? 'Scholarly Banquet' : 'Gelehrtes Gastmahl')}
           </h1>
           <p className="text-lg md:text-xl text-yellow-100/90 max-w-3xl mx-auto leading-relaxed">
-            {t('banquet_subtitle')}
+            {t('banquet_subtitle') || (language === 'LA' ? 'Sermones eruditi in convivio Romano' : language === 'EN' ? 'Learned conversations at a Roman banquet' : 'Gelehrte Gespräche bei einem römischen Gastmahl')}
           </p>
           
           <motion.div
@@ -592,9 +595,9 @@ export default function BanquetSection({ isActive, t }: BanquetSectionProps) {
           >
             <Clock className="w-5 h-5" />
             <span className="text-sm">
-              {banquetPhase === 'arrival' && t('banquet_phase_arrival')}
-              {banquetPhase === 'conversation' && t('banquet_phase_conversation')}
-              {banquetPhase === 'reflection' && t('banquet_phase_reflection')}
+              {banquetPhase === 'arrival' && (language === 'LA' ? 'Adventus' : language === 'EN' ? 'Arrival' : 'Ankunft')}
+              {banquetPhase === 'conversation' && (language === 'LA' ? 'Colloquium' : language === 'EN' ? 'Conversation' : 'Gespräch')}
+              {banquetPhase === 'reflection' && (language === 'LA' ? 'Meditatio' : language === 'EN' ? 'Reflection' : 'Reflexion')}
             </span>
           </motion.div>
         </motion.div>
@@ -632,7 +635,7 @@ export default function BanquetSection({ isActive, t }: BanquetSectionProps) {
                 animate={{ opacity: banquetPhase === 'conversation' ? 1 : 0 }}
                 transition={{ duration: 0.5 }}
               >
-                Click on characters to learn about them
+                {language === 'LA' ? 'Personae tangere' : language === 'EN' ? 'Click on characters to learn about them' : 'Klicken Sie auf Charaktere, um mehr zu erfahren'}
               </motion.div>
             </motion.div>
           </div>
@@ -686,7 +689,7 @@ export default function BanquetSection({ isActive, t }: BanquetSectionProps) {
             >
               <h3 className="text-lg font-semibold text-yellow-100 mb-4 flex items-center gap-2">
                 <MessageCircle className="w-5 h-5" />
-                Scholarly Conversations
+                {language === 'LA' ? 'Colloquia Docta' : language === 'EN' ? 'Scholarly Conversations' : 'Gelehrte Gespräche'}
               </h3>
               
               <div className="space-y-3">
@@ -705,7 +708,7 @@ export default function BanquetSection({ isActive, t }: BanquetSectionProps) {
                       </span>
                     </div>
                     <div className="text-yellow-200/70 text-xs">
-                      Participants: {topic.participants.map(id => 
+                      {language === 'LA' ? 'Participes' : language === 'EN' ? 'Participants' : 'Teilnehmer'}: {topic.participants.map(id => 
                         CHARACTERS.find(char => char.id === id)?.name
                       ).join(', ')}
                     </div>
@@ -723,10 +726,12 @@ export default function BanquetSection({ isActive, t }: BanquetSectionProps) {
             >
               <h3 className="text-lg font-semibold text-blue-200 mb-3 flex items-center gap-2">
                 <Book className="w-5 h-5" />
-                Cultural Context
+                {language === 'LA' ? 'Contextus Culturalis' : language === 'EN' ? 'Cultural Context' : 'Kultureller Kontext'}
               </h3>
               <p className="text-blue-100/80 text-sm leading-relaxed">
-                {t('banquet_cultural_context')}
+                {language === 'LA' ? 'Saturnalia Macrobii convivium doctorum virorum in villa Romana describit. Hic sermones eruditi de religione, literatura, astronomia, et philosophia habentur.' 
+                : language === 'EN' ? 'Macrobius\' Saturnalia describes a gathering of learned men at a Roman villa. Here scholarly conversations about religion, literature, astronomy, and philosophy take place.'
+                : 'Macrobius\' Saturnalia beschreibt eine Versammlung gelehrter Männer in einer römischen Villa. Hier finden gelehrte Gespräche über Religion, Literatur, Astronomie und Philosophie statt.'}
               </p>
             </motion.div>
           </div>
