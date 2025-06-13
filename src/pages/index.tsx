@@ -1,7 +1,7 @@
 /**
  * 🏛️ MACROBIUS - CULTURAL EDUCATION PLATFORM
  * Late Antiquity Cultural Wisdom through Complete Corpus
- * RESTORED: Authentic Azure Design + Wine-Red Navigation + Cultural Focus
+ * ENHANCED: Rich Clickable Image System + Cultural Education Focus
  * 
  * MISSION: Transform components to teach what Macrobius reveals about late antiquity culture (PRIMARY)
  * with Latin as supporting tool (SECONDARY)
@@ -10,6 +10,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Camera, Image as ImageIcon, Book, Star, Eye, Maximize } from 'lucide-react';
+
+// Enhanced Image System
+import ImageModal from '../components/ui/ImageModal';
+import { imageDatabase, getImagesBySection, ImageInfo } from '../data/imageData';
 
 // Oracle Cloud-integrated components - CULTURAL FOCUS
 import CosmosSection from '../components/sections/CosmosSection';
@@ -131,6 +136,52 @@ const translations: Translations = {
   }
 };
 
+// Clickable Image Component
+interface ClickableImageProps {
+  imageInfo: ImageInfo;
+  onClick: (imageInfo: ImageInfo) => void;
+  className?: string;
+}
+
+const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, className = '' }) => {
+  return (
+    <motion.div
+      className={`relative group cursor-pointer overflow-hidden rounded-xl border border-white/20 shadow-lg ${className}`}
+      whileHover={{ scale: 1.02, y: -5 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={() => onClick(imageInfo)}
+    >
+      <div className="relative">
+        <img
+          src={imageInfo.src}
+          alt={imageInfo.title}
+          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute bottom-0 left-0 right-0 p-4">
+            <h3 className="text-white font-bold text-lg mb-1">{imageInfo.title}</h3>
+            {imageInfo.subtitle && (
+              <p className="text-white/90 text-sm">{imageInfo.subtitle}</p>
+            )}
+          </div>
+        </div>
+        
+        {/* Click Indicator */}
+        <div className="absolute top-2 right-2 bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <Maximize className="w-4 h-4 text-white" />
+        </div>
+      </div>
+      
+      {/* Bottom Info */}
+      <div className="p-3 bg-white/10 backdrop-blur-sm">
+        <p className="text-white/80 text-xs line-clamp-2">{imageInfo.description}</p>
+      </div>
+    </motion.div>
+  );
+};
+
 // Main CULTURAL EDUCATION application
 export default function MacrobiusCulturalApp() {
   // Language state
@@ -142,6 +193,10 @@ export default function MacrobiusCulturalApp() {
   // Modal states
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showPontanusModal, setShowPontanusModal] = useState(false);
+  
+  // Image modal state
+  const [selectedImage, setSelectedImage] = useState<ImageInfo | null>(null);
+  const [showImageModal, setShowImageModal] = useState(false);
 
   // Mouse position for parallax effect
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -158,6 +213,21 @@ export default function MacrobiusCulturalApp() {
     }
     return key;
   }, [currentLang]);
+
+  // Image click handler - Fixed: Ensures consistent behavior
+  const handleImageClick = useCallback((imageInfo: ImageInfo) => {
+    setSelectedImage(imageInfo);
+    setShowImageModal(true);
+  }, []);
+
+  // Image modal close handler - Fixed: Proper state cleanup
+  const handleImageModalClose = useCallback(() => {
+    setShowImageModal(false);
+    // Small delay to ensure smooth transition
+    setTimeout(() => {
+      setSelectedImage(null);
+    }, 300);
+  }, []);
 
   // Mouse move handler for parallax
   useEffect(() => {
@@ -180,6 +250,9 @@ export default function MacrobiusCulturalApp() {
   const handleSectionChange = (section: string) => {
     setActiveSection(section);
   };
+
+  // Get intro section images
+  const introImages = getImagesBySection('intro');
 
   return (
     <>
@@ -324,10 +397,10 @@ export default function MacrobiusCulturalApp() {
 
         {/* Main Content */}
         <main className="relative z-10">
-          {/* Hero Section - CULTURAL EDUCATION FOCUS */}
+          {/* Enhanced Hero Section with Clickable Images */}
           {activeSection === 'hero' && (
             <section className="min-h-screen flex items-center justify-center px-4">
-              <div className="text-center max-w-6xl mx-auto">
+              <div className="text-center max-w-7xl mx-auto">
                 <motion.div
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -350,6 +423,41 @@ export default function MacrobiusCulturalApp() {
                       {t('cultural_story')}
                     </p>
                   </div>
+
+                  {/* Enhanced Clickable Image Gallery */}
+                  <motion.div
+                    className="mb-12"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                  >
+                    <div className="flex items-center justify-center space-x-3 mb-8">
+                      <ImageIcon className="w-6 h-6 text-yellow-300" />
+                      <h4 className="text-xl font-semibold text-yellow-200">Kulturelle Schätze entdecken</h4>
+                      <Eye className="w-6 h-6 text-yellow-300" />
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                      {introImages.map((image, index) => (
+                        <motion.div
+                          key={image.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.7 + (index * 0.1), duration: 0.6 }}
+                        >
+                          <ClickableImage
+                            imageInfo={image}
+                            onClick={handleImageClick}
+                            className="h-64"
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+                    
+                    <p className="text-yellow-200/80 text-sm mt-6 italic">
+                      📸 Klicken Sie auf die Bilder für detaillierte kulturelle Hintergründe
+                    </p>
+                  </motion.div>
 
                   {/* Cultural Education Features */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -425,6 +533,14 @@ export default function MacrobiusCulturalApp() {
             <VisualizationsSection isActive={true} t={tAdapter} language={currentLang} />
           )}
         </main>
+
+        {/* Enhanced Image Modal - Fixed Issues */}
+        <ImageModal
+          imageInfo={selectedImage}
+          isOpen={showImageModal}
+          onClose={handleImageModalClose}
+          language={currentLang}
+        />
 
         {/* About Macrobius Modal - CULTURAL FOCUS */}
         <AnimatePresence>
@@ -602,6 +718,13 @@ export default function MacrobiusCulturalApp() {
           .card-hover:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+          }
+          
+          .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
           }
         `}</style>
       </div>
