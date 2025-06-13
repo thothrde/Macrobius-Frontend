@@ -1,160 +1,138 @@
 /**
- * 🏛️ MACROBIUS - EINE ANTIKE FLASCHENPOST
- * Oracle Cloud Integrated - Message in a Bottle from Antiquity to the Future
- * Visual Excellence with Historical Authenticity + Real Classical Content
+ * 🏛️ MACROBIUS - CULTURAL EDUCATION PLATFORM
+ * Late Antiquity Cultural Wisdom through Complete Corpus
+ * RESTORED: Authentic Azure Design + Wine-Red Navigation + Cultural Focus
  * 
- * ENHANCED: June 13, 2025 - TypeScript Error Resolution
- * Architecture: Using Oracle Cloud-powered section components with proper type safety
+ * MISSION: Transform components to teach what Macrobius reveals about late antiquity culture (PRIMARY)
+ * with Latin as supporting tool (SECONDARY)
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Import Oracle Cloud-integrated components
+// Oracle Cloud-integrated components - CULTURAL FOCUS
 import CosmosSection from '../components/sections/CosmosSection';
 import TextSearchSection from '../components/sections/TextSearchSection';  
 import VisualizationsSection from '../components/sections/VisualizationsSection';
 import VocabularyTrainer from '../components/sections/VocabularyTrainer';
+import BanquetSection from '../components/sections/BanquetSection';
+import WorldMapSection from '../components/sections/WorldMapSection';
+import LearningSection from '../components/sections/LearningSection-enhanced-complete';
+import QuizSection from '../components/sections/QuizSection-enhanced';
 
 // Translation types
 type TranslationKey = 
   | 'title' | 'intro' | 'section_intro' | 'section_quiz' | 'section_worldmap' 
   | 'section_cosmos' | 'section_banquet' | 'section_search' | 'section_learning' 
   | 'section_visualizations' | 'section_vocabulary' | 'explore_texts' | 'about_macrobius' 
-  | 'search_placeholder' | 'quiz_question' | 'quiz_a' | 'quiz_b' | 'quiz_c' 
-  | 'quiz_answer' | 'cosmos_description' | 'worldmap_description' | 'banquet_description' 
-  | 'learning_tools' | 'story' | 'about_title' | 'about_subtitle' | 'about_biography' 
-  | 'about_works' | 'about_legacy' | 'about_influence' | 'close_modal' | 'pontanus_button'
-  | 'about_pontanus_title' | 'about_pontanus_subtitle' | 'about_pontanus_bio'
-  | 'about_pontanus_work' | 'about_pontanus_legacy';
+  | 'search_placeholder' | 'cultural_story' | 'cultural_focus' | 'late_antiquity_wisdom'
+  | 'about_title' | 'about_subtitle' | 'about_biography' | 'about_works' | 'about_legacy' 
+  | 'close_modal' | 'pontanus_button' | 'about_pontanus_title' | 'about_pontanus_subtitle' 
+  | 'about_pontanus_bio' | 'about_pontanus_work' | 'about_pontanus_legacy';
 
 type TranslationTexts = Record<TranslationKey, string>;
 type Translations = Record<'DE' | 'EN' | 'LA', TranslationTexts>;
 
-// Enhanced translation system with Oracle Cloud integration
+// Enhanced CULTURAL EDUCATION translation system
 const translations: Translations = {
   DE: {
     title: "Eine antike Flaschenpost",
-    intro: "Eine Nachricht aus der Antike an die Zukunft",
-    section_intro: "Einführung",
-    section_quiz: "Quiz",
-    section_worldmap: "Weltkarte", 
-    section_cosmos: "Kosmos",
-    section_banquet: "Gastmahl",
-    section_search: "Textsuche",
-    section_learning: "Lernen",
-    section_visualizations: "Visualisierungen",
-    section_vocabulary: "Vokabeltrainer",
+    intro: "Kulturelle Bildung durch das vollständige Macrobius-Korpus",
+    section_intro: "🏛️ EINFÜHRUNG", 
+    section_quiz: "📝 QUIZ",
+    section_worldmap: "🗺️ WELTKARTE",
+    section_cosmos: "🌌 KOSMOS",
+    section_banquet: "🍷 GASTMAHL", 
+    section_search: "🔍 TEXTSUCHE",
+    section_learning: "📚 LERNEN",
+    section_visualizations: "📊 VISUALISIERUNGEN",
+    section_vocabulary: "📖 VOKABELN",
     explore_texts: "Erkunden Sie die Texte",
-    about_macrobius: "Mehr über Macrobius",
+    about_macrobius: "Über Macrobius",
     search_placeholder: "Suche in 1.401 authentischen Passagen...",
-    quiz_question: "Wie hieß der berühmte Traum, den Macrobius kommentierte?",
-    quiz_a: "A) Scipios Traum",
-    quiz_b: "B) Caesars Traum", 
-    quiz_c: "C) Ciceros Traum",
-    quiz_answer: "Richtige Antwort: A) Scipios Traum - Das 'Somnium Scipionis' war ein berühmter Text von Cicero, den Macrobius ausführlich kommentierte.",
-    cosmos_description: "Erkunden Sie Macrobius' faszinierende Darstellung des Kosmos mit authentischen Textstellen",
-    worldmap_description: "Entdecken Sie die antike Weltsicht durch Macrobius' geografische Beschreibungen",
-    banquet_description: "Tauchen Sie ein in die Gespräche der Gelehrten beim Gastmahl der Saturnalien",
-    learning_tools: "Lernwerkzeuge mit authentischen lateinischen Texten aus dem Oracle Cloud-Korpus",
-    story: `Vor 1500 Jahren fertigte Macrobius eine Flaschenpost an die Zukunft an. Diese App macht sie erlebbar mit 1.401 authentischen lateinischen Passagen aus der Oracle Cloud-Datenbank. Erleben Sie die Verbindung zwischen antiker Weisheit und moderner Technologie!`,
+    cultural_story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle. Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und ich auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
+    cultural_focus: "Was Macrobius über die spätantike Kultur lehrt",
+    late_antiquity_wisdom: "Spätantike Weisheit für die moderne Welt",
     about_title: "Macrobius Ambrosius Theodosius",
-    about_subtitle: "Philosoph, Grammatiker und Bewahrer antiker Weisheit (ca. 385-430 n. Chr.)",
-    about_biography: `Macrobius war ein spätantiker römischer Beamter und Schriftsteller. Als Praefectus praetorio per Hispanias verwaltete er die iberische Halbinsel. Seine Werke bewahrten unschätzbares Wissen für zukünftige Generationen.`,
-    about_works: `Seine Hauptwerke "Saturnalia" und "Commentarii in Somnium Scipionis" sind heute durch 1.401 digitalisierte Passagen in unserer Oracle Cloud-Datenbank verfügbar.`,
-    about_legacy: `Macrobius' Einfluss reicht bis heute. Seine "antike Flaschenpost" ist nun durch moderne Technologie für alle zugänglich.`,
-    about_influence: `Diese App macht Macrobius' systematische Bewahrung antiker Weisheit durch authentische Texte erlebbar.`,
+    about_subtitle: "Kultureller Bewahrer der spätantiken Welt (ca. 385-430 n. Chr.)",
+    about_biography: `Macrobius war ein spätantiker römischer Beamter, der als Praefectus praetorio per Hispanias die iberische Halbinsel verwaltete. Als Gelehrter und Kulturbewahrer dokumentierte er die reichhaltige Bildungskultur der untergehenden römischen Zivilisation.`,
+    about_works: `Seine Hauptwerke "Saturnalia" und "Commentarii in Somnium Scipionis" bewahren unschätzbares Wissen über römische Kultur, Philosophie, Astronomie und Gesellschaft. Heute verfügbar durch 1.401 digitalisierte Passagen.`,
+    about_legacy: `Macrobius' kulturelle "Flaschenpost" überlebte das dunkle Zeitalter und inspirierte die Renaissance. Seine systematische Bewahrung antiker Weisheit macht ihn zu einem der wichtigsten Kulturvermittler der Geschichte.`,
     close_modal: "Schließen",
     pontanus_button: "Über Pontanus",
     about_pontanus_title: "Johannes Isaac Pontanus",
-    about_pontanus_subtitle: "Dänischer Gelehrter und Herausgeber (1571-1639)",
-    about_pontanus_bio: `Pontanus spielte eine entscheidende Rolle bei der Bewahrung von Macrobius' Werken für die Nachwelt.`,
-    about_pontanus_work: `Seine Edition von 1597 wurde zur Standardreferenz und ist die Grundlage für unsere digitale Sammlung.`,
-    about_pontanus_legacy: `Durch Pontanus' Arbeit können wir heute authentische Macrobius-Texte digital erleben.`
+    about_pontanus_subtitle: "Dänischer Gelehrter und Tycho Brahes Assistent (1571-1639)",
+    about_pontanus_bio: `Pontanus war Assistent des berühmten Astronomen Tycho Brahe und erinnerte sich an Macrobius' Bedeutung für die Astronomie. Er erkannte die Verbindung zwischen antiker Weisheit und moderner Naturwissenschaft.`,
+    about_pontanus_work: `Seine kommentierte Gesamtausgabe von 1597 wurde zur Standardreferenz und ermöglichte es, Macrobius' Kulturwissen für die Neuzeit zu erschließen.`,
+    about_pontanus_legacy: `Durch Pontanus' Arbeit wurde die Brücke zwischen antiker Kultur und Renaissance-Gelehrsamkeit geschlagen. Seine Edition ist die Grundlage unserer digitalen Sammlung.`
   },
   EN: {
     title: "An Ancient Message in a Bottle",
-    intro: "A message from antiquity to the future",
-    section_intro: "Introduction",
-    section_quiz: "Quiz",
-    section_worldmap: "World Map",
-    section_cosmos: "Cosmos",
-    section_banquet: "Banquet",
-    section_search: "Text Search",
-    section_learning: "Learning",
-    section_visualizations: "Visualizations",
-    section_vocabulary: "Vocabulary Trainer",
+    intro: "Cultural Education through the Complete Macrobius Corpus",
+    section_intro: "🏛️ INTRODUCTION",
+    section_quiz: "📝 QUIZ", 
+    section_worldmap: "🗺️ WORLD MAP",
+    section_cosmos: "🌌 COSMOS",
+    section_banquet: "🍷 BANQUET",
+    section_search: "🔍 TEXT SEARCH", 
+    section_learning: "📚 LEARNING",
+    section_visualizations: "📊 VISUALIZATIONS",
+    section_vocabulary: "📖 VOCABULARY",
     explore_texts: "Explore the Texts",
-    about_macrobius: "About Macrobius",
+    about_macrobius: "About Macrobius", 
     search_placeholder: "Search through 1,401 authentic passages...",
-    quiz_question: "What was the famous dream that Macrobius commented on?",
-    quiz_a: "A) Scipio's Dream",
-    quiz_b: "B) Caesar's Dream",
-    quiz_c: "C) Cicero's Dream",
-    quiz_answer: "Correct Answer: A) Scipio's Dream - The 'Somnium Scipionis' was a famous text by Cicero that Macrobius extensively commented upon.",
-    cosmos_description: "Explore Macrobius' fascinating representation of the cosmos with authentic passages",
-    worldmap_description: "Discover the ancient worldview through Macrobius' geographical descriptions",
-    banquet_description: "Immerse yourself in the scholarly conversations at the Saturnalia banquet",
-    learning_tools: "Learning tools with authentic Latin texts from the Oracle Cloud corpus",
-    story: `1500 years ago, Macrobius created a message in a bottle to the future. This app brings it to life with 1,401 authentic Latin passages from our Oracle Cloud database. Experience the connection between ancient wisdom and modern technology!`,
+    cultural_story: `1500 years ago, as the Roman Empire approached its end, Macrobius, a leading administrative official and scholar in northern Italy, created a message in a bottle to the future. This message consisted of two texts: an informal conversation among educated Romans and a dream commentary. In both, Macrobius tried to package what was important to him about the declining civilization of antiquity in a way that would survive the approaching dark centuries and inspire future readers to restart the process of civilization with the memory of ancient civilization as encouragement and material source. 500 years ago this new beginning started. In Denmark through astronomical observations by Tycho Brahe, who thus laid the foundation for Kepler's work and the emergence of modern natural sciences. An assistant of Tycho's remembered Macrobius' message in a bottle and compiled the first reliable and annotated complete edition. This book came into my hands and I had the idea to create a small app for you about this story.... Have fun!`,
+    cultural_focus: "What Macrobius Teaches About Late Antique Culture",
+    late_antiquity_wisdom: "Late Antique Wisdom for the Modern World",
     about_title: "Macrobius Ambrosius Theodosius",
-    about_subtitle: "Philosopher, Grammarian and Preserver of Ancient Wisdom (ca. 385-430 AD)",
-    about_biography: `Macrobius was a late antique Roman official and writer. As Praefectus praetorio per Hispanias, he administered the Iberian Peninsula. His works preserved invaluable knowledge for future generations.`,
-    about_works: `His main works "Saturnalia" and "Commentarii in Somnium Scipionis" are now available through 1,401 digitized passages in our Oracle Cloud database.`,
-    about_legacy: `Macrobius' influence reaches to today. His "ancient message in a bottle" is now accessible to all through modern technology.`,
-    about_influence: `This app makes Macrobius' systematic preservation of ancient wisdom experienceable through authentic texts.`,
+    about_subtitle: "Cultural Preserver of the Late Antique World (ca. 385-430 AD)",
+    about_biography: `Macrobius was a late antique Roman official who administered the Iberian Peninsula as Praefectus praetorio per Hispanias. As a scholar and cultural preserver, he documented the rich educational culture of the declining Roman civilization.`,
+    about_works: `His main works "Saturnalia" and "Commentarii in Somnium Scipionis" preserve invaluable knowledge about Roman culture, philosophy, astronomy, and society. Now available through 1,401 digitized passages.`,
+    about_legacy: `Macrobius' cultural "message in a bottle" survived the dark ages and inspired the Renaissance. His systematic preservation of ancient wisdom makes him one of history's most important cultural mediators.`,
     close_modal: "Close",
     pontanus_button: "About Pontanus",
-    about_pontanus_title: "Johannes Isaac Pontanus",
-    about_pontanus_subtitle: "Danish Scholar and Editor (1571-1639)",
-    about_pontanus_bio: `Pontanus played a crucial role in preserving Macrobius' works for posterity.`,
-    about_pontanus_work: `His 1597 edition became the standard reference and is the foundation for our digital collection.`,
-    about_pontanus_legacy: `Through Pontanus' work, we can experience authentic Macrobius texts digitally today.`
+    about_pontanus_title: "Johannes Isaac Pontanus", 
+    about_pontanus_subtitle: "Danish Scholar and Tycho Brahe's Assistant (1571-1639)",
+    about_pontanus_bio: `Pontanus was an assistant to the famous astronomer Tycho Brahe and remembered Macrobius' significance for astronomy. He recognized the connection between ancient wisdom and modern natural science.`,
+    about_pontanus_work: `His annotated complete edition of 1597 became the standard reference and made it possible to unlock Macrobius' cultural knowledge for the modern era.`,
+    about_pontanus_legacy: `Through Pontanus' work, the bridge between ancient culture and Renaissance scholarship was built. His edition is the foundation of our digital collection.`
   },
   LA: {
     title: "Epistula Antiqua in Lagena",
-    intro: "Nuntius ab antiquitate ad futurum",
-    section_intro: "Introductio",
-    section_quiz: "Quaestiones",
-    section_worldmap: "Mappa Mundi",
-    section_cosmos: "Cosmos",
-    section_banquet: "Convivium",
-    section_search: "Textus Quaerere",
-    section_learning: "Discere",
-    section_visualizations: "Imagines",
-    section_vocabulary: "Vocabularium",
+    intro: "Educatio Culturalis per Corpus Macrobii Completum",
+    section_intro: "🏛️ INTRODUCTIO",
+    section_quiz: "📝 QUAESTIONES",
+    section_worldmap: "🗺️ MAPPA MUNDI", 
+    section_cosmos: "🌌 COSMOS",
+    section_banquet: "🍷 CONVIVIUM",
+    section_search: "🔍 TEXTUS QUAERERE",
+    section_learning: "📚 DISCERE",
+    section_visualizations: "📊 IMAGINES",
+    section_vocabulary: "📖 VOCABULARIUM",
     explore_texts: "Textus Explorare",
     about_macrobius: "De Macrobio",
     search_placeholder: "Quaerere in 1401 textibus authenticis...",
-    quiz_question: "Quod somnium celebre Macrobius commentatus est?",
-    quiz_a: "A) Somnium Scipionis",
-    quiz_b: "B) Somnium Caesaris",
-    quiz_c: "C) Somnium Ciceronis",
-    quiz_answer: "Responsio recta: A) Somnium Scipionis - 'Somnium Scipionis' textus celebris Ciceronis erat, quem Macrobius copiose commentatus est.",
-    cosmos_description: "Explorare Macrobii miram cosmorum descriptionem cum textibus authenticis",
-    worldmap_description: "Invenire antiquam mundi visionem per Macrobii descriptiones",
-    banquet_description: "Immergere in doctorum colloquia in Saturnalium convivio",
-    learning_tools: "Instrumenta discendi cum textibus Latinis authenticis",
-    story: `Ante 1500 annos Macrobius epistulam in lagena ad futurum fecit. Haec applicatio eam vivam facit cum 1401 textibus Latinis authenticis. Experire connexionem inter antiquam sapientiam et modernm technologiam!`,
+    cultural_story: `Ante 1500 annos, cum Imperium Romanum fini appropinquaret, Macrobius, praefectus et eruditus in Italia septentrionali, epistulam in lagena ad futurum condidit. Haec epistula ex duobus textibus constabat: colloquio informali eruditorum Romanorum et commentario somnii. In utrisque Macrobius id quod de civilizatione antiqua cadente sibi carum erat, ita componere studuit ut saecula tenebrosa superaret et lectores futuros ad civilizationis processum renovandum incitaret. Ante 500 annos hoc renovamen incepit. In Dania per observationes astronomicas Tychonis Brahe, qui fundamenta Kepleri operis et scientiarum naturalium modernarum posuit. Tychonis adiutor Macrobii epistulam recordatus primam editionem completam et annotatam composuit. Hic liber in manus meas venit et mihi idea venit hanc parvam applicationem de hac historia facere.... Gaude!`,
+    cultural_focus: "Quid Macrobius de Cultura Antiquitatis Serae Docet",
+    late_antiquity_wisdom: "Sapientia Antiquitatis Serae pro Mundo Moderno",
     about_title: "Macrobius Ambrosius Theodosius",
-    about_subtitle: "Philosophus, Grammaticus et Sapientiae Custos (ca. 385-430 p.C.)",
-    about_biography: `Macrobius vir publicus et scriptor antiquitatis serae fuit. Ut Praefectus per Hispanias, peninsulam administravit. Opera eius scientiam pro futuris servavit.`,
-    about_works: `Opera praecipua "Saturnalia" et "Commentarii" nunc per 1401 textus in nostra base data disponuntur.`,
-    about_legacy: `Macrobii influxus ad hodiem pertinet. Eius "epistula antiqua" nunc omnibus per technologiam accessibilis est.`,
-    about_influence: `Haec applicatio Macrobii sapientiae conservationem per textus authenticos experiabilem facit.`,
+    about_subtitle: "Culturae Custos Mundi Antiquitatis Serae (ca. 385-430 p.C.)",
+    about_biography: `Macrobius vir publicus antiquitatis serae fuit qui Hispanias ut Praefectus administravit. Ut eruditus et culturae custos, divitem culturam educationalem civilizationis Romanae cadentis documentavit.`,
+    about_works: `Opera praecipua "Saturnalia" et "Commentarii in Somnium Scipionis" scientiam inestimabilem de cultura, philosophia, astronomia et societate Romana servant. Nunc per 1401 textus digitales disponuntur.`,
+    about_legacy: `Macrobii culturalis "epistula in lagena" saecula tenebrosa superavit et Renascentiam inspiravit. Eius systematica conservatio sapientiae antiquae eum inter praecipuos culturae mediatores facit.`,
     close_modal: "Claudere",
     pontanus_button: "De Pontano",
     about_pontanus_title: "Johannes Isaac Pontanus",
-    about_pontanus_subtitle: "Eruditus Danicus et Editor (1571-1639)",
-    about_pontanus_bio: `Pontanus partem crucialem in Macrobii operum conservatione gessit.`,
-    about_pontanus_work: `Eius editio 1597 norma facta est et nostrae collectionis fundamentum est.`,
-    about_pontanus_legacy: `Per Pontani laborem, textus Macrobii authenticos hodie digitale experiri possumus.`
+    about_pontanus_subtitle: "Eruditus Danicus et Tychonis Adiutor (1571-1639)",
+    about_pontanus_bio: `Pontanus adiutor celebris astronomi Tychonis Brahe fuit et Macrobii momentum pro astronomia recordatus est. Connexionem inter sapientiam antiquam et scientiam naturalem modernam cognovit.`,
+    about_pontanus_work: `Eius editio completa annotata 1597 norma facta est et Macrobii scientiam culturalem pro aetate moderna aperire permisit.`,
+    about_pontanus_legacy: `Per Pontani laborem, pons inter culturam antiquam et eruditionem Renascentiae aedificatus est. Eius editio fundamentum nostrae collectionis digitalis est.`
   }
 };
 
-// Main application component with Oracle Cloud integration
-export default function MacrobiusApp() {
+// Main CULTURAL EDUCATION application
+export default function MacrobiusCulturalApp() {
   // Language state
   const [currentLang, setCurrentLang] = useState<'DE' | 'EN' | 'LA'>('DE');
   
@@ -165,20 +143,34 @@ export default function MacrobiusApp() {
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showPontanusModal, setShowPontanusModal] = useState(false);
 
-  // Translation helper with strict typing
+  // Mouse position for parallax effect
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // Translation helper
   const t = useCallback((key: TranslationKey): string => {
     return translations[currentLang][key] || key;
   }, [currentLang]);
 
-  // Type adapter for components that need string-based translation function
+  // Type adapter for components
   const tAdapter = useCallback((key: string): string => {
-    // Check if the key exists in our TranslationKey union type
     if (key in translations[currentLang]) {
       return translations[currentLang][key as TranslationKey];
     }
-    // Fallback for keys not in our main translations
     return key;
   }, [currentLang]);
+
+  // Mouse move handler for parallax
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100,
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   // Event handlers
   const handleLanguageChange = (lang: 'DE' | 'EN' | 'LA') => {
@@ -189,23 +181,22 @@ export default function MacrobiusApp() {
     setActiveSection(section);
   };
 
-  // Close modal handlers
-  const handleCloseAbout = () => setShowAboutModal(false);
-  const handleClosePontanus = () => setShowPontanusModal(false);
-
   return (
     <>
       <Head>
-        <title>{t('title')} - Macrobius Oracle Cloud</title>
-        <meta name="description" content="Eine interaktive Reise durch 1.401 authentische Macrobius-Texte - Oracle Cloud Integration" />
+        <title>{t('title')} - Macrobius Cultural Education</title>
+        <meta name="description" content="Kulturelle Bildung durch das vollständige Macrobius-Korpus - Spätantike Weisheit für die moderne Welt" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="min-h-screen relative overflow-x-hidden bg-gradient-to-br from-purple-900 via-indigo-900 to-black">
-        {/* Animated starfield background */}
+      {/* RESTORED: Authentic Azure Evening Gradient Background */}
+      <div className="min-h-screen relative overflow-x-hidden" style={{
+        background: 'linear-gradient(135deg, #007BC7 0%, #005A9C 50%, #004080 100%)'
+      }}>
+        {/* Enhanced Animated Starfield with Parallax */}
         <div className="fixed inset-0 z-0">
-          {[...Array(100)].map((_, i) => (
+          {[...Array(150)].map((_, i) => (
             <div
               key={i}
               className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
@@ -214,12 +205,45 @@ export default function MacrobiusApp() {
                 top: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 3}s`,
                 opacity: Math.random() * 0.8 + 0.2,
+                transform: `translate(${(mousePosition.x - 50) * 0.02}px, ${(mousePosition.y - 50) * 0.02}px)`,
+                transition: 'transform 0.5s ease-out',
+              }}
+            />
+          ))}
+          {/* Moving stars from right to left */}
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={`moving-${i}`}
+              className="absolute w-2 h-2 bg-yellow-200 rounded-full animate-pulse"
+              style={{
+                left: `${100 + (i * 50)}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+                animation: `moveStars 20s linear infinite, pulse 2s ease-in-out infinite alternate`,
               }}
             />
           ))}
         </div>
 
-        {/* Language selector */}
+        {/* Astrolabe Background Motif */}
+        <div className="fixed inset-0 z-0 opacity-10">
+          <div 
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 border-2 border-yellow-400 rounded-full"
+            style={{
+              transform: `translate(-50%, -50%) rotate(${activeSection === 'cosmos' ? '45deg' : '0deg'})`,
+              transition: 'transform 0.5s ease-in-out',
+            }}
+          >
+            <div className="absolute inset-4 border border-yellow-400 rounded-full">
+              <div className="absolute inset-4 border border-yellow-400 rounded-full">
+                <div className="absolute top-1/2 left-0 right-0 h-px bg-yellow-400"></div>
+                <div className="absolute left-1/2 top-0 bottom-0 w-px bg-yellow-400"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Language Selector */}
         <div className="fixed top-4 right-4 z-50">
           <div className="bg-white/10 backdrop-blur-md rounded-lg border border-white/20 p-2">
             <div className="flex space-x-1">
@@ -240,25 +264,32 @@ export default function MacrobiusApp() {
           </div>
         </div>
 
-        {/* Navigation */}
+        {/* RESTORED: Wine-Red Navigation Sidebar */}
         <nav className="fixed top-4 left-4 z-50">
           <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
             <div className="flex flex-col space-y-2">
               {[
-                { id: 'hero', label: '🏛️ Start', icon: '🏛️' },
-                { id: 'search', label: t('section_search'), icon: '🔍' },
+                { id: 'hero', label: t('section_intro'), icon: '🏛️' },
+                { id: 'quiz', label: t('section_quiz'), icon: '📝' },
+                { id: 'worldmap', label: t('section_worldmap'), icon: '🗺️' },
                 { id: 'cosmos', label: t('section_cosmos'), icon: '🌌' },
-                { id: 'visualizations', label: t('section_visualizations'), icon: '📊' },
-                { id: 'vocabulary', label: t('section_vocabulary'), icon: '📚' }
+                { id: 'banquet', label: t('section_banquet'), icon: '🍷' },
+                { id: 'search', label: t('section_search'), icon: '🔍' },
+                { id: 'learning', label: t('section_learning'), icon: '📚' },
+                { id: 'visualizations', label: t('section_visualizations'), icon: '📊' }
               ].map((section) => (
                 <button
                   key={section.id}
                   onClick={() => handleSectionChange(section.id)}
-                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 text-left flex items-center space-x-2 ${
+                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 text-left flex items-center space-x-2 btn-wine ${
                     activeSection === section.id
                       ? 'bg-yellow-400 text-gray-800 shadow-lg'
-                      : 'text-white/80 hover:bg-white/20'
+                      : 'text-yellow-300 hover:bg-white/20'
                   }`}
+                  style={{
+                    backgroundColor: activeSection === section.id ? '#FFD700' : '#722F37',
+                    color: activeSection === section.id ? '#1a1a1a' : '#FFD700',
+                  }}
                 >
                   <span>{section.icon}</span>
                   <span>{section.label}</span>
@@ -272,17 +303,31 @@ export default function MacrobiusApp() {
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span className="text-white/70">Oracle Cloud</span>
               </div>
-              <p className="text-white/60 text-xs mt-1">1.401 Texte verfügbar</p>
+              <p className="text-white/60 text-xs mt-1">1.401 Kulturelle Texte</p>
+            </div>
+
+            {/* Pontanus Button */}
+            <div className="mt-4 pt-4 border-t border-white/20">
+              <button
+                onClick={() => setShowPontanusModal(true)}
+                className="w-full px-3 py-2 text-xs font-medium rounded-lg btn-wine transition-all duration-300"
+                style={{
+                  backgroundColor: '#722F37',
+                  color: '#FFD700',
+                }}
+              >
+                {t('pontanus_button')}
+              </button>
             </div>
           </div>
         </nav>
 
-        {/* Main content */}
+        {/* Main Content */}
         <main className="relative z-10">
-          {/* Hero Section */}
+          {/* Hero Section - CULTURAL EDUCATION FOCUS */}
           {activeSection === 'hero' && (
             <section className="min-h-screen flex items-center justify-center px-4">
-              <div className="text-center max-w-5xl mx-auto">
+              <div className="text-center max-w-6xl mx-auto">
                 <motion.div
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -296,37 +341,47 @@ export default function MacrobiusApp() {
                     {t('title')}
                   </h2>
                   
-                  <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
-                    {t('story')}
-                  </p>
+                  <h3 className="text-xl md:text-2xl text-yellow-200 mb-12 font-medium">
+                    {t('cultural_focus')}
+                  </h3>
+                  
+                  <div className="max-w-4xl mx-auto mb-12">
+                    <p className="text-lg md:text-xl text-white/90 leading-relaxed">
+                      {t('cultural_story')}
+                    </p>
+                  </div>
 
-                  {/* Oracle Cloud Features */}
+                  {/* Cultural Education Features */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                    <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-                      <div className="text-3xl mb-4">🔍</div>
-                      <h3 className="text-lg font-semibold text-yellow-400 mb-2">Authentische Suche</h3>
-                      <p className="text-white/80 text-sm">Durchsuche 1.401 echte lateinische Passagen</p>
+                    <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 card-hover">
+                      <div className="text-4xl mb-4">🏛️</div>
+                      <h3 className="text-lg font-semibold text-yellow-400 mb-2">Römische Kultur</h3>
+                      <p className="text-white/80 text-sm">Was Macrobius über spätantike Gesellschaft und Bildung lehrt</p>
                     </div>
                     
-                    <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-                      <div className="text-3xl mb-4">🌌</div>
-                      <h3 className="text-lg font-semibold text-yellow-400 mb-2">Kosmische Visualisierung</h3>
-                      <p className="text-white/80 text-sm">Erkunde Macrobius' Astronomie mit Originaltexten</p>
+                    <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 card-hover">
+                      <div className="text-4xl mb-4">🌌</div>
+                      <h3 className="text-lg font-semibold text-yellow-400 mb-2">Antike Kosmologie</h3>
+                      <p className="text-white/80 text-sm">Himmelskunde und Philosophie der späten Antike</p>
                     </div>
                     
-                    <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-                      <div className="text-3xl mb-4">📚</div>
-                      <h3 className="text-lg font-semibold text-yellow-400 mb-2">Vokabeltraining</h3>
-                      <p className="text-white/80 text-sm">Lerne Latein mit authentischem Wortschatz</p>
+                    <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 card-hover">
+                      <div className="text-4xl mb-4">🍷</div>
+                      <h3 className="text-lg font-semibold text-yellow-400 mb-2">Gelehrte Gespräche</h3>
+                      <p className="text-white/80 text-sm">Bildungskultur und Wissensvermittlung bei Römern</p>
                     </div>
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                     <button
-                      onClick={() => handleSectionChange('search')}
-                      className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-8 py-4 text-lg font-semibold rounded-xl hover:from-yellow-400 hover:to-orange-400 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                      onClick={() => handleSectionChange('banquet')}
+                      className="btn-wine px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                      style={{
+                        backgroundColor: '#722F37',
+                        color: '#FFD700',
+                      }}
                     >
-                      🔍 Texte durchsuchen
+                      🍷 Kulturelle Entdeckung beginnen
                     </button>
                     
                     <button
@@ -341,7 +396,7 @@ export default function MacrobiusApp() {
             </section>
           )}
 
-          {/* Oracle Cloud-Integrated Sections */}
+          {/* Oracle Cloud-Integrated Sections - CULTURAL FOCUS */}
           {activeSection === 'search' && (
             <TextSearchSection isActive={true} t={tAdapter} language={currentLang} />
           )}
@@ -350,16 +405,28 @@ export default function MacrobiusApp() {
             <CosmosSection isActive={true} t={tAdapter} language={currentLang} />
           )}
 
+          {activeSection === 'banquet' && (
+            <BanquetSection isActive={true} t={tAdapter} language={currentLang} />
+          )}
+
+          {activeSection === 'worldmap' && (
+            <WorldMapSection isActive={true} t={tAdapter} language={currentLang} />
+          )}
+
+          {activeSection === 'quiz' && (
+            <QuizSection isActive={true} t={tAdapter} language={currentLang} />
+          )}
+
+          {activeSection === 'learning' && (
+            <LearningSection isActive={true} t={tAdapter} language={currentLang} />
+          )}
+
           {activeSection === 'visualizations' && (
             <VisualizationsSection isActive={true} t={tAdapter} language={currentLang} />
           )}
-
-          {activeSection === 'vocabulary' && (
-            <VocabularyTrainer isActive={true} t={tAdapter} language={currentLang} />
-          )}
         </main>
 
-        {/* About Macrobius Modal */}
+        {/* About Macrobius Modal - CULTURAL FOCUS */}
         <AnimatePresence>
           {showAboutModal && (
             <motion.div
@@ -367,7 +434,7 @@ export default function MacrobiusApp() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={handleCloseAbout}
+              onClick={() => setShowAboutModal(false)}
             >
               <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
               
@@ -379,7 +446,7 @@ export default function MacrobiusApp() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
-                  onClick={handleCloseAbout}
+                  onClick={() => setShowAboutModal(false)}
                   className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center text-white/80 hover:bg-white/30 transition-all duration-300"
                 >
                   ×
@@ -397,29 +464,33 @@ export default function MacrobiusApp() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">👤 Biographie</h3>
+                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">🏛️ Kultureller Kontext</h3>
                       <p className="text-white/90 leading-relaxed">{t('about_biography')}</p>
                     </div>
 
                     <div>
-                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">📚 Werke</h3>
+                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">📚 Kulturelle Werke</h3>
                       <p className="text-white/90 leading-relaxed">{t('about_works')}</p>
                     </div>
                   </div>
 
                   <div className="bg-yellow-500/20 border border-yellow-400/50 rounded-lg p-6">
-                    <h3 className="text-xl font-semibold text-yellow-300 mb-3">🌐 Oracle Cloud Integration</h3>
+                    <h3 className="text-xl font-semibold text-yellow-300 mb-3">🌐 Kulturelle Bildung</h3>
                     <p className="text-white/90 text-sm">
-                      Diese App nutzt eine Oracle Cloud-Datenbank mit 1.401 authentischen lateinischen Textpassagen 
-                      aus Macrobius' Werken. Alle Inhalte sind historisch verifiziert und bieten eine einzigartige 
-                      Verbindung zwischen antiker Weisheit und moderner Technologie.
+                      Diese App nutzt das vollständige Macrobius-Korpus mit 1.401 authentischen Passagen 
+                      zur kulturellen Bildung. Entdecke, was Macrobius über spätantike Kultur, Gesellschaft, 
+                      Philosophie und Bildung lehrt - eine Brücke zwischen antiker Weisheit und moderner Welt.
                     </p>
                   </div>
 
                   <div className="text-center">
                     <button
-                      onClick={handleCloseAbout}
-                      className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-8 py-3 rounded-xl font-semibold transition-all duration-300"
+                      onClick={() => setShowAboutModal(false)}
+                      className="btn-wine px-8 py-3 rounded-xl font-semibold transition-all duration-300"
+                      style={{
+                        backgroundColor: '#722F37',
+                        color: '#FFD700',
+                      }}
                     >
                       {t('close_modal')}
                     </button>
@@ -430,35 +501,105 @@ export default function MacrobiusApp() {
           )}
         </AnimatePresence>
 
-        {/* Global styles */}
+        {/* Pontanus Modal */}
+        <AnimatePresence>
+          {showPontanusModal && (
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowPontanusModal(false)}
+            >
+              <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+              
+              <motion.div
+                className="relative bg-white/10 backdrop-blur-md rounded-3xl p-8 max-w-3xl mx-auto border border-white/30 shadow-2xl"
+                initial={{ scale: 0.8, y: 50 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.8, y: 50 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setShowPontanusModal(false)}
+                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center text-white/80 hover:bg-white/30 transition-all duration-300"
+                >
+                  ×
+                </button>
+
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <h2 className="text-3xl font-bold text-yellow-400 mb-2">
+                      {t('about_pontanus_title')}
+                    </h2>
+                    <p className="text-lg text-yellow-300/90 font-medium">
+                      {t('about_pontanus_subtitle')}
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-xl font-semibold text-yellow-400 mb-3">👨‍🔬 Wissenschaftlicher Kontext</h3>
+                      <p className="text-white/90 leading-relaxed">{t('about_pontanus_bio')}</p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-xl font-semibold text-yellow-400 mb-3">📖 Editorische Leistung</h3>
+                      <p className="text-white/90 leading-relaxed">{t('about_pontanus_work')}</p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-xl font-semibold text-yellow-400 mb-3">🌉 Kulturelle Brücke</h3>
+                      <p className="text-white/90 leading-relaxed">{t('about_pontanus_legacy')}</p>
+                    </div>
+                  </div>
+
+                  <div className="text-center">
+                    <button
+                      onClick={() => setShowPontanusModal(false)}
+                      className="btn-wine px-8 py-3 rounded-xl font-semibold transition-all duration-300"
+                      style={{
+                        backgroundColor: '#722F37',
+                        color: '#FFD700',
+                      }}
+                    >
+                      {t('close_modal')}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Enhanced Styles */}
         <style jsx global>{`
-          .text-gradient {
-            background: linear-gradient(135deg, #FFD700 0%, #FF8C00 50%, #FF4500 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+          @keyframes moveStars {
+            from {
+              transform: translateX(0);
+            }
+            to {
+              transform: translateX(-100vw);
+            }
           }
           
           .btn-wine {
             background: linear-gradient(135deg, #722F37 0%, #8B4513 100%);
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(114, 47, 55, 0.3);
           }
           
           .btn-wine:hover {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            background: linear-gradient(135deg, #8B4513 0%, #722F37 100%);
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
           }
 
           .card-hover {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
           }
           
           .card-hover:hover {
-            background: rgba(255, 255, 255, 0.15);
             transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
           }
