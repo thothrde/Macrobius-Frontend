@@ -3,22 +3,37 @@
  * Oracle Cloud Integrated - Message in a Bottle from Antiquity to the Future
  * Visual Excellence with Historical Authenticity + Real Classical Content
  * 
- * ENHANCED: June 13, 2025 - ALL BUILD ISSUES RESOLVED + Oracle Cloud API Integration Complete
- * Architecture: Using Oracle Cloud-powered section components with FORCED TYPE COMPATIBILITY
+ * ENHANCED: June 13, 2025 - TypeScript Error Resolution
+ * Architecture: Using Oracle Cloud-powered section components with proper type safety
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Import Oracle Cloud-integrated components with correct names from index
+// Import Oracle Cloud-integrated components
 import CosmosSection from '../components/sections/CosmosSection';
 import TextSearchSection from '../components/sections/TextSearchSection';  
 import VisualizationsSection from '../components/sections/VisualizationsSection';
 import VocabularyTrainer from '../components/sections/VocabularyTrainer';
 
-// Simplified translation system - NO COMPLEX TYPES
-const translations = {
+// Translation types
+type TranslationKey = 
+  | 'title' | 'intro' | 'section_intro' | 'section_quiz' | 'section_worldmap' 
+  | 'section_cosmos' | 'section_banquet' | 'section_search' | 'section_learning' 
+  | 'section_visualizations' | 'section_vocabulary' | 'explore_texts' | 'about_macrobius' 
+  | 'search_placeholder' | 'quiz_question' | 'quiz_a' | 'quiz_b' | 'quiz_c' 
+  | 'quiz_answer' | 'cosmos_description' | 'worldmap_description' | 'banquet_description' 
+  | 'learning_tools' | 'story' | 'about_title' | 'about_subtitle' | 'about_biography' 
+  | 'about_works' | 'about_legacy' | 'about_influence' | 'close_modal' | 'pontanus_button'
+  | 'about_pontanus_title' | 'about_pontanus_subtitle' | 'about_pontanus_bio'
+  | 'about_pontanus_work' | 'about_pontanus_legacy';
+
+type TranslationTexts = Record<TranslationKey, string>;
+type Translations = Record<'DE' | 'EN' | 'LA', TranslationTexts>;
+
+// Enhanced translation system with Oracle Cloud integration
+const translations: Translations = {
   DE: {
     title: "Eine antike Flaschenpost",
     intro: "Eine Nachricht aus der Antike an die Zukunft",
@@ -136,7 +151,7 @@ const translations = {
     about_pontanus_work: `Eius editio 1597 norma facta est et nostrae collectionis fundamentum est.`,
     about_pontanus_legacy: `Per Pontani laborem, textus Macrobii authenticos hodie digitale experiri possumus.`
   }
-} as any; // FORCE ANY TYPE TO BYPASS ALL TYPESCRIPT ISSUES
+};
 
 // Main application component with Oracle Cloud integration
 export default function MacrobiusApp() {
@@ -150,10 +165,20 @@ export default function MacrobiusApp() {
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showPontanusModal, setShowPontanusModal] = useState(false);
 
-  // MOST AGGRESSIVE FIX: Simple function with explicit any casting
-  const t = (key: string): string => {
-    return (translations as any)[currentLang]?.[key] || key;
-  };
+  // Translation helper with strict typing
+  const t = useCallback((key: TranslationKey): string => {
+    return translations[currentLang][key] || key;
+  }, [currentLang]);
+
+  // Type adapter for components that need string-based translation function
+  const tAdapter = useCallback((key: string): string => {
+    // Check if the key exists in our TranslationKey union type
+    if (key in translations[currentLang]) {
+      return translations[currentLang][key as TranslationKey];
+    }
+    // Fallback for keys not in our main translations
+    return key;
+  }, [currentLang]);
 
   // Event handlers
   const handleLanguageChange = (lang: 'DE' | 'EN' | 'LA') => {
@@ -318,19 +343,19 @@ export default function MacrobiusApp() {
 
           {/* Oracle Cloud-Integrated Sections */}
           {activeSection === 'search' && (
-            <TextSearchSection isActive={true} t={t} language={currentLang} />
+            <TextSearchSection isActive={true} t={tAdapter} language={currentLang} />
           )}
 
           {activeSection === 'cosmos' && (
-            <CosmosSection isActive={true} t={t} language={currentLang} />
+            <CosmosSection isActive={true} t={tAdapter} language={currentLang} />
           )}
 
           {activeSection === 'visualizations' && (
-            <VisualizationsSection isActive={true} t={t} language={currentLang} />
+            <VisualizationsSection isActive={true} t={tAdapter} language={currentLang} />
           )}
 
           {activeSection === 'vocabulary' && (
-            <VocabularyTrainer isActive={true} t={t} language={currentLang} />
+            <VocabularyTrainer isActive={true} t={tAdapter} language={currentLang} />
           )}
         </main>
 
