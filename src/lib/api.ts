@@ -1,7 +1,7 @@
 // API Configuration and Utilities for Macrobius Backend Integration
 
-// Backend API Base URL (adjust for your deployment)
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'
+// Backend API Base URL (Oracle Cloud Integration)
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://152.70.184.232:8080'
 
 // API Response Types
 export interface ApiResponse<T> {
