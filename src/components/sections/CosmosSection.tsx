@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Globe, Clock, BookOpen, Telescope, ArrowUp, ArrowDown, Music, Eye, Brain } from 'lucide-react';
+import { Star, Globe, Clock, BookOpen, Search, ArrowUp, ArrowDown, Music, Eye, Brain } from 'lucide-react';
 
 interface CosmosSectionProps {
   isActive: boolean;
@@ -312,7 +312,7 @@ function EnhancedCosmosSection({ isActive, t, language = 'DE' }: CosmosSectionPr
                         : 'bg-white/10 text-white hover:bg-white/20'
                     }`}
                   >
-                    <Telescope className="w-4 h-4" />
+                    <Search className="w-4 h-4" />
                     Tycho
                   </button>
                 </div>
@@ -508,7 +508,7 @@ function EnhancedCosmosSection({ isActive, t, language = 'DE' }: CosmosSectionPr
                       {showTychoComparison && selectedSphere.tychoBraheConnection && (
                         <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
                           <h5 className="font-semibold text-blue-200 mb-2 flex items-center gap-2">
-                            <Telescope className="w-4 h-4" />
+                            <Search className="w-4 h-4" />
                             Tycho Brahe Verbindung
                           </h5>
                           <p className="text-blue-100/90 text-sm leading-relaxed">{selectedSphere.tychoBraheConnection}</p>
