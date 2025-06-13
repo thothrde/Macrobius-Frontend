@@ -3,7 +3,7 @@
  * Oracle Cloud Integrated - Message in a Bottle from Antiquity to the Future
  * Visual Excellence with Historical Authenticity + Real Classical Content
  * 
- * ENHANCED: June 12, 2025 - Oracle Cloud API Integration Complete
+ * ENHANCED: June 13, 2025 - Build Issues Resolved + Oracle Cloud API Integration Complete
  * Architecture: Using Oracle Cloud-powered section components
  */
 
@@ -11,10 +11,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Import Oracle Cloud-integrated components
+// Import Oracle Cloud-integrated components with correct names
 import CosmosSection from '../components/sections/CosmosSection';
 import TextSearchSection from '../components/sections/TextSearchSection';  
-import VisualizationsSection from '../components/sections/VisualizationsSection';
+import ThreeDVisualizationSection from '../components/sections/ThreeDVisualizationSection';
 import VocabularyTrainer from '../components/sections/VocabularyTrainer';
 
 // Translation types
@@ -165,9 +165,9 @@ export default function MacrobiusApp() {
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showPontanusModal, setShowPontanusModal] = useState(false);
 
-  // Translation helper
-  const t = useCallback((key: TranslationKey): string => {
-    return translations[currentLang][key] || key;
+  // Translation helper - Updated to accept any string key for component compatibility
+  const t = useCallback((key: string): string => {
+    return translations[currentLang][key as TranslationKey] || key;
   }, [currentLang]);
 
   // Event handlers
@@ -341,7 +341,7 @@ export default function MacrobiusApp() {
           )}
 
           {activeSection === 'visualizations' && (
-            <VisualizationsSection isActive={true} t={t} language={currentLang} />
+            <ThreeDVisualizationSection isActive={true} t={t} language={currentLang} />
           )}
 
           {activeSection === 'vocabulary' && (
