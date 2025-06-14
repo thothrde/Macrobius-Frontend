@@ -1,7 +1,7 @@
 /**
  * 🏛️ MACROBIUS - CULTURAL EDUCATION PLATFORM (CORRECTED CLASSIC VISUAL STYLE)
  * Late Antiquity Cultural Wisdom through Complete Corpus
- * CORRECTED: Floating Macrobius circle above hero, larger centered astrolabe, stars move right-to-left
+ * CORRECTED: Only medallion moves, huge astrolabe background, complete Pontanus text + image
  * 
  * MISSION: Perfect restoration matching the old beautiful visual style
  */
@@ -420,25 +420,25 @@ export default function MacrobiusCulturalApp() {
           ))}
         </div>
 
-        {/* HUGE CENTERED Rotating Astrolabe Background - ON ALL PAGES */}
-        <div className="fixed inset-0 z-0 opacity-12">
+        {/* HUGE CENTERED Rotating Astrolabe Background - ABOVE CONTENT, LARGER & MORE VISIBLE */}
+        <div className="fixed inset-0 z-1 opacity-25">
           <motion.div 
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             animate={{ 
               rotate: astrolabeRotation,
-              scale: [1, 1.01, 1],
+              scale: [1, 1.02, 1],
             }}
             transition={{ 
               rotate: { duration: 2, ease: "easeInOut" },
-              scale: { duration: 8, ease: "easeInOut", repeat: Infinity }
+              scale: { duration: 10, ease: "easeInOut", repeat: Infinity }
             }}
           >
-            {/* MUCH LARGER Astrolabe - covers full page */}
-            <div className="w-[1200px] h-[1200px] relative">
+            {/* EVEN LARGER Astrolabe - 1600px for full coverage */}
+            <div className="w-[1600px] h-[1600px] relative">
               <img 
                 src="/Astrolab.jpg" 
                 alt="Historical Astrolabe"
-                className="w-full h-full object-contain filter sepia opacity-60"
+                className="w-full h-full object-contain filter sepia opacity-80"
               />
             </div>
           </motion.div>
@@ -466,7 +466,7 @@ export default function MacrobiusCulturalApp() {
               {/* Floating Circle with Macrobius Image */}
               <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-yellow-400 shadow-2xl bg-gradient-to-br from-yellow-400 to-orange-500">
                 <img 
-                  src="/Macrobius-Idealportrait.jpg" 
+                  src="/MacrobiusBottle.jpg" 
                   alt="Macrobius with Bottle"
                   className="w-full h-full object-cover"
                 />
