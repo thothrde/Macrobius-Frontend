@@ -170,7 +170,822 @@ const translations: Translations = {
   }
 };
 
+// Clickable Image Component
+interface ClickableImageProps {
+  imageInfo: ImageInfo;
+  onClick: (imageInfo: ImageInfo) => void;
+  className?: string;
+}
+
+const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, className = '' }) => {
+  return (
+    <motion.div
+      className={`relative group cursor-pointer overflow-hidden rounded-xl border border-white/20 shadow-lg ${className}`}
+      whileHover={{ scale: 1.02, y: -5 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={() => onClick(imageInfo)}
+    >
+      <div className="relative">
+        <img
+          src={imageInfo.src}
+          alt={imageInfo.title}
+          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute bottom-0 left-0 right-0 p-4">
+            <h3 className="text-white font-bold text-lg mb-1">{imageInfo.title}</h3>
+            {imageInfo.subtitle && (
+              <p className="text-white/90 text-sm">{imageInfo.subtitle}</p>
+            )}
+          </div>
+        </div>
+        
+        {/* Click Indicator */}
+        <div className="absolute top-2 right-2 bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <Maximize className="w-4 h-4 text-white" />
+        </div>
+      </div>
+      
+      {/* Bottom Info */}
+      <div className="p-3 bg-white/10 backdrop-blur-sm">
+        <p className="text-white/80 text-xs line-clamp-2">{imageInfo.description}</p>
+      </div>
+    </motion.div>
+  );
+};
+
+// Main CULTURAL EDUCATION application (RESTORED CLASSIC STYLE)
 export default function MacrobiusCulturalApp() {
-  // Component implementation continues here...
-  return null;
+  // Language state
+  const [currentLang, setCurrentLang] = useState<Language>('DE');
+  
+  // Navigation state 
+  const [activeSection, setActiveSection] = useState<string>('hero');
+  
+  // Astrolabe rotation state (RESTORED FEATURE)
+  const [astrolabeRotation, setAstrolabeRotation] = useState<number>(0);
+  
+  // Modal states
+  const [showAboutModal, setShowAboutModal] = useState(false);
+  const [showPontanusModal, setShowPontanusModal] = useState(false);
+  
+  // Image modal state
+  const [selectedImage, setSelectedImage] = useState<ImageInfo | null>(null);
+  const [showImageModal, setShowImageModal] = useState(false);
+
+  // Mouse position for parallax effect
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // Translation helper
+  const t = useCallback((key: TranslationKey): string => {
+    return translations[currentLang][key] || key;
+  }, [currentLang]);
+
+  // Type adapter for components
+  const tAdapter = useCallback((key: string): string => {
+    if (key in translations[currentLang]) {
+      return translations[currentLang][key as TranslationKey];
+    }
+    return key;
+  }, [currentLang]);
+
+  // Image click handler
+  const handleImageClick = useCallback((imageInfo: ImageInfo) => {
+    setSelectedImage(imageInfo);
+    setShowImageModal(true);
+  }, []);
+
+  // Image modal close handler
+  const handleImageModalClose = useCallback(() => {
+    setShowImageModal(false);
+    setTimeout(() => {
+      setSelectedImage(null);
+    }, 300);
+  }, []);
+
+  // Mouse move handler for parallax
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100,
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Event handlers
+  const handleLanguageChange = (lang: Language) => {
+    setCurrentLang(lang);
+  };
+
+  // RESTORED: Section change with astrolabe rotation
+  const handleSectionChange = (section: string) => {
+    setActiveSection(section);
+    // Rotate astrolabe on section change (RESTORED FEATURE)
+    setAstrolabeRotation(prev => prev + 45);
+  };
+
+  // Get images for different sections
+  const introImages = getImagesBySection('intro');
+  const cosmosImages = getImagesBySection('cosmos') || [];
+  const worldmapImages = getImagesBySection('worldmap') || [];
+  const banquetImages = getImagesBySection('banquet') || [];
+  const visualizationImages = getImagesBySection('visualizations') || [];
+
+  return (
+    <>
+      <Head>
+        <title>{t('title')} - Macrobius Cultural Education</title>
+        <meta name="description" content="Eine Nachricht aus der Antike an die Zukunft - Spätantike Weisheit für die moderne Welt" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      {/* RESTORED: Azure Evening Gradient Background */}
+      <div className="min-h-screen relative overflow-x-hidden" style={{
+        background: 'linear-gradient(135deg, #007BC7 0%, #005A9C 50%, #004080 100%)'
+      }}>
+        {/* Enhanced Animated Starfield with Parallax */}
+        <div className="fixed inset-0 z-0">
+          {[...Array(150)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                opacity: Math.random() * 0.8 + 0.2,
+                transform: `translate(${(mousePosition.x - 50) * 0.02}px, ${(mousePosition.y - 50) * 0.02}px)`,
+                transition: 'transform 0.5s ease-out',
+              }}
+            />
+          ))}
+          {/* Moving stars from right to left */}
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={`moving-${i}`}
+              className="absolute w-2 h-2 bg-yellow-200 rounded-full animate-pulse"
+              style={{
+                left: `${100 + (i * 50)}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+                animation: `moveStars 20s linear infinite, pulse 2s ease-in-out infinite alternate`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* RESTORED & ENHANCED: Prominent Rotating Astrolabe Background */}
+        <div className="fixed inset-0 z-0 opacity-20">
+          <motion.div 
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            animate={{ 
+              rotate: astrolabeRotation,
+              scale: [1, 1.05, 1],
+            }}
+            transition={{ 
+              rotate: { duration: 2, ease: "easeInOut" },
+              scale: { duration: 4, ease: "easeInOut", repeat: Infinity }
+            }}
+          >
+            {/* Outer astrolabe ring */}
+            <div className="w-[600px] h-[600px] border-4 border-yellow-400 rounded-full relative">
+              {/* Middle ring */}
+              <div className="absolute inset-8 border-2 border-yellow-400 rounded-full">
+                {/* Inner ring */}
+                <div className="absolute inset-8 border-2 border-yellow-400 rounded-full">
+                  {/* Center cross */}
+                  <div className="absolute top-1/2 left-0 right-0 h-px bg-yellow-400"></div>
+                  <div className="absolute left-1/2 top-0 bottom-0 w-px bg-yellow-400"></div>
+                  {/* Diagonal crosses */}
+                  <div className="absolute top-1/2 left-1/2 w-full h-px bg-yellow-400 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></div>
+                  <div className="absolute top-1/2 left-1/2 w-full h-px bg-yellow-400 transform -translate-x-1/2 -translate-y-1/2 -rotate-45"></div>
+                </div>
+              </div>
+              {/* Zodiac markings */}
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-2 h-8 bg-yellow-400"
+                  style={{
+                    top: '10px',
+                    left: '50%',
+                    transformOrigin: '50% 290px',
+                    transform: `translateX(-50%) rotate(${i * 30}deg)`,
+                  }}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Language Selector */}
+        <div className="fixed top-4 right-4 z-50">
+          <div className="bg-white/10 backdrop-blur-md rounded-lg border border-white/20 p-2">
+            <div className="flex space-x-1">
+              {(['DE', 'EN', 'LA'] as const).map((lang) => (
+                <button
+                  key={lang}
+                  onClick={() => handleLanguageChange(lang)}
+                  className={`px-3 py-1 rounded text-sm font-semibold transition-all duration-300 ${
+                    currentLang === lang
+                      ? 'bg-yellow-400 text-gray-800 shadow-lg'
+                      : 'text-white/80 hover:bg-white/20'
+                  }`}
+                >
+                  {lang}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* RESTORED: Classic Navigation Sidebar (SINGLE ICONS) */}
+        <nav className="fixed top-4 left-4 z-50">
+          <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
+            <div className="flex flex-col space-y-2">
+              {/* Core Sections - SINGLE ICONS ONLY */}
+              {[
+                { id: 'hero', label: t('section_intro'), icon: '🏛️' },
+                { id: 'quiz', label: t('section_quiz'), icon: '📝' },
+                { id: 'worldmap', label: t('section_worldmap'), icon: '🗺️' },
+                { id: 'cosmos', label: t('section_cosmos'), icon: '🌌' },
+                { id: 'banquet', label: t('section_banquet'), icon: '🍷' },
+                { id: 'search', label: t('section_search'), icon: '🔍' },
+                { id: 'learning', label: t('section_learning'), icon: '📚' },
+                { id: 'visualizations', label: t('section_visualizations'), icon: '📊' }
+              ].map((section) => (
+                <button
+                  key={section.id}
+                  onClick={() => handleSectionChange(section.id)}
+                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 text-left flex items-center space-x-2 btn-wine ${
+                    activeSection === section.id
+                      ? 'bg-yellow-400 text-gray-800 shadow-lg'
+                      : 'text-yellow-300 hover:bg-white/20'
+                  }`}
+                  style={{
+                    backgroundColor: activeSection === section.id ? '#FFD700' : '#722F37',
+                    color: activeSection === section.id ? '#1a1a1a' : '#FFD700',
+                  }}
+                >
+                  <span>{section.icon}</span>
+                  <span>{section.label}</span>
+                </button>
+              ))}
+              
+              {/* AI Systems Separator */}
+              <div className="border-t border-white/20 pt-2 mt-2">
+                <p className="text-yellow-200/60 text-xs px-2 mb-2">KI-SYSTEME</p>
+                {[
+                  { id: 'ai-cultural', label: t('section_ai_cultural'), icon: '🧠' },
+                  { id: 'ai-learning', label: t('section_ai_learning'), icon: '🎯' },
+                  { id: 'ai-tutoring', label: t('section_ai_tutoring'), icon: '📖' },
+                  { id: 'ai-modules', label: t('section_ai_modules'), icon: '✨' }
+                ].map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => handleSectionChange(section.id)}
+                    className={`w-full px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300 text-left flex items-center space-x-2 btn-wine ${
+                      activeSection === section.id
+                        ? 'bg-blue-400 text-gray-800 shadow-lg'
+                        : 'text-blue-300 hover:bg-white/20'
+                    }`}
+                    style={{
+                      backgroundColor: activeSection === section.id ? '#60A5FA' : 'rgba(59, 130, 246, 0.2)',
+                      color: activeSection === section.id ? '#1a1a1a' : '#93C5FD',
+                    }}
+                  >
+                    <span>{section.icon}</span>
+                    <span>{section.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Oracle Cloud Status */}
+            <div className="mt-4 pt-4 border-t border-white/20">
+              <div className="flex items-center space-x-2 text-xs">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-white/70">Oracle Cloud</span>
+              </div>
+              <p className="text-white/60 text-xs mt-1">1.401 Kulturelle Texte</p>
+            </div>
+
+            {/* RESTORED: Prominent Pontanus Button */}
+            <div className="mt-4 pt-4 border-t border-white/20">
+              <button
+                onClick={() => setShowPontanusModal(true)}
+                className="w-full px-3 py-2 text-xs font-medium rounded-lg btn-wine transition-all duration-300 mb-2"
+                style={{
+                  backgroundColor: '#722F37',
+                  color: '#FFD700',
+                }}
+              >
+                Über Pontanus
+              </button>
+            </div>
+          </div>
+        </nav>
+
+        {/* Main Content */}
+        <main className="relative z-10">
+          {/* RESTORED: Enhanced Hero Section with Floating Bottle Animation */}
+          {activeSection === 'hero' && (
+            <section className="min-h-screen flex items-center justify-center px-4">
+              <div className="text-center max-w-7xl mx-auto">
+                {/* RESTORED: Floating Bottle Container (like old version) */}
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ 
+                    opacity: 1, 
+                    y: 0,
+                    // RESTORED: Floating "bottle in waves" animation
+                    x: [0, -10, 10, 0],
+                    rotate: [0, -1, 1, 0]
+                  }}
+                  transition={{ 
+                    duration: 1,
+                    x: { duration: 6, ease: "easeInOut", repeat: Infinity },
+                    rotate: { duration: 8, ease: "easeInOut", repeat: Infinity }
+                  }}
+                  className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/30 mb-8"
+                >
+                  {/* Macrobius medallion (centered, like old version) */}
+                  <div className="flex justify-center mb-6">
+                    <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center border-4 border-yellow-300 shadow-xl">
+                      <span className="text-3xl">🏛️</span>
+                    </div>
+                  </div>
+
+                  <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent mb-4">
+                    Macrobius
+                  </h1>
+                  
+                  <h2 className="text-2xl md:text-4xl text-yellow-300 mb-6 font-light">
+                    {t('title')}
+                  </h2>
+                  
+                  <h3 className="text-lg md:text-xl text-yellow-200 mb-8 font-medium">
+                    {t('intro')}
+                  </h3>
+                  
+                  {/* EXTENSIVELY EXPANDED background text (like old version) */}
+                  <div className="max-w-4xl mx-auto mb-8">
+                    <p className="text-base md:text-lg text-white/90 leading-relaxed text-justify">
+                      {t('cultural_story')}
+                    </p>
+                  </div>
+
+                  {/* RESTORED: Clickable Image Gallery with floating effect */}
+                  <motion.div
+                    className="mb-8"
+                    animate={{ 
+                      y: [0, -5, 0],
+                    }}
+                    transition={{ 
+                      duration: 4, 
+                      ease: "easeInOut", 
+                      repeat: Infinity 
+                    }}
+                  >
+                    <div className="flex items-center justify-center space-x-3 mb-6">
+                      <ImageIcon className="w-6 h-6 text-yellow-300" />
+                      <h4 className="text-xl font-semibold text-yellow-200">{t('cultural_treasures')}</h4>
+                      <Eye className="w-6 h-6 text-yellow-300" />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                      {introImages.map((image, index) => (
+                        <motion.div
+                          key={image.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.5 + (index * 0.1), duration: 0.6 }}
+                        >
+                          <ClickableImage
+                            imageInfo={image}
+                            onClick={handleImageClick}
+                            className="h-48"
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+                    
+                    <p className="text-yellow-200/80 text-sm mt-4 italic">
+                      📸 Klicken Sie auf die Bilder für detaillierte kulturelle Hintergründe
+                    </p>
+                  </motion.div>
+
+                  {/* RESTORED: Action Buttons with Pontanus prominently featured */}
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <button
+                      onClick={() => handleSectionChange('banquet')}
+                      className="btn-wine px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                      style={{
+                        backgroundColor: '#722F37',
+                        color: '#FFD700',
+                      }}
+                    >
+                      {t('explore_texts')}
+                    </button>
+                    
+                    <button
+                      onClick={() => setShowAboutModal(true)}
+                      className="bg-white/20 text-white px-6 py-3 text-lg font-semibold rounded-xl hover:bg-white/30 transition-all duration-300 border border-white/30"
+                    >
+                      {t('more_about_macrobius')}
+                    </button>
+
+                    {/* RESTORED: Prominent Pontanus Button */}
+                    <button
+                      onClick={() => setShowPontanusModal(true)}
+                      className="bg-orange-600/80 text-white px-6 py-3 text-lg font-semibold rounded-xl hover:bg-orange-500 transition-all duration-300 border border-orange-400"
+                    >
+                      {t('more_about_pontanus')}
+                    </button>
+                  </div>
+                </motion.div>
+              </div>
+            </section>
+          )}
+
+          {/* Oracle Cloud-Integrated Sections */}
+          {activeSection === 'search' && (
+            <TextSearchSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
+          )}
+
+          {activeSection === 'cosmos' && (
+            <div>
+              <CosmosSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
+              {cosmosImages.length > 0 && (
+                <div className="fixed bottom-4 right-4 z-40">
+                  <motion.div
+                    className="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
+                    <div className="flex flex-col space-y-2">
+                      <h4 className="text-yellow-200 text-sm font-semibold">🌌 Kosmos Bilder</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {cosmosImages.slice(0, 4).map((image, index) => (
+                          <img
+                            key={image.id}
+                            src={image.src}
+                            alt={image.title}
+                            className="w-12 h-12 object-cover rounded cursor-pointer hover:scale-110 transition-transform"
+                            onClick={() => handleImageClick(image)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeSection === 'banquet' && (
+            <div>
+              <BanquetSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
+              {banquetImages.length > 0 && (
+                <div className="fixed bottom-4 right-4 z-40">
+                  <motion.div
+                    className="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
+                    <div className="flex flex-col space-y-2">
+                      <h4 className="text-yellow-200 text-sm font-semibold">🍷 Gastmahl Bilder</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {banquetImages.slice(0, 4).map((image, index) => (
+                          <img
+                            key={image.id}
+                            src={image.src}
+                            alt={image.title}
+                            className="w-12 h-12 object-cover rounded cursor-pointer hover:scale-110 transition-transform"
+                            onClick={() => handleImageClick(image)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeSection === 'worldmap' && (
+            <div>
+              <WorldMapSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
+              {worldmapImages.length > 0 && (
+                <div className="fixed bottom-4 right-4 z-40">
+                  <motion.div
+                    className="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
+                    <div className="flex flex-col space-y-2">
+                      <h4 className="text-yellow-200 text-sm font-semibold">🗺️ Weltkarte Bilder</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {worldmapImages.slice(0, 4).map((image, index) => (
+                          <img
+                            key={image.id}
+                            src={image.src}
+                            alt={image.title}
+                            className="w-12 h-12 object-cover rounded cursor-pointer hover:scale-110 transition-transform"
+                            onClick={() => handleImageClick(image)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeSection === 'quiz' && (
+            <QuizSection isActive={true} t={tAdapter} />
+          )}
+
+          {activeSection === 'learning' && (
+            <LearningSection />
+          )}
+
+          {activeSection === 'visualizations' && (
+            <div>
+              <VisualizationsSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
+              {visualizationImages.length > 0 && (
+                <div className="fixed bottom-4 right-4 z-40">
+                  <motion.div
+                    className="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
+                    <div className="flex flex-col space-y-2">
+                      <h4 className="text-yellow-200 text-sm font-semibold">📊 Visualisierungen</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {visualizationImages.slice(0, 4).map((image, index) => (
+                          <img
+                            key={image.id}
+                            src={image.src}
+                            alt={image.title}
+                            className="w-12 h-12 object-cover rounded cursor-pointer hover:scale-110 transition-transform"
+                            onClick={() => handleImageClick(image)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* AI Systems Sections */}
+          {activeSection === 'ai-cultural' && (
+            <AICulturalAnalysisSection />
+          )}
+
+          {activeSection === 'ai-learning' && (
+            <PersonalizedLearningPathsSection />
+          )}
+
+          {activeSection === 'ai-tutoring' && (
+            <AITutoringSystemSection />
+          )}
+
+          {activeSection === 'ai-modules' && (
+            <AdvancedCulturalModulesSection />
+          )}
+        </main>
+
+        {/* Enhanced Image Modal */}
+        <ImageModal
+          imageInfo={selectedImage}
+          isOpen={showImageModal}
+          onClose={handleImageModalClose}
+          language={currentLang}
+        />
+
+        {/* EXTENSIVELY EXPANDED: About Macrobius Modal */}
+        <AnimatePresence>
+          {showAboutModal && (
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowAboutModal(false)}
+            >
+              <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+              
+              <motion.div
+                className="relative bg-white/10 backdrop-blur-md rounded-3xl p-8 max-w-6xl mx-auto border border-white/30 shadow-2xl max-h-[90vh] overflow-y-auto"
+                initial={{ scale: 0.8, y: 50 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.8, y: 50 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setShowAboutModal(false)}
+                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center text-white/80 hover:bg-white/30 transition-all duration-300 z-10"
+                >
+                  ×
+                </button>
+
+                <div className="space-y-8">
+                  <div className="text-center">
+                    <h2 className="text-4xl font-bold text-yellow-400 mb-2">
+                      {t('about_title')}
+                    </h2>
+                    <p className="text-xl text-yellow-300/90 font-medium">
+                      {t('about_subtitle')}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">🏛️ Biographie & Kontext</h3>
+                      <p className="text-white/90 leading-relaxed text-justify">{t('about_biography')}</p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">📚 Werke & Bedeutung</h3>
+                      <p className="text-white/90 leading-relaxed text-justify">{t('about_works')}</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-2xl font-semibold text-yellow-400 mb-4">🌍 Vermächtnis & Wirkung</h3>
+                    <p className="text-white/90 leading-relaxed text-justify">{t('about_legacy')}</p>
+                  </div>
+
+                  <div className="bg-yellow-500/20 border border-yellow-400/50 rounded-lg p-6">
+                    <h3 className="text-xl font-semibold text-yellow-300 mb-3">🌐 Diese App</h3>
+                    <p className="text-white/90 text-sm leading-relaxed">
+                      Diese App nutzt das vollständige Macrobius-Korpus mit 1.401 authentischen Passagen 
+                      zur kulturellen Bildung. Entdecke, was Macrobius über spätantike Kultur, Gesellschaft, 
+                      Philosophie und Bildung lehrt - eine Brücke zwischen antiker Weisheit und moderner Welt.
+                      Das Bild "idealisiertes Porträt des Macrobius" zeigt übrigens mein eigenes Buch mit 
+                      Macrobius' Texten, das mich zu dieser App inspiriert hat!
+                    </p>
+                  </div>
+
+                  <div className="text-center">
+                    <button
+                      onClick={() => setShowAboutModal(false)}
+                      className="btn-wine px-8 py-3 rounded-xl font-semibold transition-all duration-300"
+                      style={{
+                        backgroundColor: '#722F37',
+                        color: '#FFD700',
+                      }}
+                    >
+                      {t('close_modal')}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* EXTENSIVELY EXPANDED: Pontanus Modal */}
+        <AnimatePresence>
+          {showPontanusModal && (
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowPontanusModal(false)}
+            >
+              <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+              
+              <motion.div
+                className="relative bg-white/10 backdrop-blur-md rounded-3xl p-8 max-w-6xl mx-auto border border-white/30 shadow-2xl max-h-[90vh] overflow-y-auto"
+                initial={{ scale: 0.8, y: 50 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.8, y: 50 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setShowPontanusModal(false)}
+                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center text-white/80 hover:bg-white/30 transition-all duration-300 z-10"
+                >
+                  ×
+                </button>
+
+                <div className="space-y-8">
+                  <div className="text-center">
+                    <h2 className="text-4xl font-bold text-yellow-400 mb-2">
+                      {t('about_pontanus_title')}
+                    </h2>
+                    <p className="text-xl text-yellow-300/90 font-medium">
+                      {t('about_pontanus_subtitle')}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">👨‍🔬 Biographie & Wissenschaft</h3>
+                      <p className="text-white/90 leading-relaxed text-justify">{t('about_pontanus_bio')}</p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">📖 Editorische Leistung</h3>
+                      <p className="text-white/90 leading-relaxed text-justify">{t('about_pontanus_work')}</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-2xl font-semibold text-yellow-400 mb-4">🌉 Vermächtnis & Wirkung</h3>
+                    <p className="text-white/90 leading-relaxed text-justify">{t('about_pontanus_legacy')}</p>
+                  </div>
+
+                  <div className="bg-orange-500/20 border border-orange-400/50 rounded-lg p-6">
+                    <h3 className="text-xl font-semibold text-orange-300 mb-3">📚 Persönliche Verbindung</h3>
+                    <p className="text-white/90 text-sm leading-relaxed">
+                      Das Bild "Macrobius in seiner Bibliothek" zeigt übrigens mein eigenes Bücherregal 
+                      mit Pontanus' historischer Edition von 1597! Diese kostbare Ausgabe kam vor Jahren 
+                      in meine Hände und inspirierte mich dazu, Macrobius' Weisheit in diese moderne App 
+                      zu verwandeln. So verbindet sich die Kette der Wissensvermittlung: von Macrobius 
+                      über Pontanus bis zu uns heute.
+                    </p>
+                  </div>
+
+                  <div className="text-center">
+                    <button
+                      onClick={() => setShowPontanusModal(false)}
+                      className="btn-wine px-8 py-3 rounded-xl font-semibold transition-all duration-300"
+                      style={{
+                        backgroundColor: '#722F37',
+                        color: '#FFD700',
+                      }}
+                    >
+                      {t('close_modal')}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* RESTORED: Enhanced CSS Styles */}
+        <style jsx global>{`
+          @keyframes moveStars {
+            from {
+              transform: translateX(0);
+            }
+            to {
+              transform: translateX(-100vw);
+            }
+          }
+          
+          .btn-wine {
+            background: linear-gradient(135deg, #722F37 0%, #8B4513 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(114, 47, 55, 0.3);
+          }
+          
+          .btn-wine:hover {
+            background: linear-gradient(135deg, #8B4513 0%, #722F37 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+          }
+
+          .card-hover {
+            transition: all 0.3s ease;
+          }
+          
+          .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+          }
+          
+          .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+
+          /* RESTORED: Floating bottle animation */
+          @keyframes floatBottle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(1deg); }
+            50% { transform: translateY(-5px) rotate(0deg); }
+            75% { transform: translateY(-15px) rotate(-1deg); }
+          }
+        `}</style>
+      </div>
+    </>
+  );
 }
