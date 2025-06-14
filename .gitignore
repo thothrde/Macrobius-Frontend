@@ -1,101 +1,62 @@
 # Dependencies
-node_modules/
+node_modules
 /.pnp
 .pnp.js
 
-# testing
+# Testing
 /coverage
 
-# next.js
+# Next.js
 /.next/
 /out/
 
-# production
+# Production
 /build
+dist
 
-# misc
+# Misc
 .DS_Store
 *.pem
 
-# debug
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
+# Local env files
 .env*.local
+.env
 
-# vercel
+# Vercel
 .vercel
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts
 
-# macOS system files
-.DS_Store
+# macOS
 ._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# IDE files
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# IDE
 .vscode/
 .idea/
-*.swp
-*.swo
 
 # Logs
 logs
 *.log
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Optional npm cache directory
-.npm
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# dotenv environment variables file
-.env
-
-# parcel-bundler cache (https://parceljs.org/)
+# Cache
 .cache
-.parcel-cache
+.npm
+.eslintcache
 
-# next.js build output
-.next
-
-# nuxt.js build output
-.nuxt
-
-# Rollup cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# Temporary folders
-tmp/
+# Temporary
 temp/
+tmp/
