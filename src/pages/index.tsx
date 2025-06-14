@@ -1,7 +1,7 @@
 /**
  * 🏛️ MACROBIUS - CULTURAL EDUCATION PLATFORM (CORRECTED CLASSIC VISUAL STYLE)
  * Late Antiquity Cultural Wisdom through Complete Corpus
- * CORRECTED: Only medallion moves, huge astrolabe background, complete Pontanus text + image
+ * CORRECTED: Floating Macrobius circle above hero, larger centered astrolabe, stars move right-to-left
  * 
  * MISSION: Perfect restoration matching the old beautiful visual style
  */
@@ -420,25 +420,25 @@ export default function MacrobiusCulturalApp() {
           ))}
         </div>
 
-        {/* HUGE Rotating Astrolabe Background with REAL IMAGE */}
-        <div className="fixed inset-0 z-0 opacity-15">
+        {/* HUGE CENTERED Rotating Astrolabe Background - ON ALL PAGES */}
+        <div className="fixed inset-0 z-0 opacity-12">
           <motion.div 
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             animate={{ 
               rotate: astrolabeRotation,
-              scale: [1, 1.02, 1],
+              scale: [1, 1.01, 1],
             }}
             transition={{ 
               rotate: { duration: 2, ease: "easeInOut" },
-              scale: { duration: 6, ease: "easeInOut", repeat: Infinity }
+              scale: { duration: 8, ease: "easeInOut", repeat: Infinity }
             }}
           >
-            {/* HUGE Astrolabe with real image */}
-            <div className="w-[900px] h-[900px] relative">
+            {/* MUCH LARGER Astrolabe - covers full page */}
+            <div className="w-[1200px] h-[1200px] relative">
               <img 
                 src="/Astrolab.jpg" 
                 alt="Historical Astrolabe"
-                className="w-full h-full object-contain filter sepia opacity-80"
+                className="w-full h-full object-contain filter sepia opacity-60"
               />
             </div>
           </motion.div>
