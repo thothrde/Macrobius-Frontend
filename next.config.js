@@ -6,8 +6,8 @@ const nextConfig = {
   // Enable React strict mode for better development experience
   reactStrictMode: true,
   
-  // Configure build output
-  output: 'standalone',
+  // Configure build output (removed standalone for normal deployment)
+  // output: 'standalone', // Only needed for containerized deployments
   
   // Bundle optimization
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
