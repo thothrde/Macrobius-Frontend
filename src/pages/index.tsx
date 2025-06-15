@@ -1,9 +1,9 @@
 /**
- * 🏛️ MACROBIUS - CULTURAL EDUCATION PLATFORM (ENHANCED VISUAL CORRECTIONS)
+ * 🏛️ MACROBIUS - CULTURAL EDUCATION PLATFORM (FINAL VISUAL CORRECTIONS)
  * Late Antiquity Cultural Wisdom through Complete Corpus
- * CORRECTED: Perfect astrolabe centering, improved medallion positioning, enhanced image galleries
+ * FINAL FIXES: Floating circle above frame, Johannes-Pontanus.JPG working, perfect astrolabe centering
  * 
- * MISSION: Perfect visual restoration with all user corrections applied
+ * MISSION: Perfect visual corrections as requested by user
  */
 
 import React, { useState, useCallback } from 'react';
@@ -318,7 +318,7 @@ const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, cla
   );
 };
 
-// Main CULTURAL EDUCATION application (ENHANCED VISUAL CORRECTIONS)
+// Main CULTURAL EDUCATION application (FINAL VISUAL CORRECTIONS)
 export default function MacrobiusCulturalApp() {
   // Language state
   const [currentLang, setCurrentLang] = useState<Language>('DE');
@@ -426,10 +426,10 @@ export default function MacrobiusCulturalApp() {
           ))}
         </div>
 
-        {/* CORRECTED: PERFECTLY CENTERED, BIGGER, MORE VISIBLE Rotating Astrolabe Background */}
-        <div className="fixed inset-0 z-1 opacity-60">
+        {/* FINAL FIX: PERFECTLY CENTERED Rotating Astrolabe Background - ABSOLUTE CENTER */}
+        <div className="fixed inset-0 z-1 flex items-center justify-center pointer-events-none">
           <motion.div 
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            className="opacity-60"
             animate={{ 
               rotate: astrolabeRotation,
               scale: [1, 1.02, 1],
@@ -439,14 +439,14 @@ export default function MacrobiusCulturalApp() {
               scale: { duration: 10, ease: "easeInOut", repeat: Infinity }
             }}
           >
-            {/* CORRECTED: Much bigger 2000px Astrolabe for perfect page coverage and beautiful appearance */}
-            <div className="w-[2000px] h-[2000px] relative">
+            {/* FINAL FIX: Perfect 2000px Astrolabe with absolute centering */}
+            <div className="w-[2000px] h-[2000px]">
               <Image 
                 src="/Astrolab.jpg" 
                 alt="Historical Astrolabe"
                 width={2000}
                 height={2000}
-                className="w-full h-full object-contain opacity-95"
+                className="w-full h-full object-contain"
                 style={{
                   filter: 'hue-rotate(240deg) saturate(0.8) brightness(0.7) contrast(1.4)',
                   mixBlendMode: 'screen'
@@ -457,37 +457,32 @@ export default function MacrobiusCulturalApp() {
           </motion.div>
         </div>
 
-        {/* CORRECTED: FLOATING MACROBIUS CIRCLE - POSITIONED MUCH HIGHER ABOVE Hero Section */}
+        {/* FINAL FIX: FLOATING MACROBIUS CIRCLE - POSITIONED ABOVE THE FRAME */}
         {activeSection === 'hero' && (
-          <div className="fixed inset-0 z-20 pointer-events-none">
-            <motion.div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-              animate={{ 
-                y: [0, -15, 0],
-                x: [0, -8, 8, 0],
-                rotate: [0, 2, -2, 0]
-              }}
-              transition={{ 
-                duration: 8,
-                ease: "easeInOut", 
-                repeat: Infinity 
-              }}
-              style={{
-                marginTop: '-650px' // CORRECTED: Positioned much higher above the hero rectangle, safely above the "Macrobius" title
-              }}
-            >
-              {/* CORRECTED: Floating Circle with Macrobius Image - positioned safely far above the title */}
-              <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-yellow-400 shadow-2xl bg-gradient-to-br from-yellow-400 to-orange-500">
-                <Image 
-                  src="/MacrobiusBottle.jpg" 
-                  alt="Macrobius with Bottle"
-                  width={160}
-                  height={160}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </motion.div>
-          </div>
+          <motion.div 
+            className="fixed top-16 left-1/2 transform -translate-x-1/2 z-20 pointer-events-none"
+            animate={{ 
+              y: [0, -15, 0],
+              x: [0, -8, 8, 0],
+              rotate: [0, 2, -2, 0]
+            }}
+            transition={{ 
+              duration: 8,
+              ease: "easeInOut", 
+              repeat: Infinity 
+            }}
+          >
+            {/* FINAL FIX: Floating Circle with Macrobius Image - absolutely positioned above the main content */}
+            <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-yellow-400 shadow-2xl bg-gradient-to-br from-yellow-400 to-orange-500">
+              <Image 
+                src="/MacrobiusBottle.jpg" 
+                alt="Macrobius with Bottle"
+                width={160}
+                height={160}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </motion.div>
         )}
 
         {/* Language Selector */}
@@ -600,11 +595,11 @@ export default function MacrobiusCulturalApp() {
 
         {/* Main Content */}
         <main className="relative z-10">
-          {/* CORRECTED: Hero Section - Enhanced Layout with Rome-under.jpg */}
+          {/* FINAL FIX: Hero Section - Enhanced Layout with space for floating circle */}
           {activeSection === 'hero' && (
-            <section className="min-h-screen flex items-center justify-center px-4">
+            <section className="min-h-screen flex items-center justify-center px-4" style={{ paddingTop: '200px' }}>
               <div className="text-center max-w-7xl mx-auto">
-                {/* CORRECTED: Main content rectangle - medallion floats safely above */}
+                {/* FINAL FIX: Main content rectangle - floating circle now safely above */}
                 <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/30 mb-8">
                   
                   {/* Title and intro text */}
@@ -677,7 +672,7 @@ export default function MacrobiusCulturalApp() {
                     </p>
                   </div>
 
-                  {/* CORRECTED: Cultural story text UNDER the images */}
+                  {/* Cultural story text UNDER the images */}
                   <div className="max-w-4xl mx-auto mb-8">
                     <p className="text-base md:text-lg text-white/90 leading-relaxed text-justify">
                       {t('cultural_story')}
@@ -685,7 +680,7 @@ export default function MacrobiusCulturalApp() {
                   </div>
                 </div>
 
-                {/* CORRECTED: Action Buttons UNDER the rectangle, all styled consistently */}
+                {/* Action Buttons UNDER the rectangle, all styled consistently */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                   <button
                     onClick={() => handleSectionChange('banquet')}
@@ -720,7 +715,7 @@ export default function MacrobiusCulturalApp() {
                     {t('more_about_pontanus')}
                   </button>
 
-                  {/* CORRECTED: Combined Library Button for private collection */}
+                  {/* Combined Library Button for private collection */}
                   <button
                     onClick={() => setShowLibraryModal(true)}
                     className="btn-wine px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
@@ -744,7 +739,7 @@ export default function MacrobiusCulturalApp() {
           {activeSection === 'cosmos' && (
             <div>
               <CosmosSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
-              {/* CORRECTED: Enhanced Cosmos Images Gallery - More Visible */}
+              {/* Enhanced Cosmos Images Gallery - More Visible */}
               {cosmosImages.length > 0 && (
                 <div className="fixed bottom-4 right-4 z-40">
                   <motion.div
@@ -819,7 +814,7 @@ export default function MacrobiusCulturalApp() {
           {activeSection === 'worldmap' && (
             <div>
               <WorldMapSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
-              {/* CORRECTED: Enhanced Weltkarte Images Gallery - More Visible */}
+              {/* Enhanced Weltkarte Images Gallery - More Visible */}
               {worldmapImages.length > 0 && (
                 <div className="fixed bottom-4 right-4 z-40">
                   <motion.div
@@ -865,7 +860,7 @@ export default function MacrobiusCulturalApp() {
           {activeSection === 'visualizations' && (
             <div>
               <VisualizationsSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
-              {/* CORRECTED: Enhanced Visualizations Gallery - More Visible */}
+              {/* Enhanced Visualizations Gallery - More Visible */}
               {visualizationImages.length > 0 && (
                 <div className="fixed bottom-4 right-4 z-40">
                   <motion.div
@@ -1006,7 +1001,7 @@ export default function MacrobiusCulturalApp() {
           )}
         </AnimatePresence>
 
-        {/* CORRECTED: Pontanus Modal with Johannes-Pontanus.JPG */}
+        {/* FINAL FIX: Pontanus Modal with Johannes-Pontanus.JPG */}
         <AnimatePresence>
           {showPontanusModal && (
             <motion.div
@@ -1042,7 +1037,7 @@ export default function MacrobiusCulturalApp() {
                     </p>
                   </div>
 
-                  {/* CORRECTED: Using the proper Johannes-Pontanus.JPG image */}
+                  {/* FINAL FIX: Using the verified Johannes-Pontanus.JPG image from GitHub */}
                   <div className="flex justify-center mb-6">
                     <div className="relative">
                       <Image 
@@ -1102,7 +1097,7 @@ export default function MacrobiusCulturalApp() {
           )}
         </AnimatePresence>
 
-        {/* CORRECTED: New Combined Library Modal for Private Collection */}
+        {/* Combined Library Modal for Private Collection */}
         <AnimatePresence>
           {showLibraryModal && (
             <motion.div
