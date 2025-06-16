@@ -105,8 +105,8 @@ class OracleCloudIntegrationTest {
         test.data = {
           wordCount: vocabulary.length,
           sampleWords: vocabulary.slice(0, 3).map(w => ({
-            word: w.word,
-            definition: w.definition?.substring(0, 50) + '...',
+            word: w.latin_word,
+            definition: w.english_meaning?.substring(0, 50) + '...',
             frequency: w.frequency
           }))
         };
