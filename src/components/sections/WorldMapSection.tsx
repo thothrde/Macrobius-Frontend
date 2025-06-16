@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Map, Globe, Compass, Mountain, Waves, Sun, Snowflake, Thermometer, Shield, Crown, Scroll, Navigation } from 'lucide-react';
+import { Map, Globe, Compass, Waves, Sun, Snowflake, Thermometer, Shield, Scroll, Navigation } from 'lucide-react';
 import Image from 'next/image';
 
 interface WorldMapSectionProps {
@@ -33,7 +33,7 @@ interface GeographicalConcept {
   macrobiusText: string;
   culturalContext: string;
   medievalLegacy: string;
-  icon: any;
+  icon: React.ComponentType<{ className?: string }>;
 }
 
 interface TerritorialRegion {
@@ -47,7 +47,7 @@ interface TerritorialRegion {
   color: string;
 }
 
-function EnhancedWorldMapSection({ isActive, t, language = 'DE' }: WorldMapSectionProps) {
+function EnhancedWorldMapSection({ isActive, t: _t, language: _language = 'DE' }: WorldMapSectionProps) {
   const [selectedZone, setSelectedZone] = useState<ClimateZone | null>(null);
   const [selectedConcept, setSelectedConcept] = useState<string | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<TerritorialRegion | null>(null);
@@ -242,23 +242,8 @@ function EnhancedWorldMapSection({ isActive, t, language = 'DE' }: WorldMapSecti
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      {/* ENHANCED: Background with world map themed image */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-cyan-950 to-teal-900" />
-        {/* ENHANCED: Add Macrobius World Map background image */}
-        <div className="absolute inset-0 opacity-25">
-          <Image 
-            src="/Macrobius-Weltkarte-neu.jpg" 
-            alt="Macrobius World Map"
-            fill
-            className="object-cover"
-            style={{
-              filter: 'brightness(0.5) contrast(1.1) sepia(0.3)',
-              mixBlendMode: 'overlay'
-            }}
-          />
-        </div>
-      </div>
+      {/* Enhanced Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-cyan-950 to-teal-900" />
       
       {/* Animated Map Elements */}
       <div className="absolute inset-0 opacity-10">
@@ -338,7 +323,7 @@ function EnhancedWorldMapSection({ isActive, t, language = 'DE' }: WorldMapSecti
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
-                onClick={() => setViewMode(id as any)}
+                onClick={() => setViewMode(id as 'climate' | 'territories' | 'concepts')}
                 className={`px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2 ${
                   viewMode === id
                     ? 'bg-cyan-500 text-white shadow-lg'
@@ -373,124 +358,148 @@ function EnhancedWorldMapSection({ isActive, t, language = 'DE' }: WorldMapSecti
 
               {/* Climate Zones View */}
               {viewMode === 'climate' && (
-                <div className="relative bg-gradient-to-b from-blue-900 via-green-800 to-blue-900 rounded-xl p-8 min-h-[500px] overflow-hidden">
-                  {/* ENHANCED: Add Earth Map background for context */}
-                  <div className="absolute inset-0 opacity-20">
-                    <Image 
-                      src="/Macrobius-Erdkarte.jpg" 
-                      alt="Macrobius Earth Map"
+                <div className="relative rounded-xl p-8 min-h-[500px] overflow-hidden">
+                  {/* FIXED: Add translucent Macrobius-Erdkarte as background */}
+                  <div className="absolute inset-0 rounded-xl overflow-hidden">
+                    <Image
+                      src="/Macrobius-Erdkarte.jpg"
+                      alt="Macrobius Erdkarte"
                       fill
-                      className="object-cover rounded-xl"
+                      className="object-cover opacity-30"
                       style={{
-                        filter: 'brightness(0.7) contrast(1.1)',
-                        mixBlendMode: 'multiply'
+                        filter: 'sepia(0.3) hue-rotate(180deg) saturate(0.8) brightness(0.7)'
                       }}
                     />
                   </div>
                   
-                  {/* Climate Zones Visualization */}
-                  <div className="relative w-full h-full">
-                    {climateZones.map((zone, index) => (
-                      <motion.div
-                        key={zone.id}
-                        className={`absolute left-0 right-0 cursor-pointer transition-all duration-300 hover:z-20 ${
-                          selectedZone?.id === zone.id ? 'z-10 ring-2 ring-white/50' : ''
-                        }`}
-                        style={{
-                          top: `${zone.yPosition}%`,
-                          height: '15%',
-                          backgroundColor: zone.color,
-                          opacity: selectedZone?.id === zone.id ? 0.9 : 0.7
-                        }}
-                        onClick={() => setSelectedZone(zone)}
-                        initial={{ opacity: 0, x: -100 }}
-                        animate={{ opacity: animationPhase === 'zones' ? 0.7 : 0.3, x: 0 }}
-                        transition={{ delay: index * 0.3, duration: 0.8 }}
-                        whileHover={{ opacity: 0.9, scale: 1.02 }}
-                      >
-                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                          <h4 className="font-bold text-black text-lg">{zone.name}</h4>
-                          <p className="text-black/80 text-sm">{zone.latinName}</p>
-                        </div>
-                        
-                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                          <div className="flex items-center gap-2">
-                            {zone.id.includes('glacialis') && <Snowflake className="w-5 h-5 text-blue-700" />}
-                            {zone.id.includes('temperata') && <Sun className="w-5 h-5 text-green-700" />}
-                            {zone.id === 'torrida' && <Sun className="w-5 h-5 text-red-700" />}
-                            <span className="text-black font-medium text-sm">{zone.temperature}</span>
+                  {/* Climate zones overlay */}
+                  <div className="relative z-10 w-full h-full bg-gradient-to-b from-blue-900/70 via-green-800/70 to-blue-900/70 rounded-xl">
+                    {/* Climate Zones Visualization */}
+                    <div className="relative w-full h-full">
+                      {climateZones.map((zone) => (
+                        <motion.div
+                          key={zone.id}
+                          className={`absolute left-0 right-0 cursor-pointer transition-all duration-300 hover:z-20 ${
+                            selectedZone?.id === zone.id ? 'z-10 ring-2 ring-white/50' : ''
+                          }`}
+                          style={{
+                            top: `${zone.yPosition}%`,
+                            height: '15%',
+                            backgroundColor: zone.color,
+                            opacity: selectedZone?.id === zone.id ? 0.9 : 0.7
+                          }}
+                          onClick={() => setSelectedZone(zone)}
+                          initial={{ opacity: 0, x: -100 }}
+                          animate={{ opacity: animationPhase === 'zones' ? 0.7 : 0.3, x: 0 }}
+                          transition={{ delay: 0.3, duration: 0.8 }}
+                          whileHover={{ opacity: 0.9, scale: 1.02 }}
+                        >
+                          <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                            <h4 className="font-bold text-black text-lg">{zone.name}</h4>
+                            <p className="text-black/80 text-sm">{zone.latinName}</p>
                           </div>
-                        </div>
+                          
+                          <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                            <div className="flex items-center gap-2">
+                              {zone.id.includes('glacialis') && <Snowflake className="w-5 h-5 text-blue-700" />}
+                              {zone.id.includes('temperata') && <Sun className="w-5 h-5 text-green-700" />}
+                              {zone.id === 'torrida' && <Sun className="w-5 h-5 text-red-700" />}
+                              <span className="text-black font-medium text-sm">{zone.temperature}</span>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                      
+                      {/* Earth indicator at center */}
+                      <motion.div
+                        className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-blue-600 rounded-full border-2 border-green-400 flex items-center justify-center z-30"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                      >
+                        🌍
                       </motion.div>
-                    ))}
-                    
-                    {/* Earth indicator at center */}
-                    <motion.div
-                      className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-blue-600 rounded-full border-2 border-green-400 flex items-center justify-center z-30"
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    >
-                      🌍
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
               )}
 
-              {/* Territories View */}
+              {/* Territories View - FIXED: Better visualization using a more elegant approach */}
               {viewMode === 'territories' && (
-                <div className="relative bg-gradient-to-br from-amber-900 via-amber-800 to-amber-900 rounded-xl p-8 min-h-[500px] overflow-hidden">
-                  <svg viewBox="0 0 100 70" className="w-full h-full">
-                    {/* Roman Empire outline */}
-                    <path
-                      d="M10 30 Q30 25 50 30 Q70 25 90 35 Q85 50 70 55 Q50 60 30 55 Q15 45 10 30"
-                      fill="rgba(217, 119, 6, 0.3)"
-                      stroke="#D97706"
-                      strokeWidth="2"
-                      className="animate-pulse"
-                    />
-                    
-                    {/* Territorial regions */}
-                    {territorialRegions.map((region, index) => (
-                      <g key={region.id}>
-                        <circle
-                          cx={region.coordinates.x}
-                          cy={region.coordinates.y}
-                          r="8"
-                          fill={region.color}
-                          stroke="white"
+                <div className="relative rounded-xl p-8 min-h-[500px] overflow-hidden">
+                  {/* Better background for administration view */}
+                  <div className="absolute inset-0 rounded-xl overflow-hidden">
+                    <div className="w-full h-full bg-gradient-to-br from-amber-900/80 via-orange-800/80 to-red-900/80">
+                      {/* Administrative boundaries visualization */}
+                      <svg viewBox="0 0 100 70" className="w-full h-full">
+                        {/* Enhanced Roman Empire outline */}
+                        <defs>
+                          <pattern id="imperialPattern" patternUnits="userSpaceOnUse" width="4" height="4">
+                            <rect width="4" height="4" fill="rgba(217, 119, 6, 0.1)"/>
+                            <circle cx="2" cy="2" r="0.5" fill="rgba(255, 215, 0, 0.3)"/>
+                          </pattern>
+                        </defs>
+                        
+                        {/* Main Empire territory */}
+                        <path
+                          d="M10 30 Q30 25 50 30 Q70 25 90 35 Q85 50 70 55 Q50 60 30 55 Q15 45 10 30"
+                          fill="url(#imperialPattern)"
+                          stroke="#D97706"
                           strokeWidth="2"
-                          className="cursor-pointer hover:r-10 transition-all"
-                          onClick={() => setSelectedRegion(region)}
+                          className="animate-pulse"
                         />
-                        <text
-                          x={region.coordinates.x}
-                          y={region.coordinates.y + 15}
-                          textAnchor="middle"
-                          className="fill-white text-xs font-bold"
-                        >
-                          {region.name}
-                        </text>
-                        {selectedRegion?.id === region.id && (
-                          <circle
-                            cx={region.coordinates.x}
-                            cy={region.coordinates.y}
-                            r="12"
-                            fill="none"
-                            stroke="white"
-                            strokeWidth="3"
-                            className="animate-ping"
-                          />
-                        )}
-                      </g>
-                    ))}
-                  </svg>
+                        
+                        {/* Administrative divisions */}
+                        <line x1="50" y1="25" x2="50" y2="60" stroke="#FFD700" strokeWidth="1" strokeDasharray="2,2" opacity="0.6"/>
+                        <line x1="25" y1="40" x2="75" y2="40" stroke="#FFD700" strokeWidth="1" strokeDasharray="2,2" opacity="0.6"/>
+                        
+                        {/* Territorial regions with enhanced styling */}
+                        {territorialRegions.map((region) => (
+                          <g key={region.id}>
+                            <circle
+                              cx={region.coordinates.x}
+                              cy={region.coordinates.y}
+                              r="8"
+                              fill={region.color}
+                              stroke="white"
+                              strokeWidth="2"
+                              className="cursor-pointer hover:r-10 transition-all filter drop-shadow-lg"
+                              onClick={() => setSelectedRegion(region)}
+                            />
+                            <text
+                              x={region.coordinates.x}
+                              y={region.coordinates.y + 15}
+                              textAnchor="middle"
+                              className="fill-white text-xs font-bold filter drop-shadow-sm"
+                            >
+                              {region.name}
+                            </text>
+                            {selectedRegion?.id === region.id && (
+                              <circle
+                                cx={region.coordinates.x}
+                                cy={region.coordinates.y}
+                                r="12"
+                                fill="none"
+                                stroke="white"
+                                strokeWidth="3"
+                                className="animate-ping"
+                              />
+                            )}
+                          </g>
+                        ))}
+                        
+                        {/* Administrative centers */}
+                        <circle cx="45" cy="40" r="3" fill="#FFD700" className="animate-pulse"/>
+                        <text x="45" y="35" textAnchor="middle" className="fill-yellow-200 text-xs font-bold">ROMA</text>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               )}
 
               {/* Concepts View */}
               {viewMode === 'concepts' && (
                 <div className="grid grid-cols-2 gap-4">
-                  {geographicalConcepts.map((concept, index) => {
+                  {geographicalConcepts.map((concept) => {
                     const Icon = concept.icon;
                     return (
                       <button
@@ -634,7 +643,7 @@ function EnhancedWorldMapSection({ isActive, t, language = 'DE' }: WorldMapSecti
                 Die Fünf Zonen
               </h3>
               <div className="space-y-3">
-                {climateZones.map((zone, index) => (
+                {climateZones.map((zone) => (
                   <button
                     key={zone.id}
                     onClick={() => setSelectedZone(zone)}
