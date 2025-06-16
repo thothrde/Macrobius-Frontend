@@ -1,0 +1,60 @@
+{
+  "name": "Macrobius - Eine antike Flaschenpost",
+  "short_name": "Macrobius",
+  "description": "Eine Nachricht aus der Antike an die Zukunft - Spätantike Weisheit für die moderne Welt",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f23",
+  "theme_color": "#722F37",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "de",
+  "categories": ["education", "culture", "history", "literature"],
+  "icons": [
+    {
+      "src": "/MacrobiusBottle.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/MacrobiusBottle.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Quiz",
+      "short_name": "Quiz",
+      "description": "Interaktives Macrobius Quiz",
+      "url": "/?section=quiz",
+      "icons": [{ "src": "/MacrobiusBottle.jpg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Textsuche",
+      "short_name": "Suche",
+      "description": "Durchsuche 1.401 authentische Passagen",
+      "url": "/?section=search",
+      "icons": [{ "src": "/MacrobiusBottle.jpg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Weltkarte",
+      "short_name": "Karte",
+      "description": "Interaktive antike Weltkarte",
+      "url": "/?section=worldmap",
+      "icons": [{ "src": "/MacrobiusBottle.jpg", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/MacrobiusBottle.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Macrobius Hauptseite"
+    }
+  ],
+  "prefer_related_applications": false
+}

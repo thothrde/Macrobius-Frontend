@@ -61,13 +61,28 @@ const nextConfig = {
     ANALYTICS_ENDPOINT: process.env.ANALYTICS_ENDPOINT || 'http://152.70.184.232:8080/analytics',
   },
   
-  // Image optimization
+  // FIXED: Updated image optimization with modern remotePatterns
   images: {
-    domains: ['152.70.184.232'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: '152.70.184.232',
+        port: '8080',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '152.70.184.232',
+        pathname: '/**',
+      }
+    ],
     formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
   },
   
-  // Security headers
+  // Security headers with SVG support
   async headers() {
     return [
       {
@@ -84,6 +99,19 @@ const nextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline';"
+          },
+        ],
+      },
+      {
+        source: '/public/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
