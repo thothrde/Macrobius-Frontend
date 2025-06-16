@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Globe, Clock, BookOpen, Search, ArrowUp, ArrowDown, Music, Eye, Brain } from 'lucide-react';
+import Image from 'next/image';
 
 interface CosmosSectionProps {
   isActive: boolean;
@@ -213,8 +214,23 @@ function EnhancedCosmosSection({ isActive, t, language = 'DE' }: CosmosSectionPr
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      {/* Enhanced Background with Cosmic Theme */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-950 to-black" />
+      {/* ENHANCED: Background with cosmic themed image */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-950 to-black" />
+        {/* ENHANCED: Add Macrobius Universe background image */}
+        <div className="absolute inset-0 opacity-20">
+          <Image 
+            src="/Macrobius-universe.jpg" 
+            alt="Macrobius Universe"
+            fill
+            className="object-cover"
+            style={{
+              filter: 'brightness(0.4) contrast(1.2) hue-rotate(30deg)',
+              mixBlendMode: 'overlay'
+            }}
+          />
+        </div>
+      </div>
       
       {/* Animated Stellar Background */}
       <div className="absolute inset-0">
@@ -277,10 +293,67 @@ function EnhancedCosmosSection({ isActive, t, language = 'DE' }: CosmosSectionPr
           </motion.div>
         </motion.div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
-          {/* Central Cosmos Visualization */}
-          <div className="xl:col-span-2 order-2 xl:order-1">
+        {/* Main Content Grid - ENHANCED: Better positioning to avoid sidebar intersection */}
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
+          {/* Left Sidebar - Cosmological Concepts - ENHANCED: Positioned to avoid intersection */}
+          <div className="xl:col-span-1 order-1 xl:order-1 space-y-6">
+            <motion.div
+              className="bg-white/5 backdrop-blur-md rounded-xl border border-white/10 p-6"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.2, duration: 0.8 }}
+            >
+              <h3 className="text-xl font-bold text-yellow-100 mb-6 flex items-center gap-2">
+                <Brain className="w-5 h-5" />
+                Kosmische Konzepte
+              </h3>
+              <div className="space-y-4">
+                {cosmologicalConcepts.map((concept, index) => (
+                  <button
+                    key={concept.id}
+                    onClick={() => setSelectedConcept(selectedConcept === concept.id ? null : concept.id)}
+                    className={`w-full text-left p-4 rounded-lg border transition-all duration-300 ${
+                      selectedConcept === concept.id
+                        ? 'bg-yellow-500/20 border-yellow-500/40 text-yellow-100'
+                        : 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10 hover:border-white/20'
+                    }`}
+                  >
+                    <h4 className="font-semibold mb-2 text-sm">{concept.title}</h4>
+                    <p className="text-xs opacity-80 leading-relaxed">{concept.description}</p>
+                    
+                    {selectedConcept === concept.id && (
+                      <motion.div
+                        className="mt-4 pt-4 border-t border-white/20"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="space-y-3">
+                          <div>
+                            <h5 className="text-xs font-semibold text-yellow-300 mb-1">Macrobius:</h5>
+                            <p className="text-xs italic text-yellow-100">"{concept.macrobiusText}"</p>
+                          </div>
+                          <div>
+                            <h5 className="text-xs font-semibold text-green-300 mb-1">Moderne Verbindung:</h5>
+                            <p className="text-xs text-green-100">{concept.modernConnection}</p>
+                          </div>
+                          {concept.tychoRelevance && (
+                            <div>
+                              <h5 className="text-xs font-semibold text-blue-300 mb-1">Tycho Brahe:</h5>
+                              <p className="text-xs text-blue-100">{concept.tychoRelevance}</p>
+                            </div>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Central Cosmos Visualization - ENHANCED: Better positioning */}
+          <div className="xl:col-span-3 order-2 xl:order-2">
             <motion.div
               className="bg-white/5 backdrop-blur-md rounded-xl border border-white/10 p-8"
               initial={{ opacity: 0, scale: 0.9 }}
@@ -318,8 +391,8 @@ function EnhancedCosmosSection({ isActive, t, language = 'DE' }: CosmosSectionPr
                 </div>
               </div>
 
-              {/* Enhanced Celestial Visualization */}
-              <div className="relative bg-gradient-to-br from-indigo-950 via-purple-950 to-black rounded-xl p-8 min-h-[500px] overflow-hidden">
+              {/* Enhanced Celestial Visualization - ENHANCED: Better sizing to avoid sidebar */}
+              <div className="relative bg-gradient-to-br from-indigo-950 via-purple-950 to-black rounded-xl p-6 min-h-[600px] overflow-hidden">
                 {/* Cosmic Background Effects */}
                 <div className="absolute inset-0">
                   {[...Array(100)].map((_, i) => (
@@ -518,63 +591,6 @@ function EnhancedCosmosSection({ isActive, t, language = 'DE' }: CosmosSectionPr
                   </motion.div>
                 )}
               </AnimatePresence>
-            </motion.div>
-          </div>
-
-          {/* Left Sidebar - Cosmological Concepts */}
-          <div className="xl:col-span-1 order-1 xl:order-1 space-y-6">
-            <motion.div
-              className="bg-white/5 backdrop-blur-md rounded-xl border border-white/10 p-6"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
-            >
-              <h3 className="text-xl font-bold text-yellow-100 mb-6 flex items-center gap-2">
-                <Brain className="w-5 h-5" />
-                Kosmische Konzepte
-              </h3>
-              <div className="space-y-4">
-                {cosmologicalConcepts.map((concept, index) => (
-                  <button
-                    key={concept.id}
-                    onClick={() => setSelectedConcept(selectedConcept === concept.id ? null : concept.id)}
-                    className={`w-full text-left p-4 rounded-lg border transition-all duration-300 ${
-                      selectedConcept === concept.id
-                        ? 'bg-yellow-500/20 border-yellow-500/40 text-yellow-100'
-                        : 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10 hover:border-white/20'
-                    }`}
-                  >
-                    <h4 className="font-semibold mb-2 text-sm">{concept.title}</h4>
-                    <p className="text-xs opacity-80 leading-relaxed">{concept.description}</p>
-                    
-                    {selectedConcept === concept.id && (
-                      <motion.div
-                        className="mt-4 pt-4 border-t border-white/20"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <div className="space-y-3">
-                          <div>
-                            <h5 className="text-xs font-semibold text-yellow-300 mb-1">Macrobius:</h5>
-                            <p className="text-xs italic text-yellow-100">"{concept.macrobiusText}"</p>
-                          </div>
-                          <div>
-                            <h5 className="text-xs font-semibold text-green-300 mb-1">Moderne Verbindung:</h5>
-                            <p className="text-xs text-green-100">{concept.modernConnection}</p>
-                          </div>
-                          {concept.tychoRelevance && (
-                            <div>
-                              <h5 className="text-xs font-semibold text-blue-300 mb-1">Tycho Brahe:</h5>
-                              <p className="text-xs text-blue-100">{concept.tychoRelevance}</p>
-                            </div>
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
-                  </button>
-                ))}
-              </div>
             </motion.div>
           </div>
 

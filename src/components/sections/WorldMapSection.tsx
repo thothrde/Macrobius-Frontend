@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Map, Globe, Compass, Mountain, Waves, Sun, Snowflake, Thermometer, Shield, Crown, Scroll, Navigation } from 'lucide-react';
+import Image from 'next/image';
 
 interface WorldMapSectionProps {
   isActive: boolean;
@@ -241,8 +242,23 @@ function EnhancedWorldMapSection({ isActive, t, language = 'DE' }: WorldMapSecti
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      {/* Enhanced Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-cyan-950 to-teal-900" />
+      {/* ENHANCED: Background with world map themed image */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-cyan-950 to-teal-900" />
+        {/* ENHANCED: Add Macrobius World Map background image */}
+        <div className="absolute inset-0 opacity-25">
+          <Image 
+            src="/Macrobius-Weltkarte-neu.jpg" 
+            alt="Macrobius World Map"
+            fill
+            className="object-cover"
+            style={{
+              filter: 'brightness(0.5) contrast(1.1) sepia(0.3)',
+              mixBlendMode: 'overlay'
+            }}
+          />
+        </div>
+      </div>
       
       {/* Animated Map Elements */}
       <div className="absolute inset-0 opacity-10">
@@ -358,6 +374,20 @@ function EnhancedWorldMapSection({ isActive, t, language = 'DE' }: WorldMapSecti
               {/* Climate Zones View */}
               {viewMode === 'climate' && (
                 <div className="relative bg-gradient-to-b from-blue-900 via-green-800 to-blue-900 rounded-xl p-8 min-h-[500px] overflow-hidden">
+                  {/* ENHANCED: Add Earth Map background for context */}
+                  <div className="absolute inset-0 opacity-20">
+                    <Image 
+                      src="/Macrobius-Erdkarte.jpg" 
+                      alt="Macrobius Earth Map"
+                      fill
+                      className="object-cover rounded-xl"
+                      style={{
+                        filter: 'brightness(0.7) contrast(1.1)',
+                        mixBlendMode: 'multiply'
+                      }}
+                    />
+                  </div>
+                  
                   {/* Climate Zones Visualization */}
                   <div className="relative w-full h-full">
                     {climateZones.map((zone, index) => (
