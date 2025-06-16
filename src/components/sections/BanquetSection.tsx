@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wine, Crown, Scroll, Users, Clock, Book, Star, Globe, MessageCircle, Play, Pause } from 'lucide-react';
+import Image from 'next/image';
 
 // Fix: Add language prop to interface
 interface BanquetSectionProps {
@@ -540,8 +541,26 @@ export default function BanquetSection({ isActive, t, language }: BanquetSection
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
     >
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-950 via-amber-900 to-amber-950" />
+      {/* ENHANCED: Background with banquet themed image */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-950 via-amber-900 to-amber-950" />
+        {/* ENHANCED: Add Symposion background image */}
+        <div className="absolute inset-0 opacity-30">
+          <Image 
+            src="/Symposion.jpg" 
+            alt="Roman Symposion"
+            fill
+            className="object-cover"
+            style={{
+              filter: 'brightness(0.6) contrast(1.2) sepia(0.4)',
+              mixBlendMode: 'multiply'
+            }}
+            priority
+          />
+        </div>
+        {/* Additional warm overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/40 via-orange-900/30 to-amber-950/50" />
+      </div>
       
       {/* Floating elements */}
       <div className="absolute inset-0 pointer-events-none">
