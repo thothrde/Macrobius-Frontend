@@ -1,7 +1,9 @@
 // Oracle Cloud API Integration for Macrobius Frontend
 // Production-ready API client with error handling and fallbacks
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://152.70.184.232:8080/api';
+import { useState, useEffect } from 'react';
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://152.70.184.232:8080';
 
 interface MacrobiusPassage {
   id: number;
@@ -17,24 +19,33 @@ interface MacrobiusPassage {
 }
 
 interface VocabularyWord {
-  word: string;
-  definition: string;
-  frequency: number;
-  passages: Array<{
-    id: number;
-    latin_text: string;
-    work_type: string;
-    cultural_theme: string;
-  }>;
+  latin_word: string;
+  english_meaning: string;
   cultural_context: string;
+  source_passage: string;
+  frequency: number;
+  difficulty: string;
+}
+
+interface QuizQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correct_answer: number;
+  explanation: string;
+  source_passage: string;
+  cultural_context: string;
+  difficulty: string;
+}
+
+interface CulturalTheme {
+  name: string;
+  passage_count: number;
+  percentage: number;
 }
 
 interface CulturalThemesAnalysis {
-  themes: Array<{
-    name: string;
-    passage_count: number;
-    percentage: number;
-  }>;
+  themes: CulturalTheme[];
   total_passages: number;
 }
 
@@ -42,6 +53,14 @@ interface SearchResults {
   passages: MacrobiusPassage[];
   total_count: number;
   search_query: string;
+}
+
+// Oracle Cloud Error class
+export class OracleCloudError extends Error {
+  constructor(message: string, public statusCode?: number) {
+    super(message);
+    this.name = 'OracleCloudError';
+  }
 }
 
 // Available cultural themes from Oracle Cloud database
@@ -124,7 +143,7 @@ class MacrobiusApiClient {
       if (difficulty) params.append('difficulty', difficulty);
       params.append('limit', limit.toString());
 
-      const response = await this.fetchWithTimeout(`${this.baseUrl}/passages/search?${params}`, {
+      const response = await this.fetchWithTimeout(`${this.baseUrl}/api/passages/search?${params}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +151,7 @@ class MacrobiusApiClient {
       });
 
       if (!response.ok) {
-        throw new Error(`Search failed: ${response.status}`);
+        throw new OracleCloudError(`Search failed: ${response.status}`, response.status);
       }
 
       const data = await response.json();
@@ -143,7 +162,7 @@ class MacrobiusApiClient {
       };
     } catch (error) {
       console.error('Search passages failed:', error);
-      throw new Error('Failed to search passages from Oracle Cloud database');
+      throw new OracleCloudError('Failed to search passages from Oracle Cloud database');
     }
   }
 
@@ -159,7 +178,7 @@ class MacrobiusApiClient {
       if (theme) params.append('theme', theme);
       params.append('limit', limit.toString());
 
-      const response = await fetch(`${this.baseUrl}/vocabulary?${params}`, {
+      const response = await this.fetchWithTimeout(`${this.baseUrl}/api/vocabulary?${params}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -167,21 +186,88 @@ class MacrobiusApiClient {
       });
 
       if (!response.ok) {
-        throw new Error(`Vocabulary request failed: ${response.status}`);
+        throw new OracleCloudError(`Vocabulary request failed: ${response.status}`, response.status);
       }
 
       const data = await response.json();
+      
+      // Handle the actual response format from the backend
+      if (Array.isArray(data)) {
+        return data.map(item => ({
+          latin_word: item.latin_word,
+          english_meaning: item.english_meaning,
+          cultural_context: item.cultural_context,
+          source_passage: item.source_passage,
+          frequency: item.frequency,
+          difficulty: item.difficulty
+        }));
+      }
+      
       return data.vocabulary || [];
     } catch (error) {
       console.error('Get vocabulary failed:', error);
-      throw new Error('Failed to load vocabulary from Oracle Cloud database');
+      throw new OracleCloudError('Failed to load vocabulary from Oracle Cloud database');
+    }
+  }
+
+  // Generate quiz questions from cultural insights
+  async generateQuizQuestions(
+    theme?: string,
+    difficulty: string = 'Intermediate',
+    count: number = 5
+  ): Promise<QuizQuestion[]> {
+    try {
+      const response = await this.fetchWithTimeout(`${this.baseUrl}/api/quiz/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          theme,
+          difficulty,
+          count
+        })
+      });
+
+      if (!response.ok) {
+        throw new OracleCloudError(`Quiz generation failed: ${response.status}`, response.status);
+      }
+
+      const data = await response.json();
+      return data.questions || [];
+    } catch (error) {
+      console.error('Generate quiz failed:', error);
+      throw new OracleCloudError('Failed to generate quiz from Oracle Cloud database');
+    }
+  }
+
+  // Get cultural themes
+  async getCulturalThemes(): Promise<CulturalTheme[]> {
+    try {
+      const response = await this.fetchWithTimeout(`${this.baseUrl}/api/cultural-themes`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new OracleCloudError(`Cultural themes request failed: ${response.status}`, response.status);
+      }
+
+      const data = await response.json();
+      return data.themes || CULTURAL_THEMES.map(name => ({ name, passage_count: 0, percentage: 0 }));
+    } catch (error) {
+      console.error('Get cultural themes failed:', error);
+      // Return fallback themes
+      return CULTURAL_THEMES.map(name => ({ name, passage_count: 0, percentage: 0 }));
     }
   }
 
   // Get cultural themes analysis
   async getCulturalThemesAnalysis(): Promise<CulturalThemesAnalysis> {
     try {
-      const response = await fetch(`${this.baseUrl}/analytics/themes`, {
+      const response = await this.fetchWithTimeout(`${this.baseUrl}/api/analytics/themes`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -189,7 +275,7 @@ class MacrobiusApiClient {
       });
 
       if (!response.ok) {
-        throw new Error(`Themes analysis failed: ${response.status}`);
+        throw new OracleCloudError(`Themes analysis failed: ${response.status}`, response.status);
       }
 
       const data = await response.json();
@@ -199,14 +285,14 @@ class MacrobiusApiClient {
       };
     } catch (error) {
       console.error('Get cultural themes analysis failed:', error);
-      throw new Error('Failed to load themes analysis from Oracle Cloud database');
+      throw new OracleCloudError('Failed to load themes analysis from Oracle Cloud database');
     }
   }
 
   // Get teaching modules
   async getTeachingModules(): Promise<any[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/teaching/modules`, {
+      const response = await this.fetchWithTimeout(`${this.baseUrl}/api/teaching/modules`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -214,14 +300,14 @@ class MacrobiusApiClient {
       });
 
       if (!response.ok) {
-        throw new Error(`Teaching modules request failed: ${response.status}`);
+        throw new OracleCloudError(`Teaching modules request failed: ${response.status}`, response.status);
       }
 
       const data = await response.json();
       return data.modules || [];
     } catch (error) {
       console.error('Get teaching modules failed:', error);
-      throw new Error('Failed to load teaching modules from Oracle Cloud database');
+      throw new OracleCloudError('Failed to load teaching modules from Oracle Cloud database');
     }
   }
 
@@ -231,7 +317,7 @@ class MacrobiusApiClient {
       const params = new URLSearchParams();
       if (difficulty) params.append('difficulty', difficulty);
 
-      const response = await fetch(`${this.baseUrl}/insights?${params}`, {
+      const response = await this.fetchWithTimeout(`${this.baseUrl}/api/insights?${params}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -239,21 +325,21 @@ class MacrobiusApiClient {
       });
 
       if (!response.ok) {
-        throw new Error(`Cultural insights request failed: ${response.status}`);
+        throw new OracleCloudError(`Cultural insights request failed: ${response.status}`, response.status);
       }
 
       const data = await response.json();
       return data.insights || [];
     } catch (error) {
       console.error('Get cultural insights failed:', error);
-      throw new Error('Failed to load cultural insights from Oracle Cloud database');
+      throw new OracleCloudError('Failed to load cultural insights from Oracle Cloud database');
     }
   }
 
   // Full-text search through Latin corpus
   async searchLatinText(text: string, limit: number = 10): Promise<MacrobiusPassage[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/search/latin`, {
+      const response = await this.fetchWithTimeout(`${this.baseUrl}/api/search/latin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -265,21 +351,21 @@ class MacrobiusApiClient {
       });
 
       if (!response.ok) {
-        throw new Error(`Latin text search failed: ${response.status}`);
+        throw new OracleCloudError(`Latin text search failed: ${response.status}`, response.status);
       }
 
       const data = await response.json();
       return data.passages || [];
     } catch (error) {
       console.error('Search Latin text failed:', error);
-      throw new Error('Failed to search Latin text in Oracle Cloud database');
+      throw new OracleCloudError('Failed to search Latin text in Oracle Cloud database');
     }
   }
 
   // Get corpus statistics
   async getCorpusStatistics(): Promise<any> {
     try {
-      const response = await fetch(`${this.baseUrl}/analytics/corpus`, {
+      const response = await this.fetchWithTimeout(`${this.baseUrl}/api/analytics/corpus`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -287,14 +373,14 @@ class MacrobiusApiClient {
       });
 
       if (!response.ok) {
-        throw new Error(`Corpus statistics request failed: ${response.status}`);
+        throw new OracleCloudError(`Corpus statistics request failed: ${response.status}`, response.status);
       }
 
       const data = await response.json();
       return data;
     } catch (error) {
       console.error('Get corpus statistics failed:', error);
-      throw new Error('Failed to load corpus statistics from Oracle Cloud database');
+      throw new OracleCloudError('Failed to load corpus statistics from Oracle Cloud database');
     }
   }
 }
@@ -302,10 +388,84 @@ class MacrobiusApiClient {
 // Export singleton instance
 export const macrobiusApi = new MacrobiusApiClient();
 
+// React hook for Oracle Cloud connection monitoring
+export function useOracleCloudConnection() {
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [connectionError, setConnectionError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      setIsLoading(true);
+      setConnectionError(null);
+      
+      try {
+        const connected = await macrobiusApi.testConnection();
+        setIsConnected(connected);
+        
+        if (!connected) {
+          setConnectionError('Oracle Cloud backend not available');
+        }
+      } catch (error) {
+        setIsConnected(false);
+        setConnectionError(error instanceof Error ? error.message : 'Connection failed');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkConnection();
+    
+    // Check connection every 30 seconds
+    const interval = setInterval(checkConnection, 30000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  return { isConnected, isLoading, connectionError };
+}
+
+// React hook for Oracle Cloud data fetching
+export function useOracleCloudData<T>(
+  fetcher: () => Promise<T>,
+  dependencies: any[] = []
+) {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const result = await fetcher();
+        setData(result);
+      } catch (err) {
+        if (err instanceof OracleCloudError) {
+          setError(err.message);
+        } else {
+          setError('Failed to fetch data from Oracle Cloud');
+        }
+        console.error('Oracle Cloud data fetch failed:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, dependencies); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return { data, loading, error, refetch: () => {} };
+}
+
 // Export types for use in components
 export type { 
   MacrobiusPassage, 
   VocabularyWord, 
+  QuizQuestion,
+  CulturalTheme,
   CulturalThemesAnalysis, 
   SearchResults 
 };
