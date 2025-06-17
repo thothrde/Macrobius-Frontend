@@ -359,21 +359,21 @@ function EnhancedWorldMapSection({ isActive, t: _t, language: _language = 'DE' }
               {/* Climate Zones View */}
               {viewMode === 'climate' && (
                 <div className="relative rounded-xl p-8 min-h-[500px] overflow-hidden">
-                  {/* FIXED: Add translucent Macrobius-Erdkarte as background */}
+                  {/* ENHANCED: Use Macrobius-Weltkarte-neu.jpg as translucent background */}
                   <div className="absolute inset-0 rounded-xl overflow-hidden">
                     <Image
-                      src="/Macrobius-Erdkarte.jpg"
-                      alt="Macrobius Erdkarte"
+                      src="/Macrobius-Weltkarte-neu.jpg"
+                      alt="Macrobius Neue Weltkarte"
                       fill
-                      className="object-cover opacity-30"
+                      className="object-cover opacity-25"
                       style={{
-                        filter: 'sepia(0.3) hue-rotate(180deg) saturate(0.8) brightness(0.7)'
+                        filter: 'sepia(0.2) hue-rotate(180deg) saturate(0.8) brightness(0.6) contrast(1.1)'
                       }}
                     />
                   </div>
                   
                   {/* Climate zones overlay */}
-                  <div className="relative z-10 w-full h-full bg-gradient-to-b from-blue-900/70 via-green-800/70 to-blue-900/70 rounded-xl">
+                  <div className="relative z-10 w-full h-full bg-gradient-to-b from-blue-900/60 via-green-800/60 to-blue-900/60 rounded-xl">
                     {/* Climate Zones Visualization */}
                     <div className="relative w-full h-full">
                       {climateZones.map((zone) => (
@@ -423,34 +423,39 @@ function EnhancedWorldMapSection({ isActive, t: _t, language: _language = 'DE' }
                 </div>
               )}
 
-              {/* Territories View - FIXED: Better visualization using a more elegant approach */}
+              {/* Territories View - ENHANCED: Better Roman administration visualization */}
               {viewMode === 'territories' && (
                 <div className="relative rounded-xl p-8 min-h-[500px] overflow-hidden">
-                  {/* Better background for administration view */}
+                  {/* ENHANCED: High-quality Roman administration background */}
                   <div className="absolute inset-0 rounded-xl overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-amber-900/80 via-orange-800/80 to-red-900/80">
-                      {/* Administrative boundaries visualization */}
+                    <div className="w-full h-full bg-gradient-to-br from-amber-900/90 via-orange-800/90 to-red-900/90">
+                      {/* Enhanced Roman Empire map visualization */}
                       <svg viewBox="0 0 100 70" className="w-full h-full">
-                        {/* Enhanced Roman Empire outline */}
+                        {/* Enhanced Roman Empire outline with better design */}
                         <defs>
-                          <pattern id="imperialPattern" patternUnits="userSpaceOnUse" width="4" height="4">
-                            <rect width="4" height="4" fill="rgba(217, 119, 6, 0.1)"/>
-                            <circle cx="2" cy="2" r="0.5" fill="rgba(255, 215, 0, 0.3)"/>
+                          <pattern id="imperialPattern" patternUnits="userSpaceOnUse" width="6" height="6">
+                            <rect width="6" height="6" fill="rgba(255, 215, 0, 0.1)"/>
+                            <circle cx="3" cy="3" r="0.8" fill="rgba(255, 215, 0, 0.4)"/>
                           </pattern>
+                          <linearGradient id="empireGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#D97706" stopOpacity="0.8"/>
+                            <stop offset="50%" stopColor="#F59E0B" stopOpacity="0.6"/>
+                            <stop offset="100%" stopColor="#DC2626" stopOpacity="0.8"/>
+                          </linearGradient>
                         </defs>
                         
-                        {/* Main Empire territory */}
+                        {/* Main Empire territory with enhanced styling */}
                         <path
-                          d="M10 30 Q30 25 50 30 Q70 25 90 35 Q85 50 70 55 Q50 60 30 55 Q15 45 10 30"
-                          fill="url(#imperialPattern)"
-                          stroke="#D97706"
+                          d="M8 32 Q25 22 45 28 Q65 20 88 30 Q92 38 85 48 Q75 58 55 62 Q35 65 15 58 Q5 48 8 32 Z"
+                          fill="url(#empireGradient)"
+                          stroke="#FFD700"
                           strokeWidth="2"
-                          className="animate-pulse"
+                          className="drop-shadow-lg"
                         />
                         
-                        {/* Administrative divisions */}
-                        <line x1="50" y1="25" x2="50" y2="60" stroke="#FFD700" strokeWidth="1" strokeDasharray="2,2" opacity="0.6"/>
-                        <line x1="25" y1="40" x2="75" y2="40" stroke="#FFD700" strokeWidth="1" strokeDasharray="2,2" opacity="0.6"/>
+                        {/* Administrative boundaries with Roman aesthetic */}
+                        <line x1="45" y1="20" x2="45" y2="65" stroke="#FFD700" strokeWidth="1.5" strokeDasharray="3,2" opacity="0.7"/>
+                        <line x1="20" y1="40" x2="80" y2="40" stroke="#FFD700" strokeWidth="1.5" strokeDasharray="3,2" opacity="0.7"/>
                         
                         {/* Territorial regions with enhanced styling */}
                         {territorialRegions.map((region) => (
@@ -458,18 +463,24 @@ function EnhancedWorldMapSection({ isActive, t: _t, language: _language = 'DE' }
                             <circle
                               cx={region.coordinates.x}
                               cy={region.coordinates.y}
-                              r="8"
+                              r="10"
                               fill={region.color}
-                              stroke="white"
-                              strokeWidth="2"
-                              className="cursor-pointer hover:r-10 transition-all filter drop-shadow-lg"
+                              stroke="#FFD700"
+                              strokeWidth="3"
+                              className="cursor-pointer hover:r-12 transition-all filter drop-shadow-lg"
                               onClick={() => setSelectedRegion(region)}
+                              style={{
+                                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))'
+                              }}
                             />
                             <text
                               x={region.coordinates.x}
-                              y={region.coordinates.y + 15}
+                              y={region.coordinates.y + 20}
                               textAnchor="middle"
-                              className="fill-white text-xs font-bold filter drop-shadow-sm"
+                              className="fill-white text-sm font-bold filter drop-shadow-sm"
+                              style={{
+                                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+                              }}
                             >
                               {region.name}
                             </text>
@@ -477,19 +488,28 @@ function EnhancedWorldMapSection({ isActive, t: _t, language: _language = 'DE' }
                               <circle
                                 cx={region.coordinates.x}
                                 cy={region.coordinates.y}
-                                r="12"
+                                r="15"
                                 fill="none"
-                                stroke="white"
-                                strokeWidth="3"
+                                stroke="#FFD700"
+                                strokeWidth="4"
                                 className="animate-ping"
                               />
                             )}
                           </g>
                         ))}
                         
-                        {/* Administrative centers */}
-                        <circle cx="45" cy="40" r="3" fill="#FFD700" className="animate-pulse"/>
-                        <text x="45" y="35" textAnchor="middle" className="fill-yellow-200 text-xs font-bold">ROMA</text>
+                        {/* Enhanced administrative centers */}
+                        <g>
+                          <circle cx="45" cy="40" r="4" fill="#FFD700" className="animate-pulse drop-shadow-lg"/>
+                          <text x="45" y="33" textAnchor="middle" className="fill-yellow-200 text-sm font-bold drop-shadow-sm">ROMA</text>
+                          <text x="45" y="50" textAnchor="middle" className="fill-yellow-300 text-xs">Caput Mundi</text>
+                        </g>
+                        
+                        {/* Decorative Roman eagles at corners */}
+                        <text x="15" y="15" className="fill-yellow-400 text-lg">🦅</text>
+                        <text x="80" y="15" className="fill-yellow-400 text-lg">🦅</text>
+                        <text x="15" y="60" className="fill-yellow-400 text-lg">⚔️</text>
+                        <text x="80" y="60" className="fill-yellow-400 text-lg">⚔️</text>
                       </svg>
                     </div>
                   </div>
