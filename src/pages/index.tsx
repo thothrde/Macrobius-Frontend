@@ -1,7 +1,7 @@
 /**
  * 🏛️ MACROBIUS - CULTURAL EDUCATION PLATFORM (ENHANCED PICTURE CONFIGURATION)
  * Late Antiquity Cultural Wisdom through Complete Corpus
- * FINAL ENHANCEMENTS: Fainter astrolabe, fixed image references, added Macrobius & son, book pictures, enhanced positioning
+ * FINAL ENHANCEMENTS: Fixed image references, corrected picture colors, enhanced positioning
  * 
  * MISSION: Complete visual experience with perfected picture configuration and content
  */
@@ -85,69 +85,22 @@ const translations: Translations = {
     // ENHANCED: Extensive "Das untergehende Rom" content based on research
     declining_rome_title: "Das untergehende Römische Reich",
     declining_rome_subtitle: "Kultureller Niedergang und die Mission der Gelehrten (4.-5. Jahrhundert n. Chr.)",
-    declining_rome_content: `Die Zeit des Macrobius Ambrosius Theodosius (ca. 385-430 n. Chr.) war geprägt vom dramatischen Niedergang des Weströmischen Reiches. Was Historiker heute als "Spätantike" bezeichnen, war für die Zeitgenossen eine Zeit existenzieller Bedrohung und radikalen Wandels.
-
-**Die Krise des 5. Jahrhunderts:**
-Zwischen 400 und 450 n. Chr. erlebte das Weströmische Reich eine Kaskade von Katastrophen: Die Völkerwanderung brachte germanische Stämme wie Westgoten, Vandalen und Burgunder ins Herz des Imperiums. 410 plünderte Alarich Rom, 455 folgten die Vandalen. Die militärische und politische Kontrolle schwand rapide.
-
-**Kulturelle Bedrohung:**
-Doch für Intellektuelle wie Macrobius war der kulturelle Niedergang noch bedrohlicher als der politische. Die klassische Bildung, die über 800 Jahre das Rückgrat der römischen Zivilisation gebildet hatte, stand vor dem Kollaps. Bibliotheken wurden geplündert, Schulen geschlossen, die Überlieferungskette des antiken Wissens drohte zu reißen.
-
-**Macrobius' Antwort:**
-In dieser Situation entwickelte Macrobius seine "kulturelle Rettungsmission". Er erkannte, dass das politische Rom untergehen würde, aber das geistige Rom gerettet werden konnte. Seine Saturnalien und sein Somnium-Kommentar waren bewusst als "Flaschenpost" an zukünftige Generationen konzipiert.
-
-**Die Methode der Kulturbewahrung:**
-Macrobius wählte einen systematischen Ansatz: Er sammelte das Beste der klassischen Tradition - von Vergil über Cicero bis zu griechischen Philosophen - und verpackte es in attraktive, literarische Formen. Die Saturnalien präsentierten komplexes Wissen als unterhaltsame Gespräche, der Somnium-Kommentar verband astronomische und philosophische Erkenntnisse in einem kosmologischen System.
-
-**Historische Ironie:**
-Was als Verzweiflungstat in einer untergehenden Welt begann, wurde zu einem der erfolgreichsten Bildungsprojekte der Geschichte. Macrobius' Werke überlebten das Mittelalter, inspirierten die Renaissance und bilden heute die Grundlage unserer digitalen Kulturvermittlung. So wurde aus dem "untergehenden Rom" der Grundstein für die europäische Bildungstradition.`,
+    declining_rome_content: `Die Zeit des Macrobius Ambrosius Theodosius (ca. 385-430 n. Chr.) war geprägt vom dramatischen Niedergang des Weströmischen Reiches. Was Historiker heute als "Spätantike" bezeichnen, war für die Zeitgenossen eine Zeit existenzieller Bedrohung und radikalen Wandels.\n\n**Die Krise des 5. Jahrhunderts:**\nZwischen 400 und 450 n. Chr. erlebte das Weströmische Reich eine Kaskade von Katastrophen: Die Völkerwanderung brachte germanische Stämme wie Westgoten, Vandalen und Burgunder ins Herz des Imperiums. 410 plünderte Alarich Rom, 455 folgten die Vandalen. Die militärische und politische Kontrolle schwand rapide.\n\n**Kulturelle Bedrohung:**\nDoch für Intellektuelle wie Macrobius war der kulturelle Niedergang noch bedrohlicher als der politische. Die klassische Bildung, die über 800 Jahre das Rückgrat der römischen Zivilisation gebildet hatte, stand vor dem Kollaps. Bibliotheken wurden geplündert, Schulen geschlossen, die Überlieferungskette des antiken Wissens drohte zu reißen.\n\n**Macrobius' Antwort:**\nIn dieser Situation entwickelte Macrobius seine \"kulturelle Rettungsmission\". Er erkannte, dass das politische Rom untergehen würde, aber das geistige Rom gerettet werden konnte. Seine Saturnalien und sein Somnium-Kommentar waren bewusst als \"Flaschenpost\" an zukünftige Generationen konzipiert.\n\n**Die Methode der Kulturbewahrung:**\nMacrobius wählte einen systematischen Ansatz: Er sammelte das Beste der klassischen Tradition - von Vergil über Cicero bis zu griechischen Philosophen - und verpackte es in attraktive, literarische Formen. Die Saturnalien präsentierten komplexes Wissen als unterhaltsame Gespräche, der Somnium-Kommentar verband astronomische und philosophische Erkenntnisse in einem kosmologischen System.\n\n**Historische Ironie:**\nWas als Verzweiflungstat in einer untergehenden Welt begann, wurde zu einem der erfolgreichsten Bildungsprojekte der Geschichte. Macrobius' Werke überlebten das Mittelalter, inspirierten die Renaissance und bilden heute die Grundlage unserer digitalen Kulturvermittlung. So wurde aus dem \"untergehenden Rom\" der Grundstein für die europäische Bildungstradition.`,
     
-    cultural_story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle.
-
-Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos, Johannes Isaac Pontanus, erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und ich auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
+    cultural_story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle.\n\nVor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos, Johannes Isaac Pontanus, erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und ich auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
     cultural_focus: "Was Macrobius über die spätantike Kultur lehrt",
     late_antiquity_wisdom: "Spätantike Weisheit für die moderne Welt",
     about_title: "Macrobius Ambrosius Theodosius",
     about_subtitle: "Kultureller Bewahrer der spätantiken Welt (ca. 385-430 n. Chr.)",
-    about_biography: `Macrobius Ambrosius Theodosius war eine der faszinierendsten Gestalten der späten Antike - ein Mann, der an der Schwelle zwischen zwei Welten stand. Als hoher römischer Verwaltungsbeamter, der die iberische Halbinsel als Praefectus praetorio per Hispanias leitete, hatte er tiefe Einblicke in die Mechanismen des spätantiken Staates. Gleichzeitig war er ein Gelehrter von außergewöhnlicher Bildung, der die gesamte klassische Tradition in sich vereinte.
-
-Geboren um 385 n. Chr. in einer Zeit des Umbruchs, erlebte Macrobius den langsamen Niedergang des weströmischen Reiches aus der Perspektive eines Insiders. Seine Position verschaffte ihm Zugang zu den höchsten Kreisen der spätantiken Gesellschaft - Senatoren, Philosophen, Rhetoren und Gelehrte, die sich in den Salons Roms trafen, um über Literatur, Philosophie und die großen Fragen des Lebens zu diskutieren.
-
-Was Macrobius von seinen Zeitgenossen unterschied, war sein tiefes Bewusstsein für die historische Bedeutung seiner Epoche. Er erkannte, dass er Zeuge eines Zivilisationsbruchs war und dass das kostbare kulturelle Erbe der Antike für zukünftige Generationen bewahrt werden musste. Diese Mission wurde zum Lebensprojekt eines Mannes, der sowohl die praktischen Herausforderungen der Staatsverwaltung als auch die intellektuellen Höhenflüge der Philosophie beherrschte.`,
-    about_works: `Macrobius' Hauptwerke "Saturnalia" und "Commentarii in Somnium Scipionis" sind Meisterwerke spätantiker Gelehrsamkeit, die uns heute durch 1.401 sorgfältig digitalisierte Passagen zugänglich sind. Die "Saturnalia" präsentieren sich als literarische Fiktion - ein mehrtägiges Gespräch zwischen den führenden Intellektuellen Roms während der Saturnalien, der römischen Winterfestzeit. Doch hinter dieser eleganten Form verbirgt sich ein systematisches Kompendium des gesamten antiken Wissens.
-
-In diesen Gesprächen diskutieren Gelehrte wie Praetextatus, Symmachus und Servius über Vergils Dichtung, die Geheimnisse der Etymologie, astronomische Phänomene, religiöse Riten und philosophische Fragen. Macrobius lässt sie dabei nicht nur über abstrakte Themen philosophieren, sondern zeigt, wie Bildung im spätantiken Rom gelebt wurde - in einer Atmosphäre von Gastfreundschaft, gegenseitigem Respekt und intellektueller Neugier.
-
-Die "Commentarii in Somnium Scipionis" wiederum sind ein monumentaler Kommentar zu Ciceros "Somnium Scipionis", in dem Macrobius eine vollständige Kosmologie und Seelenlehre entwickelt. Hier zeigt sich sein systematischer Geist: Er verbindet platonische Philosophie mit astronomischen Erkenntnissen und ethischen Überlegungen zu einem Weltbild, das sowohl rational als auch spirituell überzeugt.
-
-Diese Werke sind keine trockenen Lehrbücher, sondern lebendige Zeugnisse einer Kultur, die ihre eigene Vergänglichkeit spürte und dennoch - oder gerade deshalb - ihre schönsten Blüten trieb.`,
-    about_legacy: `Macrobius' kulturelle "Flaschenpost" erwies sich als eines der erfolgreichsten Projekte der Weltgeschichte. Seine Werke überlebten nicht nur das dunkle Zeitalter, sondern wurden zu Grundlagentexten der mittelalterlichen und Renaissance-Bildung. Besonders die "Saturnalia" prägten das Ideal des gebildeten Gesprächs und der literarischen Geselligkeit.
-
-In den Klosterbibliotheken des Mittelalters wurden Macrobius' Texte kopiert und studiert. Gelehrte wie Johannes Scottus Eriugena im 9. Jahrhundert oder Thierry von Chartres im 12. Jahrhundert schöpften aus seinem kosmologischen Wissen. Seine systematische Bewahrung antiker Weisheit machte ihn zu einem der wichtigsten Kulturvermittler zwischen Antike und Neuzeit.
-
-Die Renaissance entdeckte in Macrobius einen Geistesverwandten - einen Humanisten avant la lettre, der die Einheit von Leben und Lernen, von Geselligkeit und Gelehrsamkeit verkörperte. Seine Vision einer Bildungskultur, die gleichzeitig tiefschürfend und lebensnah, systematisch und elegant war, wurde zum Vorbild für die humanistische Erziehung.
-
-Heute, in einer Zeit neuer zivilisatorischer Herausforderungen, erscheint Macrobius' Projekt aktueller denn je: Wie bewahrt man kulturelle Werte in Zeiten des Wandels? Wie verbindet man Tradition mit Innovation? Wie schafft man Bildungsgemeinschaften, die sowohl den Geist nähren als auch das Leben bereichern? Diese Fragen stellte bereits Macrobius - und seine Antworten inspirieren uns noch heute.`,
+    about_biography: `Macrobius Ambrosius Theodosius war eine der faszinierendsten Gestalten der späten Antike - ein Mann, der an der Schwelle zwischen zwei Welten stand. Als hoher römischer Verwaltungsbeamter, der die iberische Halbinsel als Praefectus praetorio per Hispanias leitete, hatte er tiefe Einblicke in die Mechanismen des spätantiken Staates. Gleichzeitig war er ein Gelehrter von außergewöhnlicher Bildung, der die gesamte klassische Tradition in sich vereinte.\n\nGeboren um 385 n. Chr. in einer Zeit des Umbruchs, erlebte Macrobius den langsamen Niedergang des weströmischen Reiches aus der Perspektive eines Insiders. Seine Position verschaffte ihm Zugang zu den höchsten Kreisen der spätantiken Gesellschaft - Senatoren, Philosophen, Rhetoren und Gelehrte, die sich in den Salons Roms trafen, um über Literatur, Philosophie und die großen Fragen des Lebens zu diskutieren.\n\nWas Macrobius von seinen Zeitgenossen unterschied, war sein tiefes Bewusstsein für die historische Bedeutung seiner Epoche. Er erkannte, dass er Zeuge eines Zivilisationsbruchs war und dass das kostbare kulturelle Erbe der Antike für zukünftige Generationen bewahrt werden musste. Diese Mission wurde zum Lebensprojekt eines Mannes, der sowohl die praktischen Herausforderungen der Staatsverwaltung als auch die intellektuellen Höhenflüge der Philosophie beherrschte.`,
+    about_works: `Macrobius' Hauptwerke \"Saturnalia\" und \"Commentarii in Somnium Scipionis\" sind Meisterwerke spätantiker Gelehrsamkeit, die uns heute durch 1.401 sorgfältig digitalisierte Passagen zugänglich sind. Die \"Saturnalia\" präsentieren sich als literarische Fiktion - ein mehrtägiges Gespräch zwischen den führenden Intellektuellen Roms während der Saturnalien, der römischen Winterfestzeit. Doch hinter dieser eleganten Form verbirgt sich ein systematisches Kompendium des gesamten antiken Wissens.\n\nIn diesen Gesprächen diskutieren Gelehrte wie Praetextatus, Symmachus und Servius über Vergils Dichtung, die Geheimnisse der Etymologie, astronomische Phänomene, religiöse Riten und philosophische Fragen. Macrobius lässt sie dabei nicht nur über abstrakte Themen philosophieren, sondern zeigt, wie Bildung im spätantiken Rom gelebt wurde - in einer Atmosphäre von Gastfreundschaft, gegenseitigem Respekt und intellektueller Neugier.\n\nDie \"Commentarii in Somnium Scipionis\" wiederum sind ein monumentaler Kommentar zu Ciceros \"Somnium Scipionis\", in dem Macrobius eine vollständige Kosmologie und Seelenlehre entwickelt. Hier zeigt sich sein systematischer Geist: Er verbindet platonische Philosophie mit astronomischen Erkenntnissen und ethischen Überlegungen zu einem Weltbild, das sowohl rational als auch spirituell überzeugt.\n\nDiese Werke sind keine trockenen Lehrbücher, sondern lebendige Zeugnisse einer Kultur, die ihre eigene Vergänglichkeit spürte und dennoch - oder gerade deshalb - ihre schönsten Blüten trieb.`,
+    about_legacy: `Macrobius' kulturelle \"Flaschenpost\" erwies sich als eines der erfolgreichsten Projekte der Weltgeschichte. Seine Werke überlebten nicht nur das dunkle Zeitalter, sondern wurden zu Grundlagentexten der mittelalterlichen und Renaissance-Bildung. Besonders die \"Saturnalia\" prägten das Ideal des gebildeten Gesprächs und der literarischen Geselligkeit.\n\nIn den Klosterbibliotheken des Mittelalters wurden Macrobius' Texte kopiert und studiert. Gelehrte wie Johannes Scottus Eriugena im 9. Jahrhundert oder Thierry von Chartres im 12. Jahrhundert schöpften aus seinem kosmologischen Wissen. Seine systematische Bewahrung antiker Weisheit machte ihn zu einem der wichtigsten Kulturvermittler zwischen Antike und Neuzeit.\n\nDie Renaissance entdeckte in Macrobius einen Geistesverwandten - einen Humanisten avant la lettre, der die Einheit von Leben und Lernen, von Geselligkeit und Gelehrsamkeit verkörperte. Seine Vision einer Bildungskultur, die gleichzeitig tiefschürfend und lebensnah, systematisch und elegant war, wurde zum Vorbild für die humanistische Erziehung.\n\nHeute, in einer Zeit neuer zivilisatorischer Herausforderungen, erscheint Macrobius' Projekt aktueller denn je: Wie bewahrt man kulturelle Werte in Zeiten des Wandels? Wie verbindet man Tradition mit Innovation? Wie schafft man Bildungsgemeinschaften, die sowohl den Geist nähren als auch das Leben bereichern? Diese Fragen stellte bereits Macrobius - und seine Antworten inspirieren uns noch heute.`,
     close_modal: "Schließen",
     about_pontanus_title: "Johannes Isaac Pontanus & Tycho Brahe",
     about_pontanus_subtitle: "Astronomische Renaissance und die Wiederentdeckung des Macrobius (1571-1639)",
-    about_pontanus_bio: `Johannes Isaac Pontanus war mehr als nur ein Assistent des großen Tycho Brahe - er war ein Brückenbauer zwischen den Welten der antiken Weisheit und moderner Wissenschaft. Geboren 1571 auf See (daher sein Name), als seine Eltern nach Dänemark reisten, führte ihn sein Lebensweg auf die berühmte Insel Hven, wo er Zeuge der astronomischen Revolution wurde, die das moderne Weltbild begründete.
-
-Auf Uraniborg, Tycho Brahes "Himmelsburg", lernte Pontanus nicht nur die präziseste Himmelsbeobachtung seiner Zeit kennen, sondern entwickelte auch ein tiefes Verständnis für die Kontinuität wissenschaftlicher Erkenntnis. In den langen Winternächten, wenn die Beobachtungen ruhten, studierte er die antiken Astronomen - und stieß dabei auf Macrobius.
-
-Was Pontanus in Macrobius' Kosmologie entdeckte, war revolutionär: Hier fand er eine systematische Astronomie, die bereits viele Einsichten der modernen Himmelskunde vorwegnahm. Macrobius' Beschreibung der Sphärenharmonie, seine Berechnungen der Planetenbahnen und vor allem seine Integration astronomischer Erkenntnisse in ein umfassendes Weltbild beeindruckten den jungen Gelehrten zutiefst.`,
-    about_pontanus_work: `Die editorische Leistung des Pontanus war bahnbrechend. Seine 1597 in Leiden erschienene kommentierte Gesamtausgabe der Werke des Macrobius wurde zur Standardreferenz für drei Jahrhunderte und ermöglichte es erstmals, Macrobius' Kulturwissen systematisch für die Neuzeit zu erschließen.
-
-Pontanus ging dabei methodisch vor wie ein moderner Wissenschaftler: Er sammelte alle verfügbaren Handschriften, verglich sie sorgfältig miteinander und erstellte einen kritischen Text, der den besten verfügbaren Quellen folgte. Seine Kommentare verbanden philologische Genauigkeit mit astronomischem Sachverstand - ein für seine Zeit einzigartiger Ansatz.
-
-Besonders wertvoll waren seine Erläuterungen zu Macrobius' astronomischen Passagen. Pontanus konnte zeigen, dass viele scheinbar mystische Beschreibungen der antiken Kosmologie präzise astronomische Beobachtungen widerspiegelten. Er übersetzte Macrobius' poetische Sprache in die mathematische Präzision seiner Zeit und machte damit deutlich, dass antike und moderne Wissenschaft nicht unvereinbare Gegensätze, sondern verschiedene Stadien derselben menschlichen Erkenntnissuche waren.`,
-    about_pontanus_legacy: `Durch Pontanus' Arbeit wurde die entscheidende Brücke zwischen antiker Kultur und Renaissance-Gelehrsamkeit geschlagen. Seine Edition machte Macrobius zu einem der meistgelesenen antiken Autoren der Frühen Neuzeit und prägte das Bildungsideal ganzer Generationen.
-
-Die Wirkung war epochal: Von Keplers astronomischen Berechnungen bis zu Shakespeares kosmologischen Metaphern, von den Akademien der Renaissance bis zu den Salons der Aufklärung - überall finden sich Spuren von Macrobius' Gedankenwelt, wie sie Pontanus zugänglich gemacht hatte.
-
-Pontanus selbst wurde zu einer Symbolfigur für die Einheit der Wissenschaften. Seine Biographie zeigte, dass ein Astronom zugleich Philologe, ein Naturwissenschaftler zugleich Humanist sein konnte. Dieses Ideal des "gelehrten Universalmenschen" prägte die europäische Wissenschaftskultur bis ins 18. Jahrhundert.
-
-Heute ist Pontanus' Edition die Grundlage unserer digitalen Sammlung. Die 1.401 Textpassagen, die wir in dieser App präsentieren, gehen letztlich auf seine editorische Pionierarbeit zurück. Wenn wir heute Macrobius' Weisheit in modernem Format erleben können, dann dank eines dänischen Gelehrten, der vor 400 Jahren erkannte, dass die größten Schätze der Menschheit nicht in Gold und Silber bestehen, sondern in den Ideen und Einsichten, die von Generation zu Generation weitergegeben werden.`,
+    about_pontanus_bio: `Johannes Isaac Pontanus war mehr als nur ein Assistent des großen Tycho Brahe - er war ein Brückenbauer zwischen den Welten der antiken Weisheit und moderner Wissenschaft. Geboren 1571 auf See (daher sein Name), als seine Eltern nach Dänemark reisten, führte ihn sein Lebensweg auf die berühmte Insel Hven, wo er Zeuge der astronomischen Revolution wurde, die das moderne Weltbild begründete.\n\nAuf Uraniborg, Tycho Brahes \"Himmelsburg\", lernte Pontanus nicht nur die präziseste Himmelsbeobachtung seiner Zeit kennen, sondern entwickelte auch ein tiefes Verständnis für die Kontinuität wissenschaftlicher Erkenntnis. In den langen Winternächten, wenn die Beobachtungen ruhten, studierte er die antiken Astronomen - und stieß dabei auf Macrobius.\n\nWas Pontanus in Macrobius' Kosmologie entdeckte, war revolutionär: Hier fand er eine systematische Astronomie, die bereits viele Einsichten der modernen Himmelskunde vorwegnahm. Macrobius' Beschreibung der Sphärenharmonie, seine Berechnungen der Planetenbahnen und vor allem seine Integration astronomischer Erkenntnisse in ein umfassendes Weltbild beeindruckten den jungen Gelehrten zutiefst.`,
+    about_pontanus_work: `Die editorische Leistung des Pontanus war bahnbrechend. Seine 1597 in Leiden erschienene kommentierte Gesamtausgabe der Werke des Macrobius wurde zur Standardreferenz für drei Jahrhunderte und ermöglichte es erstmals, Macrobius' Kulturwissen systematisch für die Neuzeit zu erschließen.\n\nPontanus ging dabei methodisch vor wie ein moderner Wissenschaftler: Er sammelte alle verfügbaren Handschriften, verglich sie sorgfältig miteinander und erstellte einen kritischen Text, der den besten verfügbaren Quellen folgte. Seine Kommentare verbanden philologische Genauigkeit mit astronomischem Sachverstand - ein für seine Zeit einzigartiger Ansatz.\n\nBesonders wertvoll waren seine Erläuterungen zu Macrobius' astronomischen Passagen. Pontanus konnte zeigen, dass viele scheinbar mystische Beschreibungen der antiken Kosmologie präzise astronomische Beobachtungen widerspiegelten. Er übersetzte Macrobius' poetische Sprache in die mathematische Präzision seiner Zeit und machte damit deutlich, dass antike und moderne Wissenschaft nicht unvereinbare Gegensätze, sondern verschiedene Stadien derselben menschlichen Erkenntnissuche waren.`,
+    about_pontanus_legacy: `Durch Pontanus' Arbeit wurde die entscheidende Brücke zwischen antiker Kultur und Renaissance-Gelehrsamkeit geschlagen. Seine Edition machte Macrobius zu einem der meistgelesenen antiken Autoren der Frühen Neuzeit und prägte das Bildungsideal ganzer Generationen.\n\nDie Wirkung war epochal: Von Keplers astronomischen Berechnungen bis zu Shakespeares kosmologischen Metaphern, von den Akademien der Renaissance bis zu den Salons der Aufklärung - überall finden sich Spuren von Macrobius' Gedankenwelt, wie sie Pontanus zugänglich gemacht hatte.\n\nPontanus selbst wurde zu einer Symbolfigur für die Einheit der Wissenschaften. Seine Biographie zeigte, dass ein Astronom zugleich Philologe, ein Naturwissenschaftler zugleich Humanist sein konnte. Dieses Ideal des \"gelehrten Universalmenschen\" prägte die europäische Wissenschaftskultur bis ins 18. Jahrhundert.\n\nHeute ist Pontanus' Edition die Grundlage unserer digitalen Sammlung. Die 1.401 Textpassagen, die wir in dieser App präsentieren, gehen letztlich auf seine editorische Pionierarbeit zurück. Wenn wir heute Macrobius' Weisheit in modernem Format erleben können, dann dank eines dänischen Gelehrten, der vor 400 Jahren erkannte, dass die größten Schätze der Menschheit nicht in Gold und Silber bestehen, sondern in den Ideen und Einsichten, die von Generation zu Generation weitergegeben werden.`,
     pontanus_historical_details: `Die Edition ist gefolgt von 117 Seiten voller Notizen des Pontanus. Die letzten 16 Seiten enthalten kurze Notizen des jungen Johannes Meursius, der 1597 erst 18 Jahre alt und noch Student war. Meursius war ein Wunderkind, das bereits im Alter von 12 Jahren immatrikuliert wurde. Er widmet seine Notizen seinem 'praeceptor meo', dem Professor für Griechisch an der Universität Leiden, Bonaventura Vulcanius. Diese kurzen Notizen gehören zu den ersten Früchten dieses produktiven Gelehrten. 1606 wurde Pontanus zum Professor für Mathematik an der Universität Harderwijk ernannt. 1628 produzierte er eine zweite Auflage.`
   },
   EN: {
@@ -186,8 +139,8 @@ Heute ist Pontanus' Edition die Grundlage unserer digitalen Sammlung. Die 1.401 
     about_title: "Macrobius Ambrosius Theodosius",
     about_subtitle: "Cultural Preserver of the Late Antique World (ca. 385-430 AD)",
     about_biography: `Macrobius Ambrosius Theodosius was one of the most fascinating figures of late antiquity...`,
-    about_works: `Macrobius' main works "Saturnalia" and "Commentarii in Somnium Scipionis" are masterpieces of late antique scholarship...`,
-    about_legacy: `Macrobius' cultural "message in a bottle" proved to be one of the most successful projects in world history...`,
+    about_works: `Macrobius' main works \"Saturnalia\" and \"Commentarii in Somnium Scipionis\" are masterpieces of late antique scholarship...`,
+    about_legacy: `Macrobius' cultural \"message in a bottle\" proved to be one of the most successful projects in world history...`,
     close_modal: "Close",
     about_pontanus_title: "Johannes Isaac Pontanus & Tycho Brahe",
     about_pontanus_subtitle: "Astronomical Renaissance and the Rediscovery of Macrobius (1571-1639)",
@@ -232,8 +185,8 @@ Heute ist Pontanus' Edition die Grundlage unserer digitalen Sammlung. Die 1.401 
     about_title: "Macrobius Ambrosius Theodosius",
     about_subtitle: "Culturae Custos Mundi Antiquitatis Serae",
     about_biography: `Macrobius vir publicus antiquitatis serae fuit...`,
-    about_works: `Opera praecipua "Saturnalia" et "Commentarii in Somnium Scipionis"...`,
-    about_legacy: `Macrobii culturalis "epistula in lagena" saecula superavit...`,
+    about_works: `Opera praecipua \"Saturnalia\" et \"Commentarii in Somnium Scipionis\"...`,
+    about_legacy: `Macrobii culturalis \"epistula in lagena\" saecula superavit...`,
     close_modal: "Claudere",
     about_pontanus_title: "Johannes Isaac Pontanus et Tycho Brahe",
     about_pontanus_subtitle: "Renascentia Astronomica et Macrobii Inventio",
@@ -565,7 +518,7 @@ export default function MacrobiusCulturalApp() {
 
         {/* Main Content */}
         <main className="relative z-10">
-          {/* ENHANCED Hero Section with better picture configuration */}
+          {/* ENHANCED Hero Section with FIXED picture colors */}
           {activeSection === 'hero' && (
             <section className="min-h-screen flex items-center justify-center px-4" style={{ paddingTop: '200px' }}>
               <div className="text-center max-w-7xl mx-auto">
@@ -587,7 +540,7 @@ export default function MacrobiusCulturalApp() {
                     </h3>
                   </div>
 
-                  {/* ENHANCED: Better picture gallery with corrected image positioning */}
+                  {/* ENHANCED: Better picture gallery with FIXED image colors */}
                   <div className="mb-8">
                     <div className="flex items-center justify-center space-x-3 mb-6">
                       <ImageIcon className="w-6 h-6 text-yellow-300" />
@@ -595,9 +548,9 @@ export default function MacrobiusCulturalApp() {
                       <Eye className="w-6 h-6 text-yellow-300" />
                     </div>
                     
-                    {/* ENHANCED: Better grid layout with properly positioned images */}
+                    {/* ENHANCED: Better grid layout with CORRECTED image colors */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                      {/* ENHANCED: "Das untergehende Rom" with ORIGINAL COLORS - removed excessive red filter */}
+                      {/* FIXED: "Das untergehende Rom" with ORIGINAL COLORS - removed ALL color filters */}
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -611,7 +564,7 @@ export default function MacrobiusCulturalApp() {
                           onClick={() => setShowRomeModal(true)}
                         >
                           <div className="relative">
-                            {/* ENHANCED: Better object positioning AND ORIGINAL COLORS */}
+                            {/* FIXED: ORIGINAL COLORS - No filters applied */}
                             <Image
                               src="/Rome-under.jpg"
                               alt="Das untergehende Rom"
@@ -619,12 +572,13 @@ export default function MacrobiusCulturalApp() {
                               height={300}
                               className="w-full h-64 object-cover object-center transition-transform duration-500 group-hover:scale-110"
                               style={{ 
-                                objectPosition: 'center 30%' 
+                                objectPosition: 'center 30%'
+                                // NO filters - showing original colors as requested
                               }}
                             />
                             
-                            {/* Enhanced overlay with REDUCED red tint */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-orange-900/70 via-yellow-600/30 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300">
+                            {/* MINIMAL overlay to preserve original colors */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300">
                               <div className="absolute bottom-0 left-0 right-0 p-4">
                                 <h3 className="text-white font-bold text-xl mb-2">Das untergehende Rom</h3>
                                 <p className="text-white/95 text-sm">Kultureller Niedergang und die Mission der Bewahrung</p>
@@ -725,21 +679,26 @@ export default function MacrobiusCulturalApp() {
                       </motion.div>
                     </div>
                     
-                    {/* ENHANCED: Display Macrobius and Son picture WITHOUT LINK as requested */}
+                    {/* ENHANCED: Display Macrobius and Son picture BETTER POSITIONED for full visibility */}
                     <div className="mt-8 flex justify-center">
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8, duration: 0.6 }}
-                        className="max-w-md"
+                        className="max-w-lg"
                       >
                         <div className="relative rounded-xl overflow-hidden border-2 border-amber-400/60 shadow-xl">
+                          {/* FIXED: Show FULL image instead of cropped version */}
                           <Image
                             src="/Macrobius-and-Eustachius.jpg"
                             alt="Macrobius und sein Sohn Eustachius"
-                            width={400}
-                            height={300}
-                            className="w-full h-48 object-cover"
+                            width={500}
+                            height={400}
+                            className="w-full h-auto object-contain"
+                            style={{ 
+                              // Ensure full image is visible, not cropped
+                              objectFit: 'contain'
+                            }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
                             <div className="absolute bottom-4 left-4 right-4">
