@@ -550,7 +550,7 @@ export default function MacrobiusCulturalApp() {
                     
                     {/* ENHANCED: Better grid layout with CORRECTED image colors */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                      {/* FIXED: "Das untergehende Rom" with ORIGINAL COLORS - removed ALL color filters */}
+                      {/* FIXED: "Das untergehende Rom" with ORIGINAL COLORS - removed ALL overlays */}
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -564,7 +564,7 @@ export default function MacrobiusCulturalApp() {
                           onClick={() => setShowRomeModal(true)}
                         >
                           <div className="relative">
-                            {/* FIXED: ORIGINAL COLORS - No filters applied */}
+                            {/* FIXED: COMPLETELY REMOVED all overlays to show original colors */}
                             <Image
                               src="/Rome-under.jpg"
                               alt="Das untergehende Rom"
@@ -573,14 +573,14 @@ export default function MacrobiusCulturalApp() {
                               className="w-full h-64 object-cover object-center transition-transform duration-500 group-hover:scale-110"
                               style={{ 
                                 objectPosition: 'center 30%'
-                                // NO filters - showing original colors as requested
+                                // NO overlays, NO filters - pure original image
                               }}
                             />
                             
-                            {/* MINIMAL overlay to preserve original colors */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300">
-                              <div className="absolute bottom-0 left-0 right-0 p-4">
-                                <h3 className="text-white font-bold text-xl mb-2">Das untergehende Rom</h3>
+                            {/* MINIMAL info overlay ONLY on hover and ONLY at bottom */}
+                            <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <div className="p-4">
+                                <h3 className="text-white font-bold text-xl mb-1">Das untergehende Rom</h3>
                                 <p className="text-white/95 text-sm">Kultureller Niedergang und die Mission der Bewahrung</p>
                               </div>
                             </div>
@@ -679,30 +679,34 @@ export default function MacrobiusCulturalApp() {
                       </motion.div>
                     </div>
                     
-                    {/* ENHANCED: Display Macrobius and Son picture BETTER POSITIONED for full visibility */}
+                    {/* ENHANCED: Display Macrobius and Son picture with FULL VISIBILITY */}
                     <div className="mt-8 flex justify-center">
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8, duration: 0.6 }}
-                        className="max-w-lg"
+                        className="max-w-2xl"
                       >
-                        <div className="relative rounded-xl overflow-hidden border-2 border-amber-400/60 shadow-xl">
-                          {/* FIXED: Show FULL image instead of cropped version */}
-                          <Image
-                            src="/Macrobius-and-Eustachius.jpg"
-                            alt="Macrobius und sein Sohn Eustachius"
-                            width={500}
-                            height={400}
-                            className="w-full h-auto object-contain"
-                            style={{ 
-                              // Ensure full image is visible, not cropped
-                              objectFit: 'contain'
-                            }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
+                        <div className="relative rounded-xl overflow-hidden border-2 border-amber-400/60 shadow-xl bg-white/5">
+                          {/* FIXED: Show COMPLETE image without any cropping */}
+                          <div className="w-full" style={{ minHeight: 'auto' }}>
+                            <Image
+                              src="/Macrobius-and-Eustachius.jpg"
+                              alt="Macrobius und sein Sohn Eustachius"
+                              width={600}
+                              height={450}
+                              className="w-full h-auto object-contain"
+                              style={{ 
+                                // Ensure COMPLETE image visibility - no height restrictions
+                                objectFit: 'contain',
+                                width: '100%',
+                                height: 'auto'
+                              }}
+                            />
+                          </div>
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none">
                             <div className="absolute bottom-4 left-4 right-4">
-                              <h3 className="text-white font-bold text-lg">Macrobius und sein Sohn Eustachius</h3>
+                              <h3 className="text-white font-bold text-lg mb-1">Macrobius und sein Sohn Eustachius</h3>
                               <p className="text-white/90 text-sm">Familiäre Überlieferung des Wissens</p>
                             </div>
                           </div>
