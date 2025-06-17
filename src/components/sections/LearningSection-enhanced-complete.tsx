@@ -1,27 +1,276 @@
 import React, { useState } from 'react';
 import { Card } from '../ui/card';
-import { Button } from '../ui/button';
 import { BookOpen, Brain, Trophy, ArrowRight, Target, TrendingUp, Award, Flame, Scroll, Zap } from 'lucide-react';
 
 // Import Enhanced Components
-import { QuizSection } from './QuizSection-enhanced';
-import VocabularyTrainerSection from './VocabularyTrainerSection';
-import MacrobiusGrammarExplainer from './GrammarExplainer-enhanced';
-import MacrobiusTextProcessor from './MacrobiusTextProcessor-enhanced';
+import { QuizSection } from './QuizSection';
+import VocabularyTrainerSection from './VocabularyTrainer-corpus-integrated';
+import MacrobiusGrammarExplainer from './GrammarExplainer-corpus-integrated';
+import MacrobiusTextProcessor from './MacrobiusTextProcessor-backend-integrated';
 
-// Mock Language Context
-const useLanguage = () => ({
-  language: 'EN',
-  t: (key: string) => key
-});
+// Enhanced interface to support translations
+interface LearningEnhancedSectionProps {
+  t?: (key: string) => string;
+  language?: 'DE' | 'EN' | 'LA';
+}
+
+// Type definitions
+interface UserStats {
+  totalExperience: number;
+  level: number;
+  perfectQuizzes: number;
+  speedChallenges: number;
+  maxStreak: number;
+  vocabularyMastered: {
+    total: number;
+    latin: number;
+    philosophy: number;
+    astronomy: number;
+  };
+  categoriesCompleted: number;
+  consecutivePerfect: number;
+  expEarnedToday: number;
+  expFromQuizzes: number;
+  expFromVocabulary: number;
+  expFromGrammar: number;
+  expFromTextAnalysis: number;
+  expFromAchievements: number;
+}
+
+interface Achievement {
+  name: string;
+  description: string;
+  unlocked: boolean;
+  icon: string;
+}
+
+type TabType = 'overview' | 'quiz' | 'vocabulary' | 'grammar' | 'textprocessor' | 'progress' | 'achievements' | 'experience';
+
+// Translation types for type safety
+type LearningTranslationKey = 
+  | 'learning_title'
+  | 'learning_subtitle'
+  | 'welcome_title'
+  | 'welcome_subtitle'
+  | 'platform_description'
+  | 'quiz_title'
+  | 'quiz_description'
+  | 'quiz_action'
+  | 'vocabulary_title'
+  | 'vocabulary_description'
+  | 'vocabulary_action'
+  | 'grammar_title'
+  | 'grammar_description'
+  | 'grammar_action'
+  | 'textprocessor_title'
+  | 'textprocessor_description'
+  | 'textprocessor_action'
+  | 'progress_title'
+  | 'progress_description'
+  | 'progress_action'
+  | 'achievements_title'
+  | 'achievements_description'
+  | 'achievements_action'
+  | 'experience_title'
+  | 'experience_description'
+  | 'experience_action'
+  | 'enhancements_title'
+  | 'current_stats'
+  | 'level'
+  | 'experience'
+  | 'vocabulary'
+  | 'max_streak'
+  | 'earned_today'
+  | 'enhanced'
+  | 'comprehensive'
+  | 'new'
+  | 'all_enhanced'
+  | 'new_features'
+  | 'enhanced_analysis'
+  | 'all_components_enhanced'
+  | 'production_ready'
+  | 'overview'
+  | 'quiz'
+  | 'vocabulary_short'
+  | 'grammar'
+  | 'text_search'
+  | 'progress'
+  | 'achievements'
+  | 'experience_short';
+
+type LearningTranslationDict = Record<LearningTranslationKey, string>;
+
+// Enhanced translation system with comprehensive Lernen section translations
+const getTranslation = (key: string, language: 'DE' | 'EN' | 'LA' = 'DE'): string => {
+  const translations: Record<'DE' | 'EN' | 'LA', LearningTranslationDict> = {
+    DE: {
+      'learning_title': 'Vollständig erweiterte Lernplattform',
+      'learning_subtitle': 'Alle vier Bildungskomponenten vollständig verbessert mit authentischen Macrobius-Inhalten, fortgeschrittener Analyse und umfassender Funktionalität',
+      'welcome_title': 'Willkommen im erweiterten Lernzentrum',
+      'welcome_subtitle': 'Erkunde alle vier verbesserten Bildungskomponenten mit umfassenden Macrobius-Inhalten, fortgeschrittener Analyse und interaktiven Funktionen.',
+      'platform_description': 'Hochwertige Bildungsplattform mit authentischen Macrobius-Texten',
+      'quiz_title': 'Macrobius Quiz-System',
+      'quiz_description': '30+ authentische Fragen mit umfassender Analyse',
+      'quiz_action': 'Quiz starten',
+      'vocabulary_title': 'Vokabeltrainer',
+      'vocabulary_description': '27+ Begriffe aus Macrobius-Texten',
+      'vocabulary_action': 'Lernen beginnen',
+      'grammar_title': 'Grammatik-Explorer',
+      'grammar_description': 'Fortgeschrittene lateinische Grammatikanalyse',
+      'grammar_action': 'Grammatik erkunden',
+      'textprocessor_title': 'Text-Processor',
+      'textprocessor_description': 'Erweiterte Textsuche und -analyse',
+      'textprocessor_action': 'Texte durchsuchen',
+      'progress_title': 'Fortschrittsverfolgung',
+      'progress_description': 'Überwache deinen Lernfortschritt',
+      'progress_action': 'Fortschritt anzeigen',
+      'achievements_title': 'Erfolge & Auszeichnungen',
+      'achievements_description': '25+ Erfolge zum Freischalten',
+      'achievements_action': 'Erfolge anzeigen',
+      'experience_title': 'Erfahrung & Level',
+      'experience_description': 'Level aufsteigen und Vorteile freischalten',
+      'experience_action': 'Level anzeigen',
+      'enhancements_title': 'Neue Verbesserungen!',
+      'current_stats': 'Deine aktuelle Statistik',
+      'level': 'Level',
+      'experience': 'Erfahrung',
+      'vocabulary': 'Vokabeln',
+      'max_streak': 'Max. Serie',
+      'earned_today': 'Heute verdient',
+      'enhanced': 'Erweitert',
+      'comprehensive': 'Umfassend',
+      'new': 'Neu!',
+      'all_enhanced': '🎉 Alle 4 Bildungskomponenten verbessert!',
+      'new_features': 'Neue Funktionen:',
+      'enhanced_analysis': 'Verbesserte Analyse:',
+      'all_components_enhanced': 'Alle 4 Bildungskomponenten vollständig verbessert!',
+      'production_ready': 'Produktionsbereit',
+      'overview': 'Übersicht',
+      'quiz': 'Quiz',
+      'vocabulary_short': 'Vokabeln',
+      'grammar': 'Grammatik',
+      'text_search': 'Text-Suche',
+      'progress': 'Fortschritt',
+      'achievements': 'Erfolge',
+      'experience_short': 'Erfahrung'
+    },
+    EN: {
+      'learning_title': 'Fully Enhanced Learning Platform',
+      'learning_subtitle': 'All four educational components fully enhanced with authentic Macrobius content, advanced analysis, and comprehensive functionality',
+      'welcome_title': 'Welcome to the Enhanced Learning Center',
+      'welcome_subtitle': 'Explore all four enhanced educational components with comprehensive Macrobius content, advanced analysis, and interactive features.',
+      'platform_description': 'Premium educational platform with authentic Macrobius texts',
+      'quiz_title': 'Macrobius Quiz System',
+      'quiz_description': '30+ authentic questions with comprehensive analysis',
+      'quiz_action': 'Start Quiz',
+      'vocabulary_title': 'Vocabulary Trainer',
+      'vocabulary_description': '27+ terms from Macrobius texts',
+      'vocabulary_action': 'Start Learning',
+      'grammar_title': 'Grammar Explorer',
+      'grammar_description': 'Advanced Latin grammar analysis',
+      'grammar_action': 'Explore Grammar',
+      'textprocessor_title': 'Text Processor',
+      'textprocessor_description': 'Advanced text search and analysis',
+      'textprocessor_action': 'Search Texts',
+      'progress_title': 'Progress Tracking',
+      'progress_description': 'Monitor your learning progress',
+      'progress_action': 'View Progress',
+      'achievements_title': 'Achievements & Awards',
+      'achievements_description': '25+ achievements to unlock',
+      'achievements_action': 'View Achievements',
+      'experience_title': 'Experience & Level',
+      'experience_description': 'Level up and unlock benefits',
+      'experience_action': 'View Level',
+      'enhancements_title': 'New Enhancements!',
+      'current_stats': 'Your Current Stats',
+      'level': 'Level',
+      'experience': 'Experience',
+      'vocabulary': 'Vocabulary',
+      'max_streak': 'Max Streak',
+      'earned_today': 'Earned Today',
+      'enhanced': 'Enhanced',
+      'comprehensive': 'Comprehensive',
+      'new': 'New!',
+      'all_enhanced': '🎉 All 4 Educational Components Enhanced!',
+      'new_features': 'New Features:',
+      'enhanced_analysis': 'Enhanced Analysis:',
+      'all_components_enhanced': 'All 4 Educational Components Fully Enhanced!',
+      'production_ready': 'Production Ready',
+      'overview': 'Overview',
+      'quiz': 'Quiz',
+      'vocabulary_short': 'Vocabulary',
+      'grammar': 'Grammar',
+      'text_search': 'Text Search',
+      'progress': 'Progress',
+      'achievements': 'Achievements',
+      'experience_short': 'Experience'
+    },
+    LA: {
+      'learning_title': 'Suggestus Discendi Omnino Auctus',
+      'learning_subtitle': 'Omnes quattuor partes educationis omnino melioratae cum contentis Macrobii authenticis, analysi provecta et functionalitate comprehensa',
+      'welcome_title': 'Salve in Centro Discendi Aucto',
+      'welcome_subtitle': 'Omnes quattuor melioratas partes educationis cum contentis Macrobii comprehensis, analysi provecta et functionibus interactivis explora.',
+      'platform_description': 'Suggestus educationis excellens cum textibus Macrobii authenticis',
+      'quiz_title': 'Systema Quaestionum',
+      'quiz_description': '30+ quaestiones authenticae cum analysi comprehensa',
+      'quiz_action': 'Incipere',
+      'vocabulary_title': 'Exercitator Vocabulorum',
+      'vocabulary_description': '27+ vocabula ex textibus Macrobii',
+      'vocabulary_action': 'Discere',
+      'grammar_title': 'Explorator Grammaticus',
+      'grammar_description': 'Analysis grammatica Latina provecta',
+      'grammar_action': 'Explorare',
+      'textprocessor_title': 'Processor Textuum',
+      'textprocessor_description': 'Quaestio et analysis textuum provecta',
+      'textprocessor_action': 'Quaerere',
+      'progress_title': 'Progressus Sequendus',
+      'progress_description': 'Progressum discendi tuum observa',
+      'progress_action': 'Monstrare',
+      'achievements_title': 'Victoriae et Praemia',
+      'achievements_description': '25+ victoriae liberandae',
+      'achievements_action': 'Victorias',
+      'experience_title': 'Experientia et Gradus',
+      'experience_description': 'Gradus ascendere et beneficia liberare',
+      'experience_action': 'Gradum',
+      'enhancements_title': 'Meliorationes Novae!',
+      'current_stats': 'Statisticae tuae currentes',
+      'level': 'Gradus',
+      'experience': 'Experientia',
+      'vocabulary': 'Vocabula',
+      'max_streak': 'Series Max.',
+      'earned_today': 'Hodie merita',
+      'enhanced': 'Auctum',
+      'comprehensive': 'Comprehensum',
+      'new': 'Novum!',
+      'all_enhanced': '🎉 Omnes 4 partes educationis melioratae!',
+      'new_features': 'Functiones novae:',
+      'enhanced_analysis': 'Analysis meliorata:',
+      'all_components_enhanced': 'Omnes 4 partes educationis omnino melioratae!',
+      'production_ready': 'Productioni parata',
+      'overview': 'Conspectus',
+      'quiz': 'Quaestiones',
+      'vocabulary_short': 'Vocabula',
+      'grammar': 'Grammatica',
+      'text_search': 'Quaestio',
+      'progress': 'Progressus',
+      'achievements': 'Victoriae',
+      'experience_short': 'Experientia'
+    }
+  };
+
+  // Type-safe access with fallback
+  const languageTranslations = translations[language];
+  const translation = languageTranslations[key as LearningTranslationKey];
+  return translation || key;
+};
 
 // Mock ProgressTracker Component
-const ProgressTracker = ({ userId, language, onGoalCompleted }: any) => (
+const ProgressTracker = ({ t, language }: { t: (key: string) => string; language: 'DE' | 'EN' | 'LA' }) => (
   <div className="p-6">
-    <h3 className="text-2xl font-bold mb-4">Progress Tracking</h3>
+    <h3 className="text-2xl font-bold mb-4">{getTranslation('progress_title', language)}</h3>
     <div className="space-y-4">
       <div className="bg-blue-100 p-4 rounded-lg">
-        <h4 className="font-semibold">Learning Progress</h4>
+        <h4 className="font-semibold">{getTranslation('progress_description', language)}</h4>
         <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
           <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: '75%' }}></div>
         </div>
@@ -42,40 +291,44 @@ const ProgressTracker = ({ userId, language, onGoalCompleted }: any) => (
 );
 
 // Mock AchievementSystem Component
-const AchievementSystem = ({ userId, language, userStats, onAchievementUnlocked }: any) => (
-  <div className="p-6">
-    <h3 className="text-2xl font-bold mb-4">Achievements & Awards</h3>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {[
-        { name: 'Quiz Master', description: 'Complete 10 quizzes', unlocked: true, icon: '🎯' },
-        { name: 'Vocabulary Expert', description: 'Learn 100 words', unlocked: true, icon: '📚' },
-        { name: 'Grammar Guru', description: 'Master all grammar topics', unlocked: false, icon: '🧠' },
-        { name: 'Perfect Streak', description: 'Get 20 answers in a row', unlocked: true, icon: '⚡' },
-        { name: 'Text Explorer', description: 'Search 50 texts', unlocked: false, icon: '🔍' },
-        { name: 'Scholar', description: 'Reach level 25', unlocked: false, icon: '🎓' }
-      ].map((achievement, index) => (
-        <div key={index} className={`p-4 rounded-lg border-2 ${
-          achievement.unlocked ? 'bg-yellow-50 border-yellow-300' : 'bg-gray-50 border-gray-200'
-        }`}>
-          <div className="text-2xl mb-2">{achievement.icon}</div>
-          <h4 className="font-semibold">{achievement.name}</h4>
-          <p className="text-sm text-gray-600">{achievement.description}</p>
-          {achievement.unlocked && (
-            <div className="mt-2 text-xs text-yellow-600 font-semibold">UNLOCKED!</div>
-          )}
-        </div>
-      ))}
+const AchievementSystem = ({ t, language }: { t: (key: string) => string; language: 'DE' | 'EN' | 'LA' }) => {
+  const achievements: Achievement[] = [
+    { name: 'Quiz Master', description: 'Complete 10 quizzes', unlocked: true, icon: '🎯' },
+    { name: 'Vocabulary Expert', description: 'Learn 100 words', unlocked: true, icon: '📚' },
+    { name: 'Grammar Guru', description: 'Master all grammar topics', unlocked: false, icon: '🧠' },
+    { name: 'Perfect Streak', description: 'Get 20 answers in a row', unlocked: true, icon: '⚡' },
+    { name: 'Text Explorer', description: 'Search 50 texts', unlocked: false, icon: '🔍' },
+    { name: 'Scholar', description: 'Reach level 25', unlocked: false, icon: '🎓' }
+  ];
+
+  return (
+    <div className="p-6">
+      <h3 className="text-2xl font-bold mb-4">{getTranslation('achievements_title', language)}</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {achievements.map((achievement, achievementIndex) => (
+          <div key={achievementIndex} className={`p-4 rounded-lg border-2 ${
+            achievement.unlocked ? 'bg-yellow-50 border-yellow-300' : 'bg-gray-50 border-gray-200'
+          }`}>
+            <div className="text-2xl mb-2">{achievement.icon}</div>
+            <h4 className="font-semibold">{achievement.name}</h4>
+            <p className="text-sm text-gray-600">{achievement.description}</p>
+            {achievement.unlocked && (
+              <div className="mt-2 text-xs text-yellow-600 font-semibold">UNLOCKED!</div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Mock ExperienceSystem Component
-const ExperienceSystem = ({ userId, language, userStats, onLevelUp }: any) => (
+const ExperienceSystem = ({ userStats, t, language }: { userStats: UserStats; t: (key: string) => string; language: 'DE' | 'EN' | 'LA' }) => (
   <div className="p-6">
-    <h3 className="text-2xl font-bold mb-4">Experience & Level</h3>
+    <h3 className="text-2xl font-bold mb-4">{getTranslation('experience_title', language)}</h3>
     <div className="space-y-6">
       <div className="text-center p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg">
-        <div className="text-4xl font-bold mb-2">Level {userStats.level}</div>
+        <div className="text-4xl font-bold mb-2">{getTranslation('level', language)} {userStats.level}</div>
         <div className="text-lg">{userStats.totalExperience} XP</div>
         <div className="w-full bg-white bg-opacity-30 rounded-full h-3 mt-4">
           <div className="bg-white h-3 rounded-full" style={{ width: '60%' }}></div>
@@ -115,11 +368,10 @@ const ExperienceSystem = ({ userId, language, userStats, onLevelUp }: any) => (
   </div>
 );
 
-// Enhanced Learning Section with ALL improved educational components
-export function LearningSection() {
-  const { language, t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<'overview' | 'quiz' | 'vocabulary' | 'grammar' | 'textprocessor' | 'progress' | 'achievements' | 'experience'>('overview');
-  const [userStats, setUserStats] = useState({
+// Enhanced Learning Section with proper translation support
+export function LearningSection({ t, language = 'DE' }: LearningEnhancedSectionProps) {
+  const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [userStats] = useState<UserStats>({
     totalExperience: 3240,
     level: 18,
     perfectQuizzes: 5,
@@ -141,21 +393,13 @@ export function LearningSection() {
     expFromAchievements: 200
   });
 
-  const handleAchievementUnlocked = (achievement: any) => {
-    console.log('Achievement unlocked:', achievement);
-    setUserStats(prev => ({
-      ...prev,
-      totalExperience: prev.totalExperience + achievement.rewards.points,
-      expFromAchievements: (prev.expFromAchievements || 0) + achievement.rewards.points
-    }));
-  };
-
-  const handleLevelUp = (newLevel: number, benefits: string[]) => {
-    console.log('Level up!', newLevel, benefits);
-  };
-
-  const handleGoalCompleted = (goal: any) => {
-    console.log('Goal completed:', goal);
+  // Enhanced translation function with fallback
+  const translate = (key: string): string => {
+    if (t) {
+      const result = t(key);
+      if (result !== key) return result;
+    }
+    return getTranslation(key, language);
   };
 
   const renderOverview = () => (
@@ -163,21 +407,15 @@ export function LearningSection() {
       {/* Welcome Header */}
       <div className="text-center py-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
         <h3 className="text-3xl font-bold text-gray-900 mb-4">
-          {language === 'DE' ? 'Willkommen im erweiterten Lernzentrum' : 
-           language === 'LA' ? 'Salve in Centro Discendi Aucto' : 
-           'Welcome to the Enhanced Learning Center'}
+          {translate('welcome_title')}
         </h3>
         <p className="text-gray-600 max-w-3xl mx-auto mb-4">
-          {language === 'DE' ? 'Erkunde alle vier verbesserten Bildungskomponenten mit umfassenden Macrobius-Inhalten, fortgeschrittener Analyse und interaktiven Funktionen.' :
-           language === 'LA' ? 'Omnes quattuor melioratas partes educationis cum contentis Macrobii comprehensis, analysi provecta et functionibus interactivis explora.' :
-           'Explore all four enhanced educational components with comprehensive Macrobius content, advanced analysis, and interactive features.'}
+          {translate('welcome_subtitle')}
         </p>
         <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
           <Scroll className="w-4 h-4" />
           <span>
-            {language === 'DE' ? 'Hochwertige Bildungsplattform mit authentischen Macrobius-Texten' :
-             language === 'LA' ? 'Suggestus educationis excellens cum textibus Macrobii authenticis' :
-             'Premium educational platform with authentic Macrobius texts'}
+            {translate('platform_description')}
           </span>
         </div>
       </div>
@@ -187,19 +425,17 @@ export function LearningSection() {
         <Card className="p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border-2 border-blue-200 hover:border-blue-400" onClick={() => setActiveTab('quiz')}>
           <Target className="h-12 w-12 text-blue-500 mb-4" />
           <h4 className="text-xl font-bold text-gray-900 mb-2">
-            {language === 'DE' ? 'Macrobius Quiz-System' : language === 'LA' ? 'Systema Quaestionum' : 'Macrobius Quiz System'}
+            {translate('quiz_title')}
           </h4>
           <p className="text-gray-600 mb-4 text-sm">
-            {language === 'DE' ? '30+ authentische Fragen mit umfassender Analyse' : 
-             language === 'LA' ? '30+ quaestiones authenticae cum analysi comprehensa' : 
-             '30+ authentic questions with comprehensive analysis'}
+            {translate('quiz_description')}
           </p>
           <div className="flex items-center justify-between">
             <div className="text-xs text-gray-500">
-              {language === 'DE' ? 'Erweitert' : language === 'LA' ? 'Auctum' : 'Enhanced'}
+              {translate('enhanced')}
             </div>
             <div className="flex items-center text-blue-600 font-semibold text-sm">
-              {language === 'DE' ? 'Quiz starten' : language === 'LA' ? 'Incipere' : 'Start Quiz'}
+              {translate('quiz_action')}
               <ArrowRight className="ml-2 h-4 w-4" />
             </div>
           </div>
@@ -208,19 +444,17 @@ export function LearningSection() {
         <Card className="p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border-2 border-green-200 hover:border-green-400" onClick={() => setActiveTab('vocabulary')}>
           <BookOpen className="h-12 w-12 text-green-500 mb-4" />
           <h4 className="text-xl font-bold text-gray-900 mb-2">
-            {language === 'DE' ? 'Vokabeltrainer' : language === 'LA' ? 'Exercitator Vocabulorum' : 'Vocabulary Trainer'}
+            {translate('vocabulary_title')}
           </h4>
           <p className="text-gray-600 mb-4 text-sm">
-            {language === 'DE' ? '27+ Begriffe aus Macrobius-Texten' : 
-             language === 'LA' ? '27+ vocabula ex textibus Macrobii' : 
-             '27+ terms from Macrobius texts'}
+            {translate('vocabulary_description')}
           </p>
           <div className="flex items-center justify-between">
             <div className="text-xs text-gray-500">
-              {language === 'DE' ? 'Umfassend' : language === 'LA' ? 'Comprehensum' : 'Comprehensive'}
+              {translate('comprehensive')}
             </div>
             <div className="flex items-center text-green-600 font-semibold text-sm">
-              {language === 'DE' ? 'Lernen beginnen' : language === 'LA' ? 'Discere' : 'Start Learning'}
+              {translate('vocabulary_action')}
               <ArrowRight className="ml-2 h-4 w-4" />
             </div>
           </div>
@@ -229,19 +463,17 @@ export function LearningSection() {
         <Card className="p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border-2 border-purple-200 hover:border-purple-400" onClick={() => setActiveTab('grammar')}>
           <Brain className="h-12 w-12 text-purple-500 mb-4" />
           <h4 className="text-xl font-bold text-gray-900 mb-2">
-            {language === 'DE' ? 'Grammatik-Explorer' : language === 'LA' ? 'Explorator Grammaticus' : 'Grammar Explorer'}
+            {translate('grammar_title')}
           </h4>
           <p className="text-gray-600 mb-4 text-sm">
-            {language === 'DE' ? 'Fortgeschrittene lateinische Grammatikanalyse' : 
-             language === 'LA' ? 'Analysis grammatica Latina provecta' : 
-             'Advanced Latin grammar analysis'}
+            {translate('grammar_description')}
           </p>
           <div className="flex items-center justify-between">
             <div className="text-xs text-gray-500">
-              {language === 'DE' ? 'Neu!' : language === 'LA' ? 'Novum!' : 'New!'}
+              {translate('new')}
             </div>
             <div className="flex items-center text-purple-600 font-semibold text-sm">
-              {language === 'DE' ? 'Grammatik erkunden' : language === 'LA' ? 'Explorare' : 'Explore Grammar'}
+              {translate('grammar_action')}
               <ArrowRight className="ml-2 h-4 w-4" />
             </div>
           </div>
@@ -250,19 +482,17 @@ export function LearningSection() {
         <Card className="p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border-2 border-orange-200 hover:border-orange-400" onClick={() => setActiveTab('textprocessor')}>
           <Scroll className="h-12 w-12 text-orange-500 mb-4" />
           <h4 className="text-xl font-bold text-gray-900 mb-2">
-            {language === 'DE' ? 'Text-Processor' : language === 'LA' ? 'Processor Textuum' : 'Text Processor'}
+            {translate('textprocessor_title')}
           </h4>
           <p className="text-gray-600 mb-4 text-sm">
-            {language === 'DE' ? 'Erweiterte Textsuche und -analyse' : 
-             language === 'LA' ? 'Quaestio et analysis textuum provecta' : 
-             'Advanced text search and analysis'}
+            {translate('textprocessor_description')}
           </p>
           <div className="flex items-center justify-between">
             <div className="text-xs text-gray-500">
-              {language === 'DE' ? 'Erweitert' : language === 'LA' ? 'Auctum' : 'Enhanced'}
+              {translate('enhanced')}
             </div>
             <div className="flex items-center text-orange-600 font-semibold text-sm">
-              {language === 'DE' ? 'Texte durchsuchen' : language === 'LA' ? 'Quaerere' : 'Search Texts'}
+              {translate('textprocessor_action')}
               <ArrowRight className="ml-2 h-4 w-4" />
             </div>
           </div>
@@ -271,15 +501,13 @@ export function LearningSection() {
         <Card className="p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border-2 border-indigo-200 hover:border-indigo-400" onClick={() => setActiveTab('progress')}>
           <TrendingUp className="h-12 w-12 text-indigo-500 mb-4" />
           <h4 className="text-xl font-bold text-gray-900 mb-2">
-            {language === 'DE' ? 'Fortschrittsverfolgung' : language === 'LA' ? 'Progressus Sequendus' : 'Progress Tracking'}
+            {translate('progress_title')}
           </h4>
           <p className="text-gray-600 mb-4 text-sm">
-            {language === 'DE' ? 'Überwache deinen Lernfortschritt' : 
-             language === 'LA' ? 'Progressum discendi tuum observa' : 
-             'Monitor your learning progress'}
+            {translate('progress_description')}
           </p>
           <div className="flex items-center text-indigo-600 font-semibold text-sm">
-            {language === 'DE' ? 'Fortschritt anzeigen' : language === 'LA' ? 'Monstrare' : 'View Progress'}
+            {translate('progress_action')}
             <ArrowRight className="ml-2 h-4 w-4" />
           </div>
         </Card>
@@ -287,15 +515,13 @@ export function LearningSection() {
         <Card className="p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border-2 border-yellow-200 hover:border-yellow-400" onClick={() => setActiveTab('achievements')}>
           <Trophy className="h-12 w-12 text-yellow-500 mb-4" />
           <h4 className="text-xl font-bold text-gray-900 mb-2">
-            {language === 'DE' ? 'Erfolge & Auszeichnungen' : language === 'LA' ? 'Victoriae et Praemia' : 'Achievements & Awards'}
+            {translate('achievements_title')}
           </h4>
           <p className="text-gray-600 mb-4 text-sm">
-            {language === 'DE' ? '25+ Erfolge zum Freischalten' : 
-             language === 'LA' ? '25+ victoriae liberandae' : 
-             '25+ achievements to unlock'}
+            {translate('achievements_description')}
           </p>
           <div className="flex items-center text-yellow-600 font-semibold text-sm">
-            {language === 'DE' ? 'Erfolge anzeigen' : language === 'LA' ? 'Victorias' : 'View Achievements'}
+            {translate('achievements_action')}
             <ArrowRight className="ml-2 h-4 w-4" />
           </div>
         </Card>
@@ -303,15 +529,13 @@ export function LearningSection() {
         <Card className="p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border-2 border-red-200 hover:border-red-400" onClick={() => setActiveTab('experience')}>
           <Flame className="h-12 w-12 text-red-500 mb-4" />
           <h4 className="text-xl font-bold text-gray-900 mb-2">
-            {language === 'DE' ? 'Erfahrung & Level' : language === 'LA' ? 'Experientia et Gradus' : 'Experience & Level'}
+            {translate('experience_title')}
           </h4>
           <p className="text-gray-600 mb-4 text-sm">
-            {language === 'DE' ? 'Level aufsteigen und Vorteile freischalten' : 
-             language === 'LA' ? 'Gradus ascendere et beneficia liberare' : 
-             'Level up and unlock benefits'}
+            {translate('experience_description')}
           </p>
           <div className="flex items-center text-red-600 font-semibold text-sm">
-            {language === 'DE' ? 'Level anzeigen' : language === 'LA' ? 'Gradum' : 'View Level'}
+            {translate('experience_action')}
             <ArrowRight className="ml-2 h-4 w-4" />
           </div>
         </Card>
@@ -319,7 +543,7 @@ export function LearningSection() {
         <Card className="p-6 bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-blue-200">
           <Award className="h-12 w-12 text-blue-600 mb-4" />
           <h4 className="text-xl font-bold text-gray-900 mb-2">
-            {language === 'DE' ? 'Neue Verbesserungen!' : language === 'LA' ? 'Meliorationes Novae!' : 'New Enhancements!'}
+            {translate('enhancements_title')}
           </h4>
           <ul className="text-sm text-gray-600 space-y-1">
             <li>🎯 {language === 'DE' ? 'Erweiterte Quiz-Funktionen' : language === 'LA' ? 'Functiones quaestionum auctae' : 'Enhanced quiz features'}</li>
@@ -333,28 +557,28 @@ export function LearningSection() {
       {/* Current Stats Overview */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-lg">
         <h4 className="text-xl font-bold mb-4">
-          {language === 'DE' ? 'Deine aktuelle Statistik' : language === 'LA' ? 'Statisticae tuae currentes' : 'Your Current Stats'}
+          {translate('current_stats')}
         </h4>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <div className="text-center">
             <div className="text-2xl font-bold">{userStats.level}</div>
-            <div className="text-sm opacity-80">{language === 'DE' ? 'Level' : language === 'LA' ? 'Gradus' : 'Level'}</div>
+            <div className="text-sm opacity-80">{translate('level')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold">{userStats.totalExperience}</div>
-            <div className="text-sm opacity-80">{language === 'DE' ? 'Erfahrung' : language === 'LA' ? 'Experientia' : 'Experience'}</div>
+            <div className="text-sm opacity-80">{translate('experience')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold">{userStats.vocabularyMastered.total}</div>
-            <div className="text-sm opacity-80">{language === 'DE' ? 'Vokabeln' : language === 'LA' ? 'Vocabula' : 'Vocabulary'}</div>
+            <div className="text-sm opacity-80">{translate('vocabulary')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold">{userStats.maxStreak}</div>
-            <div className="text-sm opacity-80">{language === 'DE' ? 'Max. Serie' : language === 'LA' ? 'Series Max.' : 'Max Streak'}</div>
+            <div className="text-sm opacity-80">{translate('max_streak')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold">{userStats.expEarnedToday}</div>
-            <div className="text-sm opacity-80">{language === 'DE' ? 'Heute verdient' : language === 'LA' ? 'Hodie merita' : 'Earned Today'}</div>
+            <div className="text-sm opacity-80">{translate('earned_today')}</div>
           </div>
         </div>
       </div>
@@ -362,14 +586,12 @@ export function LearningSection() {
       {/* Feature Highlights */}
       <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-lg border border-green-200">
         <h4 className="text-xl font-bold mb-4 text-gray-900">
-          {language === 'DE' ? '🎉 Alle 4 Bildungskomponenten verbessert!' : 
-           language === 'LA' ? '🎉 Omnes 4 partes educationis melioratae!' : 
-           '🎉 All 4 Educational Components Enhanced!'}
+          {translate('all_enhanced')}
         </h4>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <h5 className="font-semibold text-green-700 mb-2">
-              {language === 'DE' ? 'Neue Funktionen:' : language === 'LA' ? 'Functiones novae:' : 'New Features:'}
+              {translate('new_features')}
             </h5>
             <ul className="text-sm text-gray-600 space-y-1">
               <li>🎯 {language === 'DE' ? 'Macrobius-spezifische Quiz-Inhalte' : 'Quiz content specific to Macrobius'}</li>
@@ -380,7 +602,7 @@ export function LearningSection() {
           </div>
           <div>
             <h5 className="font-semibold text-blue-700 mb-2">
-              {language === 'DE' ? 'Verbesserte Analyse:' : language === 'LA' ? 'Analysis meliorata:' : 'Enhanced Analysis:'}
+              {translate('enhanced_analysis')}
             </h5>
             <ul className="text-sm text-gray-600 space-y-1">
               <li>📊 {language === 'DE' ? 'Detaillierte Erklärungen' : 'Detailed explanations'}</li>
@@ -400,14 +622,10 @@ export function LearningSection() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            {language === 'DE' ? 'Vollständig erweiterte Lernplattform' : 
-             language === 'LA' ? 'Suggestus Discendi Omnino Auctus' : 
-             'Fully Enhanced Learning Platform'}
+            {translate('learning_title')}
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-            {language === 'DE' ? 'Alle vier Bildungskomponenten vollständig verbessert mit authentischen Macrobius-Inhalten, fortgeschrittener Analyse und umfassender Funktionalität' :
-             language === 'LA' ? 'Omnes quattuor partes educationis omnino melioratae cum contentis Macrobii authenticis, analysi provecta et functionalitate comprehensa' :
-             'All four educational components fully enhanced with authentic Macrobius content, advanced analysis, and comprehensive functionality'}
+            {translate('learning_subtitle')}
           </p>
         </div>
 
@@ -415,18 +633,18 @@ export function LearningSection() {
         <div className="flex flex-wrap justify-center mb-8 gap-2">
           <div className="flex flex-wrap bg-white rounded-lg shadow-lg p-1 gap-1">
             {[
-              { id: 'overview', icon: '🏠', label: language === 'DE' ? 'Übersicht' : language === 'LA' ? 'Conspectus' : 'Overview' },
-              { id: 'quiz', icon: '🎯', label: language === 'DE' ? 'Quiz' : language === 'LA' ? 'Quaestiones' : 'Quiz' },
-              { id: 'vocabulary', icon: '📖', label: language === 'DE' ? 'Vokabeln' : language === 'LA' ? 'Vocabula' : 'Vocabulary' },
-              { id: 'grammar', icon: '🧠', label: language === 'DE' ? 'Grammatik' : language === 'LA' ? 'Grammatica' : 'Grammar' },
-              { id: 'textprocessor', icon: '🔍', label: language === 'DE' ? 'Text-Suche' : language === 'LA' ? 'Quaestio' : 'Text Search' },
-              { id: 'progress', icon: '📊', label: language === 'DE' ? 'Fortschritt' : language === 'LA' ? 'Progressus' : 'Progress' },
-              { id: 'achievements', icon: '🏆', label: language === 'DE' ? 'Erfolge' : language === 'LA' ? 'Victoriae' : 'Achievements' },
-              { id: 'experience', icon: '⚡', label: language === 'DE' ? 'Erfahrung' : language === 'LA' ? 'Experientia' : 'Experience' }
+              { id: 'overview', icon: '🏠', label: translate('overview') },
+              { id: 'quiz', icon: '🎯', label: translate('quiz') },
+              { id: 'vocabulary', icon: '📖', label: translate('vocabulary_short') },
+              { id: 'grammar', icon: '🧠', label: translate('grammar') },
+              { id: 'textprocessor', icon: '🔍', label: translate('text_search') },
+              { id: 'progress', icon: '📊', label: translate('progress') },
+              { id: 'achievements', icon: '🏆', label: translate('achievements') },
+              { id: 'experience', icon: '⚡', label: translate('experience_short') }
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as TabType)}
                 className={`px-4 py-2 rounded-md font-semibold transition-all duration-300 text-sm ${
                   activeTab === tab.id
                     ? 'bg-blue-500 text-white shadow-md'
@@ -445,7 +663,7 @@ export function LearningSection() {
           
           {activeTab === 'quiz' && (
             <div className="bg-white rounded-lg shadow-xl overflow-hidden">
-              <QuizSection language={language as "DE" | "EN" | "LA"} />
+              <QuizSection isActive={true} />
             </div>
           )}
           
@@ -459,7 +677,7 @@ export function LearningSection() {
 
           {activeTab === 'grammar' && (
             <div className="bg-white rounded-lg shadow-xl overflow-hidden">
-              <MacrobiusGrammarExplainer language={language as "DE" | "EN" | "LA"} />
+              <MacrobiusGrammarExplainer language={{ code: language.toLowerCase(), name: language }} />
             </div>
           )}
 
@@ -471,33 +689,19 @@ export function LearningSection() {
           
           {activeTab === 'progress' && (
             <div className="bg-white rounded-lg shadow-xl p-6">
-              <ProgressTracker 
-                userId="demo-user"
-                language={language}
-                onGoalCompleted={handleGoalCompleted}
-              />
+              <ProgressTracker t={translate} language={language} />
             </div>
           )}
           
           {activeTab === 'achievements' && (
             <div className="bg-white rounded-lg shadow-xl p-6">
-              <AchievementSystem 
-                userId="demo-user"
-                language={language}
-                userStats={userStats}
-                onAchievementUnlocked={handleAchievementUnlocked}
-              />
+              <AchievementSystem t={translate} language={language} />
             </div>
           )}
           
           {activeTab === 'experience' && (
             <div className="bg-white rounded-lg shadow-xl p-6">
-              <ExperienceSystem 
-                userId="demo-user"
-                language={language}
-                userStats={userStats}
-                onLevelUp={handleLevelUp}
-              />
+              <ExperienceSystem userStats={userStats} t={translate} language={language} />
             </div>
           )}
         </div>
@@ -508,17 +712,13 @@ export function LearningSection() {
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-green-300 rounded-full animate-pulse"></div>
               <span className="text-sm font-semibold">
-                {language === 'DE' ? 'Alle 4 Bildungskomponenten vollständig verbessert!' : 
-                 language === 'LA' ? 'Omnes 4 partes educationis omnino melioratae!' : 
-                 'All 4 Educational Components Fully Enhanced!'}
+                {translate('all_components_enhanced')}
               </span>
             </div>
             <div className="flex items-center space-x-1 text-xs">
               <Zap className="w-4 h-4" />
               <span>
-                {language === 'DE' ? 'Produktionsbereit' : 
-                 language === 'LA' ? 'Productioni parata' : 
-                 'Production Ready'}
+                {translate('production_ready')}
               </span>
             </div>
           </div>
