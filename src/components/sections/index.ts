@@ -1,5 +1,5 @@
 // Central export file for all Macrobius section components
-// Updated with Oracle Cloud integrated components
+// Updated with Oracle Cloud integrated components and SRS Enhancement
 
 // Core sections - Basic components
 export { default as HeroSection } from './HeroSection';
@@ -16,6 +16,7 @@ export { default as VisualizationsSection } from './VisualizationsSection';
 
 // Advanced educational components - Corpus integrated
 export { default as VocabularyTrainerCorpusIntegrated } from './VocabularyTrainer-corpus-integrated';
+export { default as VocabularyTrainerSRSEnhanced } from './VocabularyTrainer-SRS-enhanced';
 export { default as GrammarExplainerCorpusIntegrated } from './GrammarExplainer-corpus-integrated';
 export { default as MacrobiusTextProcessorBackendIntegrated } from './MacrobiusTextProcessor-backend-integrated';
 export { default as MacrobiusTextProcessorEnhanced } from './MacrobiusTextProcessor-enhanced';
@@ -48,6 +49,7 @@ export const CORE_SECTIONS = [
 
 export const ORACLE_CLOUD_INTEGRATED_SECTIONS = [
   'VocabularyTrainer',
+  'VocabularyTrainerSRSEnhanced',
   'CosmosSection', 
   'VisualizationsSection',
   'VocabularyTrainerCorpusIntegrated',
@@ -63,6 +65,12 @@ export const AI_POWERED_SECTIONS = [
   'AdvancedCulturalModulesSection'
 ] as const;
 
+export const TIER_2_ENHANCED_SECTIONS = [
+  'VocabularyTrainerSRSEnhanced',
+  'MacrobiusTextProcessorBackendIntegrated',
+  'PersonalizedLearningPathsSection'
+] as const;
+
 // Section metadata for navigation and organization
 export const SECTION_METADATA = {
   // Core educational sections
@@ -70,68 +78,98 @@ export const SECTION_METADATA = {
     title: 'Welcome', 
     description: 'Landing page with Oracle Cloud statistics',
     oracleCloudIntegrated: false,
-    difficulty: 'basic'
+    difficulty: 'basic',
+    tier: 'core'
   },
   IntroSection: { 
     title: 'Introduction', 
     description: 'Story introduction to Macrobius',
     oracleCloudIntegrated: false,
-    difficulty: 'basic'
+    difficulty: 'basic',
+    tier: 'core'
   },
   BanquetSection: { 
     title: 'Roman Banquet', 
     description: 'Interactive Saturnalia experience',
     oracleCloudIntegrated: false,
-    difficulty: 'intermediate'
+    difficulty: 'intermediate',
+    tier: 'core'
   },
   CosmosSection: { 
     title: 'Cosmic Harmony', 
     description: 'Interactive astronomy with authentic passages',
     oracleCloudIntegrated: true,
-    difficulty: 'advanced'
+    difficulty: 'advanced',
+    tier: 'tier1'
   },
   QuizSection: { 
     title: 'Knowledge Quiz', 
     description: 'Interactive cultural knowledge testing',
     oracleCloudIntegrated: false,
-    difficulty: 'intermediate'
+    difficulty: 'intermediate',
+    tier: 'core'
   },
   WorldMapSection: { 
     title: 'Ancient World', 
     description: 'Interactive geographical exploration',
     oracleCloudIntegrated: false,
-    difficulty: 'intermediate'
+    difficulty: 'intermediate',
+    tier: 'core'
   },
   TextSearchSection: { 
     title: 'Text Search', 
     description: 'Search through Macrobius corpus',
     oracleCloudIntegrated: true,
-    difficulty: 'basic'
+    difficulty: 'basic',
+    tier: 'tier1'
   },
   VocabularyTrainer: { 
     title: 'Latin Vocabulary', 
     description: 'Interactive vocabulary training with authentic Latin',
     oracleCloudIntegrated: true,
-    difficulty: 'intermediate'
+    difficulty: 'intermediate',
+    tier: 'tier1'
+  },
+  VocabularyTrainerSRSEnhanced: { 
+    title: 'SRS Vocabulary Trainer', 
+    description: 'Advanced spaced repetition system with daily goals and rewards',
+    oracleCloudIntegrated: true,
+    difficulty: 'advanced',
+    tier: 'tier2'
+  },
+  GrammarExplainerCorpusIntegrated: { 
+    title: 'Grammar Explainer', 
+    description: 'Auto-generated exercises with pattern recognition',
+    oracleCloudIntegrated: true,
+    difficulty: 'advanced',
+    tier: 'tier1'
   },
   VisualizationsSection: { 
     title: 'Data Visualizations', 
     description: 'Visual analysis of Macrobius corpus',
     oracleCloudIntegrated: true,
-    difficulty: 'advanced'
+    difficulty: 'advanced',
+    tier: 'tier1'
   }
 } as const;
 
 // Helper function to get Oracle Cloud integrated sections
 export const getOracleCloudSections = () => {
   return Object.entries(SECTION_METADATA)
-    .filter(([_, metadata]) => metadata.oracleCloudIntegrated)
+    .filter(([, metadata]) => metadata.oracleCloudIntegrated)
     .map(([sectionName]) => sectionName);
 };
 
 // Helper function to get sections by difficulty
 export const getSectionsByDifficulty = (difficulty: 'basic' | 'intermediate' | 'advanced') => {
   return Object.entries(SECTION_METADATA)
-    .filter(([_, metadata]) => metadata.difficulty === difficulty)
+    .filter(([, metadata]) => metadata.difficulty === difficulty)
+    .map(([sectionName]) => sectionName);
+};
+
+// Helper function to get sections by tier
+export const getSectionsByTier = (tier: 'core' | 'tier1' | 'tier2') => {
+  return Object.entries(SECTION_METADATA)
+    .filter(([, metadata]) => metadata.tier === tier)
     .map(([sectionName]) => sectionName);
 };
