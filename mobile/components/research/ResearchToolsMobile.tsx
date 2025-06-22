@@ -1,0 +1,1 @@
+export { ResearchToolsMobileEnhanced as default } from './ResearchToolsMobile-ENHANCED';
