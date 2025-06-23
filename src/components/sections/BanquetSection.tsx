@@ -541,14 +541,14 @@ export default function BanquetSection({ isActive, t, language }: BanquetSection
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
     >
-      {/* ENHANCED: Background with banquet themed image */}
+      {/* FIXED: Background with proper WandSymposion image and better title */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-amber-950 via-amber-900 to-amber-950" />
-        {/* ENHANCED: Add Symposion background image */}
+        {/* FIXED: Use WandSymposion.jpg as requested */}
         <div className="absolute inset-0 opacity-30">
           <Image 
-            src="/Symposion.jpg" 
-            alt="Roman Symposion"
+            src="/WandSymposion.jpg" 
+            alt="Wandmalerei Symposion - Römisches Gastmahl"
             fill
             className="object-cover"
             style={{
@@ -592,7 +592,7 @@ export default function BanquetSection({ isActive, t, language }: BanquetSection
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
-        {/* Header */}
+        {/* FIXED: Header with corrected title */}
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 30 }}
@@ -603,7 +603,8 @@ export default function BanquetSection({ isActive, t, language }: BanquetSection
             {t('banquet_title') || (language === 'LA' ? 'Convivium Doctorum' : language === 'EN' ? 'Scholarly Banquet' : 'Gelehrtes Gastmahl')}
           </h1>
           <p className="text-lg md:text-xl text-yellow-100/90 max-w-3xl mx-auto leading-relaxed">
-            {t('banquet_subtitle') || (language === 'LA' ? 'Sermones eruditi in convivio Romano' : language === 'EN' ? 'Learned conversations at a Roman banquet' : 'Gelehrte Gespräche bei einem römischen Gastmahl')}
+            {/* FIXED: Updated subtitle to reflect it's about TWO texts by Macrobius */}
+            {t('banquet_subtitle') || (language === 'LA' ? 'Duo opera Macrobii: Saturnalia et Commentarii in Somnium Scipionis' : language === 'EN' ? 'Two texts by Macrobius: Saturnalia and Commentary on Scipio\'s Dream' : 'Zwei Texte von Macrobius: Saturnalia und Somnium-Kommentar')}
           </p>
           
           <motion.div
@@ -655,6 +656,21 @@ export default function BanquetSection({ isActive, t, language }: BanquetSection
                 transition={{ duration: 0.5 }}
               >
                 {language === 'LA' ? 'Personae tangere' : language === 'EN' ? 'Click on characters to learn about them' : 'Klicken Sie auf Charaktere, um mehr zu erfahren'}
+              </motion.div>
+              
+              {/* ADDED: Missing title and language selection info */}
+              <motion.div
+                className="absolute top-4 right-4 bg-amber-900/80 text-yellow-100 px-4 py-2 rounded-lg text-sm border border-yellow-500/30"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1 }}
+              >
+                <h3 className="font-bold text-yellow-200 mb-1">
+                  {language === 'LA' ? 'Convivium Macrobii' : language === 'EN' ? 'Macrobius\' Banquet' : 'Macrobius\' Gastmahl'}
+                </h3>
+                <p className="text-xs text-yellow-300/90">
+                  {language === 'LA' ? 'Saturnalia libri septem' : language === 'EN' ? 'Seven books of Saturnalia' : 'Sieben Bücher Saturnalia'}
+                </p>
               </motion.div>
             </motion.div>
           </div>
@@ -748,9 +764,10 @@ export default function BanquetSection({ isActive, t, language }: BanquetSection
                 {language === 'LA' ? 'Contextus Culturalis' : language === 'EN' ? 'Cultural Context' : 'Kultureller Kontext'}
               </h3>
               <p className="text-blue-100/80 text-sm leading-relaxed">
-                {language === 'LA' ? 'Saturnalia Macrobii convivium doctorum virorum in villa Romana describit. Hic sermones eruditi de religione, literatura, astronomia, et philosophia habentur.' 
-                : language === 'EN' ? 'Macrobius\' Saturnalia describes a gathering of learned men at a Roman villa. Here scholarly conversations about religion, literature, astronomy, and philosophy take place.'
-                : 'Macrobius\' Saturnalia beschreibt eine Versammlung gelehrter Männer in einer römischen Villa. Hier finden gelehrte Gespräche über Religion, Literatur, Astronomie und Philosophie statt.'}
+                {/* FIXED: Updated to mention both texts */}
+                {language === 'LA' ? 'Macrobius duo opera composuit: Saturnalia quae convivium doctorum virorum in villa Romana describit et Commentarii in Somnium Scipionis qui cosmologiam et philosophiam continent.' 
+                : language === 'EN' ? 'Macrobius composed two works: the Saturnalia which describes a gathering of learned men at a Roman villa discussing literature, religion, and philosophy, and the Commentary on Scipio\'s Dream containing cosmology and Neoplatonic philosophy.'
+                : 'Macrobius verfasste zwei Werke: die Saturnalia, die eine Versammlung gelehrter Männer in einer römischen Villa bei Gesprächen über Literatur, Religion und Philosophie beschreibt, und den Somnium-Kommentar mit Kosmologie und neuplatonischer Philosophie.'}
               </p>
             </motion.div>
           </div>
