@@ -12,7 +12,6 @@ import {
   Send, 
   Bot, 
   User, 
-  BookOpen, 
   Clock, 
   Target, 
   TrendingUp,
@@ -20,7 +19,6 @@ import {
   Globe,
   Settings,
   BarChart3,
-  CheckCircle,
   AlertCircle,
   Play,
   Pause,
@@ -30,19 +28,19 @@ import {
 import { 
   aiTutoringSystem, 
   TutorSession, 
-  TutorInteraction, 
-  SessionSummary 
+  TutorInteraction
 } from '@/lib/ai-tutoring-system';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TutoringProps {
   className?: string;
 }
 
 export default function AITutoringSystemSection({ className = '' }: TutoringProps) {
+  const { t, language } = useLanguage();
   const [currentSession, setCurrentSession] = useState<TutorSession | null>(null);
   const [chatInput, setChatInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [sessionStats, setSessionStats] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'chat' | 'progress' | 'settings'>('chat');
   const [selectedTopic, setSelectedTopic] = useState('Philosophy');
   const [selectedDifficulty, setSelectedDifficulty] = useState<'Beginner' | 'Intermediate' | 'Advanced' | 'Expert'>('Intermediate');
@@ -76,9 +74,27 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
     };
   }, [isSessionActive]);
 
-  const topics = [
-    'Philosophy', 'Religious Practices', 'Social Customs', 
-    'Education', 'Roman History', 'Literature', 'Astronomy', 'Law'
+  // Sync selectedLanguage with global language context
+  useEffect(() => {
+    setSelectedLanguage(language);
+  }, [language]);
+
+  const topicKeys = [
+    'topic.philosophy',
+    'topic.religious.practices', 
+    'topic.social.customs',
+    'topic.education', 
+    'topic.roman.history', 
+    'topic.literature', 
+    'topic.astronomy', 
+    'topic.law'
+  ];
+
+  const difficultyKeys = [
+    'difficulty.beginner',
+    'difficulty.intermediate',
+    'difficulty.advanced',
+    'difficulty.expert'
   ];
 
   const startSession = async () => {
@@ -201,17 +217,16 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
             </div>
             <div className="text-left">
               <h2 className="text-5xl font-bold text-gray-900 mb-2">
-                AI Tutoring System
+                {t('ai.tutor.title')}
               </h2>
               <p className="text-xl text-purple-600 font-semibold">
-                Intelligent Learning Assistant & Cultural Guide
+                {t('ai.tutor.subtitle')}
               </p>
             </div>
           </div>
           
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Context-aware AI tutor that provides personalized guidance, cultural explanations, 
-            and adaptive learning support for your classical education journey.
+            {t('ai.tutor.description')}
           </p>
         </motion.div>
 
@@ -223,7 +238,7 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                 <div className="flex items-center">
                   <div className={`w-3 h-3 rounded-full mr-2 ${isSessionActive ? 'bg-green-500' : 'bg-gray-400'}`} />
                   <span className="text-sm font-medium text-gray-700">
-                    {isSessionActive ? 'Active Session' : 'Session Paused'}
+                    {isSessionActive ? t('ai.tutor.session.active') : t('ai.tutor.session.paused')}
                   </span>
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
@@ -232,11 +247,11 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
                   <Target className="h-4 w-4 mr-1" />
-                  {currentSession.context.culturalTheme} - {selectedDifficulty}
+                  {t(`topic.${currentSession.context.culturalTheme.toLowerCase().replace(' ', '.')}`)} - {t(`difficulty.${selectedDifficulty.toLowerCase()}`)}
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
                   <MessageCircle className="h-4 w-4 mr-1" />
-                  {currentSession.interactions.length} interactions
+                  {currentSession.interactions.length} {t('ai.tutor.interactions')}
                 </div>
               </div>
               <div className="flex items-center space-x-2">
@@ -261,13 +276,13 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
         <div className="flex justify-center mb-8">
           <div className="flex bg-white rounded-xl p-2 shadow-lg border border-gray-200">
             {[
-              { id: 'chat', label: 'AI Tutor Chat', icon: MessageCircle },
-              { id: 'progress', label: 'Progress', icon: BarChart3 },
-              { id: 'settings', label: 'Session Setup', icon: Settings }
+              { id: 'chat', label: t('ai.tutor.tab.chat'), icon: MessageCircle },
+              { id: 'progress', label: t('ai.tutor.tab.progress'), icon: BarChart3 },
+              { id: 'settings', label: t('ai.tutor.tab.settings'), icon: Settings }
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
-                onClick={() => setActiveTab(id as any)}
+                onClick={() => setActiveTab(id as 'chat' | 'progress' | 'settings')}
                 className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
                   activeTab === id
                     ? 'bg-purple-500 text-white shadow-md'
@@ -296,18 +311,17 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                 <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200 text-center">
                   <Bot className="h-16 w-16 text-purple-500 mx-auto mb-6" />
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    Ready to Start Your AI Tutoring Session?
+                    {t('ai.tutor.ready.title')}
                   </h3>
                   <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-                    Your personal AI tutor is ready to guide you through classical Roman culture, 
-                    providing explanations, cultural context, and personalized learning support.
+                    {t('ai.tutor.ready.description')}
                   </p>
                   <button
                     onClick={startSession}
                     className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 text-lg"
                   >
                     <Play className="h-6 w-6 mr-3" />
-                    Start AI Tutoring Session
+                    {t('ai.tutor.start.session')}
                   </button>
                 </div>
               ) : (
@@ -319,14 +333,14 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                       <div className="flex items-center">
                         <Bot className="h-8 w-8 mr-3" />
                         <div>
-                          <h3 className="text-xl font-bold">AI Cultural Tutor</h3>
+                          <h3 className="text-xl font-bold">{t('ai.tutor.chat.header.title')}</h3>
                           <p className="text-purple-100 text-sm">
-                            Exploring {currentSession.context.culturalTheme} • {selectedLanguage}
+                            {t('ai.tutor.chat.header.exploring')} {t(`topic.${currentSession.context.culturalTheme.toLowerCase().replace(' ', '.')}`)} • {selectedLanguage}
                           </p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-sm text-purple-100">Session Progress</div>
+                        <div className="text-sm text-purple-100">{t('ai.tutor.chat.progress')}</div>
                         <div className="text-lg font-semibold">
                           {Math.round(currentSession.context.engagementLevel * 100)}%
                         </div>
@@ -372,7 +386,7 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                               {/* Modern Examples */}
                               {interaction.tutorResponse.modernExamples.length > 0 && (
                                 <div className="mt-3">
-                                  <p className="text-xs text-gray-500 mb-2">Modern connections:</p>
+                                  <p className="text-xs text-gray-500 mb-2">{t('ai.tutor.modern.connections')}:</p>
                                   <div className="space-y-1">
                                     {interaction.tutorResponse.modernExamples.map((example, index) => (
                                       <div key={index} className="text-xs text-green-600">
@@ -384,7 +398,7 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                               )}
                               
                               <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
-                                <span>Confidence: {Math.round(interaction.tutorResponse.confidence * 100)}%</span>
+                                <span>{t('ai.tutor.confidence')}: {Math.round(interaction.tutorResponse.confidence * 100)}%</span>
                                 <span>{interaction.timestamp.toLocaleTimeString()}</span>
                               </div>
                             </div>
@@ -416,7 +430,7 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                       <button
                         onClick={getHint}
                         className="p-3 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
-                        title="Get a hint"
+                        title={t('ai.tutor.hint.title')}
                       >
                         <Lightbulb className="h-5 w-5" />
                       </button>
@@ -426,7 +440,7 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                           value={chatInput}
                           onChange={(e) => setChatInput(e.target.value)}
                           onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), sendMessage())}
-                          placeholder="Ask about cultural practices, request explanations, or explore connections..."
+                          placeholder={t('ai.tutor.input.placeholder')}
                           className="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                           rows={2}
                         />
@@ -457,32 +471,32 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
               className="space-y-8"
             >
               <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Session Progress</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">{t('ai.tutor.progress.title')}</h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   <div className="text-center p-6 bg-purple-50 rounded-lg border border-purple-200">
                     <div className="text-3xl font-bold text-purple-600 mb-2">
                       {Math.round(currentSession.context.engagementLevel * 100)}%
                     </div>
-                    <div className="text-sm text-gray-600">Engagement Level</div>
+                    <div className="text-sm text-gray-600">{t('ai.tutor.engagement.level')}</div>
                   </div>
                   <div className="text-center p-6 bg-green-50 rounded-lg border border-green-200">
                     <div className="text-3xl font-bold text-green-600 mb-2">
                       {currentSession.learningGoals.length}
                     </div>
-                    <div className="text-sm text-gray-600">Learning Goals</div>
+                    <div className="text-sm text-gray-600">{t('ai.tutor.learning.goals')}</div>
                   </div>
                   <div className="text-center p-6 bg-blue-50 rounded-lg border border-blue-200">
                     <div className="text-3xl font-bold text-blue-600 mb-2">
                       {currentSession.interactions.length}
                     </div>
-                    <div className="text-sm text-gray-600">Total Interactions</div>
+                    <div className="text-sm text-gray-600">{t('ai.tutor.total.interactions')}</div>
                   </div>
                 </div>
 
                 {/* Learning Goals Progress */}
                 <div className="mb-8">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-4">Learning Goals</h4>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">{t('ai.tutor.learning.goals.header')}</h4>
                   <div className="space-y-3">
                     {currentSession.learningGoals.map((goal, index) => {
                       const isActive = index < currentSession.interactions.length;
@@ -497,7 +511,7 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                           <span className={`flex-1 text-gray-700`}>
                             {goal}
                           </span>
-                          {isActive && <span className="text-xs text-blue-600 font-medium">Active</span>}
+                          {isActive && <span className="text-xs text-blue-600 font-medium">{t('ai.tutor.status.active')}</span>}
                         </div>
                       );
                     })}
@@ -507,14 +521,14 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                 {/* Session Statistics */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-4">Session Statistics</h4>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4">{t('ai.tutor.session.statistics')}</h4>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Total Interactions:</span>
+                        <span className="text-gray-600">{t('ai.tutor.total.interactions')}:</span>
                         <span className="font-medium">{currentSession.interactions.length}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Average Confidence:</span>
+                        <span className="text-gray-600">{t('ai.tutor.average.confidence')}:</span>
                         <span className="font-medium">
                           {currentSession.interactions.length > 0 
                             ? Math.round(currentSession.interactions.reduce((sum, int) => sum + int.tutorResponse.confidence, 0) / currentSession.interactions.length * 100)
@@ -522,22 +536,22 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Cultural Focus:</span>
+                        <span className="text-gray-600">{t('ai.tutor.cultural.focus')}:</span>
                         <span className="font-medium">{currentSession.culturalFocus.length}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Session Duration:</span>
+                        <span className="text-gray-600">{t('ai.tutor.session.duration')}:</span>
                         <span className="font-medium">{formatTime(sessionTime)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Engagement Level:</span>
+                        <span className="text-gray-600">{t('ai.tutor.engagement.level')}:</span>
                         <span className="font-medium">{Math.round(currentSession.context.engagementLevel * 100)}%</span>
                       </div>
                     </div>
                   </div>
                   
                   <div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-4">Cultural Focus</h4>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4">{t('ai.tutor.cultural.focus')}</h4>
                     <div className="space-y-2">
                       {currentSession.culturalFocus.map((focus, index) => (
                         <span key={index} className="inline-block bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm mr-2 mb-2">
@@ -562,35 +576,40 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
               className="space-y-8"
             >
               <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Session Configuration</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">{t('ai.tutor.settings.title')}</h3>
                 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {/* Topic Selection */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-3">
-                      Learning Topic
+                      {t('ai.tutor.topic.selection')}
                     </label>
                     <div className="grid grid-cols-2 gap-3">
-                      {topics.map((topic) => (
-                        <button
-                          key={topic}
-                          onClick={() => setSelectedTopic(topic)}
-                          className={`p-3 text-left rounded-lg border-2 transition-all duration-300 ${
-                            selectedTopic === topic
-                              ? 'border-purple-500 bg-purple-50 text-purple-700'
-                              : 'border-gray-200 bg-white text-gray-700 hover:border-purple-300 hover:bg-purple-50'
-                          }`}
-                        >
-                          <div className="font-medium">{topic}</div>
-                        </button>
-                      ))}
+                      {topicKeys.map((topicKey) => {
+                        const topicValue = topicKey.replace('topic.', '').replace('.', ' ');
+                        const isSelected = selectedTopic.toLowerCase().replace(' ', '') === topicValue.replace(' ', '');
+                        
+                        return (
+                          <button
+                            key={topicKey}
+                            onClick={() => setSelectedTopic(topicValue.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '))}
+                            className={`p-3 text-left rounded-lg border-2 transition-all duration-300 ${
+                              isSelected
+                                ? 'border-purple-500 bg-purple-50 text-purple-700'
+                                : 'border-gray-200 bg-white text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                            }`}
+                          >
+                            <div className="font-medium">{t(topicKey)}</div>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
 
                   {/* Difficulty Level */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-3">
-                      Difficulty Level
+                      {t('ai.tutor.difficulty.level')}
                     </label>
                     <div className="space-y-3">
                       {(['Beginner', 'Intermediate', 'Advanced', 'Expert'] as const).map((level) => (
@@ -603,12 +622,9 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                               : 'border-gray-200 bg-white text-gray-700 hover:border-purple-300 hover:bg-purple-50'
                           }`}
                         >
-                          <div className="font-medium">{level}</div>
+                          <div className="font-medium">{t(`difficulty.${level.toLowerCase()}`)}</div>
                           <div className="text-sm text-gray-500">
-                            {level === 'Beginner' && 'Basic concepts and simple explanations'}
-                            {level === 'Intermediate' && 'Moderate complexity with cultural context'}
-                            {level === 'Advanced' && 'Complex analysis and deep cultural insights'}
-                            {level === 'Expert' && 'Scholarly discussion and advanced connections'}
+                            {t(`ai.tutor.difficulty.${level.toLowerCase()}`)}
                           </div>
                         </button>
                       ))}
@@ -619,7 +635,7 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                 {/* Language Selection */}
                 <div className="mt-8">
                   <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Interface Language
+                    {t('ai.tutor.interface.language')}
                   </label>
                   <div className="flex space-x-4">
                     {(['EN', 'DE', 'LA'] as const).map((lang) => (
@@ -632,7 +648,7 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                             : 'bg-gray-100 text-gray-700 hover:bg-purple-100 hover:text-purple-700'
                         }`}
                       >
-                        {lang === 'EN' ? '🇬🇧 English' : lang === 'DE' ? '🇩🇪 Deutsch' : '🏛️ Latina'}
+                        {t(`language.${lang === 'EN' ? 'english' : lang === 'DE' ? 'german' : 'latin'}`)}
                       </button>
                     ))}
                   </div>
@@ -646,11 +662,11 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
                       className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 text-lg"
                     >
                       <Play className="h-6 w-6 mr-3" />
-                      Start AI Tutoring Session
+                      {t('ai.tutor.start.session')}
                     </button>
                   ) : (
                     <div className="text-gray-600">
-                      Session is active. Go to Chat tab to continue learning.
+                      {t('ai.tutor.session.active.note')}
                     </div>
                   )}
                 </div>
@@ -669,25 +685,25 @@ export default function AITutoringSystemSection({ className = '' }: TutoringProp
         >
           <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-200">
             <MessageCircle className="h-12 w-12 text-purple-500 mx-auto mb-4" />
-            <h4 className="text-lg font-semibold text-gray-900 mb-3">Interactive Dialogue</h4>
+            <h4 className="text-lg font-semibold text-gray-900 mb-3">{t('ai.tutor.feature.dialogue.title')}</h4>
             <p className="text-gray-600">
-              Engage in natural conversation with AI that understands cultural context and adapts to your learning style.
+              {t('ai.tutor.feature.dialogue.description')}
             </p>
           </div>
           
           <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-200">
             <Globe className="h-12 w-12 text-purple-500 mx-auto mb-4" />
-            <h4 className="text-lg font-semibold text-gray-900 mb-3">Cultural Bridge-Building</h4>
+            <h4 className="text-lg font-semibold text-gray-900 mb-3">{t('ai.tutor.feature.bridge.title')}</h4>
             <p className="text-gray-600">
-              Connect ancient Roman practices to modern applications with intelligent cultural analysis and insights.
+              {t('ai.tutor.feature.bridge.description')}
             </p>
           </div>
           
           <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-200">
             <TrendingUp className="h-12 w-12 text-purple-500 mx-auto mb-4" />
-            <h4 className="text-lg font-semibold text-gray-900 mb-3">Adaptive Learning</h4>
+            <h4 className="text-lg font-semibold text-gray-900 mb-3">{t('ai.tutor.feature.adaptive.title')}</h4>
             <p className="text-gray-600">
-              AI adjusts explanations and difficulty based on your progress, ensuring optimal learning pace and comprehension.
+              {t('ai.tutor.feature.adaptive.description')}
             </p>
           </div>
         </motion.div>
