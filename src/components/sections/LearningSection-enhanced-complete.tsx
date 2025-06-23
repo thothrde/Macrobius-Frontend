@@ -5,7 +5,7 @@ import { BookOpen, Brain, Trophy, ArrowRight, Target, TrendingUp, Award, Flame, 
 // Import Enhanced Components
 import { QuizSection } from './QuizSection';
 import VocabularyTrainerSection from './VocabularyTrainer-corpus-integrated';
-import MacrobiusGrammarExplainer from './GrammarExplainer-corpus-integrated';
+import GrammarExplainerSection from './GrammarExplainer-corpus-integrated';
 import MacrobiusTextProcessor from './MacrobiusTextProcessor-backend-integrated';
 
 // Enhanced interface to support translations
@@ -677,7 +677,7 @@ export function LearningSection({ t, language = 'DE' }: LearningEnhancedSectionP
 
           {activeTab === 'grammar' && (
             <div className="bg-white rounded-lg shadow-xl overflow-hidden">
-              <MacrobiusGrammarExplainer language={{ code: language.toLowerCase(), name: language }} />
+              <GrammarExplainerSection language={{ code: language.toLowerCase(), name: language }} />
             </div>
           )}
 
