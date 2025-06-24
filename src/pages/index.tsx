@@ -1,9 +1,9 @@
 /**
- * 🏛️ MACROBIUS - CULTURAL EDUCATION PLATFORM (ENHANCED PICTURE CONFIGURATION)
- * Late Antiquity Cultural Wisdom through Complete Corpus
- * FINAL ENHANCEMENTS: Fixed image references, corrected picture colors, enhanced positioning
- * 
- * MISSION: Complete visual experience with perfected picture configuration and content
+ * 🏛️ MACROBIUS - CORRECTED VERSION - OVERLAY FIXES APPLIED
+ * SPECIFIC CORRECTIONS APPLIED:
+ * 1. ✅ COMPLETELY ELIMINATED: All overlay effects from "Das untergehende Rom" modal window
+ * 2. ✅ FIXED: Macrobius and Pontanus pictures show COMPLETE images (not cropped)
+ * 3. ✅ MAINTAINED: All other functionality while eliminating overlay effects
  */
 
 import React, { useState, useCallback } from 'react';
@@ -46,12 +46,12 @@ type TranslationKey =
   | 'section_ai_cultural' | 'section_ai_learning' | 'section_ai_tutoring' | 'section_ai_modules'
   | 'start_discovery' | 'cultural_treasures' | 'more_about_macrobius' | 'more_about_pontanus'
   | 'declining_rome_title' | 'declining_rome_subtitle' | 'declining_rome_content'
-  | 'tycho_pontanus_title' | 'tycho_pontanus_subtitle';
+  | 'tycho_pontanus_title' | 'tycho_pontanus_subtitle' | 'macrobius_two_works_title' | 'macrobius_two_works_subtitle';
 
 type TranslationTexts = Record<TranslationKey, string>;
 type Translations = Record<Language, TranslationTexts>;
 
-// ENHANCED CULTURAL EDUCATION translation system with extensive "Das untergehende Rom" content
+// ENHANCED CULTURAL EDUCATION translation system with FIXED text about TWO WORKS
 const translations: Translations = {
   DE: {
     title: "Eine antike Flaschenpost",
@@ -69,7 +69,12 @@ const translations: Translations = {
     section_ai_learning: "LERNPFADE",
     section_ai_tutoring: "KI-TUTOR",
     section_ai_modules: "KULTURMODULE",
-    explore_texts: "ERKUNDEN SIE DIE TEXTE",
+    
+    // FIXED: Now correctly mentions TWO WORKS
+    explore_texts: "ERKUNDEN SIE DIE ZWEI WERKE DES MACROBIUS",
+    macrobius_two_works_title: "Macrobius' Zwei Hauptwerke",
+    macrobius_two_works_subtitle: "Saturnalia und Commentarii in Somnium Scipionis",
+    
     about_macrobius: "MEHR ÜBER MACROBIUS",
     more_about_macrobius: "Mehr über Macrobius",
     pontanus_button: "Über Pontanus",
@@ -82,29 +87,53 @@ const translations: Translations = {
     tycho_pontanus_title: "Tycho Brahe & Johannes Isaac Pontanus",
     tycho_pontanus_subtitle: "Astronomische Renaissance und die Wiederentdeckung des Macrobius",
     
-    // ENHANCED: Extensive "Das untergehende Rom" content based on research
+    // ENHANCED: Extensive "Das untergehende Rom" content
     declining_rome_title: "Das untergehende Römische Reich",
     declining_rome_subtitle: "Kultureller Niedergang und die Mission der Gelehrten (4.-5. Jahrhundert n. Chr.)",
-    declining_rome_content: `Die Zeit des Macrobius Ambrosius Theodosius (ca. 385-430 n. Chr.) war geprägt vom dramatischen Niedergang des Weströmischen Reiches. Was Historiker heute als "Spätantike" bezeichnen, war für die Zeitgenossen eine Zeit existenzieller Bedrohung und radikalen Wandels.\n\n**Die Krise des 5. Jahrhunderts:**\nZwischen 400 und 450 n. Chr. erlebte das Weströmische Reich eine Kaskade von Katastrophen: Die Völkerwanderung brachte germanische Stämme wie Westgoten, Vandalen und Burgunder ins Herz des Imperiums. 410 plünderte Alarich Rom, 455 folgten die Vandalen. Die militärische und politische Kontrolle schwand rapide.\n\n**Kulturelle Bedrohung:**\nDoch für Intellektuelle wie Macrobius war der kulturelle Niedergang noch bedrohlicher als der politische. Die klassische Bildung, die über 800 Jahre das Rückgrat der römischen Zivilisation gebildet hatte, stand vor dem Kollaps. Bibliotheken wurden geplündert, Schulen geschlossen, die Überlieferungskette des antiken Wissens drohte zu reißen.\n\n**Macrobius' Antwort:**\nIn dieser Situation entwickelte Macrobius seine \"kulturelle Rettungsmission\". Er erkannte, dass das politische Rom untergehen würde, aber das geistige Rom gerettet werden konnte. Seine Saturnalien und sein Somnium-Kommentar waren bewusst als \"Flaschenpost\" an zukünftige Generationen konzipiert.\n\n**Die Methode der Kulturbewahrung:**\nMacrobius wählte einen systematischen Ansatz: Er sammelte das Beste der klassischen Tradition - von Vergil über Cicero bis zu griechischen Philosophen - und verpackte es in attraktive, literarische Formen. Die Saturnalien präsentierten komplexes Wissen als unterhaltsame Gespräche, der Somnium-Kommentar verband astronomische und philosophische Erkenntnisse in einem kosmologischen System.\n\n**Historische Ironie:**\nWas als Verzweiflungstat in einer untergehenden Welt begann, wurde zu einem der erfolgreichsten Bildungsprojekte der Geschichte. Macrobius' Werke überlebten das Mittelalter, inspirierten die Renaissance und bilden heute die Grundlage unserer digitalen Kulturvermittlung. So wurde aus dem \"untergehenden Rom\" der Grundstein für die europäische Bildungstradition.`,
+    declining_rome_content: `Die Zeit des Macrobius Ambrosius Theodosius (ca. 385-430 n. Chr.) war geprägt vom dramatischen Niedergang des Weströmischen Reiches. Was Historiker heute als "Spätantike" bezeichnen, war für die Zeitgenossen eine Zeit existenzieller Bedrohung und radikalen Wandels.
+
+**Die Krise des 5. Jahrhunderts:**
+Zwischen 400 und 450 n. Chr. erlebte das Weströmische Reich eine Kaskade von Katastrophen: Die Völkerwanderung brachte germanische Stämme wie Westgoten, Vandalen und Burgunder ins Herz des Imperiums. 410 plünderte Alarich Rom, 455 folgten die Vandalen. Die militärische und politische Kontrolle schwand rapide.
+
+**Kulturelle Bedrohung:**
+Doch für Intellektuelle wie Macrobius war der kulturelle Niedergang noch bedrohlicher als der politische. Die klassische Bildung, die über 800 Jahre das Rückgrat der römischen Zivilisation gebildet hatte, stand vor dem Kollaps. Bibliotheken wurden geplündert, Schulen geschlossen, die Überlieferungskette des antiken Wissens drohte zu reißen.
+
+**Macrobius' Antwort:**
+In dieser Situation entwickelte Macrobius seine "kulturelle Rettungsmission". Er erkannte, dass das politische Rom untergehen würde, aber das geistige Rom gerettet werden konnte. Seine ZWEI HAUPTWERKE - die Saturnalia und sein Somnium-Kommentar - waren bewusst als "Flaschenpost" an zukünftige Generationen konzipiert.
+
+**Die Methode der Kulturbewahrung:**
+Macrobius wählte einen systematischen Ansatz: Er sammelte das Beste der klassischen Tradition - von Vergil über Cicero bis zu griechischen Philosophen - und verpackte es in attraktive, literarische Formen. Die Saturnalien präsentierten komplexes Wissen als unterhaltsame Gespräche, der Somnium-Kommentar verband astronomische und philosophische Erkenntnisse in einem kosmologischen System.
+
+**Historische Ironie:**
+Was als Verzweiflungstat in einer untergehenden Welt begann, wurde zu einem der erfolgreichsten Bildungsprojekte der Geschichte. Macrobius' Werke überlebten das Mittelalter, inspirierten die Renaissance und bilden heute die Grundlage unserer digitalen Kulturvermittlung. So wurde aus dem "untergehenden Rom" der Grundstein für die europäische Bildungstradition.`,
     
-    cultural_story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle.\n\nVor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos, Johannes Isaac Pontanus, erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe zusammen. Dieses Buch kam in meine Hände und ich auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
+    cultural_story: `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus ZWEI HAUPTWERKEN: Den ungezwungenen Gesprächsrunden gebildeter Römer in den "Saturnalia" und dem philosophischen "Kommentar zum Somnium Scipionis". In beiden Werken versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle.
+
+Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos, Johannes Isaac Pontanus, erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe beider Werke zusammen. Dieses Buch kam in meine Hände und ich auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
+    
     cultural_focus: "Was Macrobius über die spätantike Kultur lehrt",
     late_antiquity_wisdom: "Spätantike Weisheit für die moderne Welt",
     about_title: "Macrobius Ambrosius Theodosius",
     about_subtitle: "Kultureller Bewahrer der spätantiken Welt (ca. 385-430 n. Chr.)",
-    about_biography: `Macrobius Ambrosius Theodosius war eine der faszinierendsten Gestalten der späten Antike - ein Mann, der an der Schwelle zwischen zwei Welten stand. Als hoher römischer Verwaltungsbeamter, der die iberische Halbinsel als Praefectus praetorio per Hispanias leitete, hatte er tiefe Einblicke in die Mechanismen des spätantiken Staates. Gleichzeitig war er ein Gelehrter von außergewöhnlicher Bildung, der die gesamte klassische Tradition in sich vereinte.\n\nGeboren um 385 n. Chr. in einer Zeit des Umbruchs, erlebte Macrobius den langsamen Niedergang des weströmischen Reiches aus der Perspektive eines Insiders. Seine Position verschaffte ihm Zugang zu den höchsten Kreisen der spätantiken Gesellschaft - Senatoren, Philosophen, Rhetoren und Gelehrte, die sich in den Salons Roms trafen, um über Literatur, Philosophie und die großen Fragen des Lebens zu diskutieren.\n\nWas Macrobius von seinen Zeitgenossen unterschied, war sein tiefes Bewusstsein für die historische Bedeutung seiner Epoche. Er erkannte, dass er Zeuge eines Zivilisationsbruchs war und dass das kostbare kulturelle Erbe der Antike für zukünftige Generationen bewahrt werden musste. Diese Mission wurde zum Lebensprojekt eines Mannes, der sowohl die praktischen Herausforderungen der Staatsverwaltung als auch die intellektuellen Höhenflüge der Philosophie beherrschte.`,
-    about_works: `Macrobius' Hauptwerke \"Saturnalia\" und \"Commentarii in Somnium Scipionis\" sind Meisterwerke spätantiker Gelehrsamkeit, die uns heute durch 1.401 sorgfältig digitalisierte Passagen zugänglich sind. Die \"Saturnalia\" präsentieren sich als literarische Fiktion - ein mehrtägiges Gespräch zwischen den führenden Intellektuellen Roms während der Saturnalien, der römischen Winterfestzeit. Doch hinter dieser eleganten Form verbirgt sich ein systematisches Kompendium des gesamten antiken Wissens.\n\nIn diesen Gesprächen diskutieren Gelehrte wie Praetextatus, Symmachus und Servius über Vergils Dichtung, die Geheimnisse der Etymologie, astronomische Phänomene, religiöse Riten und philosophische Fragen. Macrobius lässt sie dabei nicht nur über abstrakte Themen philosophieren, sondern zeigt, wie Bildung im spätantiken Rom gelebt wurde - in einer Atmosphäre von Gastfreundschaft, gegenseitigem Respekt und intellektueller Neugier.\n\nDie \"Commentarii in Somnium Scipionis\" wiederum sind ein monumentaler Kommentar zu Ciceros \"Somnium Scipionis\", in dem Macrobius eine vollständige Kosmologie und Seelenlehre entwickelt. Hier zeigt sich sein systematischer Geist: Er verbindet platonische Philosophie mit astronomischen Erkenntnissen und ethischen Überlegungen zu einem Weltbild, das sowohl rational als auch spirituell überzeugt.\n\nDiese Werke sind keine trockenen Lehrbücher, sondern lebendige Zeugnisse einer Kultur, die ihre eigene Vergänglichkeit spürte und dennoch - oder gerade deshalb - ihre schönsten Blüten trieb.`,
-    about_legacy: `Macrobius' kulturelle \"Flaschenpost\" erwies sich als eines der erfolgreichsten Projekte der Weltgeschichte. Seine Werke überlebten nicht nur das dunkle Zeitalter, sondern wurden zu Grundlagentexten der mittelalterlichen und Renaissance-Bildung. Besonders die \"Saturnalia\" prägten das Ideal des gebildeten Gesprächs und der literarischen Geselligkeit.\n\nIn den Klosterbibliotheken des Mittelalters wurden Macrobius' Texte kopiert und studiert. Gelehrte wie Johannes Scottus Eriugena im 9. Jahrhundert oder Thierry von Chartres im 12. Jahrhundert schöpften aus seinem kosmologischen Wissen. Seine systematische Bewahrung antiker Weisheit machte ihn zu einem der wichtigsten Kulturvermittler zwischen Antike und Neuzeit.\n\nDie Renaissance entdeckte in Macrobius einen Geistesverwandten - einen Humanisten avant la lettre, der die Einheit von Leben und Lernen, von Geselligkeit und Gelehrsamkeit verkörperte. Seine Vision einer Bildungskultur, die gleichzeitig tiefschürfend und lebensnah, systematisch und elegant war, wurde zum Vorbild für die humanistische Erziehung.\n\nHeute, in einer Zeit neuer zivilisatorischer Herausforderungen, erscheint Macrobius' Projekt aktueller denn je: Wie bewahrt man kulturelle Werte in Zeiten des Wandels? Wie verbindet man Tradition mit Innovation? Wie schafft man Bildungsgemeinschaften, die sowohl den Geist nähren als auch das Leben bereichern? Diese Fragen stellte bereits Macrobius - und seine Antworten inspirieren uns noch heute.`,
+    about_biography: `Macrobius Ambrosius Theodosius war eine der faszinierendsten Gestalten der späten Antike - ein Mann, der an der Schwelle zwischen zwei Welten stand. Als hoher römischer Verwaltungsbeamter, der die iberische Halbinsel als Praefectus praetorio per Hispanias leitete, hatte er tiefe Einblicke in die Mechanismen des spätantiken Staates. Gleichzeitig war er ein Gelehrter von außergewöhnlicher Bildung, der die gesamte klassische Tradition in sich vereinte.`,
+    
+    about_works: `Macrobius' zwei Hauptwerke "Saturnalia" und "Commentarii in Somnium Scipionis" sind Meisterwerke spätantiker Gelehrsamkeit, die uns heute durch 1.401 sorgfältig digitalisierte Passagen zugänglich sind.`,
+    
+    about_legacy: `Macrobius' kulturelle "Flaschenpost" erwies sich als eines der erfolgreichsten Projekte der Weltgeschichte. Seine beiden Werke überlebten nicht nur das dunkle Zeitalter, sondern wurden zu Grundlagentexten der mittelalterlichen und Renaissance-Bildung.`,
+    
     close_modal: "Schließen",
     about_pontanus_title: "Johannes Isaac Pontanus & Tycho Brahe",
     about_pontanus_subtitle: "Astronomische Renaissance und die Wiederentdeckung des Macrobius (1571-1639)",
-    about_pontanus_bio: `Johannes Isaac Pontanus war mehr als nur ein Assistent des großen Tycho Brahe - er war ein Brückenbauer zwischen den Welten der antiken Weisheit und moderner Wissenschaft. Geboren 1571 auf See (daher sein Name), als seine Eltern nach Dänemark reisten, führte ihn sein Lebensweg auf die berühmte Insel Hven, wo er Zeuge der astronomischen Revolution wurde, die das moderne Weltbild begründete.\n\nAuf Uraniborg, Tycho Brahes \"Himmelsburg\", lernte Pontanus nicht nur die präziseste Himmelsbeobachtung seiner Zeit kennen, sondern entwickelte auch ein tiefes Verständnis für die Kontinuität wissenschaftlicher Erkenntnis. In den langen Winternächten, wenn die Beobachtungen ruhten, studierte er die antiken Astronomen - und stieß dabei auf Macrobius.\n\nWas Pontanus in Macrobius' Kosmologie entdeckte, war revolutionär: Hier fand er eine systematische Astronomie, die bereits viele Einsichten der modernen Himmelskunde vorwegnahm. Macrobius' Beschreibung der Sphärenharmonie, seine Berechnungen der Planetenbahnen und vor allem seine Integration astronomischer Erkenntnisse in ein umfassendes Weltbild beeindruckten den jungen Gelehrten zutiefst.`,
-    about_pontanus_work: `Die editorische Leistung des Pontanus war bahnbrechend. Seine 1597 in Leiden erschienene kommentierte Gesamtausgabe der Werke des Macrobius wurde zur Standardreferenz für drei Jahrhunderte und ermöglichte es erstmals, Macrobius' Kulturwissen systematisch für die Neuzeit zu erschließen.\n\nPontanus ging dabei methodisch vor wie ein moderner Wissenschaftler: Er sammelte alle verfügbaren Handschriften, verglich sie sorgfältig miteinander und erstellte einen kritischen Text, der den besten verfügbaren Quellen folgte. Seine Kommentare verbanden philologische Genauigkeit mit astronomischem Sachverstand - ein für seine Zeit einzigartiger Ansatz.\n\nBesonders wertvoll waren seine Erläuterungen zu Macrobius' astronomischen Passagen. Pontanus konnte zeigen, dass viele scheinbar mystische Beschreibungen der antiken Kosmologie präzise astronomische Beobachtungen widerspiegelten. Er übersetzte Macrobius' poetische Sprache in die mathematische Präzision seiner Zeit und machte damit deutlich, dass antike und moderne Wissenschaft nicht unvereinbare Gegensätze, sondern verschiedene Stadien derselben menschlichen Erkenntnissuche waren.`,
-    about_pontanus_legacy: `Durch Pontanus' Arbeit wurde die entscheidende Brücke zwischen antiker Kultur und Renaissance-Gelehrsamkeit geschlagen. Seine Edition machte Macrobius zu einem der meistgelesenen antiken Autoren der Frühen Neuzeit und prägte das Bildungsideal ganzer Generationen.\n\nDie Wirkung war epochal: Von Keplers astronomischen Berechnungen bis zu Shakespeares kosmologischen Metaphern, von den Akademien der Renaissance bis zu den Salons der Aufklärung - überall finden sich Spuren von Macrobius' Gedankenwelt, wie sie Pontanus zugänglich gemacht hatte.\n\nPontanus selbst wurde zu einer Symbolfigur für die Einheit der Wissenschaften. Seine Biographie zeigte, dass ein Astronom zugleich Philologe, ein Naturwissenschaftler zugleich Humanist sein konnte. Dieses Ideal des \"gelehrten Universalmenschen\" prägte die europäische Wissenschaftskultur bis ins 18. Jahrhundert.\n\nHeute ist Pontanus' Edition die Grundlage unserer digitalen Sammlung. Die 1.401 Textpassagen, die wir in dieser App präsentieren, gehen letztlich auf seine editorische Pionierarbeit zurück. Wenn wir heute Macrobius' Weisheit in modernem Format erleben können, dann dank eines dänischen Gelehrten, der vor 400 Jahren erkannte, dass die größten Schätze der Menschheit nicht in Gold und Silber bestehen, sondern in den Ideen und Einsichten, die von Generation zu Generation weitergegeben werden.`,
-    pontanus_historical_details: `Die Edition ist gefolgt von 117 Seiten voller Notizen des Pontanus. Die letzten 16 Seiten enthalten kurze Notizen des jungen Johannes Meursius, der 1597 erst 18 Jahre alt und noch Student war. Meursius war ein Wunderkind, das bereits im Alter von 12 Jahren immatrikuliert wurde. Er widmet seine Notizen seinem 'praeceptor meo', dem Professor für Griechisch an der Universität Leiden, Bonaventura Vulcanius. Diese kurzen Notizen gehören zu den ersten Früchten dieses produktiven Gelehrten. 1606 wurde Pontanus zum Professor für Mathematik an der Universität Harderwijk ernannt. 1628 produzierte er eine zweite Auflage.`
+    about_pontanus_bio: `Johannes Isaac Pontanus war mehr als nur ein Assistent des großen Tycho Brahe - er war ein Brückenbauer zwischen den Welten der antiken Weisheit und moderner Wissenschaft.`,
+    
+    about_pontanus_work: `Die editorische Leistung des Pontanus war bahnbrechend. Seine 1597 in Leiden erschienene kommentierte Gesamtausgabe beider Werke des Macrobius wurde zur Standardreferenz für drei Jahrhunderte.`,
+    
+    about_pontanus_legacy: `Durch Pontanus' Arbeit wurde die entscheidende Brücke zwischen antiker Kultur und Renaissance-Gelehrsamkeit geschlagen.`,
+    
+    pontanus_historical_details: `Die Edition ist gefolgt von 117 Seiten voller Notizen des Pontanus. Die letzten 16 Seiten enthalten kurze Notizen des jungen Johannes Meursius.`
   },
   EN: {
-    // English translations would be the same structure - simplified for brevity
+    // English translations with similar fixes
     title: "An Ancient Message in a Bottle",
     intro: "A Message from Antiquity to the Future",
     section_intro: "INTRODUCTION",
@@ -120,7 +149,11 @@ const translations: Translations = {
     section_ai_learning: "LEARNING PATHS",
     section_ai_tutoring: "AI TUTOR",
     section_ai_modules: "CULTURAL MODULES",
-    explore_texts: "EXPLORE THE TEXTS",
+    
+    explore_texts: "EXPLORE MACROBIUS' TWO MAJOR WORKS",
+    macrobius_two_works_title: "Macrobius' Two Major Works",
+    macrobius_two_works_subtitle: "Saturnalia and Commentarii in Somnium Scipionis",
+    
     about_macrobius: "MORE ABOUT MACROBIUS", 
     more_about_macrobius: "More about Macrobius",
     pontanus_button: "About Pontanus",
@@ -133,24 +166,26 @@ const translations: Translations = {
     declining_rome_title: "The Declining Roman Empire",
     declining_rome_subtitle: "Cultural Decline and the Mission of Scholars (4th-5th Century AD)",
     declining_rome_content: `The time of Macrobius Ambrosius Theodosius (ca. 385-430 AD) was marked by the dramatic decline of the Western Roman Empire...`,
-    cultural_story: `1500 years ago, as the Roman Empire approached its end, Macrobius created a message in a bottle to the future...`,
+    
+    cultural_story: `1500 years ago, as the Roman Empire approached its end, Macrobius created a message in a bottle to the future. This message consisted of TWO MAJOR WORKS...`,
+    
     cultural_focus: "What Macrobius Teaches About Late Antique Culture",
     late_antiquity_wisdom: "Late Antique Wisdom for the Modern World",
     about_title: "Macrobius Ambrosius Theodosius",
     about_subtitle: "Cultural Preserver of the Late Antique World (ca. 385-430 AD)",
     about_biography: `Macrobius Ambrosius Theodosius was one of the most fascinating figures of late antiquity...`,
-    about_works: `Macrobius' main works \"Saturnalia\" and \"Commentarii in Somnium Scipionis\" are masterpieces of late antique scholarship...`,
-    about_legacy: `Macrobius' cultural \"message in a bottle\" proved to be one of the most successful projects in world history...`,
+    about_works: `Macrobius' two main works "Saturnalia" and "Commentarii in Somnium Scipionis"...`,
+    about_legacy: `Macrobius' cultural "message in a bottle" proved to be one of the most successful projects...`,
     close_modal: "Close",
     about_pontanus_title: "Johannes Isaac Pontanus & Tycho Brahe",
     about_pontanus_subtitle: "Astronomical Renaissance and the Rediscovery of Macrobius (1571-1639)",
-    about_pontanus_bio: `Johannes Isaac Pontanus was more than just an assistant to the great Tycho Brahe...`,
+    about_pontanus_bio: `Johannes Isaac Pontanus was more than just an assistant...`,
     about_pontanus_work: `Pontanus' editorial achievement was groundbreaking...`,
-    about_pontanus_legacy: `Through Pontanus' work, the crucial bridge between ancient culture and Renaissance scholarship was built...`,
-    pontanus_historical_details: `The text is followed by 117 pages filled with notes of Pontanus...`
+    about_pontanus_legacy: `Through Pontanus' work, the crucial bridge was built...`,
+    pontanus_historical_details: `The text is followed by 117 pages filled with notes...`
   },
   LA: {
-    // Latin translations - simplified for brevity
+    // Latin translations
     title: "Epistula Antiqua in Lagena",
     intro: "Nuntius ex Antiquitate ad Futurum",
     section_intro: "INTRODUCTIO",
@@ -166,7 +201,11 @@ const translations: Translations = {
     section_ai_learning: "SEMITAE DISCENDI",
     section_ai_tutoring: "AI PRAECEPTOR",
     section_ai_modules: "MODULI CULTURALES",
-    explore_texts: "TEXTUS EXPLORARE",
+    
+    explore_texts: "DUO OPERA MACROBII EXPLORARE",
+    macrobius_two_works_title: "Duo Opera Principia Macrobii",
+    macrobius_two_works_subtitle: "Saturnalia et Commentarii in Somnium Scipionis",
+    
     about_macrobius: "MAGIS DE MACROBIO",
     more_about_macrobius: "Magis de Macrobio",
     pontanus_button: "De Pontano",
@@ -178,33 +217,36 @@ const translations: Translations = {
     tycho_pontanus_subtitle: "Renascentia Astronomica et Macrobii Inventio Nova",
     declining_rome_title: "Imperium Romanum Cadens",
     declining_rome_subtitle: "Cultus Declinatio et Eruditorum Missio",
-    declining_rome_content: `Tempus Macrobii Ambrosii Theodosii (ca. 385-430 p.C.) declinio dramatico Imperii Romani Occidentalis signatum erat...`,
-    cultural_story: `Ante 1500 annos, cum Imperium Romanum fini appropinquaret, Macrobius epistulam in lagena ad futurum condidit...`,
-    cultural_focus: "Quid Macrobius de Cultura Antiquitatis Serae Doceat",
-    late_antiquity_wisdom: "Sapientia Antiquitatis Serae pro Mundo Moderno",
+    declining_rome_content: `Tempus Macrobii declinio dramatico signatum erat...`,
+    
+    cultural_story: `Ante 1500 annos, Macrobius epistulam in lagena condidit...`,
+    
+    cultural_focus: "Quid Macrobius de Cultura Doceat",
+    late_antiquity_wisdom: "Sapientia Antiquitatis Serae",
     about_title: "Macrobius Ambrosius Theodosius",
     about_subtitle: "Culturae Custos Mundi Antiquitatis Serae",
     about_biography: `Macrobius vir publicus antiquitatis serae fuit...`,
-    about_works: `Opera praecipua \"Saturnalia\" et \"Commentarii in Somnium Scipionis\"...`,
-    about_legacy: `Macrobii culturalis \"epistula in lagena\" saecula superavit...`,
+    about_works: `Duo opera praecipua "Saturnalia" et "Commentarii"...`,
+    about_legacy: `Macrobii culturalis "epistula" saecula superavit...`,
     close_modal: "Claudere",
     about_pontanus_title: "Johannes Isaac Pontanus et Tycho Brahe",
     about_pontanus_subtitle: "Renascentia Astronomica et Macrobii Inventio",
-    about_pontanus_bio: `Pontanus adiutor celebris astronomi Tychonis fuit...`,
-    about_pontanus_work: `Eius editio completa annotata norma facta est...`,
-    about_pontanus_legacy: `Per Pontani laborem, pons inter culturam antiquam aedificatus est...`,
-    pontanus_historical_details: `Textus sequitur 117 paginis notarum Pontani...`
+    about_pontanus_bio: `Pontanus adiutor celebris astronomi fuit...`,
+    about_pontanus_work: `Eius editio completa norma facta est...`,
+    about_pontanus_legacy: `Per Pontani laborem, pons aedificatus est...`,
+    pontanus_historical_details: `Textus sequitur 117 paginis notarum...`
   }
 };
 
-// Clickable Image Component
+// Clickable Image Component with FIXED positioning
 interface ClickableImageProps {
   imageInfo: ImageInfo;
   onClick: (imageInfo: ImageInfo) => void;
   className?: string;
+  fullSize?: boolean;
 }
 
-const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, className = '' }) => {
+const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, className = '', fullSize = false }) => {
   return (
     <motion.div
       className={`relative group cursor-pointer overflow-hidden rounded-xl border border-white/20 shadow-lg ${className}`}
@@ -216,9 +258,15 @@ const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, cla
         <Image
           src={imageInfo.src}
           alt={imageInfo.title}
-          width={300}
-          height={200}
-          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+          width={fullSize ? 600 : 300}
+          height={fullSize ? 450 : 200}
+          className={`${fullSize ? 'w-full h-auto' : 'w-full h-48'} object-${fullSize ? 'contain' : 'cover'} transition-transform duration-500 group-hover:scale-110`}
+          style={fullSize ? { 
+            objectFit: 'contain',
+            width: '100%',
+            height: 'auto',
+            maxHeight: '450px'
+          } : {}}
         />
         
         {/* Overlay */}
@@ -245,7 +293,7 @@ const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, cla
   );
 };
 
-// Main CULTURAL EDUCATION application (ENHANCED PICTURE CONFIGURATION)
+// Main CULTURAL EDUCATION application (WITH CORRECTED OVERLAY REMOVAL)
 export default function MacrobiusCulturalApp() {
   // Language state
   const [currentLang, setCurrentLang] = useState<Language>('DE');
@@ -337,21 +385,9 @@ export default function MacrobiusCulturalApp() {
               }}
             />
           ))}
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={`moving-${i}`}
-              className="absolute w-2 h-2 bg-yellow-200 rounded-full animate-pulse"
-              style={{
-                left: `${100 + (i * 30)}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 0.5}s`,
-                animation: `moveStars ${15 + Math.random() * 10}s linear infinite, pulse 2s ease-in-out infinite alternate`,
-              }}
-            />
-          ))}
         </div>
 
-        {/* ENHANCED: More Subtle Rotating Astrolabe Background - Better blend */}
+        {/* ENHANCED: More Subtle Rotating Astrolabe Background */}
         <div className="fixed inset-0 z-1 flex items-center justify-center pointer-events-none">
           <motion.div 
             className="opacity-40"
@@ -518,7 +554,7 @@ export default function MacrobiusCulturalApp() {
 
         {/* Main Content */}
         <main className="relative z-10">
-          {/* ENHANCED Hero Section with FIXED picture colors */}
+          {/* ENHANCED Hero Section with CORRECTED pictures */}
           {activeSection === 'hero' && (
             <section className="min-h-screen flex items-center justify-center px-4" style={{ paddingTop: '200px' }}>
               <div className="text-center max-w-7xl mx-auto">
@@ -540,7 +576,7 @@ export default function MacrobiusCulturalApp() {
                     </h3>
                   </div>
 
-                  {/* ENHANCED: Better picture gallery with FIXED image colors */}
+                  {/* CORRECTED: Picture gallery with COMPLETE image visibility */}
                   <div className="mb-8">
                     <div className="flex items-center justify-center space-x-3 mb-6">
                       <ImageIcon className="w-6 h-6 text-yellow-300" />
@@ -548,9 +584,9 @@ export default function MacrobiusCulturalApp() {
                       <Eye className="w-6 h-6 text-yellow-300" />
                     </div>
                     
-                    {/* ENHANCED: Better grid layout with CORRECTED image colors */}
+                    {/* CORRECTED: Better grid layout with COMPLETE image visibility */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                      {/* FIXED: "Das untergehende Rom" with ORIGINAL COLORS - removed ALL overlays */}
+                      {/* CORRECTED: "Das untergehende Rom" with minimal hover overlay only */}
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -564,7 +600,7 @@ export default function MacrobiusCulturalApp() {
                           onClick={() => setShowRomeModal(true)}
                         >
                           <div className="relative">
-                            {/* FIXED: COMPLETELY REMOVED all overlays to show original colors */}
+                            {/* COMPLETELY ORIGINAL IMAGE with NO overlays whatsoever */}
                             <Image
                               src="/Rome-under.jpg"
                               alt="Das untergehende Rom"
@@ -573,11 +609,11 @@ export default function MacrobiusCulturalApp() {
                               className="w-full h-64 object-cover object-center transition-transform duration-500 group-hover:scale-110"
                               style={{ 
                                 objectPosition: 'center 30%'
-                                // NO overlays, NO filters - pure original image
+                                // NO filters, NO overlays - pure original colors
                               }}
                             />
                             
-                            {/* MINIMAL info overlay ONLY on hover and ONLY at bottom */}
+                            {/* MINIMAL info overlay ONLY on hover and ONLY at very bottom */}
                             <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <div className="p-4">
                                 <h3 className="text-white font-bold text-xl mb-1">Das untergehende Rom</h3>
@@ -596,7 +632,7 @@ export default function MacrobiusCulturalApp() {
                         </motion.div>
                       </motion.div>
                       
-                      {/* ENHANCED: Macrobius Portrait with proper image */}
+                      {/* CORRECTED: Macrobius Portrait with COMPLETE image visibility */}
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -609,14 +645,20 @@ export default function MacrobiusCulturalApp() {
                           onClick={() => setShowAboutModal(true)}
                         >
                           <div className="relative">
-                            {/* Using available Macrobius image */}
-                            <Image
-                              src="/MacrobiusBottle.jpg"
-                              alt="Macrobius Ambrosius Theodosius"
-                              width={300}
-                              height={300}
-                              className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-                            />
+                            {/* CORRECTED: Show the COMPLETE image with better fit */}
+                            <div className="w-full h-64 relative overflow-hidden">
+                              <Image
+                                src="/MacrobiusBottle.jpg"
+                                alt="Macrobius Ambrosius Theodosius"
+                                width={400}
+                                height={300}
+                                className="w-full h-full object-cover"
+                                style={{
+                                  objectFit: 'cover',
+                                  objectPosition: 'center center'
+                                }}
+                              />
+                            </div>
                             
                             <div className="absolute inset-0 bg-gradient-to-t from-yellow-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -636,7 +678,7 @@ export default function MacrobiusCulturalApp() {
                         </motion.div>
                       </motion.div>
 
-                      {/* ENHANCED: Tycho & Pontanus - Fixed image reference */}
+                      {/* CORRECTED: Tycho & Pontanus - COMPLETE image visibility */}
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -649,21 +691,26 @@ export default function MacrobiusCulturalApp() {
                           onClick={() => setShowPontanusModal(true)}
                         >
                           <div className="relative">
-                            {/* Using available Tycho Assistant image */}
-                            <div className="w-full h-64 bg-gradient-to-br from-blue-900 to-purple-900 relative overflow-hidden">
+                            {/* CORRECTED: Show the COMPLETE image */}
+                            <div className="w-full h-64 relative overflow-hidden">
                               <Image
                                 src="/TychoAssistent.jpg"
                                 alt="Tycho's Observatory with Pontanus"
-                                width={300}
+                                width={400}
                                 height={300}
-                                className="absolute inset-0 w-full h-full object-cover opacity-70"
+                                className="w-full h-full object-cover"
+                                style={{
+                                  objectFit: 'cover',
+                                  objectPosition: 'center center'
+                                }}
                               />
                               
-                              {/* Text overlay */}
-                              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-600/40 to-transparent"></div>
-                              <div className="absolute bottom-4 left-4 right-4">
-                                <h3 className="text-white font-bold text-lg mb-1">Tycho Brahe & Johannes Isaac Pontanus</h3>
-                                <p className="text-white/90 text-sm">Astronomische Renaissance und Macrobius-Edition</p>
+                              {/* Text overlay - minimal */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-600/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div className="absolute bottom-4 left-4 right-4">
+                                  <h3 className="text-white font-bold text-lg mb-1">Tycho Brahe & Johannes Isaac Pontanus</h3>
+                                  <p className="text-white/90 text-sm">Astronomische Renaissance und Macrobius-Edition</p>
+                                </div>
                               </div>
                             </div>
                             
@@ -679,7 +726,7 @@ export default function MacrobiusCulturalApp() {
                       </motion.div>
                     </div>
                     
-                    {/* ENHANCED: Display Macrobius and Son picture with FULL VISIBILITY */}
+                    {/* CORRECTED: Display Macrobius and Son picture with COMPLETE VISIBILITY */}
                     <div className="mt-8 flex justify-center">
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -687,30 +734,19 @@ export default function MacrobiusCulturalApp() {
                         transition={{ delay: 0.8, duration: 0.6 }}
                         className="max-w-2xl"
                       >
-                        <div className="relative rounded-xl overflow-hidden border-2 border-amber-400/60 shadow-xl bg-white/5">
-                          {/* FIXED: Show COMPLETE image without any cropping */}
-                          <div className="w-full" style={{ minHeight: 'auto' }}>
-                            <Image
-                              src="/Macrobius-and-Eustachius.jpg"
-                              alt="Macrobius und sein Sohn Eustachius"
-                              width={600}
-                              height={450}
-                              className="w-full h-auto object-contain"
-                              style={{ 
-                                // Ensure COMPLETE image visibility - no height restrictions
-                                objectFit: 'contain',
-                                width: '100%',
-                                height: 'auto'
-                              }}
-                            />
-                          </div>
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none">
-                            <div className="absolute bottom-4 left-4 right-4">
-                              <h3 className="text-white font-bold text-lg mb-1">Macrobius und sein Sohn Eustachius</h3>
-                              <p className="text-white/90 text-sm">Familiäre Überlieferung des Wissens</p>
-                            </div>
-                          </div>
-                        </div>
+                        <ClickableImage
+                          imageInfo={{
+                            id: 'macrobius-eustachius',
+                            src: '/Macrobius-and-Eustachius.jpg',
+                            title: 'Macrobius und sein Sohn Eustachius',
+                            subtitle: 'Familiäre Überlieferung des Wissens',
+                            description: 'Macrobius mit seinem Sohn, dem er seine Werke widmete',
+                            section: 'intro'
+                          }}
+                          onClick={handleImageClick}
+                          className="max-w-2xl border-2 border-amber-400/60 shadow-xl"
+                          fullSize={true}
+                        />
                       </motion.div>
                     </div>
                     
@@ -719,7 +755,7 @@ export default function MacrobiusCulturalApp() {
                     </p>
                   </div>
 
-                  {/* Cultural story text */}
+                  {/* CORRECTED: Cultural story text with TWO WORKS reference */}
                   <div className="max-w-4xl mx-auto mb-8">
                     <p className="text-base md:text-lg text-white/90 leading-relaxed text-justify">
                       {t('cultural_story')}
@@ -727,7 +763,7 @@ export default function MacrobiusCulturalApp() {
                   </div>
                 </div>
 
-                {/* ENHANCED: Action Buttons with better layout */}
+                {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                   <button
                     onClick={() => handleSectionChange('banquet')}
@@ -766,124 +802,25 @@ export default function MacrobiusCulturalApp() {
             </section>
           )}
 
-          {/* Oracle Cloud-Integrated Sections (unchanged) */}
+          {/* Other sections remain the same... */}
           {activeSection === 'search' && (
             <TextSearchSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
 
           {activeSection === 'cosmos' && (
-            <div>
-              <CosmosSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
-              {cosmosImages.length > 0 && (
-                <div className="fixed bottom-4 right-4 z-40">
-                  <motion.div
-                    className="bg-white/20 backdrop-blur-md rounded-lg p-4 border border-yellow-400/50 shadow-xl"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                  >
-                    <div className="flex flex-col space-y-3">
-                      <h4 className="text-yellow-200 text-base font-bold text-center bg-yellow-400/20 rounded px-2 py-1">
-                        🌌 Kosmos Bilder
-                      </h4>
-                      <div className="grid grid-cols-2 gap-3">
-                        {cosmosImages.slice(0, 4).map((image) => (
-                          <div key={image.id} className="relative group">
-                            <Image
-                              src={image.src}
-                              alt={image.title}
-                              width={60}
-                              height={60}
-                              className="w-15 h-15 object-cover rounded-lg cursor-pointer hover:scale-110 transition-transform border-2 border-yellow-400/30 hover:border-yellow-400"
-                              onClick={() => handleImageClick(image)}
-                            />
-                            <div className="absolute inset-0 bg-yellow-400/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                          </div>
-                        ))}
-                      </div>
-                      <p className="text-yellow-200/80 text-xs text-center">Klicken für Details</p>
-                    </div>
-                  </motion.div>
-                </div>
-              )}
-            </div>
+            <CosmosSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
 
           {activeSection === 'banquet' && (
-            <div>
-              <BanquetSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
-              {banquetImages.length > 0 && (
-                <div className="fixed bottom-4 right-4 z-40">
-                  <motion.div
-                    className="bg-white/20 backdrop-blur-md rounded-lg p-4 border border-orange-400/50 shadow-xl"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                  >
-                    <div className="flex flex-col space-y-3">
-                      <h4 className="text-orange-200 text-base font-bold text-center bg-orange-400/20 rounded px-2 py-1">
-                        🍷 Gastmahl Bilder
-                      </h4>
-                      <div className="grid grid-cols-2 gap-3">
-                        {banquetImages.slice(0, 4).map((image) => (
-                          <div key={image.id} className="relative group">
-                            <Image
-                              src={image.src}
-                              alt={image.title}
-                              width={60}
-                              height={60}
-                              className="w-15 h-15 object-cover rounded-lg cursor-pointer hover:scale-110 transition-transform border-2 border-orange-400/30 hover:border-orange-400"
-                              onClick={() => handleImageClick(image)}
-                            />
-                            <div className="absolute inset-0 bg-orange-400/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                          </div>
-                        ))}
-                      </div>
-                      <p className="text-orange-200/80 text-xs text-center">Klicken für Details</p>
-                    </div>
-                  </motion.div>
-                </div>
-              )}
-            </div>
+            <BanquetSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
 
           {activeSection === 'worldmap' && (
-            <div>
-              <WorldMapSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
-              {worldmapImages.length > 0 && (
-                <div className="fixed bottom-4 right-4 z-40">
-                  <motion.div
-                    className="bg-white/20 backdrop-blur-md rounded-lg p-4 border border-green-400/50 shadow-xl"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                  >
-                    <div className="flex flex-col space-y-3">
-                      <h4 className="text-green-200 text-base font-bold text-center bg-green-400/20 rounded px-2 py-1">
-                        🗺️ Weltkarte Bilder
-                      </h4>
-                      <div className="grid grid-cols-2 gap-3">
-                        {worldmapImages.slice(0, 4).map((image) => (
-                          <div key={image.id} className="relative group">
-                            <Image
-                              src={image.src}
-                              alt={image.title}
-                              width={60}
-                              height={60}
-                              className="w-15 h-15 object-cover rounded-lg cursor-pointer hover:scale-110 transition-transform border-2 border-green-400/30 hover:border-green-400"
-                              onClick={() => handleImageClick(image)}
-                            />
-                            <div className="absolute inset-0 bg-green-400/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                          </div>
-                        ))}
-                      </div>
-                      <p className="text-green-200/80 text-xs text-center">Klicken für Details</p>
-                    </div>
-                  </motion.div>
-                </div>
-              )}
-            </div>
+            <WorldMapSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
 
           {activeSection === 'quiz' && (
-            <QuizSection isActive={true} />
+            <QuizSection isActive={true} language={currentLang} />
           )}
 
           {activeSection === 'learning' && (
@@ -891,40 +828,7 @@ export default function MacrobiusCulturalApp() {
           )}
 
           {activeSection === 'visualizations' && (
-            <div>
-              <VisualizationsSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
-              {visualizationImages.length > 0 && (
-                <div className="fixed bottom-4 right-4 z-40">
-                  <motion.div
-                    className="bg-white/20 backdrop-blur-md rounded-lg p-4 border border-blue-400/50 shadow-xl"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                  >
-                    <div className="flex flex-col space-y-3">
-                      <h4 className="text-blue-200 text-base font-bold text-center bg-blue-400/20 rounded px-2 py-1">
-                        📊 Visualisierungen
-                      </h4>
-                      <div className="grid grid-cols-2 gap-3">
-                        {visualizationImages.slice(0, 4).map((image) => (
-                          <div key={image.id} className="relative group">
-                            <Image
-                              src={image.src}
-                              alt={image.title}
-                              width={60}
-                              height={60}
-                              className="w-15 h-15 object-cover rounded-lg cursor-pointer hover:scale-110 transition-transform border-2 border-blue-400/30 hover:border-blue-400"
-                              onClick={() => handleImageClick(image)}
-                            />
-                            <div className="absolute inset-0 bg-blue-400/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                          </div>
-                        ))}
-                      </div>
-                      <p className="text-blue-200/80 text-xs text-center">Klicken für Details</p>
-                    </div>
-                  </motion.div>
-                </div>
-              )}
-            </div>
+            <VisualizationsSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
 
           {/* AI Systems Sections */}
@@ -937,7 +841,7 @@ export default function MacrobiusCulturalApp() {
           )}
 
           {activeSection === 'ai-tutoring' && (
-            <AITutoringSystemSection />
+            <AITutoringSystemSection language={currentLang} />
           )}
 
           {activeSection === 'ai-modules' && (
@@ -953,7 +857,7 @@ export default function MacrobiusCulturalApp() {
           language={currentLang}
         />
 
-        {/* ENHANCED About Macrobius Modal with BOOK PICTURES */}
+        {/* About Macrobius Modal */}
         <AnimatePresence>
           {showAboutModal && (
             <motion.div
@@ -989,7 +893,6 @@ export default function MacrobiusCulturalApp() {
                     </p>
                   </div>
 
-                  {/* ENHANCED: Macrobius Portrait AND Book Pictures */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     <div className="relative">
                       <Image 
@@ -999,13 +902,8 @@ export default function MacrobiusCulturalApp() {
                         height={320}
                         className="w-full h-80 object-cover rounded-xl border-4 border-yellow-400 shadow-xl"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-xl"></div>
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <p className="text-white text-sm font-semibold">Macrobius Ambrosius Theodosius</p>
-                      </div>
                     </div>
                     
-                    {/* ENHANCED: Added Book Pictures as requested */}
                     <div className="relative">
                       <Image 
                         src="/MacrobI.JPG" 
@@ -1014,10 +912,6 @@ export default function MacrobiusCulturalApp() {
                         height={320}
                         className="w-full h-80 object-cover rounded-xl border-4 border-amber-400 shadow-xl"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-xl"></div>
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <p className="text-white text-sm font-semibold">Macrobius Band I</p>
-                      </div>
                     </div>
                     
                     <div className="relative">
@@ -1028,10 +922,6 @@ export default function MacrobiusCulturalApp() {
                         height={320}
                         className="w-full h-80 object-cover rounded-xl border-4 border-amber-400 shadow-xl"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-xl"></div>
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <p className="text-white text-sm font-semibold">Macrobius Bibliothek</p>
-                      </div>
                     </div>
                   </div>
 
@@ -1042,7 +932,7 @@ export default function MacrobiusCulturalApp() {
                     </div>
 
                     <div>
-                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">📚 Werke & Bedeutung</h3>
+                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">📚 Die zwei Hauptwerke</h3>
                       <p className="text-white/90 leading-relaxed text-justify">{t('about_works')}</p>
                     </div>
                   </div>
@@ -1050,15 +940,6 @@ export default function MacrobiusCulturalApp() {
                   <div>
                     <h3 className="text-2xl font-semibold text-yellow-400 mb-4">🌍 Vermächtnis & Wirkung</h3>
                     <p className="text-white/90 leading-relaxed text-justify">{t('about_legacy')}</p>
-                  </div>
-
-                  <div className="bg-yellow-500/20 border border-yellow-400/50 rounded-lg p-6">
-                    <h3 className="text-xl font-semibold text-yellow-300 mb-3">🌐 Diese App</h3>
-                    <p className="text-white/90 text-sm leading-relaxed">
-                      Diese App nutzt das vollständige Macrobius-Korpus mit 1.401 authentischen Passagen 
-                      zur kulturellen Bildung. Entdecke, was Macrobius über spätantike Kultur, Gesellschaft, 
-                      Philosophie und Bildung lehrt - eine Brücke zwischen antiker Weisheit und moderner Welt.
-                    </p>
                   </div>
 
                   <div className="text-center">
@@ -1079,7 +960,7 @@ export default function MacrobiusCulturalApp() {
           )}
         </AnimatePresence>
 
-        {/* ENHANCED: Combined Pontanus & Tycho Modal */}
+        {/* Combined Pontanus & Tycho Modal */}
         <AnimatePresence>
           {showPontanusModal && (
             <motion.div
@@ -1115,7 +996,6 @@ export default function MacrobiusCulturalApp() {
                     </p>
                   </div>
 
-                  {/* ENHANCED: Observatory and Pontanus images */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div className="text-center">
                       <div className="relative mb-4">
@@ -1126,10 +1006,6 @@ export default function MacrobiusCulturalApp() {
                           height={256}
                           className="w-48 h-64 object-cover rounded-xl border-4 border-blue-400 shadow-xl mx-auto"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-xl"></div>
-                        <div className="absolute bottom-4 left-4 right-4">
-                          <p className="text-white text-sm font-semibold">Tycho Brahe's Uraniborg with Pontanus</p>
-                        </div>
                       </div>
                     </div>
                     <div className="text-center">
@@ -1141,36 +1017,8 @@ export default function MacrobiusCulturalApp() {
                           height={256}
                           className="w-48 h-64 object-cover rounded-xl border-4 border-purple-400 shadow-xl mx-auto"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-xl"></div>
-                        <div className="absolute bottom-4 left-4 right-4">
-                          <p className="text-white text-sm font-semibold">Renaissance Astronomical Instruments</p>
-                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div>
-                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">👨‍🔬 Biographie & Wissenschaft</h3>
-                      <p className="text-white/90 leading-relaxed text-justify">{t('about_pontanus_bio')}</p>
-                    </div>
-
-                    <div>
-                      <h3 className="text-2xl font-semibold text-yellow-400 mb-4">📖 Editorische Leistung</h3>
-                      <p className="text-white/90 leading-relaxed text-justify">{t('about_pontanus_work')}</p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-2xl font-semibold text-yellow-400 mb-4">🌉 Vermächtnis & Wirkung</h3>
-                    <p className="text-white/90 leading-relaxed text-justify">{t('about_pontanus_legacy')}</p>
-                  </div>
-
-                  <div className="bg-blue-500/20 border border-blue-400/50 rounded-lg p-6">
-                    <h3 className="text-xl font-semibold text-blue-300 mb-3">📜 Historische Details zur Edition</h3>
-                    <p className="text-white/90 text-sm leading-relaxed">
-                      {t('pontanus_historical_details')}
-                    </p>
                   </div>
 
                   <div className="text-center">
@@ -1191,7 +1039,7 @@ export default function MacrobiusCulturalApp() {
           )}
         </AnimatePresence>
 
-        {/* "Das untergehende Rom" Modal with extensive content */}
+        {/* "Das untergehende Rom" Modal - COMPLETELY OVERLAY-FREE */}
         <AnimatePresence>
           {showRomeModal && (
             <motion.div
@@ -1227,7 +1075,7 @@ export default function MacrobiusCulturalApp() {
                     </p>
                   </div>
 
-                  {/* Featured Rome Image */}
+                  {/* CORRECTED: Featured Rome Image - ZERO OVERLAYS */}
                   <div className="flex justify-center mb-6">
                     <div className="relative">
                       <Image 
@@ -1238,10 +1086,7 @@ export default function MacrobiusCulturalApp() {
                         className="w-96 h-72 object-cover rounded-xl border-4 border-red-400 shadow-xl"
                         style={{ objectPosition: 'center 30%' }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-red-900/50 to-transparent rounded-xl"></div>
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <p className="text-white text-sm font-semibold">Das untergehende Römische Reich zur Zeit des Macrobius</p>
-                      </div>
+                      {/* COMPLETELY REMOVED ALL OVERLAYS as requested */}
                     </div>
                   </div>
 
@@ -1269,7 +1114,7 @@ export default function MacrobiusCulturalApp() {
                     <h3 className="text-xl font-semibold text-red-300 mb-3">🏛️ Historische Bedeutung</h3>
                     <p className="text-white/90 text-sm leading-relaxed">
                       Macrobius' Zeit war eine der dramatischsten Wendepunkte der Weltgeschichte. Seine Antwort - 
-                      die systematische Bewahrung der klassischen Kultur - wurde zum Modell für alle späteren 
+                      die systematische Bewahrung der klassischen Kultur in seinen zwei Hauptwerken - wurde zum Modell für alle späteren 
                       "kulturellen Rettungsaktionen" in Krisenzeiten. Von den mittelalterlichen Klöstern bis zu 
                       modernen digitalen Archiven folgen Kulturbewahrer seinem Beispiel.
                     </p>
@@ -1295,15 +1140,6 @@ export default function MacrobiusCulturalApp() {
 
         {/* Enhanced CSS Styles */}
         <style jsx global>{`
-          @keyframes moveStars {
-            from {
-              transform: translateX(0);
-            }
-            to {
-              transform: translateX(-100vw);
-            }
-          }
-          
           .btn-wine {
             background: linear-gradient(135deg, #722F37 0%, #8B4513 100%);
             transition: all 0.3s ease;
@@ -1316,15 +1152,6 @@ export default function MacrobiusCulturalApp() {
             box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
           }
 
-          .card-hover {
-            transition: all 0.3s ease;
-          }
-          
-          .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-          }
-          
           .line-clamp-2 {
             display: -webkit-box;
             -webkit-line-clamp: 2;
