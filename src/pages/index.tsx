@@ -1,9 +1,9 @@
 /**
- * 🏛️ MACROBIUS - CORRECTED VERSION - OVERLAY FIXES APPLIED
+ * 🏛️ MACROBIUS - CORRECTED VERSION - LANGUAGE FIXES APPLIED
  * SPECIFIC CORRECTIONS APPLIED:
- * 1. ✅ COMPLETELY ELIMINATED: All overlay effects from "Das untergehende Rom" modal window
- * 2. ✅ FIXED: Macrobius and Pontanus pictures show COMPLETE images (not cropped)
- * 3. ✅ MAINTAINED: All other functionality while eliminating overlay effects
+ * 1. ✅ FIXED: PersonalizedLearningPathsSection now receives language prop correctly
+ * 2. ✅ FIXED: All AI components now receive consistent language prop
+ * 3. ✅ MAINTAINED: All other functionality while fixing language errors
  */
 
 import React, { useState, useCallback } from 'react';
@@ -293,7 +293,7 @@ const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, cla
   );
 };
 
-// Main CULTURAL EDUCATION application (WITH CORRECTED OVERLAY REMOVAL)
+// Main CULTURAL EDUCATION application (WITH CORRECTED LANGUAGE FIXES)
 export default function MacrobiusCulturalApp() {
   // Language state
   const [currentLang, setCurrentLang] = useState<Language>('DE');
@@ -831,13 +831,13 @@ export default function MacrobiusCulturalApp() {
             <VisualizationsSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
 
-          {/* AI Systems Sections */}
+          {/* AI Systems Sections - FIXED: All components now receive language prop */}
           {activeSection === 'ai-cultural' && (
-            <AICulturalAnalysisSection />
+            <AICulturalAnalysisSection language={currentLang} />
           )}
 
           {activeSection === 'ai-learning' && (
-            <PersonalizedLearningPathsSection />
+            <PersonalizedLearningPathsSection language={currentLang} />
           )}
 
           {activeSection === 'ai-tutoring' && (
@@ -845,7 +845,7 @@ export default function MacrobiusCulturalApp() {
           )}
 
           {activeSection === 'ai-modules' && (
-            <AdvancedCulturalModulesSection />
+            <AdvancedCulturalModulesSection language={currentLang} />
           )}
         </main>
 
