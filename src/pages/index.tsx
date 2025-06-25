@@ -1,9 +1,10 @@
 /**
- * 🏛️ MACROBIUS - CORRECTED VERSION - LANGUAGE FIXES APPLIED
+ * 🏛️ MACROBIUS - IMAGE VISIBILITY FIXED VERSION
  * SPECIFIC CORRECTIONS APPLIED:
- * 1. ✅ FIXED: PersonalizedLearningPathsSection now receives language prop correctly
- * 2. ✅ FIXED: All AI components now receive consistent language prop
- * 3. ✅ MAINTAINED: All other functionality while fixing language errors
+ * 1. ✅ FIXED: Images now show completely without cropping
+ * 2. ✅ FIXED: Changed from object-cover to object-contain
+ * 3. ✅ FIXED: Removed fixed height constraints that were cropping images
+ * 4. ✅ MAINTAINED: All other functionality while fixing image display
  */
 
 import React, { useState, useCallback } from 'react';
@@ -554,7 +555,7 @@ export default function MacrobiusCulturalApp() {
 
         {/* Main Content */}
         <main className="relative z-10">
-          {/* ENHANCED Hero Section with CORRECTED pictures */}
+          {/* ENHANCED Hero Section with FIXED pictures */}
           {activeSection === 'hero' && (
             <section className="min-h-screen flex items-center justify-center px-4" style={{ paddingTop: '200px' }}>
               <div className="text-center max-w-7xl mx-auto">
@@ -576,7 +577,7 @@ export default function MacrobiusCulturalApp() {
                     </h3>
                   </div>
 
-                  {/* CORRECTED: Picture gallery with COMPLETE image visibility */}
+                  {/* FIXED: Picture gallery with COMPLETE image visibility */}
                   <div className="mb-8">
                     <div className="flex items-center justify-center space-x-3 mb-6">
                       <ImageIcon className="w-6 h-6 text-yellow-300" />
@@ -584,7 +585,7 @@ export default function MacrobiusCulturalApp() {
                       <Eye className="w-6 h-6 text-yellow-300" />
                     </div>
                     
-                    {/* CORRECTED: Better grid layout with COMPLETE image visibility */}
+                    {/* FIXED: Better grid layout with COMPLETE image visibility */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                       {/* CORRECTED: "Das untergehende Rom" with minimal hover overlay only */}
                       <motion.div
@@ -632,7 +633,7 @@ export default function MacrobiusCulturalApp() {
                         </motion.div>
                       </motion.div>
                       
-                      {/* CORRECTED: Macrobius Portrait with COMPLETE image visibility */}
+                      {/* FIXED: Macrobius Portrait with COMPLETE image visibility */}
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -645,17 +646,19 @@ export default function MacrobiusCulturalApp() {
                           onClick={() => setShowAboutModal(true)}
                         >
                           <div className="relative">
-                            {/* CORRECTED: Show the COMPLETE image with better fit */}
-                            <div className="w-full h-64 relative overflow-hidden">
+                            {/* FIXED: Show the COMPLETE image without cropping */}
+                            <div className="w-full relative overflow-hidden" style={{ minHeight: '320px' }}>
                               <Image
                                 src="/MacrobiusBottle.jpg"
                                 alt="Macrobius Ambrosius Theodosius"
                                 width={400}
-                                height={300}
-                                className="w-full h-full object-cover"
+                                height={500}
+                                className="w-full h-auto object-contain"
                                 style={{
-                                  objectFit: 'cover',
-                                  objectPosition: 'center center'
+                                  objectFit: 'contain',
+                                  width: '100%',
+                                  height: 'auto',
+                                  minHeight: '320px'
                                 }}
                               />
                             </div>
@@ -678,7 +681,7 @@ export default function MacrobiusCulturalApp() {
                         </motion.div>
                       </motion.div>
 
-                      {/* CORRECTED: Tycho & Pontanus - COMPLETE image visibility */}
+                      {/* FIXED: Tycho & Pontanus - COMPLETE image visibility */}
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -691,33 +694,35 @@ export default function MacrobiusCulturalApp() {
                           onClick={() => setShowPontanusModal(true)}
                         >
                           <div className="relative">
-                            {/* CORRECTED: Show the COMPLETE image */}
-                            <div className="w-full h-64 relative overflow-hidden">
+                            {/* FIXED: Show the COMPLETE image without cropping */}
+                            <div className="w-full relative overflow-hidden" style={{ minHeight: '320px' }}>
                               <Image
                                 src="/TychoAssistent.jpg"
                                 alt="Tycho's Observatory with Pontanus"
                                 width={400}
-                                height={300}
-                                className="w-full h-full object-cover"
+                                height={500}
+                                className="w-full h-auto object-contain"
                                 style={{
-                                  objectFit: 'cover',
-                                  objectPosition: 'center center'
+                                  objectFit: 'contain',
+                                  width: '100%',
+                                  height: 'auto',
+                                  minHeight: '320px'
                                 }}
                               />
-                              
-                              {/* Text overlay - minimal */}
-                              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-600/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <div className="absolute bottom-4 left-4 right-4">
-                                  <h3 className="text-white font-bold text-lg mb-1">Tycho Brahe & Johannes Isaac Pontanus</h3>
-                                  <p className="text-white/90 text-sm">Astronomische Renaissance und Macrobius-Edition</p>
-                                </div>
+                            </div>
+                            
+                            {/* Text overlay - minimal */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-600/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <div className="absolute bottom-4 left-4 right-4">
+                                <h3 className="text-white font-bold text-lg mb-1">Tycho Brahe & Johannes Isaac Pontanus</h3>
+                                <p className="text-white/90 text-sm">Astronomische Renaissance und Macrobius-Edition</p>
                               </div>
                             </div>
+                          </div>
                             
                             <div className="absolute top-2 right-2 bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <Maximize className="w-4 h-4 text-white" />
                             </div>
-                          </div>
                           
                           <div className="p-3 bg-white/10 backdrop-blur-sm">
                             <p className="text-white/80 text-xs">Renaissance-Astronomie und die Wiederentdeckung antiker Weisheit</p>
