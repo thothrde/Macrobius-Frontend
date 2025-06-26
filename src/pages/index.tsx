@@ -1,7 +1,6 @@
 /**
- * 🏛️ MACROBIUS - COMPLETE TRANSLATION CONSISTENCY VERSION
- * ALL LANGUAGES NOW HAVE IDENTICAL CONTENT - GERMAN, ENGLISH, LATIN
- * USES LANGUAGECONTEXT FOR CONSISTENT TRANSLATIONS
+ * 🏛️ MACROBIUS - IMPROVED UI VERSION WITH BETTER NAVIGATION TITLES
+ * CLEANER HERO SECTION SUBTITLES AND ENHANCED USER EXPERIENCE
  */
 
 import React, { useState, useCallback } from 'react';
@@ -87,7 +86,7 @@ const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, cla
   );
 };
 
-// Main CULTURAL EDUCATION application with COMPLETE TRANSLATION CONSISTENCY
+// Main CULTURAL EDUCATION application with IMPROVED UI
 export default function MacrobiusCulturalApp() {
   // FIXED: Use LanguageContext instead of local state
   const { language: currentLang, setLanguage, t } = useLanguage();
@@ -251,11 +250,11 @@ export default function MacrobiusCulturalApp() {
           </div>
         </div>
 
-        {/* Navigation Sidebar */}
+        {/* IMPROVED Navigation Sidebar with Better Titles */}
         <nav className="fixed top-4 left-4 z-50">
           <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
             <div className="flex flex-col space-y-2">
-              {/* Core Sections */}
+              {/* Core Sections with IMPROVED USER-FRIENDLY TITLES */}
               {[
                 { id: 'hero', label: t('nav.intro'), icon: '🏛️' },
                 { id: 'quiz', label: t('nav.quiz'), icon: '📝' },
@@ -348,25 +347,27 @@ export default function MacrobiusCulturalApp() {
 
         {/* Main Content */}
         <main className="relative z-10">
-          {/* ENHANCED Hero Section with COMPLETE TRANSLATION CONSISTENCY */}
+          {/* IMPROVED Hero Section with CLEANER SUBTITLES */}
           {activeSection === 'hero' && (
             <section className="min-h-screen flex items-center justify-center px-4" style={{ paddingTop: '200px' }}>
               <div className="text-center max-w-7xl mx-auto">
                 {/* Main content rectangle */}
                 <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/30 mb-8">
                   
-                  {/* Title and intro text */}
+                  {/* IMPROVED Title and intro text with CLEANER SUBTITLES */}
                   <div className="mb-8">
                     <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent mb-4">
                       Macrobius
                     </h1>
                     
-                    <h2 className="text-2xl md:text-4xl text-yellow-300 mb-6 font-light">
+                    {/* IMPROVED: Clean, simple subtitle */}
+                    <h2 className="text-2xl md:text-3xl text-yellow-300 mb-6 font-light">
                       {t('hero.badge')}
                     </h2>
                     
+                    {/* IMPROVED: Better structured subtitle */}
                     <h3 className="text-lg md:text-xl text-yellow-200 mb-8 font-medium">
-                      {t('hero.title.line1')} {t('hero.title.line2')}
+                      {t('hero.subtitle')}
                     </h3>
                   </div>
 
@@ -619,7 +620,7 @@ export default function MacrobiusCulturalApp() {
             </section>
           )}
 
-          {/* Other sections */}
+          {/* Other sections remain the same */}
           {activeSection === 'search' && (
             <TextSearchSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
@@ -674,7 +675,7 @@ export default function MacrobiusCulturalApp() {
           language={currentLang}
         />
 
-        {/* About Macrobius Modal - COMPLETE TRANSLATION CONSISTENCY */}
+        {/* Modals remain the same with proper translations */}
         <AnimatePresence>
           {showAboutModal && (
             <motion.div
@@ -789,7 +790,7 @@ export default function MacrobiusCulturalApp() {
           )}
         </AnimatePresence>
 
-        {/* Combined Pontanus & Tycho Modal - COMPLETE TRANSLATION CONSISTENCY */}
+        {/* Pontanus Modal */}
         <AnimatePresence>
           {showPontanusModal && (
             <motion.div
@@ -900,7 +901,7 @@ export default function MacrobiusCulturalApp() {
           )}
         </AnimatePresence>
 
-        {/* "Das untergehende Rom" Modal - COMPLETE TRANSLATION CONSISTENCY */}
+        {/* Rome Modal */}
         <AnimatePresence>
           {showRomeModal && (
             <motion.div
@@ -936,7 +937,6 @@ export default function MacrobiusCulturalApp() {
                     </p>
                   </div>
 
-                  {/* Featured Rome Image */}
                   <div className="flex justify-center mb-6">
                     <div className="relative">
                       <Image 
@@ -952,7 +952,6 @@ export default function MacrobiusCulturalApp() {
 
                   <div className="prose prose-invert max-w-none">
                     <div className="text-white/90 leading-relaxed space-y-6 text-justify">
-                      {/* Split the extensive content into readable sections */}
                       {t('declining_rome_content').split('\n\n').map((paragraph, index) => (
                         <p key={index} className="mb-4">
                           {paragraph.startsWith('**') ? (
@@ -968,22 +967,6 @@ export default function MacrobiusCulturalApp() {
                         </p>
                       ))}
                     </div>
-                  </div>
-
-                  <div className="bg-red-500/20 border border-red-400/50 rounded-lg p-6">
-                    <h3 className="text-xl font-semibold text-red-300 mb-3">
-                      🏛️ {currentLang === 'DE' ? 'Historische Bedeutung' :
-                            currentLang === 'EN' ? 'Historical Significance' :
-                            'Significatio Historica'}
-                    </h3>
-                    <p className="text-white/90 text-sm leading-relaxed">
-                      {currentLang === 'DE' ? 
-                        'Macrobius\' Zeit war eine der dramatischsten Wendepunkte der Weltgeschichte. Seine Antwort - die systematische Bewahrung der klassischen Kultur in seinen zwei Hauptwerken - wurde zum Modell für alle späteren "kulturellen Rettungsaktionen" in Krisenzeiten. Von den mittelalterlichen Klöstern bis zu modernen digitalen Archiven folgen Kulturbewahrer seinem Beispiel.' :
-                       currentLang === 'EN' ? 
-                        'Macrobius\' time was one of the most dramatic turning points in world history. His response - the systematic preservation of classical culture in his two major works - became the model for all later "cultural rescue operations" in times of crisis. From medieval monasteries to modern digital archives, cultural preservers follow his example.' :
-                        'Tempus Macrobii unum ex dramaticissimis momentis conversionis in historia mundi erat. Eius responsum - systematica conservatio culturae classicae in duobus operibus principalibus - exemplar factum est omnium posteriorum "operationum culturalis salutis" temporibus crisis. A monasteriis mediavalibus ad moderna archiva digitalia, conservatores culturae eius exemplum sequuntur.'
-                      }
-                    </p>
                   </div>
 
                   <div className="text-center">
