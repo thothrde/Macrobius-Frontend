@@ -10,23 +10,23 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-// Comprehensive translations
+// COMPREHENSIVE TRANSLATIONS - ALL LANGUAGES NOW HAVE COMPLETE CONTENT WITH IMPROVED UI
 const translations = {
   DE: {
-    // Navigation
+    // Navigation - IMPROVED USER-FRIENDLY TITLES
     'nav.home': 'Home',
-    'nav.intro': 'Einführung',
-    'nav.quiz': 'Quiz',
-    'nav.worldmap': 'Weltkarte',
-    'nav.cosmos': 'Kosmos',
-    'nav.banquet': 'Gastmahl',
-    'nav.textsearch': 'Textsuche',
-    'nav.learning': 'Lernen',
+    'nav.intro': 'Entdecken Sie Macrobius',
+    'nav.quiz': 'Interaktives Quiz',
+    'nav.worldmap': 'Antike Weltkarte',
+    'nav.cosmos': 'Kosmos & Astronomie',
+    'nav.banquet': 'Römisches Gastmahl',
+    'nav.textsearch': 'Textanalyse',
+    'nav.learning': 'Lernwerkzeuge',
 
-    // Hero Section
-    'hero.badge': 'Eine antike Flaschenpost',
-    'hero.title.line1': 'Eine antike',
-    'hero.title.line2': 'Flaschenpost',
+    // Hero Section - IMPROVED NON-REDUNDANT CONTENT
+    'hero.badge': 'Bildungsplattform für klassische Kultur',
+    'hero.title.line1': 'Macrobius',
+    'hero.title.line2': 'Digital',
     'hero.description': 'Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus zwei Texten: Einer ungezwungenen Gesprächsrunde gebildeter Römer und einem Traumkommentar. In beidem versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle.',
     'hero.feature1.title': 'Macrobius\' Texte',
     'hero.feature1.desc': 'Saturnalia und Traumkommentar',
@@ -40,6 +40,54 @@ const translations = {
     'hero.stats.success': 'Überlieferung',
     'hero.stats.texts': 'Jahre Geschichte',
     'hero.stats.support': 'Kontinuität',
+
+    // DETAILED MODAL CONTENT - COMPLETE GERMAN TRANSLATIONS
+    'about_title': 'Macrobius Ambrosius Theodosius',
+    'about_subtitle': 'Kultureller Bewahrer der spätantiken Welt (ca. 385-430 n. Chr.)',
+    'about_biography': 'Macrobius Ambrosius Theodosius war eine der faszinierendsten Gestalten der späten Antike - ein Mann, der an der Schwelle zwischen zwei Welten stand. Als hoher römischer Verwaltungsbeamter, der die iberische Halbinsel als Praefectus praetorio per Hispanias leitete, hatte er tiefe Einblicke in die Mechanismen des spätantiken Staates. Gleichzeitig war er ein Gelehrter von außergewöhnlicher Bildung, der die gesamte klassische Tradition in sich vereinte. Seine Werke zeigen einen Mann, der die drohende kulturelle Katastrophe seiner Zeit erkannte und systematisch dagegen vorging.',
+    'about_works': 'Macrobius\' zwei Hauptwerke "Saturnalia" und "Commentarii in Somnium Scipionis" sind Meisterwerke spätantiker Gelehrsamkeit, die uns heute durch 1.401 sorgfältig digitalisierte Passagen zugänglich sind. Die Saturnalien präsentieren das Wissen der Antike in Form eleganter Gespräche, während der Somnium-Kommentar eine kosmologische Synthese aus Philosophie, Astronomie und Mathematik bietet. Beide Werke waren bewusst als "kulturelle Zeitkapseln" konzipiert.',
+    'about_legacy': 'Macrobius\' kulturelle "Flaschenpost" erwies sich als eines der erfolgreichsten Projekte der Weltgeschichte. Seine beiden Werke überlebten nicht nur das dunkle Zeitalter, sondern wurden zu Grundlagentexten der mittelalterlichen und Renaissance-Bildung. Von Hrabanus Maurus bis zu Johannes Kepler zogen Gelehrte aus seinen Werken Inspiration für ihre eigenen kulturellen Projekte.',
+
+    // PONTANUS & TYCHO - COMPLETE GERMAN CONTENT
+    'about_pontanus_title': 'Johannes Isaac Pontanus & Tycho Brahe',
+    'about_pontanus_subtitle': 'Astronomische Renaissance und die Wiederentdeckung des Macrobius (1571-1639)',
+    'about_pontanus_bio': 'Johannes Isaac Pontanus war mehr als nur ein Assistent des großen Tycho Brahe - er war ein Brückenbauer zwischen den Welten der antiken Weisheit und moderner Wissenschaft. Geboren in Dänemark, verband er seine Tätigkeit als Astronom auf Brahes berühmter Insel Hven mit einer tiefen Leidenschaft für die klassische Literatur. Diese einzigartige Kombination machte ihn zum idealen Vermittler zwischen der astronomischen Revolution seiner Zeit und der antiken Tradition.',
+    'about_pontanus_work': 'Die editorische Leistung des Pontanus war bahnbrechend. Seine 1597 in Leiden erschienene kommentierte Gesamtausgabe beider Werke des Macrobius wurde zur Standardreferenz für drei Jahrhunderte. Mit 117 Seiten eigener Kommentare und zusätzlichen Beiträgen von Johannes Meursius schuf er die erste wirklich wissenschaftliche Edition der Macrobius-Texte. Diese Ausgabe machte Macrobius\' "Flaschenpost" erstmals seit dem Mittelalter wieder vollständig zugänglich.',
+    'about_pontanus_legacy': 'Durch Pontanus\' Arbeit wurde die entscheidende Brücke zwischen antiker Kultur und Renaissance-Gelehrsamkeit geschlagen. Seine Edition ermöglichte es Gelehrten wie Kepler, auf Macrobius\' kosmologische Erkenntnisse zurückzugreifen. So wurde aus dem Assistenten eines Astronomen der Katalysator für eine neue Phase der Kulturvermittlung - von der Antike über das Mittelalter zur Neuzeit.',
+    'pontanus_historical_details': 'Die Edition des Pontanus folgt dem gedruckten Text mit 117 Seiten voller eigener gelehrter Notizen. Die letzten 16 Seiten enthalten kurze, aber präzise Anmerkungen des jungen Johannes Meursius, der später als bedeutender Altertumsforscher berühmt wurde.',
+
+    // DECLINING ROME - COMPLETE EXTENSIVE GERMAN CONTENT
+    'declining_rome_title': 'Das untergehende Römische Reich',
+    'declining_rome_subtitle': 'Kultureller Niedergang und die Mission der Gelehrten (4.-5. Jahrhundert n. Chr.)',
+    'declining_rome_content': `Die Zeit des Macrobius Ambrosius Theodosius (ca. 385-430 n. Chr.) war geprägt vom dramatischen Niedergang des Weströmischen Reiches. Was Historiker heute als "Spätantike" bezeichnen, war für die Zeitgenossen eine Zeit existenzieller Bedrohung und radikalen Wandels.
+
+**Die Krise des 5. Jahrhunderts:**
+Zwischen 400 und 450 n. Chr. erlebte das Weströmische Reich eine Kaskade von Katastrophen: Die Völkerwanderung brachte germanische Stämme wie Westgoten, Vandalen und Burgunder ins Herz des Imperiums. 410 plünderte Alarich Rom, 455 folgten die Vandalen. Die militärische und politische Kontrolle schwand rapide.
+
+**Kulturelle Bedrohung:**
+Doch für Intellektuelle wie Macrobius war der kulturelle Niedergang noch bedrohlicher als der politische. Die klassische Bildung, die über 800 Jahre das Rückgrat der römischen Zivilisation gebildet hatte, stand vor dem Kollaps. Bibliotheken wurden geplündert, Schulen geschlossen, die Überlieferungskette des antiken Wissens drohte zu reißen.
+
+**Macrobius' Antwort:**
+In dieser Situation entwickelte Macrobius seine "kulturelle Rettungsmission". Er erkannte, dass das politische Rom untergehen würde, aber das geistige Rom gerettet werden konnte. Seine zwei Hauptwerke - die Saturnalia und sein Somnium-Kommentar - waren bewusst als "Flaschenpost" an zukünftige Generationen konzipiert.
+
+**Die Methode der Kulturbewahrung:**
+Macrobius wählte einen systematischen Ansatz: Er sammelte das Beste der klassischen Tradition - von Vergil über Cicero bis zu griechischen Philosophen - und verpackte es in attraktive, literarische Formen. Die Saturnalien präsentierten komplexes Wissen als unterhaltsame Gespräche, der Somnium-Kommentar verband astronomische und philosophische Erkenntnisse in einem kosmologischen System.
+
+**Historische Ironie:**
+Was als Verzweiflungstat in einer untergehenden Welt begann, wurde zu einem der erfolgreichsten Bildungsprojekte der Geschichte. Macrobius' Werke überlebten das Mittelalter, inspirierten die Renaissance und bilden heute die Grundlage unserer digitalen Kulturvermittlung. So wurde aus dem "untergehenden Rom" der Grundstein für die europäische Bildungstradition.`,
+
+    // CULTURAL STORY - COMPLETE GERMAN
+    'cultural_story': `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus ZWEI HAUPTWERKEN: Den ungezwungenen Gesprächsrunden gebildeter Römer in den "Saturnalia" und dem philosophischen "Kommentar zum Somnium Scipionis". In beiden Werken versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle.
+
+Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos, Johannes Isaac Pontanus, erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe beider Werke zusammen. Dieses Buch kam in meine Hände und ich auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
+
+    // Other German content
+    'explore_texts': 'ERKUNDEN SIE DIE ZWEI WERKE DES MACROBIUS',
+    'macrobius_two_works_title': 'Macrobius\' Zwei Hauptwerke',
+    'macrobius_two_works_subtitle': 'Saturnalia und Commentarii in Somnium Scipionis',
+    'more_about_macrobius': 'Mehr über Macrobius',
+    'more_about_pontanus': 'Mehr über Pontanus',
+    'close_modal': 'Schließen',
 
     // Learning Section
     'learning.title': 'Interaktives Lernen',
@@ -61,75 +109,6 @@ const translations = {
     'ai.tutor.ready.title': 'Bereit für Ihre KI-Tutoring-Sitzung?',
     'ai.tutor.ready.description': 'Ihr persönlicher KI-Tutor ist bereit, Sie durch die klassische römische Kultur zu führen und Erklärungen, kulturellen Kontext und personalisierte Lernunterstützung zu bieten.',
     'ai.tutor.start.session': 'KI-Tutoring-Sitzung starten',
-    'ai.tutor.chat.header.title': 'KI-Kulturtutor',
-    'ai.tutor.chat.header.exploring': 'Erkunde',
-    'ai.tutor.chat.progress': 'Sitzungsfortschritt',
-    'ai.tutor.session.active': 'Aktive Sitzung',
-    'ai.tutor.session.paused': 'Sitzung pausiert',
-    'ai.tutor.interactions': 'Interaktionen',
-    'ai.tutor.tab.chat': 'KI-Tutor-Chat',
-    'ai.tutor.tab.progress': 'Fortschritt',
-    'ai.tutor.tab.settings': 'Sitzungseinstellungen',
-    'ai.tutor.confidence': 'Vertrauen',
-    'ai.tutor.modern.connections': 'Moderne Verbindungen',
-    'ai.tutor.hint.title': 'Einen Hinweis erhalten',
-    'ai.tutor.input.placeholder': 'Fragen Sie nach kulturellen Praktiken, bitten Sie um Erklärungen oder erkunden Sie Verbindungen...',
-    'ai.tutor.progress.title': 'Sitzungsfortschritt',
-    'ai.tutor.engagement.level': 'Engagement-Level',
-    'ai.tutor.learning.goals': 'Lernziele',
-    'ai.tutor.total.interactions': 'Gesamtinteraktionen',
-    'ai.tutor.learning.goals.header': 'Lernziele',
-    'ai.tutor.session.statistics': 'Sitzungsstatistiken',
-    'ai.tutor.average.confidence': 'Durchschnittliches Vertrauen',
-    'ai.tutor.cultural.focus': 'Kultureller Fokus',
-    'ai.tutor.session.duration': 'Sitzungsdauer',
-    'ai.tutor.settings.title': 'Sitzungskonfiguration',
-    'ai.tutor.topic.selection': 'Lernthema',
-    'ai.tutor.difficulty.level': 'Schwierigkeitsgrad',
-    'ai.tutor.interface.language': 'Schnittstellensprache',
-    'ai.tutor.difficulty.beginner': 'Grundkonzepte und einfache Erklärungen',
-    'ai.tutor.difficulty.intermediate': 'Moderate Komplexität mit kulturellem Kontext',
-    'ai.tutor.difficulty.advanced': 'Komplexe Analyse und tiefe kulturelle Einblicke',
-    'ai.tutor.difficulty.expert': 'Wissenschaftliche Diskussion und fortgeschrittene Verbindungen',
-    'ai.tutor.session.active.note': 'Sitzung ist aktiv. Gehen Sie zum Chat-Tab, um weiter zu lernen.',
-    'ai.tutor.feature.dialogue.title': 'Interaktiver Dialog',
-    'ai.tutor.feature.dialogue.description': 'Führen Sie natürliche Gespräche mit KI, die kulturellen Kontext versteht und sich an Ihren Lernstil anpasst.',
-    'ai.tutor.feature.bridge.title': 'Kulturbrücken-Bau',
-    'ai.tutor.feature.bridge.description': 'Verbinden Sie antike römische Praktiken mit modernen Anwendungen durch intelligente kulturelle Analyse und Einblicke.',
-    'ai.tutor.feature.adaptive.title': 'Adaptives Lernen',
-    'ai.tutor.feature.adaptive.description': 'KI passt Erklärungen und Schwierigkeit basierend auf Ihrem Fortschritt an und gewährleistet optimales Lerntempo und Verständnis.',
-    'ai.tutor.status.active': 'Aktiv',
-
-    // Cultural Topics
-    'topic.philosophy': 'Philosophie',
-    'topic.religious.practices': 'Religiöse Praktiken',
-    'topic.social.customs': 'Gesellschaftliche Bräuche',
-    'topic.education': 'Bildung',
-    'topic.roman.history': 'Römische Geschichte',
-    'topic.literature': 'Literatur',
-    'topic.astronomy': 'Astronomie',
-    'topic.law': 'Recht',
-
-    // Difficulty Levels
-    'difficulty.beginner': 'Anfänger',
-    'difficulty.intermediate': 'Fortgeschritten',
-    'difficulty.advanced': 'Erweitert',
-    'difficulty.expert': 'Experte',
-
-    // Language Labels
-    'language.english': '🇬🇧 Englisch',
-    'language.german': '🇩🇪 Deutsch',
-    'language.latin': '🏛️ Latein',
-
-    // Quiz
-    'quiz.completed': 'Quiz abgeschlossen!',
-    'quiz.score': 'Punktzahl',
-    'quiz.question': 'Frage',
-    'quiz.of': 'von',
-    'quiz.explanation': 'Erklärung',
-    'quiz.restart': 'Quiz neu starten',
-    'quiz.finish': 'Quiz beenden',
-    'feature.coming.soon': 'Diese Funktion wird bald verfügbar sein.',
 
     // General
     'loading': 'Wird geladen...',
@@ -140,20 +119,20 @@ const translations = {
     'close': 'Schließen',
   },
   EN: {
-    // Navigation
+    // Navigation - IMPROVED USER-FRIENDLY TITLES
     'nav.home': 'Home',
-    'nav.intro': 'Introduction',
-    'nav.quiz': 'Quiz',
-    'nav.worldmap': 'World Map',
-    'nav.cosmos': 'Cosmos',
-    'nav.banquet': 'Banquet',
-    'nav.textsearch': 'Text Search',
-    'nav.learning': 'Learning',
+    'nav.intro': 'Discover Macrobius',
+    'nav.quiz': 'Interactive Quiz',
+    'nav.worldmap': 'Ancient World Map',
+    'nav.cosmos': 'Cosmos & Astronomy',
+    'nav.banquet': 'Roman Banquet',
+    'nav.textsearch': 'Text Analysis',
+    'nav.learning': 'Learning Tools',
 
-    // Hero Section
-    'hero.badge': 'An Ancient Message in a Bottle',
-    'hero.title.line1': 'An Ancient',
-    'hero.title.line2': 'Message in a Bottle',
+    // Hero Section - IMPROVED NON-REDUNDANT CONTENT
+    'hero.badge': 'Educational Platform for Classical Culture',
+    'hero.title.line1': 'Macrobius',
+    'hero.title.line2': 'Digital',
     'hero.description': '1500 years ago, as the Roman Empire faced its decline, Macrobius, a leading administrator and scholar in northern Italy, crafted a message in a bottle to the future. This message consisted of two texts: a casual conversation among educated Romans and a dream commentary. In both, Macrobius attempted to package what was important to him about the declining civilization of antiquity in a way that would survive the approaching dark centuries and inspire future readers to restart the process of civilization with the memory of ancient civilization as encouragement and source material.',
     'hero.feature1.title': 'Macrobius\' Texts',
     'hero.feature1.desc': 'Saturnalia and Dream Commentary',
@@ -167,6 +146,54 @@ const translations = {
     'hero.stats.success': 'Transmission',
     'hero.stats.texts': 'Years of History',
     'hero.stats.support': 'Continuity',
+
+    // DETAILED MODAL CONTENT - COMPLETE ENGLISH TRANSLATIONS
+    'about_title': 'Macrobius Ambrosius Theodosius',
+    'about_subtitle': 'Cultural Preserver of the Late Antique World (ca. 385-430 AD)',
+    'about_biography': 'Macrobius Ambrosius Theodosius was one of the most fascinating figures of late antiquity - a man who stood at the threshold between two worlds. As a high Roman administrative official who governed the Iberian Peninsula as Praefectus praetorio per Hispanias, he had deep insights into the mechanisms of the late antique state. At the same time, he was a scholar of extraordinary education who united the entire classical tradition within himself. His works show a man who recognized the threatening cultural catastrophe of his time and systematically worked against it.',
+    'about_works': 'Macrobius\' two major works "Saturnalia" and "Commentarii in Somnium Scipionis" are masterpieces of late antique scholarship, now accessible to us through 1,401 carefully digitized passages. The Saturnalia present ancient knowledge in the form of elegant conversations, while the Somnium commentary offers a cosmological synthesis of philosophy, astronomy, and mathematics. Both works were deliberately conceived as "cultural time capsules."',
+    'about_legacy': 'Macrobius\' cultural "message in a bottle" proved to be one of the most successful projects in world history. His two works not only survived the dark ages but became foundational texts for medieval and Renaissance education. From Hrabanus Maurus to Johannes Kepler, scholars drew inspiration from his works for their own cultural projects.',
+
+    // PONTANUS & TYCHO - COMPLETE ENGLISH CONTENT
+    'about_pontanus_title': 'Johannes Isaac Pontanus & Tycho Brahe',
+    'about_pontanus_subtitle': 'Astronomical Renaissance and the Rediscovery of Macrobius (1571-1639)',
+    'about_pontanus_bio': 'Johannes Isaac Pontanus was more than just an assistant to the great Tycho Brahe - he was a bridge-builder between the worlds of ancient wisdom and modern science. Born in Denmark, he combined his work as an astronomer on Brahe\'s famous island of Hven with a deep passion for classical literature. This unique combination made him the ideal mediator between the astronomical revolution of his time and the ancient tradition.',
+    'about_pontanus_work': 'Pontanus\' editorial achievement was groundbreaking. His annotated complete edition of both works of Macrobius, published in Leiden in 1597, became the standard reference for three centuries. With 117 pages of his own commentary and additional contributions by Johannes Meursius, he created the first truly scholarly edition of the Macrobius texts. This edition made Macrobius\' "message in a bottle" fully accessible again for the first time since the Middle Ages.',
+    'about_pontanus_legacy': 'Through Pontanus\' work, the crucial bridge between ancient culture and Renaissance scholarship was built. His edition enabled scholars like Kepler to draw upon Macrobius\' cosmological insights. Thus, the assistant to an astronomer became the catalyst for a new phase of cultural transmission - from antiquity through the Middle Ages to the modern era.',
+    'pontanus_historical_details': 'The Pontanus edition follows the printed text with 117 pages of his own learned annotations. The final 16 pages contain brief but precise notes by the young Johannes Meursius, who later became famous as a significant antiquarian scholar.',
+
+    // DECLINING ROME - COMPLETE EXTENSIVE ENGLISH CONTENT
+    'declining_rome_title': 'The Declining Roman Empire',
+    'declining_rome_subtitle': 'Cultural Decline and the Mission of Scholars (4th-5th Century AD)',
+    'declining_rome_content': `The time of Macrobius Ambrosius Theodosius (ca. 385-430 AD) was marked by the dramatic decline of the Western Roman Empire. What historians today call "Late Antiquity" was for contemporaries a time of existential threat and radical change.
+
+**The Crisis of the 5th Century:**
+Between 400 and 450 AD, the Western Roman Empire experienced a cascade of catastrophes: The Migration Period brought Germanic tribes like Visigoths, Vandals, and Burgundians into the heart of the empire. In 410, Alaric sacked Rome, followed by the Vandals in 455. Military and political control rapidly waned.
+
+**Cultural Threat:**
+But for intellectuals like Macrobius, cultural decline was even more threatening than political collapse. Classical education, which had formed the backbone of Roman civilization for over 800 years, faced collapse. Libraries were plundered, schools closed, and the chain of transmission of ancient knowledge threatened to break.
+
+**Macrobius' Response:**
+In this situation, Macrobius developed his "cultural rescue mission." He recognized that political Rome would fall, but intellectual Rome could be saved. His two major works - the Saturnalia and his Somnium commentary - were deliberately conceived as a "message in a bottle" to future generations.
+
+**The Method of Cultural Preservation:**
+Macrobius chose a systematic approach: He collected the best of the classical tradition - from Virgil to Cicero to Greek philosophers - and packaged it in attractive, literary forms. The Saturnalia presented complex knowledge as entertaining conversations, while the Somnium commentary combined astronomical and philosophical insights in a cosmological system.
+
+**Historical Irony:**
+What began as an act of desperation in a declining world became one of the most successful educational projects in history. Macrobius' works survived the Middle Ages, inspired the Renaissance, and today form the foundation of our digital cultural transmission. Thus, the "declining Rome" became the cornerstone of the European educational tradition.`,
+
+    // CULTURAL STORY - COMPLETE ENGLISH
+    'cultural_story': `1500 years ago, as the Roman Empire approached its end, Macrobius, a leading administrator and scholar in northern Italy, created a message in a bottle to the future. This message consisted of TWO MAJOR WORKS: the casual conversations of educated Romans in the "Saturnalia" and the philosophical "Commentary on the Somnium Scipionis." In both works, Macrobius attempted to package what was important to him about the declining civilization of antiquity in a way that would survive the approaching dark centuries and inspire future readers to restart the process of civilization with the memory of ancient civilization as encouragement and source material.
+
+500 years ago, this renewal began. In Denmark through the astronomical observations of Tycho Brahe, who thereby laid the foundation for Kepler's work and the emergence of modern natural sciences. An assistant to Tycho, Johannes Isaac Pontanus, remembered Macrobius' message in a bottle and compiled the first reliable and annotated complete edition of both works. This book came into my hands and gave me the idea to create a small app for you about this story.... Have fun!`,
+
+    // Other English content
+    'explore_texts': 'EXPLORE MACROBIUS\' TWO MAJOR WORKS',
+    'macrobius_two_works_title': 'Macrobius\' Two Major Works',
+    'macrobius_two_works_subtitle': 'Saturnalia and Commentarii in Somnium Scipionis',
+    'more_about_macrobius': 'More about Macrobius',
+    'more_about_pontanus': 'More about Pontanus',
+    'close_modal': 'Close',
 
     // Learning Section
     'learning.title': 'Interactive Learning',
@@ -188,75 +215,6 @@ const translations = {
     'ai.tutor.ready.title': 'Ready to Start Your AI Tutoring Session?',
     'ai.tutor.ready.description': 'Your personal AI tutor is ready to guide you through classical Roman culture, providing explanations, cultural context, and personalized learning support.',
     'ai.tutor.start.session': 'Start AI Tutoring Session',
-    'ai.tutor.chat.header.title': 'AI Cultural Tutor',
-    'ai.tutor.chat.header.exploring': 'Exploring',
-    'ai.tutor.chat.progress': 'Session Progress',
-    'ai.tutor.session.active': 'Active Session',
-    'ai.tutor.session.paused': 'Session Paused',
-    'ai.tutor.interactions': 'interactions',
-    'ai.tutor.tab.chat': 'AI Tutor Chat',
-    'ai.tutor.tab.progress': 'Progress',
-    'ai.tutor.tab.settings': 'Session Setup',
-    'ai.tutor.confidence': 'Confidence',
-    'ai.tutor.modern.connections': 'Modern connections',
-    'ai.tutor.hint.title': 'Get a hint',
-    'ai.tutor.input.placeholder': 'Ask about cultural practices, request explanations, or explore connections...',
-    'ai.tutor.progress.title': 'Session Progress',
-    'ai.tutor.engagement.level': 'Engagement Level',
-    'ai.tutor.learning.goals': 'Learning Goals',
-    'ai.tutor.total.interactions': 'Total Interactions',
-    'ai.tutor.learning.goals.header': 'Learning Goals',
-    'ai.tutor.session.statistics': 'Session Statistics',
-    'ai.tutor.average.confidence': 'Average Confidence',
-    'ai.tutor.cultural.focus': 'Cultural Focus',
-    'ai.tutor.session.duration': 'Session Duration',
-    'ai.tutor.settings.title': 'Session Configuration',
-    'ai.tutor.topic.selection': 'Learning Topic',
-    'ai.tutor.difficulty.level': 'Difficulty Level',
-    'ai.tutor.interface.language': 'Interface Language',
-    'ai.tutor.difficulty.beginner': 'Basic concepts and simple explanations',
-    'ai.tutor.difficulty.intermediate': 'Moderate complexity with cultural context',
-    'ai.tutor.difficulty.advanced': 'Complex analysis and deep cultural insights',
-    'ai.tutor.difficulty.expert': 'Scholarly discussion and advanced connections',
-    'ai.tutor.session.active.note': 'Session is active. Go to Chat tab to continue learning.',
-    'ai.tutor.feature.dialogue.title': 'Interactive Dialogue',
-    'ai.tutor.feature.dialogue.description': 'Engage in natural conversation with AI that understands cultural context and adapts to your learning style.',
-    'ai.tutor.feature.bridge.title': 'Cultural Bridge-Building',
-    'ai.tutor.feature.bridge.description': 'Connect ancient Roman practices to modern applications with intelligent cultural analysis and insights.',
-    'ai.tutor.feature.adaptive.title': 'Adaptive Learning',
-    'ai.tutor.feature.adaptive.description': 'AI adjusts explanations and difficulty based on your progress, ensuring optimal learning pace and comprehension.',
-    'ai.tutor.status.active': 'Active',
-
-    // Cultural Topics
-    'topic.philosophy': 'Philosophy',
-    'topic.religious.practices': 'Religious Practices',
-    'topic.social.customs': 'Social Customs',
-    'topic.education': 'Education',
-    'topic.roman.history': 'Roman History',
-    'topic.literature': 'Literature',
-    'topic.astronomy': 'Astronomy',
-    'topic.law': 'Law',
-
-    // Difficulty Levels
-    'difficulty.beginner': 'Beginner',
-    'difficulty.intermediate': 'Intermediate',
-    'difficulty.advanced': 'Advanced',
-    'difficulty.expert': 'Expert',
-
-    // Language Labels
-    'language.english': '🇬🇧 English',
-    'language.german': '🇩🇪 Deutsch',
-    'language.latin': '🏛️ Latina',
-
-    // Quiz
-    'quiz.completed': 'Quiz Completed!',
-    'quiz.score': 'Score',
-    'quiz.question': 'Question',
-    'quiz.of': 'of',
-    'quiz.explanation': 'Explanation',
-    'quiz.restart': 'Restart Quiz',
-    'quiz.finish': 'Finish Quiz',
-    'feature.coming.soon': 'This feature will be available soon.',
 
     // General
     'loading': 'Loading...',
@@ -267,20 +225,20 @@ const translations = {
     'close': 'Close',
   },
   LA: {
-    // Navigation
+    // Navigation - IMPROVED USER-FRIENDLY TITLES
     'nav.home': 'Domus',
-    'nav.intro': 'Introductio',
-    'nav.quiz': 'Quaestiones',
-    'nav.worldmap': 'Mappa Mundi',
-    'nav.cosmos': 'Cosmos',
-    'nav.banquet': 'Convivium',
-    'nav.textsearch': 'Quaestio Textus',
-    'nav.learning': 'Discendo',
+    'nav.intro': 'Macrobium Inveniendi',
+    'nav.quiz': 'Quaestiones Interactivae',
+    'nav.worldmap': 'Mappa Mundi Antiqua',
+    'nav.cosmos': 'Cosmos et Astronomia',
+    'nav.banquet': 'Convivium Romanum',
+    'nav.textsearch': 'Analysis Textuum',
+    'nav.learning': 'Instrumenta Discendi',
 
-    // Hero Section
-    'hero.badge': 'Antiqua Epistula in Lagena',
-    'hero.title.line1': 'Antiqua',
-    'hero.title.line2': 'Epistula in Lagena',
+    // Hero Section - IMPROVED NON-REDUNDANT CONTENT
+    'hero.badge': 'Machina Educationis Culturae Classicae',
+    'hero.title.line1': 'Macrobius',
+    'hero.title.line2': 'Digitalis',
     'hero.description': 'Ante annos 1500, cum Imperium Romanum occasus appropinquaret, Macrobius, praefectus et eruditus praecipuus in Italia septentrionali, epistulam in lagena ad futurum confecit. Haec epistula duobus textibus constabat: colloquio libero virorum eruditorum Romanorum et commentario somnii. In utroque Macrobius id quod ei de occidente civilizatione antiqua magni momenti erat, eo modo involvere conatus est qui saecula tenebrosa appropinquantia superaret et lectores futuros incitaret ad processum civilizationis iterum instaurandum cum memoria civilizationis antiquae ut hortamentum et fons materiae.',
     'hero.feature1.title': 'Textus Macrobii',
     'hero.feature1.desc': 'Saturnalia et Commentarius Somnii',
@@ -294,6 +252,54 @@ const translations = {
     'hero.stats.success': 'Traditio',
     'hero.stats.texts': 'Anni Historiae',
     'hero.stats.support': 'Continuitas',
+
+    // DETAILED MODAL CONTENT - COMPLETE LATIN TRANSLATIONS
+    'about_title': 'Macrobius Ambrosius Theodosius',
+    'about_subtitle': 'Custos Culturae Mundi Antiquitatis Serae (ca. 385-430 p. Chr.)',
+    'about_biography': 'Macrobius Ambrosius Theodosius vir fuit inter figuras fascinantissimas antiquitatis serae - homo qui in limine inter duos mundos stabat. Ut praefectus Romanus altus qui peninsulam Iberiam ut Praefectus praetorio per Hispanias regebat, perspicaciam profundam in mechanismos status antiquitatis serae habebat. Simul eruditus erat educationis extraordinariae qui totam traditionem classicam in se uniebat. Opera eius virum ostendunt qui catastrophem culturalem imminentem temporis sui agnovit et systematice contra eam laboravit.',
+    'about_works': 'Duo opera principalia Macrobii "Saturnalia" et "Commentarii in Somnium Scipionis" sunt opera magistralia eruditionis antiquitatis serae, quae nobis hodie per 1.401 textus diligenter digitales accessibilia sunt. Saturnalia scientiam antiquam in forma colloquiorum elegantium praebent, dum commentarius Somnii synthesim cosmologicam philosophiae, astronomiae et mathematicae offert. Utraque opera deliberate ut "capsulae temporales culturales" concepta sunt.',
+    'about_legacy': 'Culturalis "epistula in lagena" Macrobii unum ex projectis successuris mundi historiae se probavit. Duo opera eius non solum saecula tenebrosa supervixerunt sed textus fundamentales educationis mediaevalis et Renascentiae facta sunt. A Hrabano Mauro usque ad Johannem Keplerum, eruditi ex operibus eius inspirationem pro suis culturalibus projectis hauserunt.',
+
+    // PONTANUS & TYCHO - COMPLETE LATIN CONTENT
+    'about_pontanus_title': 'Johannes Isaac Pontanus et Tycho Brahe',
+    'about_pontanus_subtitle': 'Renascentia Astronomica et Inventio Nova Macrobii (1571-1639)',
+    'about_pontanus_bio': 'Johannes Isaac Pontanus plus erat quam solum adiutor magni Tychonis Brahe - constructor pontis erat inter mundos sapientiae antiquae et scientiae modernae. In Dania natus, laborem suum ut astronomus in insula celebri Hven Brahei cum passione profunda litteraturae classicae coniunxit. Haec combinatio unica eum mediatorem idealem inter revolutionem astronomicam temporis sui et traditionem antiquam fecit.',
+    'about_pontanus_work': 'Opus editoriale Pontani fundamentale erat. Editio eius completa annotata utriusque operis Macrobii, Lugduni anno 1597 publicata, referentia standardis per tria saecula facta est. Cum 117 paginis commentariorum suorum et contributionibus additis Johannis Meursii, primam editionem vere scholasticam textuum Macrobii creavit. Haec editio "epistulam in lagena" Macrobii primo tempore post Aevum Medium iterum plene accessibilem fecit.',
+    'about_pontanus_legacy': 'Per laborem Pontani, pons crucialis inter culturam antiquam et eruditionem Renascentiae aedificatus est. Editio eius eruditis sicut Keplero possibilitatem dedit perspicacitates cosmologicas Macrobii iterum adhibere. Sic ex adiutore astronomi catalyst novae phaseis transmissionis culturalis factus est - ab antiquitate per Aevum Medium ad aetatem modernam.',
+    'pontanus_historical_details': 'Editio Pontani textum impressum cum 117 paginis notationum eruditionis suae sequitur. Ultimae 16 paginae notas breves sed praecisas iuvenis Johannis Meursii continent, qui postea ut investigator antiquitatis significans celebris factus est.',
+
+    // DECLINING ROME - COMPLETE EXTENSIVE LATIN CONTENT
+    'declining_rome_title': 'Imperium Romanum Cadens',
+    'declining_rome_subtitle': 'Declinatio Culturalis et Missio Eruditorum (Saec. IV-V p. Chr.)',
+    'declining_rome_content': `Tempus Macrobii Ambrosii Theodosii (ca. 385-430 p. Chr.) declinio dramatico Imperii Romani Occidentalis signatum erat. Quod historici hodie "Antiquitatem Seram" vocant, contemporaneis tempus minae existentialis et mutationis radicalis erat.
+
+**Crisis Saeculi Quinti:**
+Inter annos 400 et 450 p. Chr., Imperium Romanum Occidentale cascadam catastropharum expertum est: Migratio Populorum tribus Germanicas sicut Visigothos, Vandalos et Burgundiones in cor imperii adduxit. Anno 410, Alaricus Romam diripuit, anno 455 Vandali secuti sunt. Controlatio militaris et politica rapidissime defecit.
+
+**Minatio Culturalis:**
+Sed intellectualibus sicut Macrobio, declinatio culturalis etiam periculosior erat quam collapsus politicus. Educatio classica, quae per plus quam 800 annos dorsalem spinam civilizationis Romanae formaverat, coram collapsu stabat. Bibliothecae direptae sunt, scholae clausae, catena transmissionis scientiae antiquae rumpi minabatur.
+
+**Responsum Macrobii:**
+In hac situatione, Macrobius "missionem salutis culturalis" suae evolvit. Agnovit Romam politicam casuram esse, sed Romam intellectualem servari posse. Duo opera eius principalia - Saturnalia et commentarius Somnii - deliberate ut "epistula in lagena" ad generationes futuras concepta erant.
+
+**Methodus Conservationis Culturalis:**
+Macrobius accessum systematicum elegit: Optimum traditionis classicae collegit - a Vergilio per Ciceronem usque ad philosophos Graecos - et in formis litterariis attractivis involvit. Saturnalia scientiam complexam ut colloquia gratiosa praesenterunt, commentarius Somnii perspicacitates astronomicas et philosophicas in systemate cosmologico coniunxit.
+
+**Ironia Historica:**
+Quod ut actus desperationis in mundo cadente coepit, unum ex projectis educationalibus successurius historiae factum est. Opera Macrobii Aevum Medium supervixerunt, Renascentiam inspiraverunt et hodie fundamentum transmissionis culturalis digitalis nostrae formant. Sic "Roma cadens" lapis angularis traditionis educationalis Europaeae facta est.`,
+
+    // CULTURAL STORY - COMPLETE LATIN
+    'cultural_story': `Ante 1500 annos, cum Imperium Romanum fini appropinquaret, Macrobius, praefectus et eruditus praecipuus in Italia septentrionali, epistulam in lagena ad futurum creavit. Haec epistula DUOBUS OPERIBUS PRINCIPALIBUS constabat: colloquiis liberis virorum eruditorum Romanorum in "Saturnalibus" et philosophico "Commentario in Somnium Scipionis." In utroque opere, Macrobius id quod ei de civilizatione antiqua cadente magni momenti erat eo modo involvere conatus est qui saecula tenebrosa appropinquantia superaret et lectores futuros ad processum civilizationis iterum instaurandum incitaret cum memoria civilizationis antiquae ut hortamentum et fons materiae.
+
+Ante 500 annos, haec renovatio coepit. In Dania per observationes astronomicas Tychonis Brahe, qui sic fundamentum pro labore Kepleri et ortu scientiarum naturalium modernarum posuit. Adiutor Tychonis, Johannes Isaac Pontanus, epistulae Macrobii in lagena recordatus est et primam editionem fidelem et annotatam completam utriusque operis composuit. Hic liber in manus meas venit et mihi ideam dedit parvam applicationem pro vobis de hac historia creare.... Fruimini!`,
+
+    // Other Latin content
+    'explore_texts': 'DUO OPERA MACROBII EXPLORARE',
+    'macrobius_two_works_title': 'Duo Opera Principalia Macrobii',
+    'macrobius_two_works_subtitle': 'Saturnalia et Commentarii in Somnium Scipionis',
+    'more_about_macrobius': 'Magis de Macrobio',
+    'more_about_pontanus': 'Magis de Pontano',
+    'close_modal': 'Claudere',
 
     // Learning Section
     'learning.title': 'Discendum Interactivum',
@@ -315,75 +321,6 @@ const translations = {
     'ai.tutor.ready.title': 'Paratusne es ad Sessionem AI Doctoris Incipiendam?',
     'ai.tutor.ready.description': 'Doctor tuus personalis AI paratus est te per culturam Romanam classicam ducere, explicationes, contextum culturalem, et auxilium discendi personale praebens.',
     'ai.tutor.start.session': 'Sessionem AI Doctoris Incipe',
-    'ai.tutor.chat.header.title': 'Doctor AI Culturae',
-    'ai.tutor.chat.header.exploring': 'Explorans',
-    'ai.tutor.chat.progress': 'Progressus Sessionis',
-    'ai.tutor.session.active': 'Sessio Activa',
-    'ai.tutor.session.paused': 'Sessio Pausa',
-    'ai.tutor.interactions': 'interactiones',
-    'ai.tutor.tab.chat': 'Colloquium AI Doctoris',
-    'ai.tutor.tab.progress': 'Progressus',
-    'ai.tutor.tab.settings': 'Configuratio Sessionis',
-    'ai.tutor.confidence': 'Confidentia',
-    'ai.tutor.modern.connections': 'Connexiones modernae',
-    'ai.tutor.hint.title': 'Indicium obtine',
-    'ai.tutor.input.placeholder': 'Quaere de praticis culturalibus, explicationes pete, aut connexiones explora...',
-    'ai.tutor.progress.title': 'Progressus Sessionis',
-    'ai.tutor.engagement.level': 'Gradus Participationis',
-    'ai.tutor.learning.goals': 'Proposita Discendi',
-    'ai.tutor.total.interactions': 'Interactiones Totales',
-    'ai.tutor.learning.goals.header': 'Proposita Discendi',
-    'ai.tutor.session.statistics': 'Statisticae Sessionis',
-    'ai.tutor.average.confidence': 'Confidentia Media',
-    'ai.tutor.cultural.focus': 'Focus Culturalis',
-    'ai.tutor.session.duration': 'Duratio Sessionis',
-    'ai.tutor.settings.title': 'Configuratio Sessionis',
-    'ai.tutor.topic.selection': 'Argumentum Discendi',
-    'ai.tutor.difficulty.level': 'Gradus Difficultatis',
-    'ai.tutor.interface.language': 'Lingua Interfaciei',
-    'ai.tutor.difficulty.beginner': 'Conceptus fundamentales et explicationes simplices',
-    'ai.tutor.difficulty.intermediate': 'Complexitas moderata cum contextu culturali',
-    'ai.tutor.difficulty.advanced': 'Analysis complexa et perspicacitas culturalis profunda',
-    'ai.tutor.difficulty.expert': 'Discussio scholastica et connexiones provectae',
-    'ai.tutor.session.active.note': 'Sessio activa est. Ad tabulam Colloquii eas ut discere pergas.',
-    'ai.tutor.feature.dialogue.title': 'Dialogus Interactivus',
-    'ai.tutor.feature.dialogue.description': 'In colloquio naturali cum AI quae contextum culturalem intelligit et se ad stilum tuum discendi accommodat, participa.',
-    'ai.tutor.feature.bridge.title': 'Aedificatio Pontis Culturalis',
-    'ai.tutor.feature.bridge.description': 'Praticas Romanas antiquas cum applicationibus modernis conecte per analysim culturalem intelligentem et perspicacitates.',
-    'ai.tutor.feature.adaptive.title': 'Discendum Adaptivum',
-    'ai.tutor.feature.adaptive.description': 'AI explicationes et difficultatem secundum progressum tuum accommodat, certans passum discendi optimum et comprehensionem.',
-    'ai.tutor.status.active': 'Activus',
-
-    // Cultural Topics
-    'topic.philosophy': 'Philosophia',
-    'topic.religious.practices': 'Praticae Religiosae',
-    'topic.social.customs': 'Consuetudines Sociales',
-    'topic.education': 'Educatio',
-    'topic.roman.history': 'Historia Romana',
-    'topic.literature': 'Literatura',
-    'topic.astronomy': 'Astronomia',
-    'topic.law': 'Ius',
-
-    // Difficulty Levels
-    'difficulty.beginner': 'Incipiens',
-    'difficulty.intermediate': 'Intermedius',
-    'difficulty.advanced': 'Provectus',
-    'difficulty.expert': 'Peritus',
-
-    // Language Labels
-    'language.english': '🇬🇧 Anglice',
-    'language.german': '🇩🇪 Germanice',
-    'language.latin': '🏛️ Latine',
-
-    // Quiz
-    'quiz.completed': 'Quaestiones Completae!',
-    'quiz.score': 'Puncta',
-    'quiz.question': 'Quaestio',
-    'quiz.of': 'ex',
-    'quiz.explanation': 'Explicatio',
-    'quiz.restart': 'Quaestiones Renovare',
-    'quiz.finish': 'Quaestiones Finire',
-    'feature.coming.soon': 'Haec proprietas mox disponetur.',
 
     // General
     'loading': 'Oneratur...',
