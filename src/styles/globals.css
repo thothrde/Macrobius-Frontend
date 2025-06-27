@@ -59,64 +59,11 @@
   box-shadow: 0 15px 35px rgba(114, 47, 55, 0.5);
 }
 
-/* Enhanced Star Animation - Moving from right to left */
-.star {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: white;
-  border-radius: 50%;
-  animation: moveAndTwinkle 20s linear infinite;
-}
-
-.star:nth-child(even) {
-  width: 1px;
-  height: 1px;
-  animation-duration: 25s;
-}
-
-.star:nth-child(3n) {
-  background: #FFD700;
-  animation-duration: 30s;
-}
-
-.star:nth-child(4n) {
-  width: 3px;
-  height: 3px;
-  background: #87CEEB;
-  animation-duration: 15s;
-}
-
-.star:nth-child(5n) {
-  background: #FFB6C1;
-  animation-duration: 35s;
-}
-
-/* Keyframe Animations */
-@keyframes moveAndTwinkle {
-  0% { 
-    transform: translateX(100vw) translateY(0px);
-    opacity: 0; 
-  }
-  5% {
-    opacity: 1;
-  }
-  50% { 
-    opacity: 0.8;
-  }
-  95% {
-    opacity: 1;
-  }
-  100% { 
-    transform: translateX(-100px) translateY(0px);
-    opacity: 0; 
-  }
-}
-
+/* OPTIMIZED: Static Twinkling Stars Animation */
 @keyframes twinkle {
   0%, 100% { 
     opacity: 0.3; 
-    transform: scale(0.5); 
+    transform: scale(0.8); 
   }
   50% { 
     opacity: 1; 
@@ -124,6 +71,57 @@
   }
 }
 
+/* OPTIMIZED: Slow Moving Stars Animation (much slower and smoother) */
+@keyframes slowMove {
+  0% { 
+    transform: translateX(0) translateY(0);
+    opacity: 0.3; 
+  }
+  25% { 
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateX(-30px) translateY(-15px);
+    opacity: 0.6;
+  }
+  75% { 
+    opacity: 0.9;
+  }
+  100% { 
+    transform: translateX(-60px) translateY(-30px);
+    opacity: 0.3; 
+  }
+}
+
+/* OPTIMIZED: Rare Shooting Star Animation (much slower) */
+@keyframes shootingStar {
+  0% {
+    transform: translateX(100vw) translateY(-50px) rotate(45deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.8;
+  }
+  95% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(-100px) translateY(50px) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 3px;
+  height: 1px;
+  background: linear-gradient(90deg, #fff, transparent);
+  border-radius: 2px;
+  animation: shootingStar 15s linear infinite;
+  z-index: 1;
+}
+
+/* Other Animations */
 @keyframes float {
   0%, 100% { 
     transform: translateY(0px) rotate(0deg); 
@@ -191,46 +189,6 @@
   50% { 
     box-shadow: 0 0 0 20px rgba(255, 215, 0, 0); 
   }
-}
-
-/* Shooting Star Animation */
-@keyframes shootingStar {
-  0% {
-    transform: translateX(100vw) translateY(-50px) rotate(45deg);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(-100px) translateY(50px) rotate(45deg);
-    opacity: 0;
-  }
-}
-
-.shooting-star {
-  position: absolute;
-  width: 4px;
-  height: 2px;
-  background: linear-gradient(90deg, #fff, transparent);
-  border-radius: 2px;
-  animation: shootingStar 3s linear infinite;
-  z-index: 1;
-}
-
-.shooting-star:nth-child(6n) {
-  animation-duration: 4s;
-  animation-delay: 2s;
-  background: linear-gradient(90deg, #FFD700, transparent);
-}
-
-.shooting-star:nth-child(7n) {
-  animation-duration: 5s;
-  animation-delay: 4s;
-  background: linear-gradient(90deg, #87CEEB, transparent);
 }
 
 /* Animation Classes */
@@ -323,11 +281,6 @@
     @apply px-6 py-3 text-base;
   }
   
-  .star {
-    width: 1px;
-    height: 1px;
-  }
-  
   .shooting-star {
     width: 2px;
     height: 1px;
@@ -336,17 +289,14 @@
 
 /* High DPI Displays */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .star {
-    background: radial-gradient(circle, white 0%, transparent 70%);
-  }
+  /* Optimized for high DPI displays */
 }
 
-/* Reduced Motion Support */
+/* PERFORMANCE: Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
   .animate-astrolab-rotate,
   .animate-planet-rotate,
-  .star,
   .shooting-star {
     animation: none;
   }
@@ -355,11 +305,16 @@
   .btn-wine-large:hover {
     transform: none;
   }
+  
+  /* Disable star animations for accessibility and performance */
+  [style*="animation: twinkle"],
+  [style*="animation: slowMove"] {
+    animation: none !important;
+  }
 }
 
 /* Print Styles */
 @media print {
-  .star,
   .shooting-star,
   .animate-float,
   .animate-astrolab-rotate {
