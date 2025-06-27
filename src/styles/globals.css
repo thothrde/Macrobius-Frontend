@@ -59,34 +59,68 @@
   box-shadow: 0 15px 35px rgba(114, 47, 55, 0.5);
 }
 
-/* Star Animation */
+/* Enhanced Star Animation - Moving from right to left */
 .star {
   position: absolute;
   width: 2px;
   height: 2px;
   background: white;
   border-radius: 50%;
-  animation: twinkle infinite ease-in-out;
+  animation: moveAndTwinkle 20s linear infinite;
 }
 
 .star:nth-child(even) {
   width: 1px;
   height: 1px;
+  animation-duration: 25s;
 }
 
 .star:nth-child(3n) {
   background: #FFD700;
+  animation-duration: 30s;
+}
+
+.star:nth-child(4n) {
+  width: 3px;
+  height: 3px;
+  background: #87CEEB;
+  animation-duration: 15s;
+}
+
+.star:nth-child(5n) {
+  background: #FFB6C1;
+  animation-duration: 35s;
 }
 
 /* Keyframe Animations */
+@keyframes moveAndTwinkle {
+  0% { 
+    transform: translateX(100vw) translateY(0px);
+    opacity: 0; 
+  }
+  5% {
+    opacity: 1;
+  }
+  50% { 
+    opacity: 0.8;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% { 
+    transform: translateX(-100px) translateY(0px);
+    opacity: 0; 
+  }
+}
+
 @keyframes twinkle {
   0%, 100% { 
-    opacity: 0; 
+    opacity: 0.3; 
     transform: scale(0.5); 
   }
   50% { 
     opacity: 1; 
-    transform: scale(1); 
+    transform: scale(1.2); 
   }
 }
 
@@ -157,6 +191,46 @@
   50% { 
     box-shadow: 0 0 0 20px rgba(255, 215, 0, 0); 
   }
+}
+
+/* Shooting Star Animation */
+@keyframes shootingStar {
+  0% {
+    transform: translateX(100vw) translateY(-50px) rotate(45deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100px) translateY(50px) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 4px;
+  height: 2px;
+  background: linear-gradient(90deg, #fff, transparent);
+  border-radius: 2px;
+  animation: shootingStar 3s linear infinite;
+  z-index: 1;
+}
+
+.shooting-star:nth-child(6n) {
+  animation-duration: 4s;
+  animation-delay: 2s;
+  background: linear-gradient(90deg, #FFD700, transparent);
+}
+
+.shooting-star:nth-child(7n) {
+  animation-duration: 5s;
+  animation-delay: 4s;
+  background: linear-gradient(90deg, #87CEEB, transparent);
 }
 
 /* Animation Classes */
@@ -253,6 +327,11 @@
     width: 1px;
     height: 1px;
   }
+  
+  .shooting-star {
+    width: 2px;
+    height: 1px;
+  }
 }
 
 /* High DPI Displays */
@@ -267,7 +346,8 @@
   .animate-float,
   .animate-astrolab-rotate,
   .animate-planet-rotate,
-  .star {
+  .star,
+  .shooting-star {
     animation: none;
   }
   
@@ -280,6 +360,7 @@
 /* Print Styles */
 @media print {
   .star,
+  .shooting-star,
   .animate-float,
   .animate-astrolab-rotate {
     display: none;
