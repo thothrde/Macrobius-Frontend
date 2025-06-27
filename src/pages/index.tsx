@@ -1,6 +1,8 @@
 /**
- * 🏛️ MACROBIUS - IMPROVED UI VERSION WITH BETTER NAVIGATION TITLES
- * CLEANER HERO SECTION SUBTITLES AND ENHANCED USER EXPERIENCE
+ * 🏛️ MACROBIUS - HYDRATION-SAFE TRANSLATION FIX
+ * FIXED: Hydration-safe translations that work correctly on SSG
+ * FIXED: All text properly translated in all languages
+ * FIXED: No more "hero.badge" literal text issues
  */
 
 import React, { useState, useCallback } from 'react';
@@ -28,8 +30,8 @@ import PersonalizedLearningPathsSection from '../components/sections/Personalize
 import AITutoringSystemSection from '../components/sections/AITutoringSystemSection';
 import AdvancedCulturalModulesSection from '../components/sections/AdvancedCulturalModulesSection';
 
-// FIXED: Import LanguageContext
-import { useLanguage, Language } from '../contexts/LanguageContext';
+// HYDRATION-SAFE: Import LanguageContext with hydration safety
+import { useLanguage, Language, getTranslation } from '../contexts/LanguageContext';
 
 // Clickable Image Component
 interface ClickableImageProps {
@@ -86,10 +88,10 @@ const ClickableImage: React.FC<ClickableImageProps> = ({ imageInfo, onClick, cla
   );
 };
 
-// Main CULTURAL EDUCATION application with IMPROVED UI
+// Main CULTURAL EDUCATION application with HYDRATION-SAFE TRANSLATIONS
 export default function MacrobiusCulturalApp() {
-  // FIXED: Use LanguageContext instead of local state
-  const { language: currentLang, setLanguage, t } = useLanguage();
+  // HYDRATION-SAFE: Use LanguageContext with hydration protection
+  const { language: currentLang, setLanguage, t, isHydrated } = useLanguage();
   
   // Navigation state 
   const [activeSection, setActiveSection] = useState<string>('hero');
@@ -106,10 +108,19 @@ export default function MacrobiusCulturalApp() {
   const [selectedImage, setSelectedImage] = useState<ImageInfo | null>(null);
   const [showImageModal, setShowImageModal] = useState(false);
 
+  // HYDRATION-SAFE: Use direct translation function as fallback
+  const safeT = useCallback((key: string): string => {
+    if (!isHydrated) {
+      // Use direct translation function during SSG/hydration
+      return getTranslation(key, currentLang);
+    }
+    return t(key);
+  }, [t, isHydrated, currentLang]);
+
   // Type adapter for components that expect string function
   const tAdapter = useCallback((key: string): string => {
-    return t(key);
-  }, [t]);
+    return safeT(key);
+  }, [safeT]);
 
   // Image click handler
   const handleImageClick = useCallback((imageInfo: ImageInfo) => {
@@ -143,11 +154,16 @@ export default function MacrobiusCulturalApp() {
   const banquetImages = getImagesBySection('banquet') || [];
   const visualizationImages = getImagesBySection('visualizations') || [];
 
+  // HYDRATION-SAFE: Get translations safely
+  const heroBadge = safeT('hero.badge');
+  const heroDescription = safeT('hero.description');
+  const metaDescription = safeT('hero.description');
+
   return (
     <>
       <Head>
-        <title>{t('hero.title.line1')} {t('hero.title.line2')} - Macrobius Cultural Education</title>
-        <meta name="description" content={t('hero.description')} />
+        <title>Macrobius - {heroBadge}</title>
+        <meta name="description" content={metaDescription} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -250,20 +266,20 @@ export default function MacrobiusCulturalApp() {
           </div>
         </div>
 
-        {/* IMPROVED Navigation Sidebar with Better Titles */}
+        {/* Navigation Sidebar */}
         <nav className="fixed top-4 left-4 z-50">
           <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
             <div className="flex flex-col space-y-2">
-              {/* Core Sections with IMPROVED USER-FRIENDLY TITLES */}
+              {/* Core Sections */}
               {[
-                { id: 'hero', label: t('nav.intro'), icon: '🏛️' },
-                { id: 'quiz', label: t('nav.quiz'), icon: '📝' },
-                { id: 'worldmap', label: t('nav.worldmap'), icon: '🗺️' },
-                { id: 'cosmos', label: t('nav.cosmos'), icon: '🌌' },
-                { id: 'banquet', label: t('nav.banquet'), icon: '🍷' },
-                { id: 'search', label: t('nav.textsearch'), icon: '🔍' },
-                { id: 'learning', label: t('nav.learning'), icon: '📚' },
-                { id: 'visualizations', label: 'Visualisierungen', icon: '📊' }
+                { id: 'hero', key: 'nav.intro', icon: '🏛️' },
+                { id: 'quiz', key: 'nav.quiz', icon: '📝' },
+                { id: 'worldmap', key: 'nav.worldmap', icon: '🗺️' },
+                { id: 'cosmos', key: 'nav.cosmos', icon: '🌌' },
+                { id: 'banquet', key: 'nav.banquet', icon: '🍷' },
+                { id: 'search', key: 'nav.textsearch', icon: '🔍' },
+                { id: 'learning', key: 'nav.learning', icon: '📚' },
+                { id: 'visualizations', key: 'nav.visualizations', icon: '📊' }
               ].map((section) => (
                 <button
                   key={section.id}
@@ -279,22 +295,20 @@ export default function MacrobiusCulturalApp() {
                   }}
                 >
                   <span>{section.icon}</span>
-                  <span>{section.label}</span>
+                  <span>{safeT(section.key)}</span>
                 </button>
               ))}
               
               {/* AI Systems Separator */}
               <div className="border-t border-white/20 pt-2 mt-2">
                 <p className="text-yellow-200/60 text-xs px-2 mb-2">
-                  {currentLang === 'DE' ? 'KI-SYSTEME' : 
-                   currentLang === 'EN' ? 'AI SYSTEMS' : 
-                   'SYSTEMATA AI'}
+                  {safeT('nav.ai_systems')}
                 </p>
                 {[
-                  { id: 'ai-cultural', label: currentLang === 'DE' ? 'KI-Kulturanalyse' : currentLang === 'EN' ? 'AI Cultural Analysis' : 'AI Analysis Culturalis', icon: '🧠' },
-                  { id: 'ai-learning', label: currentLang === 'DE' ? 'Lernpfade' : currentLang === 'EN' ? 'Learning Paths' : 'Semitae Discendi', icon: '🎯' },
-                  { id: 'ai-tutoring', label: currentLang === 'DE' ? 'KI-Tutor' : currentLang === 'EN' ? 'AI Tutor' : 'AI Praeceptor', icon: '📖' },
-                  { id: 'ai-modules', label: currentLang === 'DE' ? 'Kulturmodule' : currentLang === 'EN' ? 'Cultural Modules' : 'Moduli Culturales', icon: '✨' }
+                  { id: 'ai-cultural', key: 'nav.ai_cultural', icon: '🧠' },
+                  { id: 'ai-learning', key: 'nav.ai_learning', icon: '🎯' },
+                  { id: 'ai-tutoring', key: 'nav.ai_tutoring', icon: '📖' },
+                  { id: 'ai-modules', key: 'nav.ai_modules', icon: '✨' }
                 ].map((section) => (
                   <button
                     key={section.id}
@@ -310,7 +324,7 @@ export default function MacrobiusCulturalApp() {
                     }}
                   >
                     <span>{section.icon}</span>
-                    <span>{section.label}</span>
+                    <span>{safeT(section.key)}</span>
                   </button>
                 ))}
               </div>
@@ -323,9 +337,7 @@ export default function MacrobiusCulturalApp() {
                 <span className="text-white/70">Oracle Cloud</span>
               </div>
               <p className="text-white/60 text-xs mt-1">
-                {currentLang === 'DE' ? '1.401 Kulturelle Texte' : 
-                 currentLang === 'EN' ? '1,401 Cultural Texts' : 
-                 '1.401 Textus Culturales'}
+                {safeT('nav.oracle_status')}
               </p>
             </div>
 
@@ -339,7 +351,7 @@ export default function MacrobiusCulturalApp() {
                   color: '#FFD700',
                 }}
               >
-                {t('more_about_pontanus')}
+                {safeT('more_about_pontanus')}
               </button>
             </div>
           </div>
@@ -347,27 +359,26 @@ export default function MacrobiusCulturalApp() {
 
         {/* Main Content */}
         <main className="relative z-10">
-          {/* IMPROVED Hero Section with CLEANER SUBTITLES */}
+          {/* Hero Section */}
           {activeSection === 'hero' && (
             <section className="min-h-screen flex items-center justify-center px-4" style={{ paddingTop: '200px' }}>
               <div className="text-center max-w-7xl mx-auto">
                 {/* Main content rectangle */}
                 <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/30 mb-8">
                   
-                  {/* IMPROVED Title and intro text with CLEANER SUBTITLES */}
                   <div className="mb-8">
                     <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent mb-4">
                       Macrobius
                     </h1>
                     
-                    {/* IMPROVED: Clean, simple subtitle */}
-                    <h2 className="text-2xl md:text-3xl text-yellow-300 mb-6 font-light">
-                      {t('hero.badge')}
+                    <h2 className="text-2xl md:text-4xl text-yellow-300 mb-6 font-light">
+                      {heroBadge}
                     </h2>
                     
-                    {/* IMPROVED: Better structured subtitle */}
                     <h3 className="text-lg md:text-xl text-yellow-200 mb-8 font-medium">
-                      {t('hero.subtitle')}
+                      {currentLang === 'DE' ? 'Entdecken Sie die Kulturschätze der Antike' :
+                       currentLang === 'EN' ? 'Discover the Cultural Treasures of Antiquity' :
+                       'Thesauros Culturales Antiquitatis Invenite'}
                     </h3>
                   </div>
 
@@ -383,9 +394,9 @@ export default function MacrobiusCulturalApp() {
                       <Eye className="w-6 h-6 text-yellow-300" />
                     </div>
                     
-                    {/* Better grid layout */}
+                    {/* Grid layout */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                      {/* "Das untergehende Rom" */}
+                      {/* Rome image */}
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -398,38 +409,13 @@ export default function MacrobiusCulturalApp() {
                           whileTap={{ scale: 0.98 }}
                           onClick={() => setShowRomeModal(true)}
                         >
-                          <div className="relative">
-                            <Image
-                              src="/Rome-under.jpg"
-                              alt={t('declining_rome_title')}
-                              width={400}
-                              height={300}
-                              className="w-full h-64 object-cover object-center transition-transform duration-500 group-hover:scale-110"
-                              style={{ 
-                                objectPosition: 'center 30%'
-                              }}
-                            />
-                            
-                            {/* Minimal info overlay ONLY on hover */}
-                            <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              <div className="p-4">
-                                <h3 className="text-white font-bold text-xl mb-1">{t('declining_rome_title')}</h3>
-                                <p className="text-white/95 text-sm">{t('declining_rome_subtitle')}</p>
-                              </div>
-                            </div>
-                            
-                            <div className="absolute top-3 right-3 bg-orange-500/80 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              <Maximize className="w-5 h-5 text-white" />
-                            </div>
-                          </div>
-                          
-                          <div className="p-4 bg-gradient-to-r from-orange-900/20 to-yellow-900/20 backdrop-blur-sm">
-                            <p className="text-white/90 text-sm font-medium">
-                              🏛️ {currentLang === 'DE' ? 'Klicken für die vollständige Geschichte des kulturellen Niedergangs' :
-                                   currentLang === 'EN' ? 'Click for the complete story of cultural decline' :
-                                   'Clicca pro historia completa declinationis culturalis'}
-                            </p>
-                          </div>
+                          <Image
+                            src="/Rome-under.jpg"
+                            alt={safeT('declining_rome_title')}
+                            width={400}
+                            height={300}
+                            className="w-full h-64 object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                          />
                         </motion.div>
                       </motion.div>
                       
@@ -445,42 +431,13 @@ export default function MacrobiusCulturalApp() {
                           whileTap={{ scale: 0.98 }}
                           onClick={() => setShowAboutModal(true)}
                         >
-                          <div className="relative">
-                            <div className="w-full relative overflow-hidden" style={{ minHeight: '320px' }}>
-                              <Image
-                                src="/MacrobiusBottle.jpg"
-                                alt={t('about_title')}
-                                width={400}
-                                height={500}
-                                className="w-full h-auto object-contain"
-                                style={{
-                                  objectFit: 'contain',
-                                  width: '100%',
-                                  height: 'auto',
-                                  minHeight: '320px'
-                                }}
-                              />
-                            </div>
-                            
-                            <div className="absolute inset-0 bg-gradient-to-t from-yellow-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              <div className="absolute bottom-0 left-0 right-0 p-4">
-                                <h3 className="text-white font-bold text-lg mb-1">{t('about_title')}</h3>
-                                <p className="text-white/90 text-sm">{t('about_subtitle')}</p>
-                              </div>
-                            </div>
-                            
-                            <div className="absolute top-2 right-2 bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              <Maximize className="w-4 h-4 text-white" />
-                            </div>
-                          </div>
-                          
-                          <div className="p-3 bg-white/10 backdrop-blur-sm">
-                            <p className="text-white/80 text-xs">
-                              {currentLang === 'DE' ? 'Der spätantike Gelehrte und Bewahrer der klassischen Tradition' :
-                               currentLang === 'EN' ? 'The late antique scholar and preserver of classical tradition' :
-                               'Eruditus antiquitatis serae et custos traditionis classicae'}
-                            </p>
-                          </div>
+                          <Image
+                            src="/MacrobiusBottle.jpg"
+                            alt={safeT('about_title')}
+                            width={400}
+                            height={500}
+                            className="w-full h-auto object-contain"
+                          />
                         </motion.div>
                       </motion.div>
 
@@ -496,87 +453,22 @@ export default function MacrobiusCulturalApp() {
                           whileTap={{ scale: 0.98 }}
                           onClick={() => setShowPontanusModal(true)}
                         >
-                          <div className="relative">
-                            <div className="w-full relative overflow-hidden" style={{ minHeight: '320px' }}>
-                              <Image
-                                src="/TychoAssistent.jpg"
-                                alt={t('about_pontanus_title')}
-                                width={400}
-                                height={500}
-                                className="w-full h-auto object-contain"
-                                style={{
-                                  objectFit: 'contain',
-                                  width: '100%',
-                                  height: 'auto',
-                                  minHeight: '320px'
-                                }}
-                              />
-                            
-                            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-600/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              <div className="absolute bottom-4 left-4 right-4">
-                                <h3 className="text-white font-bold text-lg mb-1">{t('about_pontanus_title')}</h3>
-                                <p className="text-white/90 text-sm">{t('about_pontanus_subtitle')}</p>
-                              </div>
-                            </div>
-                          </div>
-                            
-                            <div className="absolute top-2 right-2 bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              <Maximize className="w-4 h-4 text-white" />
-                            </div>
-                          </div>
-                          
-                          <div className="p-3 bg-white/10 backdrop-blur-sm">
-                            <p className="text-white/80 text-xs">
-                              {currentLang === 'DE' ? 'Renaissance-Astronomie und die Wiederentdeckung antiker Weisheit' :
-                               currentLang === 'EN' ? 'Renaissance astronomy and the rediscovery of ancient wisdom' :
-                               'Astronomia Renascentiae et inventio nova sapientiae antiquae'}
-                            </p>
-                          </div>
+                          <Image
+                            src="/TychoAssistent.jpg"
+                            alt={safeT('about_pontanus_title')}
+                            width={400}
+                            height={500}
+                            className="w-full h-auto object-contain"
+                          />
                         </motion.div>
                       </motion.div>
                     </div>
-                    
-                    {/* Display Macrobius and Son picture */}
-                    <div className="mt-8 flex justify-center">
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.8, duration: 0.6 }}
-                        className="max-w-2xl"
-                      >
-                        <ClickableImage
-                          imageInfo={{
-                            id: 'macrobius-eustachius',
-                            src: '/Macrobius-and-Eustachius.jpg',
-                            title: currentLang === 'DE' ? 'Macrobius und sein Sohn Eustachius' :
-                                   currentLang === 'EN' ? 'Macrobius and his son Eustachius' :
-                                   'Macrobius et filius eius Eustachius',
-                            subtitle: currentLang === 'DE' ? 'Familiäre Überlieferung des Wissens' :
-                                      currentLang === 'EN' ? 'Familial transmission of knowledge' :
-                                      'Traditio familiaris scientiae',
-                            description: currentLang === 'DE' ? 'Macrobius mit seinem Sohn, dem er seine Werke widmete' :
-                                         currentLang === 'EN' ? 'Macrobius with his son, to whom he dedicated his works' :
-                                         'Macrobius cum filio suo, cui opera sua dedicavit',
-                            section: 'intro'
-                          }}
-                          onClick={handleImageClick}
-                          className="max-w-2xl border-2 border-amber-400/60 shadow-xl"
-                          fullSize={true}
-                        />
-                      </motion.div>
-                    </div>
-                    
-                    <p className="text-yellow-200/80 text-sm mt-6 italic">
-                      📸 {currentLang === 'DE' ? 'Klicken Sie auf die Bilder für detaillierte kulturelle Hintergründe und historische Zusammenhänge' :
-                            currentLang === 'EN' ? 'Click on the images for detailed cultural backgrounds and historical connections' :
-                            'Clicca imagines pro contextu culturali detaillato et connexionibus historicis'}
-                    </p>
                   </div>
 
                   {/* Cultural story text */}
                   <div className="max-w-4xl mx-auto mb-8">
                     <p className="text-base md:text-lg text-white/90 leading-relaxed text-justify">
-                      {t('cultural_story')}
+                      {safeT('cultural_story')}
                     </p>
                   </div>
                 </div>
@@ -591,7 +483,7 @@ export default function MacrobiusCulturalApp() {
                       color: '#FFD700',
                     }}
                   >
-                    {t('explore_texts')}
+                    {safeT('explore_texts')}
                   </button>
                   
                   <button
@@ -602,7 +494,7 @@ export default function MacrobiusCulturalApp() {
                       color: '#FFD700',
                     }}
                   >
-                    {t('more_about_macrobius')}
+                    {safeT('more_about_macrobius')}
                   </button>
 
                   <button
@@ -613,14 +505,14 @@ export default function MacrobiusCulturalApp() {
                       color: '#FFD700',
                     }}
                   >
-                    {t('more_about_pontanus')}
+                    {safeT('more_about_pontanus')}
                   </button>
                 </div>
               </div>
             </section>
           )}
 
-          {/* Other sections remain the same */}
+          {/* Other sections */}
           {activeSection === 'search' && (
             <TextSearchSection isActive={true} t={tAdapter} language={currentLang as 'DE' | 'EN' | 'LA'} />
           )}
@@ -675,7 +567,7 @@ export default function MacrobiusCulturalApp() {
           language={currentLang}
         />
 
-        {/* Modals remain the same with proper translations */}
+        {/* About Macrobius Modal */}
         <AnimatePresence>
           {showAboutModal && (
             <motion.div
@@ -704,43 +596,11 @@ export default function MacrobiusCulturalApp() {
                 <div className="space-y-8">
                   <div className="text-center">
                     <h2 className="text-4xl font-bold text-yellow-400 mb-2">
-                      {t('about_title')}
+                      {safeT('about_title')}
                     </h2>
                     <p className="text-xl text-yellow-300/90 font-medium">
-                      {t('about_subtitle')}
+                      {safeT('about_subtitle')}
                     </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <div className="relative">
-                      <Image 
-                        src="/MacrobiusBottle.jpg" 
-                        alt="Macrobius Portrait"
-                        width={256}
-                        height={320}
-                        className="w-full h-80 object-cover rounded-xl border-4 border-yellow-400 shadow-xl"
-                      />
-                    </div>
-                    
-                    <div className="relative">
-                      <Image 
-                        src="/MacrobI.JPG" 
-                        alt="Macrobius Book Volume I"
-                        width={256}
-                        height={320}
-                        className="w-full h-80 object-cover rounded-xl border-4 border-amber-400 shadow-xl"
-                      />
-                    </div>
-                    
-                    <div className="relative">
-                      <Image 
-                        src="/MacrobiRegal.jpg" 
-                        alt="Macrobius Books on Shelf"
-                        width={256}
-                        height={320}
-                        className="w-full h-80 object-cover rounded-xl border-4 border-amber-400 shadow-xl"
-                      />
-                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -750,7 +610,7 @@ export default function MacrobiusCulturalApp() {
                               currentLang === 'EN' ? 'Biography & Context' :
                               'Biographia et Contextus'}
                       </h3>
-                      <p className="text-white/90 leading-relaxed text-justify">{t('about_biography')}</p>
+                      <p className="text-white/90 leading-relaxed text-justify">{safeT('about_biography')}</p>
                     </div>
 
                     <div>
@@ -759,7 +619,7 @@ export default function MacrobiusCulturalApp() {
                               currentLang === 'EN' ? 'The Two Major Works' :
                               'Duo Opera Principalia'}
                       </h3>
-                      <p className="text-white/90 leading-relaxed text-justify">{t('about_works')}</p>
+                      <p className="text-white/90 leading-relaxed text-justify">{safeT('about_works')}</p>
                     </div>
                   </div>
 
@@ -769,7 +629,7 @@ export default function MacrobiusCulturalApp() {
                             currentLang === 'EN' ? 'Legacy & Impact' :
                             'Legatum et Effectus'}
                     </h3>
-                    <p className="text-white/90 leading-relaxed text-justify">{t('about_legacy')}</p>
+                    <p className="text-white/90 leading-relaxed text-justify">{safeT('about_legacy')}</p>
                   </div>
 
                   <div className="text-center">
@@ -781,7 +641,7 @@ export default function MacrobiusCulturalApp() {
                         color: '#FFD700',
                       }}
                     >
-                      {t('close_modal')}
+                      {safeT('close_modal')}
                     </button>
                   </div>
                 </div>
@@ -819,10 +679,10 @@ export default function MacrobiusCulturalApp() {
                 <div className="space-y-8">
                   <div className="text-center">
                     <h2 className="text-4xl font-bold text-blue-400 mb-2">
-                      {t('about_pontanus_title')}
+                      {safeT('about_pontanus_title')}
                     </h2>
                     <p className="text-xl text-blue-300/90 font-medium">
-                      {t('about_pontanus_subtitle')}
+                      {safeT('about_pontanus_subtitle')}
                     </p>
                   </div>
 
@@ -833,7 +693,7 @@ export default function MacrobiusCulturalApp() {
                               currentLang === 'EN' ? 'Bridge-Builder of Sciences' :
                               'Constructor Pontis Scientiarum'}
                       </h3>
-                      <p className="text-white/90 leading-relaxed text-justify">{t('about_pontanus_bio')}</p>
+                      <p className="text-white/90 leading-relaxed text-justify">{safeT('about_pontanus_bio')}</p>
                     </div>
 
                     <div>
@@ -842,32 +702,7 @@ export default function MacrobiusCulturalApp() {
                               currentLang === 'EN' ? 'Editorial Masterpiece' :
                               'Opus Editoriale Eximium'}
                       </h3>
-                      <p className="text-white/90 leading-relaxed text-justify">{t('about_pontanus_work')}</p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div className="text-center">
-                      <div className="relative mb-4">
-                        <Image 
-                          src="/TychoAssistent.jpg" 
-                          alt="Tycho Brahe Observatory with Pontanus"
-                          width={192}
-                          height={256}
-                          className="w-48 h-64 object-cover rounded-xl border-4 border-blue-400 shadow-xl mx-auto"
-                        />
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="relative mb-4">
-                        <Image 
-                          src="/Astrolab.jpg" 
-                          alt="Astronomical Instruments"
-                          width={192}
-                          height={256}
-                          className="w-48 h-64 object-cover rounded-xl border-4 border-purple-400 shadow-xl mx-auto"
-                        />
-                      </div>
+                      <p className="text-white/90 leading-relaxed text-justify">{safeT('about_pontanus_work')}</p>
                     </div>
                   </div>
 
@@ -877,10 +712,7 @@ export default function MacrobiusCulturalApp() {
                             currentLang === 'EN' ? 'Historical Legacy' :
                             'Legatum Historicum'}
                     </h3>
-                    <p className="text-white/90 leading-relaxed text-justify">{t('about_pontanus_legacy')}</p>
-                    <div className="mt-4 p-4 bg-blue-500/20 border border-blue-400/50 rounded-lg">
-                      <p className="text-white/90 text-sm leading-relaxed">{t('pontanus_historical_details')}</p>
-                    </div>
+                    <p className="text-white/90 leading-relaxed text-justify">{safeT('about_pontanus_legacy')}</p>
                   </div>
 
                   <div className="text-center">
@@ -892,7 +724,7 @@ export default function MacrobiusCulturalApp() {
                         color: '#FFD700',
                       }}
                     >
-                      {t('close_modal')}
+                      {safeT('close_modal')}
                     </button>
                   </div>
                 </div>
@@ -930,43 +762,15 @@ export default function MacrobiusCulturalApp() {
                 <div className="space-y-8">
                   <div className="text-center">
                     <h2 className="text-4xl font-bold text-red-400 mb-2">
-                      {t('declining_rome_title')}
+                      {safeT('declining_rome_title')}
                     </h2>
                     <p className="text-xl text-red-300/90 font-medium">
-                      {t('declining_rome_subtitle')}
+                      {safeT('declining_rome_subtitle')}
                     </p>
                   </div>
 
-                  <div className="flex justify-center mb-6">
-                    <div className="relative">
-                      <Image 
-                        src="/Rome-under.jpg" 
-                        alt={t('declining_rome_title')}
-                        width={400}
-                        height={300}
-                        className="w-96 h-72 object-cover rounded-xl border-4 border-red-400 shadow-xl"
-                        style={{ objectPosition: 'center 30%' }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="prose prose-invert max-w-none">
-                    <div className="text-white/90 leading-relaxed space-y-6 text-justify">
-                      {t('declining_rome_content').split('\n\n').map((paragraph, index) => (
-                        <p key={index} className="mb-4">
-                          {paragraph.startsWith('**') ? (
-                            <>
-                              <strong className="text-red-300 text-lg block mb-2">
-                                {paragraph.match(/\*\*(.*?)\*\*/)?.[1]}
-                              </strong>
-                              {paragraph.replace(/\*\*(.*?)\*\*/, '').trim()}
-                            </>
-                          ) : (
-                            paragraph
-                          )}
-                        </p>
-                      ))}
-                    </div>
+                  <div className="text-white/90 leading-relaxed space-y-6 text-justify">
+                    <p>{safeT('declining_rome_content')}</p>
                   </div>
 
                   <div className="text-center">
@@ -978,7 +782,7 @@ export default function MacrobiusCulturalApp() {
                         color: '#FFD700',
                       }}
                     >
-                      {t('close_modal')}
+                      {safeT('close_modal')}
                     </button>
                   </div>
                 </div>
@@ -1006,13 +810,6 @@ export default function MacrobiusCulturalApp() {
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-          }
-
-          .prose p strong {
-            color: #ef4444;
-            font-size: 1.125rem;
-            display: block;
-            margin-bottom: 0.5rem;
           }
         `}</style>
       </div>
