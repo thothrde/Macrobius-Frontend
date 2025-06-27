@@ -10,7 +10,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-// COMPLETE TRANSLATIONS - ALL LANGUAGES NOW HAVE COMPLETE CONTENT WITH IMPROVED UI
+// COMPREHENSIVE TRANSLATIONS - ALL LANGUAGES NOW HAVE COMPLETE CONTENT WITH IMPROVED UI
 const translations = {
   DE: {
     // Navigation - IMPROVED USER-FRIENDLY TITLES
@@ -59,10 +59,27 @@ const translations = {
     // DECLINING ROME - COMPLETE EXTENSIVE GERMAN CONTENT
     'declining_rome_title': 'Das untergehende Römische Reich',
     'declining_rome_subtitle': 'Kultureller Niedergang und die Mission der Gelehrten (4.-5. Jahrhundert n. Chr.)',
-    'declining_rome_content': 'Die Zeit des Macrobius Ambrosius Theodosius (ca. 385-430 n. Chr.) war geprägt vom dramatischen Niedergang des Weströmischen Reiches. Was Historiker heute als "Spätantike" bezeichnen, war für die Zeitgenossen eine Zeit existenzieller Bedrohung und radikalen Wandels.',
+    'declining_rome_content': `Die Zeit des Macrobius Ambrosius Theodosius (ca. 385-430 n. Chr.) war geprägt vom dramatischen Niedergang des Weströmischen Reiches. Was Historiker heute als "Spätantike" bezeichnen, war für die Zeitgenossen eine Zeit existenzieller Bedrohung und radikalen Wandels.
 
-    // CULTURAL STORY - COMPLETE GERMAN
-    'cultural_story': 'Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus ZWEI HAUPTWERKEN: Den ungezwungenen Gesprächsrunden gebildeter Römer in den "Saturnalia" und dem philosophischen "Kommentar zum Somnium Scipionis". In beiden Werken versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle.',
+**Die Krise des 5. Jahrhunderts:**
+Zwischen 400 und 450 n. Chr. erlebte das Weströmische Reich eine Kaskade von Katastrophen: Die Völkerwanderung brachte germanische Stämme wie Westgoten, Vandalen und Burgunder ins Herz des Imperiums. 410 plünderte Alarich Rom, 455 folgten die Vandalen. Die militärische und politische Kontrolle schwand rapide.
+
+**Kulturelle Bedrohung:**
+Doch für Intellektuelle wie Macrobius war der kulturelle Niedergang noch bedrohlicher als der politische. Die klassische Bildung, die über 800 Jahre das Rückgrat der römischen Zivilisation gebildet hatte, stand vor dem Kollaps. Bibliotheken wurden geplündert, Schulen geschlossen, die Überlieferungskette des antiken Wissens drohte zu reißen.
+
+**Macrobius' Antwort:**
+In dieser Situation entwickelte Macrobius seine "kulturelle Rettungsmission". Er erkannte, dass das politische Rom untergehen würde, aber das geistige Rom gerettet werden konnte. Seine zwei Hauptwerke - die Saturnalia und sein Somnium-Kommentar - waren bewusst als "Flaschenpost" an zukünftige Generationen konzipiert.
+
+**Die Methode der Kulturbewahrung:**
+Macrobius wählte einen systematischen Ansatz: Er sammelte das Beste der klassischen Tradition - von Vergil über Cicero bis zu griechischen Philosophen - und verpackte es in attraktive, literarische Formen. Die Saturnalien präsentierten komplexes Wissen als unterhaltsame Gespräche, der Somnium-Kommentar verband astronomische und philosophische Erkenntnisse in einem kosmologischen System.
+
+**Historische Ironie:**
+Was als Verzweiflungstat in einer untergehenden Welt begann, wurde zu einem der erfolgreichsten Bildungsprojekte der Geschichte. Macrobius' Werke überlebten das Mittelalter, inspirierten die Renaissance und bilden heute die Grundlage unserer digitalen Kulturvermittlung. So wurde aus dem "untergehenden Rom" der Grundstein für die europäische Bildungstradition.`,
+
+    // CULTURAL STORY - COMPLETE GERMAN WITH PERSONAL MOTIVATION
+    'cultural_story': `Vor 1500 Jahren, als das römische Reich dem Untergang entgegensah, fertigte Macrobius, ein führender Verwaltungsbeamter und Gelehrter im Norden Italiens, eine Flaschenpost an die Zukunft an. Diese Flaschenpost bestand aus ZWEI HAUPTWERKEN: Den ungezwungenen Gesprächsrunden gebildeter Römer in den "Saturnalia" und dem philosophischen "Kommentar zum Somnium Scipionis". In beiden Werken versuchte Macrobius das, was ihm an der untergehenden Zivilisation der Antike wichtig war, in einer Weise zu verpacken, die die heranziehenden dunklen Jahrhunderte überstand und zukünftige Leser anregte, den Zivilisationsprozess wieder in Gang zu setzen mit der Erinnerung an die antike Zivilisation als Ermutigung und Materialquelle.
+
+Vor 500 Jahren begann dieser Neuanfang. In Dänemark durch astronomische Beobachtungen Tycho Brahes, der damit den Grundstein für Keplers Arbeit und das Entstehen moderner Naturwissenschaften legte. Ein Assistent Tychos, Johannes Isaac Pontanus, erinnerte sich an Macrobius Flaschenpost und stellte erstmals eine zuverlässige und kommentierte Gesamtausgabe beider Werke zusammen. Dieses Buch kam in meine Hände und ich auf die Idee, eine kleine App für euch zu dieser Geschichte zu basteln.... Viel Spaß!`,
 
     // Other German content
     'explore_texts': 'ERKUNDEN SIE DIE ZWEI WERKE DES MACROBIUS',
@@ -71,6 +88,27 @@ const translations = {
     'more_about_macrobius': 'Mehr über Macrobius',
     'more_about_pontanus': 'Mehr über Pontanus',
     'close_modal': 'Schließen',
+
+    // Learning Section
+    'learning.title': 'Interaktives Lernen',
+    'learning.subtitle': 'Entdecken Sie Macrobius durch interaktive Übungen',
+    'learning.quiz.title': 'Macrobius Quiz',
+    'learning.quiz.description': 'Testen Sie Ihr Wissen über Macrobius und seine Werke',
+    'learning.quiz.start': 'Quiz starten',
+    'learning.vocabulary.title': 'Vokabeltrainer',
+    'learning.vocabulary.description': 'Lernen Sie lateinische Begriffe aus Macrobius\' Werken',
+    'learning.vocabulary.start': 'Vokabeln lernen',
+    'learning.grammar.title': 'Grammatik-Explorer',
+    'learning.grammar.description': 'Verstehen Sie die grammatischen Strukturen klassischer Texte',
+    'learning.grammar.start': 'Grammatik erkunden',
+
+    // AI Tutoring System
+    'ai.tutor.title': 'KI-Tutor-System',
+    'ai.tutor.subtitle': 'Intelligenter Lernassistent & Kulturführer',
+    'ai.tutor.description': 'Kontextbewusster KI-Tutor, der personalisierte Anleitungen, kulturelle Erklärungen und adaptive Lernunterstützung für Ihre klassische Bildungsreise bietet.',
+    'ai.tutor.ready.title': 'Bereit für Ihre KI-Tutoring-Sitzung?',
+    'ai.tutor.ready.description': 'Ihr persönlicher KI-Tutor ist bereit, Sie durch die klassische römische Kultur zu führen und Erklärungen, kulturellen Kontext und personalisierte Lernunterstützung zu bieten.',
+    'ai.tutor.start.session': 'KI-Tutoring-Sitzung starten',
 
     // General
     'loading': 'Wird geladen...',
@@ -127,10 +165,27 @@ const translations = {
     // DECLINING ROME - COMPLETE EXTENSIVE ENGLISH CONTENT
     'declining_rome_title': 'The Declining Roman Empire',
     'declining_rome_subtitle': 'Cultural Decline and the Mission of Scholars (4th-5th Century AD)',
-    'declining_rome_content': 'The time of Macrobius Ambrosius Theodosius (ca. 385-430 AD) was marked by the dramatic decline of the Western Roman Empire. What historians today call "Late Antiquity" was for contemporaries a time of existential threat and radical change.',
+    'declining_rome_content': `The time of Macrobius Ambrosius Theodosius (ca. 385-430 AD) was marked by the dramatic decline of the Western Roman Empire. What historians today call "Late Antiquity" was for contemporaries a time of existential threat and radical change.
 
-    // CULTURAL STORY - COMPLETE ENGLISH
-    'cultural_story': '1500 years ago, as the Roman Empire approached its end, Macrobius, a leading administrator and scholar in northern Italy, created a message in a bottle to the future. This message consisted of TWO MAJOR WORKS: the casual conversations of educated Romans in the "Saturnalia" and the philosophical "Commentary on the Somnium Scipionis." In both works, Macrobius attempted to package what was important to him about the declining civilization of antiquity in a way that would survive the approaching dark centuries and inspire future readers to restart the process of civilization with the memory of ancient civilization as encouragement and source material.',
+**The Crisis of the 5th Century:**
+Between 400 and 450 AD, the Western Roman Empire experienced a cascade of catastrophes: The Migration Period brought Germanic tribes like Visigoths, Vandals, and Burgundians into the heart of the empire. In 410, Alaric sacked Rome, followed by the Vandals in 455. Military and political control rapidly waned.
+
+**Cultural Threat:**
+But for intellectuals like Macrobius, cultural decline was even more threatening than political collapse. Classical education, which had formed the backbone of Roman civilization for over 800 years, faced collapse. Libraries were plundered, schools closed, and the chain of transmission of ancient knowledge threatened to break.
+
+**Macrobius' Response:**
+In this situation, Macrobius developed his "cultural rescue mission." He recognized that political Rome would fall, but intellectual Rome could be saved. His two major works - the Saturnalia and his Somnium commentary - were deliberately conceived as a "message in a bottle" to future generations.
+
+**The Method of Cultural Preservation:**
+Macrobius chose a systematic approach: He collected the best of the classical tradition - from Virgil to Cicero to Greek philosophers - and packaged it in attractive, literary forms. The Saturnalia presented complex knowledge as entertaining conversations, while the Somnium commentary combined astronomical and philosophical insights in a cosmological system.
+
+**Historical Irony:**
+What began as an act of desperation in a declining world became one of the most successful educational projects in history. Macrobius' works survived the Middle Ages, inspired the Renaissance, and today form the foundation of our digital cultural transmission. Thus, the "declining Rome" became the cornerstone of the European educational tradition.`,
+
+    // CULTURAL STORY - COMPLETE ENGLISH WITH PERSONAL MOTIVATION
+    'cultural_story': `1500 years ago, as the Roman Empire approached its end, Macrobius, a leading administrator and scholar in northern Italy, created a message in a bottle to the future. This message consisted of TWO MAJOR WORKS: the casual conversations of educated Romans in the "Saturnalia" and the philosophical "Commentary on the Somnium Scipionis." In both works, Macrobius attempted to package what was important to him about the declining civilization of antiquity in a way that would survive the approaching dark centuries and inspire future readers to restart the process of civilization with the memory of ancient civilization as encouragement and source material.
+
+500 years ago, this renewal began. In Denmark through the astronomical observations of Tycho Brahe, who thereby laid the foundation for Kepler's work and the emergence of modern natural sciences. An assistant to Tycho, Johannes Isaac Pontanus, remembered Macrobius' message in a bottle and compiled the first reliable and annotated complete edition of both works. This book came into my hands and gave me the idea to create a small app for you about this story.... Have fun!`,
 
     // Other English content
     'explore_texts': 'EXPLORE MACROBIUS\' TWO MAJOR WORKS',
@@ -139,6 +194,27 @@ const translations = {
     'more_about_macrobius': 'More about Macrobius',
     'more_about_pontanus': 'More about Pontanus',
     'close_modal': 'Close',
+
+    // Learning Section
+    'learning.title': 'Interactive Learning',
+    'learning.subtitle': 'Discover Macrobius through interactive exercises',
+    'learning.quiz.title': 'Macrobius Quiz',
+    'learning.quiz.description': 'Test your knowledge about Macrobius and his works',
+    'learning.quiz.start': 'Start Quiz',
+    'learning.vocabulary.title': 'Vocabulary Trainer',
+    'learning.vocabulary.description': 'Learn Latin terms from Macrobius\' works',
+    'learning.vocabulary.start': 'Learn Vocabulary',
+    'learning.grammar.title': 'Grammar Explorer',
+    'learning.grammar.description': 'Understand the grammatical structures of classical texts',
+    'learning.grammar.start': 'Explore Grammar',
+
+    // AI Tutoring System
+    'ai.tutor.title': 'AI Tutoring System',
+    'ai.tutor.subtitle': 'Intelligent Learning Assistant & Cultural Guide',
+    'ai.tutor.description': 'Context-aware AI tutor that provides personalized guidance, cultural explanations, and adaptive learning support for your classical education journey.',
+    'ai.tutor.ready.title': 'Ready to Start Your AI Tutoring Session?',
+    'ai.tutor.ready.description': 'Your personal AI tutor is ready to guide you through classical Roman culture, providing explanations, cultural context, and personalized learning support.',
+    'ai.tutor.start.session': 'Start AI Tutoring Session',
 
     // General
     'loading': 'Loading...',
@@ -195,10 +271,27 @@ const translations = {
     // DECLINING ROME - COMPLETE EXTENSIVE LATIN CONTENT
     'declining_rome_title': 'Imperium Romanum Cadens',
     'declining_rome_subtitle': 'Declinatio Culturalis et Missio Eruditorum (Saec. IV-V p. Chr.)',
-    'declining_rome_content': 'Tempus Macrobii Ambrosii Theodosii (ca. 385-430 p. Chr.) declinio dramatico Imperii Romani Occidentalis signatum erat. Quod historici hodie "Antiquitatem Seram" vocant, contemporaneis tempus minae existentialis et mutationis radicalis erat.',
+    'declining_rome_content': `Tempus Macrobii Ambrosii Theodosii (ca. 385-430 p. Chr.) declinio dramatico Imperii Romani Occidentalis signatum erat. Quod historici hodie "Antiquitatem Seram" vocant, contemporaneis tempus minae existentialis et mutationis radicalis erat.
 
-    // CULTURAL STORY - COMPLETE LATIN
-    'cultural_story': 'Ante 1500 annos, cum Imperium Romanum fini appropinquaret, Macrobius, praefectus et eruditus praecipuus in Italia septentrionali, epistulam in lagena ad futurum creavit. Haec epistula DUOBUS OPERIBUS PRINCIPALIBUS constabat: colloquiis liberis virorum eruditorum Romanorum in "Saturnalibus" et philosophico "Commentario in Somnium Scipionis." In utroque opere, Macrobius id quod ei de civilizatione antiqua cadente magni momenti erat eo modo involvere conatus est qui saecula tenebrosa appropinquantia superaret et lectores futuros ad processum civilizationis iterum instaurandum incitaret cum memoria civilizationis antiquae ut hortamentum et fons materiae.',
+**Crisis Saeculi Quinti:**
+Inter annos 400 et 450 p. Chr., Imperium Romanum Occidentale cascadam catastropharum expertum est: Migratio Populorum tribus Germanicas sicut Visigothos, Vandalos et Burgundiones in cor imperii adduxit. Anno 410, Alaricus Romam diripuit, anno 455 Vandali secuti sunt. Controlatio militaris et politica rapidissime defecit.
+
+**Minatio Culturalis:**
+Sed intellectualibus sicut Macrobio, declinatio culturalis etiam periculosior erat quam collapsus politicus. Educatio classica, quae per plus quam 800 annos dorsalem spinam civilizationis Romanae formaverat, coram collapsu stabat. Bibliothecae direptae sunt, scholae clausae, catena transmissionis scientiae antiquae rumpi minabatur.
+
+**Responsum Macrobii:**
+In hac situatione, Macrobius "missionem salutis culturalis" suae evolvit. Agnovit Romam politicam casuram esse, sed Romam intellectualem servari posse. Duo opera eius principalia - Saturnalia et commentarius Somnii - deliberate ut "epistula in lagena" ad generationes futuras concepta erant.
+
+**Methodus Conservationis Culturalis:**
+Macrobius accessum systematicum elegit: Optimum traditionis classicae collegit - a Vergilio per Ciceronem usque ad philosophos Graecos - et in formis litterariis attractivis involvit. Saturnalia scientiam complexam ut colloquia gratiosa praesenterunt, commentarius Somnii perspicacitates astronomicas et philosophicas in systemate cosmologico coniunxit.
+
+**Ironia Historica:**
+Quod ut actus desperationis in mundo cadente coepit, unum ex projectis educationalibus successurius historiae factum est. Opera Macrobii Aevum Medium supervixerunt, Renascentiam inspiraverunt et hodie fundamentum transmissionis culturalis digitalis nostrae formant. Sic "Roma cadens" lapis angularis traditionis educationalis Europaeae facta est.`,
+
+    // CULTURAL STORY - COMPLETE LATIN WITH PERSONAL MOTIVATION
+    'cultural_story': `Ante 1500 annos, cum Imperium Romanum fini appropinquaret, Macrobius, praefectus et eruditus praecipuus in Italia septentrionali, epistulam in lagena ad futurum creavit. Haec epistula DUOBUS OPERIBUS PRINCIPALIBUS constabat: colloquiis liberis virorum eruditorum Romanorum in "Saturnalibus" et philosophico "Commentario in Somnium Scipionis." In utroque opere, Macrobius id quod ei de civilizatione antiqua cadente magni momenti erat eo modo involvere conatus est qui saecula tenebrosa appropinquantia superaret et lectores futuros ad processum civilizationis iterum instaurandum incitaret cum memoria civilizationis antiquae ut hortamentum et fons materiae.
+
+Ante 500 annos, haec renovatio coepit. In Dania per observationes astronomicas Tychonis Brahe, qui sic fundamentum pro labore Kepleri et ortu scientiarum naturalium modernarum posuit. Adiutor Tychonis, Johannes Isaac Pontanus, epistulae Macrobii in lagena recordatus est et primam editionem fidelem et annotatam completam utriusque operis composuit. Hic liber in manus meas venit et mihi ideam dedit parvam applicationem pro vobis de hac historia creare.... Fruimini!`,
 
     // Other Latin content
     'explore_texts': 'DUO OPERA MACROBII EXPLORARE',
@@ -207,6 +300,27 @@ const translations = {
     'more_about_macrobius': 'Magis de Macrobio',
     'more_about_pontanus': 'Magis de Pontano',
     'close_modal': 'Claudere',
+
+    // Learning Section
+    'learning.title': 'Discendum Interactivum',
+    'learning.subtitle': 'Macrobium per exercitia interactiva disce',
+    'learning.quiz.title': 'Quaestiones de Macrobio',
+    'learning.quiz.description': 'Scientiam tuam de Macrobio et operibus eius proba',
+    'learning.quiz.start': 'Quaestiones Incipe',
+    'learning.vocabulary.title': 'Exercitator Vocabulorum',
+    'learning.vocabulary.description': 'Terminos Latinos ex operibus Macrobii disce',
+    'learning.vocabulary.start': 'Vocabula Disce',
+    'learning.grammar.title': 'Explorator Grammaticus',
+    'learning.grammar.description': 'Structuras grammaticas textuum classicorum intellege',
+    'learning.grammar.start': 'Grammaticam Explora',
+
+    // AI Tutoring System
+    'ai.tutor.title': 'Systema AI Doctoris',
+    'ai.tutor.subtitle': 'Assistens Intelligens Discendi & Dux Culturae',
+    'ai.tutor.description': 'Doctor AI contextum intelligens qui directionem personalem, explicationes culturales, et auxilium discendi adaptivum pro itinere educationis tuae classicae praebet.',
+    'ai.tutor.ready.title': 'Paratusne es ad Sessionem AI Doctoris Incipiendam?',
+    'ai.tutor.ready.description': 'Doctor tuus personalis AI paratus est te per culturam Romanam classicam ducere, explicationes, contextum culturalem, et auxilium discendi personale praebens.',
+    'ai.tutor.start.session': 'Sessionem AI Doctoris Incipe',
 
     // General
     'loading': 'Oneratur...',
