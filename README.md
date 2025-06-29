@@ -194,9 +194,17 @@ We welcome contributions to the Macrobius Frontend project! Please read our cont
 
 ---
 
-## 📄 **LICENSE:**
+## 📄 **LIZENZ / LICENSE**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Diese Software steht unter einer benutzerdefinierten Lizenz zur **nicht-kommerziellen Nutzung**. Private, akademische und nicht-kommerzielle Verwendung sind erlaubt. Kommerzielle Nutzung ist **ausdrücklich untersagt**, es sei denn mit schriftlicher Genehmigung des Urhebers.
+
+Siehe [LICENSE](./LICENSE) für alle Details.
+
+---
+
+This software is released under a **custom non-commercial license**. Private, academic, and non-commercial use is permitted. **Commercial use is strictly prohibited** without prior written permission from the author.
+
+See [LICENSE](./LICENSE) for full terms.
 
 ---
 
@@ -211,6 +219,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **🏛️ Die Macrobius-App - Bridging Ancient Wisdom with Modern Technology! ✨**
 
-**Latest Update**: June 18, 2025 - Tier 2 Vocabulary SRS Enhancement Complete
+**Author**: Thomas Riepe © 2025
+**Latest Update**: June 29, 2025 - Custom Non-Commercial License Added
 **Next Milestone**: Tier 2 Semantic Search Implementation
-**Status**: Production-Ready with Advanced Learning Features
+**Status**: Production-Ready with Advanced Learning Features - SECURED AGAINST COMMERCIAL USE
