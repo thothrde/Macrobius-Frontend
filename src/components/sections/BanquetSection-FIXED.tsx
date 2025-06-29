@@ -1,541 +1,791 @@
-/**
- * 🍷 BANQUET SECTION - FIXED WITH IMAGE AND LANGUAGE IMPROVEMENTS
- * Interactive exploration of Roman dining culture through Macrobius
- * FIXED: WandSymposion.jpg without heavy overlay + Language integration
- */
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Wine, Crown, Scroll, Users, Clock, Book, Star, Globe, MessageCircle, Play, Pause } from 'lucide-react';
 import Image from 'next/image';
-import { 
-  Wine, 
-  Users, 
-  Crown, 
-  Sparkles, 
-  Clock, 
-  Globe, 
-  BookOpen, 
-  Star,
-  ChevronRight,
-  Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  RotateCcw,
-  Zap,
-  Heart,
-  Trophy,
-  Music
-} from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-interface BanquetCharacter {
-  id: string;
-  name: string;
-  role: string;
-  description: string;
-  quote: string;
-  position: { x: number; y: number };
-}
-
-interface BanquetTopic {
-  id: string;
-  title: string;
-  description: string;
-  participants: string[];
-  culturalSignificance: string;
-  modernRelevance: string;
-}
-
-interface BanquetProps {
+// FIXED: Add language support from context
+interface BanquetSectionProps {
+  isActive: boolean;
   className?: string;
 }
 
-export default function BanquetSection({ className = '' }: BanquetProps) {
-  const { language, t } = useLanguage();
-  const [activeCharacter, setActiveCharacter] = useState<string | null>(null);
-  const [currentTopic, setCurrentTopic] = useState(0);
+interface Character {
+  id: string;
+  name: string;
+  title: string;
+  description: string;
+  avatar: string;
+  position: { x: number; y: number };
+  wisdom: string[];
+  personality: string;
+  historicalNote: string;
+}
+
+interface ConversationTopic {
+  id: string;
+  theme: string;
+  title: string;
+  participants: string[];
+  content: {
+    speaker: string;
+    text: string;
+    translation?: string;
+    culturalNote?: string;
+  }[];
+  modernRelevance: string;
+}
+
+const CHARACTERS: Character[] = [
+  {
+    id: 'macrobius',
+    name: 'Macrobius',
+    title: 'Magister Convivii',
+    description: 'Our learned host and chronicler of these scholarly conversations',
+    avatar: '🏛️',
+    position: { x: 50, y: 20 },
+    wisdom: [
+      'Saturni sacrum diem festum esse universa Romani imperii provincia novit',
+      'In convivio doctorum virorum sermones eruditos audire licet',
+      'Sapientia antiqua modernos quoque docere potest'
+    ],
+    personality: 'Wise chronicler who preserves the conversations of learned men',
+    historicalNote: 'Author of the Saturnalia, our window into Roman intellectual life'
+  },
+  {
+    id: 'praetextatus',
+    name: 'Vettius Agorius Praetextatus',
+    title: 'Pontifex Maximus',
+    description: 'Distinguished senator and religious authority',
+    avatar: '⚖️',
+    position: { x: 20, y: 40 },
+    wisdom: [
+      'Religio est quae deorum cultu pio continetur',
+      'Traditiones maiorum custodiendae sunt',
+      'Sacrorum memoria et observantia civitatis fundamentum est'
+    ],
+    personality: 'Authoritative voice on religious matters and Roman traditions',
+    historicalNote: 'Prominent pagan politician and philosopher of the 4th century'
+  },
+  {
+    id: 'symmachus',
+    name: 'Quintus Aurelius Symmachus',
+    title: 'Orator Clarissimus',
+    description: 'Renowned orator and defender of Roman traditions',
+    avatar: '🎭',
+    position: { x: 80, y: 40 },
+    wisdom: [
+      'Eloquentia virtutis comes est',
+      'Veritas per eloquentiam magis elucet',
+      'Romana dignitas in verbis quoque conservanda est'
+    ],
+    personality: 'Passionate defender of Roman culture and masterful speaker',
+    historicalNote: 'Famous for his defense of the Altar of Victory in the Senate'
+  },
+  {
+    id: 'servius',
+    name: 'Servius',
+    title: 'Grammaticus Doctissimus',
+    description: 'Master grammarian and interpreter of Virgil',
+    avatar: '📚',
+    position: { x: 50, y: 60 },
+    wisdom: [
+      'Vergilii carmina omnem sapientiam continent',
+      'Grammatica est scientiarum fundamentum',
+      'Poetae antiqui mysteria naturae revelaverunt'
+    ],
+    personality: 'Scholarly and methodical, devoted to preserving literary traditions',
+    historicalNote: 'His commentary on Virgil survived and influenced medieval education'
+  },
+  {
+    id: 'avienius',
+    name: 'Avienius',
+    title: 'Poeta et Consularis',
+    description: 'Poet and former consul with deep knowledge of astronomy',
+    avatar: '🌟',
+    position: { x: 20, y: 70 },
+    wisdom: [
+      'Astra regunt hominum fata',
+      'Poeta est vates naturae mysteriorum',
+      'Sapientia caelestis terrestrem illuminat'
+    ],
+    personality: 'Mystical and contemplative, bridging poetry and cosmic wisdom',
+    historicalNote: 'Known for his astronomical poem "Aratea" and other didactic works'
+  },
+  {
+    id: 'albinus',
+    name: 'Caecina Albinus',
+    title: 'Philosophus',
+    description: 'Philosophical mind questioning the nature of existence',
+    avatar: '🤔',
+    position: { x: 80, y: 70 },
+    wisdom: [
+      'Quid est vita nisi mors dilata?',
+      'Sapientia in dubitatione incipit',
+      'Veritas quaerenda est, non assumenda'
+    ],
+    personality: 'Inquisitive philosopher who challenges assumptions',
+    historicalNote: 'Representative of the intellectual curiosity of the late Roman elite'
+  }
+];
+
+const CONVERSATION_TOPICS: ConversationTopic[] = [
+  {
+    id: 'saturnalia_origins',
+    theme: 'Religious Practices',
+    title: 'The Origins and Meaning of Saturnalia',
+    participants: ['praetextatus', 'macrobius'],
+    content: [
+      {
+        speaker: 'praetextatus',
+        text: 'Saturni festum antiquissimum est et ad Italiae indigenas spectat',
+        translation: 'The festival of Saturn is most ancient and relates to the native peoples of Italy',
+        culturalNote: 'Praetextatus emphasizes the deep historical roots of Roman religion'
+      },
+      {
+        speaker: 'macrobius',
+        text: 'Quomodo igitur tantam reverentiam meruit haec solemnitas?',
+        translation: 'How then did this celebration earn such great reverence?',
+        culturalNote: 'Macrobius often asks probing questions to draw out deeper explanations'
+      },
+      {
+        speaker: 'praetextatus',
+        text: 'Quia tempus erat quo omnes aequales erant, dominus et servus',
+        translation: 'Because it was a time when all were equal, master and slave',
+        culturalNote: 'The temporary social inversion during Saturnalia reflected ideals of a golden age'
+      }
+    ],
+    modernRelevance: 'Modern festivals often serve similar functions - creating temporary communities where normal social hierarchies are suspended, allowing for renewal and reflection.'
+  },
+  {
+    id: 'vergil_wisdom',
+    theme: 'Literature',
+    title: 'The Hidden Wisdom in Virgil\'s Poetry',
+    participants: ['servius', 'avienius'],
+    content: [
+      {
+        speaker: 'servius',
+        text: 'Vergilius non solum poeta, sed etiam philosophus fuit',
+        translation: 'Virgil was not only a poet, but also a philosopher',
+        culturalNote: 'Roman education saw poetry as a vehicle for transmitting wisdom and values'
+      },
+      {
+        speaker: 'avienius',
+        text: 'Aeneidem totam astronomiae mysteria continere arbitror',
+        translation: 'I believe the entire Aeneid contains the mysteries of astronomy',
+        culturalNote: 'Ancient readers often found multiple layers of meaning in classical texts'
+      },
+      {
+        speaker: 'servius',
+        text: 'Sic poeta docet sine doctrina ostentata',
+        translation: 'Thus the poet teaches without ostentatious display of learning',
+        culturalNote: 'The ideal of teaching through beauty and narrative rather than dry instruction'
+      }
+    ],
+    modernRelevance: 'Contemporary educators still debate how to embed deep learning in engaging formats - from educational games to narrative-based learning.'
+  },
+  {
+    id: 'dream_cosmology',
+    theme: 'Astronomy',
+    title: 'Scipio\'s Dream and the Music of the Spheres',
+    participants: ['avienius', 'albinus', 'macrobius'],
+    content: [
+      {
+        speaker: 'avienius',
+        text: 'Somnium Scipionis caelestis harmoniae mysterium revelat',
+        translation: 'Scipio\'s Dream reveals the mystery of celestial harmony',
+        culturalNote: 'Ancient cosmology often connected mathematical ratios with musical harmony'
+      },
+      {
+        speaker: 'albinus',
+        text: 'Sed quomodo spherae cantare possunt?',
+        translation: 'But how can the spheres sing?',
+        culturalNote: 'Philosophical skepticism was valued even in accepting ancient wisdom'
+      },
+      {
+        speaker: 'macrobius',
+        text: 'Non auribus sed mente audienda est haec musica',
+        translation: 'This music must be heard not with ears but with the mind',
+        culturalNote: 'Distinction between physical and intellectual perception in ancient philosophy'
+      }
+    ],
+    modernRelevance: 'Modern physics\'s "cosmic microwave background" and gravitational waves echo ancient intuitions about cosmic harmony and vibration.'
+  },
+  {
+    id: 'education_philosophy',
+    theme: 'Education',
+    title: 'The Proper Education of Youth',
+    participants: ['symmachus', 'servius', 'praetextatus'],
+    content: [
+      {
+        speaker: 'symmachus',
+        text: 'Iuvenes nostri Graeca et Latina pariter discere debent',
+        translation: 'Our young people should learn both Greek and Latin equally',
+        culturalNote: 'Bilingual education was the mark of the Roman elite'
+      },
+      {
+        speaker: 'servius',
+        text: 'Grammatica prima est omnium artium',
+        translation: 'Grammar is the first of all arts',
+        culturalNote: 'Language study was seen as the foundation of all learning'
+      },
+      {
+        speaker: 'praetextatus',
+        text: 'Sed virtus sine doctrina inanis est',
+        translation: 'But virtue without learning is empty',
+        culturalNote: 'The integration of moral and intellectual education in Roman thought'
+      }
+    ],
+    modernRelevance: 'Debates about classical education, critical thinking, and character formation remain central to educational philosophy today.'
+  }
+];
+
+interface CharacterCardProps {
+  character: Character;
+  isSelected: boolean;
+  onClick: () => void;
+  isHighlighted: boolean;
+}
+
+const CharacterCard: React.FC<CharacterCardProps> = ({ character, isSelected, onClick, isHighlighted }) => {
+  return (
+    <motion.div
+      className={`absolute cursor-pointer transform -translate-x-1/2 -translate-y-1/2 ${
+        isHighlighted ? 'z-20' : 'z-10'
+      }`}
+      style={{
+        left: `${character.position.x}%`,
+        top: `${character.position.y}%`,
+      }}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={onClick}
+      animate={{
+        scale: isSelected ? 1.2 : 1,
+        boxShadow: isHighlighted 
+          ? '0 0 30px rgba(255, 215, 0, 0.6)' 
+          : isSelected 
+          ? '0 0 20px rgba(255, 215, 0, 0.4)'
+          : '0 0 10px rgba(255, 215, 0, 0.2)'
+      }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full border-3 ${
+        isSelected 
+          ? 'border-yellow-300 bg-gradient-to-br from-amber-800/80 to-amber-900/80' 
+          : isHighlighted
+          ? 'border-yellow-400 bg-gradient-to-br from-amber-700/70 to-amber-800/70'
+          : 'border-yellow-500/60 bg-gradient-to-br from-amber-900/60 to-amber-950/60'
+      } backdrop-blur-sm flex items-center justify-center text-2xl md:text-3xl transition-all duration-300`}>
+        {character.avatar}
+        
+        {/* Pulsing indicator for highlighted characters */}
+        {isHighlighted && (
+          <motion.div
+            className="absolute inset-0 rounded-full border-2 border-yellow-300/60"
+            animate={{ scale: [1, 1.3, 1], opacity: [0.6, 0, 0.6] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        )}
+      </div>
+      
+      {/* Character name tooltip */}
+      <motion.div
+        className={`absolute top-full mt-2 left-1/2 transform -translate-x-1/2 whitespace-nowrap bg-black/80 text-yellow-100 px-2 py-1 rounded text-xs transition-opacity duration-300 ${
+          isSelected || isHighlighted ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        {character.name}
+        <div className="text-yellow-300/80 text-xs">{character.title}</div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+interface ConversationPanelProps {
+  topic: ConversationTopic;
+  onClose: () => void;
+  characters: Character[];
+}
+
+const ConversationPanel: React.FC<ConversationPanelProps> = ({ topic, onClose, characters }) => {
+  const [currentExchange, setCurrentExchange] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [selectedTab, setSelectedTab] = useState<'characters' | 'topics' | 'culture'>('characters');
-
-  // Dynamic characters based on language
-  const characters: BanquetCharacter[] = [
-    {
-      id: 'macrobius',
-      name: 'Macrobius',
-      role: language === 'DE' ? 'Gelehrter Gastgeber' : language === 'LA' ? 'Hospes Doctus' : 'Scholarly Host',
-      description: language === 'DE' ? 'Führt durch die intellektuellen Diskussionen' : language === 'LA' ? 'Disputationes intellectuales ducit' : 'Guides the intellectual discussions',
-      quote: language === 'DE' ? '"Lasst uns Weisheit mit Wein mischen"' : language === 'LA' ? '"Sapientiam cum vino misceamus"' : '"Let us mix wisdom with wine"',
-      position: { x: 50, y: 30 }
-    },
-    {
-      id: 'symmachus',
-      name: 'Symmachus',
-      role: language === 'DE' ? 'Römischer Senator' : language === 'LA' ? 'Senator Romanus' : 'Roman Senator',
-      description: language === 'DE' ? 'Verteidiger der traditionellen Werte' : language === 'LA' ? 'Defensor morum traditionalium' : 'Defender of traditional values',
-      quote: language === 'DE' ? '"Die alten Wege sind die besten"' : language === 'LA' ? '"Veteres viae optimae sunt"' : '"The old ways are the best ways"',
-      position: { x: 25, y: 60 }
-    },
-    {
-      id: 'praetextatus',
-      name: 'Praetextatus',
-      role: language === 'DE' ? 'Philosophischer Denker' : language === 'LA' ? 'Cogitator Philosophicus' : 'Philosophical Thinker',
-      description: language === 'DE' ? 'Bringt neo-platonische Einsichten ein' : language === 'LA' ? 'Perspectus neo-platonicos adfert' : 'Brings Neo-Platonic insights',
-      quote: language === 'DE' ? '"Tugend ist ihre eigene Belohnung"' : language === 'LA' ? '"Virtus est praemium suum"' : '"Virtue is its own reward"',
-      position: { x: 75, y: 45 }
-    },
-    {
-      id: 'avienus',
-      name: 'Avienus',
-      role: language === 'DE' ? 'Dichter & Übersetzer' : language === 'LA' ? 'Poeta et Interpres' : 'Poet & Translator',
-      description: language === 'DE' ? 'Experte für literarische Traditionen' : language === 'LA' ? 'Peritus traditionum literariarum' : 'Expert in literary traditions',
-      quote: language === 'DE' ? '"Dichtung offenbart die Wahrheit"' : language === 'LA' ? '"Poesis veritatem revelat"' : '"Poetry reveals truth"',
-      position: { x: 40, y: 75 }
-    }
-  ];
-
-  // Dynamic topics based on language
-  const banquetTopics: BanquetTopic[] = [
-    {
-      id: 'astronomy',
-      title: language === 'DE' ? 'Himmlische Harmonie' : language === 'LA' ? 'Harmonia Caelestis' : 'Celestial Harmony',
-      description: language === 'DE' ? 'Diskussion über Planetenbewegungen und kosmische Musik' : language === 'LA' ? 'Disputatio de motibus planetarum et musica cosmica' : 'Discussion of planetary motions and cosmic music',
-      participants: ['Macrobius', 'Praetextatus'],
-      culturalSignificance: language === 'DE' ? 'Verbindung von Wissenschaft und Spiritualität' : language === 'LA' ? 'Nexus scientiae et spiritualitatis' : 'Connection of science and spirituality',
-      modernRelevance: language === 'DE' ? 'Moderne Astrophysik und Kosmologie' : language === 'LA' ? 'Astrophysica et cosmologia moderna' : 'Modern astrophysics and cosmology'
-    },
-    {
-      id: 'virtue',
-      title: language === 'DE' ? 'Die Natur der Tugend' : language === 'LA' ? 'Natura Virtutis' : 'The Nature of Virtue',
-      description: language === 'DE' ? 'Philosophische Untersuchung moralischer Exzellenz' : language === 'LA' ? 'Investigatio philosophica excellentiae moralis' : 'Philosophical examination of moral excellence',
-      participants: ['Praetextatus', 'Symmachus'],
-      culturalSignificance: language === 'DE' ? 'Römische Werte und Ethik' : language === 'LA' ? 'Valores Romani et ethica' : 'Roman values and ethics',
-      modernRelevance: language === 'DE' ? 'Zeitgenössische Ethik und Führung' : language === 'LA' ? 'Ethica et ducatus contemporaneus' : 'Contemporary ethics and leadership'
-    },
-    {
-      id: 'literature',
-      title: language === 'DE' ? 'Dichterische Inspiration' : language === 'LA' ? 'Inspiratio Poetica' : 'Poetic Inspiration',
-      description: language === 'DE' ? 'Die Rolle der Literatur in der Gesellschaft' : language === 'LA' ? 'Munus literaturae in societate' : 'The role of literature in society',
-      participants: ['Avienus', 'Macrobius'],
-      culturalSignificance: language === 'DE' ? 'Kulturelle Überlieferung durch Kunst' : language === 'LA' ? 'Traditio culturalis per artem' : 'Cultural transmission through art',
-      modernRelevance: language === 'DE' ? 'Digitale Literatur und Storytelling' : language === 'LA' ? 'Literatura digitalis et narratio' : 'Digital literature and storytelling'
-    }
-  ];
-
-  // Language-specific titles and content
-  const getTitle = () => {
-    return t('banquet_title') || 
-           (language === 'DE' ? 'Gelehrtes Gastmahl' : 
-            language === 'LA' ? 'Convivium Doctorum' : 
-            'Scholarly Banquet');
-  };
-
-  const getSubtitle = () => {
-    return t('banquet_subtitle') || 
-           (language === 'DE' ? 'Macrobius\' Saturnalia und Commentarii' : 
-            language === 'LA' ? 'Saturnalia et Commentarii Macrobii' : 
-            'Macrobius\' Saturnalia and Commentarii');
-  };
-
-  const getDescription = () => {
-    return t('banquet_description') || 
-           (language === 'DE' ? 'Treten Sie ein in die Welt der römischen Gelehrsamkeit, wo intellektuelle Diskussionen bei festlichen Mahlzeiten stattfanden. Entdecken Sie, wie kulturelles Wissen in geselligen Zusammenkünften weitergegeben wurde.' : 
-            language === 'LA' ? 'Ingredere in mundum eruditionis Romanae, ubi disputationes intellectuales in conviviis festis habebantur. Discooperi quomodo scientia culturalis in coetibus socialibus tradebatur.' : 
-            'Step into the world of Roman scholarship, where intellectual discussions flourished during festive meals. Discover how cultural knowledge was transmitted through social gatherings.');
-  };
+  const [showTranslation, setShowTranslation] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (isPlaying) {
-        setCurrentTopic((prev) => (prev + 1) % banquetTopics.length);
-      }
-    }, 8000);
-
+    let interval: NodeJS.Timeout;
+    if (isPlaying && currentExchange < topic.content.length - 1) {
+      interval = setInterval(() => {
+        setCurrentExchange(prev => prev + 1);
+      }, 4000);
+    } else if (currentExchange >= topic.content.length - 1) {
+      setIsPlaying(false);
+    }
     return () => clearInterval(interval);
-  }, [isPlaying, banquetTopics.length]);
+  }, [isPlaying, currentExchange, topic.content.length]);
 
-  const togglePlayback = () => {
-    setIsPlaying(!isPlaying);
-  };
-
-  const resetTour = () => {
-    setCurrentTopic(0);
-    setIsPlaying(false);
-    setActiveCharacter(null);
+  const getCharacterByName = (speakerId: string) => {
+    return characters.find(char => char.id === speakerId) || characters[0];
   };
 
   return (
-    <section className={`relative py-24 overflow-hidden ${className}`}>
-      {/* Background with FIXED WandSymposion.jpg - No Heavy Overlay */}
+    <motion.div
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="bg-gradient-to-br from-amber-900/90 to-amber-950/90 rounded-xl border border-yellow-500/30 max-w-4xl w-full max-h-[80vh] overflow-hidden"
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.9, y: 20 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="p-6 border-b border-yellow-500/20">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-2xl font-bold text-yellow-100">{topic.title}</h3>
+              <p className="text-yellow-300/80 text-sm">Theme: {topic.theme}</p>
+            </div>
+            <button
+              onClick={onClose}
+              className="text-yellow-300 hover:text-yellow-100 text-2xl transition-colors"
+            >
+              ×
+            </button>
+          </div>
+          
+          {/* Controls */}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="flex items-center gap-2 px-4 py-2 bg-yellow-600/20 hover:bg-yellow-600/30 rounded-lg border border-yellow-500/30 text-yellow-100 transition-colors"
+            >
+              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              {isPlaying ? 'Pause' : 'Play'}
+            </button>
+            
+            <button
+              onClick={() => setShowTranslation(!showTranslation)}
+              className={`px-4 py-2 rounded-lg border border-yellow-500/30 transition-colors ${
+                showTranslation 
+                  ? 'bg-yellow-600/30 text-yellow-100' 
+                  : 'bg-transparent text-yellow-300'
+              }`}
+            >
+              Show Translations
+            </button>
+            
+            <div className="text-yellow-300/60 text-sm">
+              {currentExchange + 1} / {topic.content.length}
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 overflow-y-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentExchange}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              {topic.content.slice(0, currentExchange + 1).map((exchange, index) => {
+                const speaker = getCharacterByName(exchange.speaker);
+                const isCurrentExchange = index === currentExchange;
+                
+                return (
+                  <motion.div
+                    key={index}
+                    className={`mb-6 ${isCurrentExchange ? 'opacity-100' : 'opacity-70'}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: isCurrentExchange ? 1 : 0.7, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-800/60 to-amber-900/60 border border-yellow-500/30 flex items-center justify-center text-lg backdrop-blur-sm">
+                          {speaker.avatar}
+                        </div>
+                        <div className="text-center mt-1">
+                          <div className="text-yellow-200 text-xs font-medium">{speaker.name}</div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex-1">
+                        <blockquote className="text-lg text-yellow-100 italic leading-relaxed mb-2">
+                          "{exchange.text}"
+                        </blockquote>
+                        
+                        {showTranslation && exchange.translation && (
+                          <p className="text-yellow-200/80 mb-2">
+                            "{exchange.translation}"
+                          </p>
+                        )}
+                        
+                        {exchange.culturalNote && (
+                          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mt-3">
+                            <p className="text-yellow-300/90 text-sm leading-relaxed">
+                              <span className="font-medium">Cultural Context:</span> {exchange.culturalNote}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
+          
+          {/* Modern Relevance */}
+          {currentExchange >= topic.content.length - 1 && (
+            <motion.div
+              className="mt-8 p-6 bg-gradient-to-br from-blue-900/20 to-blue-950/20 rounded-xl border border-blue-500/20"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <h4 className="text-lg font-semibold text-blue-200 mb-3 flex items-center gap-2">
+                <Globe className="w-5 h-5" />
+                Modern Relevance
+              </h4>
+              <p className="text-blue-100/80 leading-relaxed">
+                {topic.modernRelevance}
+              </p>
+            </motion.div>
+          )}
+        </div>
+        
+        {/* Navigation */}
+        <div className="p-4 border-t border-yellow-500/20 flex justify-between items-center">
+          <button
+            onClick={() => setCurrentExchange(Math.max(0, currentExchange - 1))}
+            disabled={currentExchange === 0}
+            className="px-4 py-2 bg-yellow-600/20 hover:bg-yellow-600/30 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg border border-yellow-500/30 text-yellow-100 transition-colors"
+          >
+            Previous
+          </button>
+          
+          <div className="flex gap-2">
+            {topic.content.map((_, index) => (
+              <div
+                key={index}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  index <= currentExchange ? 'bg-yellow-400' : 'bg-yellow-500/30'
+                }`}
+              />
+            ))}
+          </div>
+          
+          <button
+            onClick={() => setCurrentExchange(Math.min(topic.content.length - 1, currentExchange + 1))}
+            disabled={currentExchange >= topic.content.length - 1}
+            className="px-4 py-2 bg-yellow-600/20 hover:bg-yellow-600/30 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg border border-yellow-500/30 text-yellow-100 transition-colors"
+          >
+            Next
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// FIXED: Updated component signature and added language support
+export default function BanquetSection({ isActive, className = '' }: BanquetSectionProps) {
+  const { language, t } = useLanguage();
+  const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
+  const [selectedTopic, setSelectedTopic] = useState<ConversationTopic | null>(null);
+  const [highlightedCharacters, setHighlightedCharacters] = useState<string[]>([]);
+  const [banquetPhase, setBanquetPhase] = useState<'arrival' | 'conversation' | 'reflection'>('arrival');
+
+  useEffect(() => {
+    if (!isActive) {
+      setSelectedCharacter(null);
+      setSelectedTopic(null);
+      setBanquetPhase('arrival');
+      return;
+    }
+
+    // Simulate banquet progression
+    const timer1 = setTimeout(() => setBanquetPhase('conversation'), 3000);
+    const timer2 = setTimeout(() => setBanquetPhase('reflection'), 8000);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [isActive]);
+
+  const handleTopicSelect = (topic: ConversationTopic) => {
+    setSelectedTopic(topic);
+    setHighlightedCharacters(topic.participants);
+  };
+
+  const selectedCharacterData = selectedCharacter 
+    ? CHARACTERS.find(char => char.id === selectedCharacter)
+    : null;
+
+  if (!isActive) return null;
+
+  return (
+    <motion.section
+      className={`relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden ${className}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+    >
+      {/* FIXED: Background with WandSymposion.jpg WITHOUT overlay effects */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 opacity-70">
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-950 via-amber-900 to-amber-950" />
+        {/* FIXED: Use WandSymposion.jpg in ORIGINAL colors without overlay effects */}
+        <div className="absolute inset-0 opacity-60">
           <Image 
             src="/WandSymposion.jpg" 
-            alt={language === 'DE' ? 'Wandmalerei Symposion - Römisches Gastmahl' : language === 'LA' ? 'Pictura Parietis Symposii - Convivium Romanum' : 'Wall Painting Symposium - Roman Banquet'}
+            alt="Wandmalerei Symposion - Römisches Gastmahl"
             fill
             className="object-cover"
             priority
           />
         </div>
-        {/* MINIMAL overlay for readability only */}
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/20 via-orange-900/15 to-amber-950/25" />
+        {/* Minimal warm overlay to maintain readability */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/30" />
+      </div>
+      
+      {/* Floating elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(12)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-yellow-400/20"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -20, 0],
+              rotate: [0, 360],
+              opacity: [0.2, 0.4, 0.2]
+            }}
+            transition={{
+              duration: 10 + Math.random() * 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.5
+            }}
+          >
+            {i % 3 === 0 ? <Wine className="w-6 h-6" /> : 
+             i % 3 === 1 ? <Scroll className="w-6 h-6" /> : 
+             <Star className="w-6 h-6" />}
+          </motion.div>
+        ))}
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 max-w-7xl">
-        {/* Enhanced Header */}
-        <motion.div 
-          className="text-center mb-16"
+      <div className="relative z-10 w-full max-w-7xl mx-auto">
+        {/* FIXED: Header with proper title and subtitle based on language */}
+        <motion.div
+          className="text-center mb-12"
           initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
         >
-          <div className="flex items-center justify-center mb-6">
-            <div className="p-4 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full mr-4 shadow-lg">
-              <Wine className="h-12 w-12 text-white" />
-            </div>
-            <div className="text-left">
-              <h2 className="text-5xl font-bold text-white mb-2 drop-shadow-lg">
-                {getTitle()}
-              </h2>
-              <p className="text-xl text-amber-200 font-semibold drop-shadow-md">
-                {getSubtitle()}
-              </p>
-            </div>
-          </div>
-          
-          <p className="text-xl text-amber-100 max-w-4xl mx-auto leading-relaxed drop-shadow-md">
-            {getDescription()}
+          <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-100 to-yellow-300 mb-4">
+            {language === 'LA' ? 'Convivium Doctorum' : language === 'EN' ? 'Scholarly Banquet' : 'Gelehrtes Gastmahl'}
+          </h1>
+          <p className="text-lg md:text-xl text-yellow-100/90 max-w-3xl mx-auto leading-relaxed">
+            {/* FIXED: Updated subtitle to reflect the two works by Macrobius */}
+            {language === 'LA' ? 'Duo opera Macrobii: Saturnalia et Commentarii in Somnium Scipionis' : 
+             language === 'EN' ? 'Two works by Macrobius: Saturnalia and Commentary on Scipio\'s Dream' : 
+             'Zwei Werke von Macrobius: Saturnalia und Somnium-Kommentar'}
           </p>
-
-          {/* Enhanced Controls */}
-          <div className="flex justify-center mt-8 space-x-4">
-            <button
-              onClick={togglePlayback}
-              className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg ${
-                isPlaying 
-                  ? 'bg-orange-500 hover:bg-orange-600 text-white' 
-                  : 'bg-amber-500 hover:bg-amber-600 text-white'
-              }`}
-            >
-              {isPlaying ? (
-                <>
-                  <Pause className="h-5 w-5 mr-2" />
-                  {language === 'DE' ? 'Pausieren' : language === 'LA' ? 'Pausare' : 'Pause Tour'}
-                </>
-              ) : (
-                <>
-                  <Play className="h-5 w-5 mr-2" />
-                  {language === 'DE' ? 'Tour starten' : language === 'LA' ? 'Iter incipere' : 'Start Tour'}
-                </>
-              )}
-            </button>
-            
-            <button
-              onClick={resetTour}
-              className="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-medium transition-all duration-300 shadow-lg"
-            >
-              <RotateCcw className="h-5 w-5 mr-2" />
-              {language === 'DE' ? 'Zurücksetzen' : language === 'LA' ? 'Renovare' : 'Reset'}
-            </button>
-
-            <button
-              onClick={() => setIsMuted(!isMuted)}
-              className={`flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg ${
-                isMuted ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'
-              } text-white`}
-            >
-              {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-            </button>
-          </div>
+          
+          <motion.div
+            className="mt-6 flex items-center justify-center gap-4 text-yellow-300/80"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+          >
+            <Clock className="w-5 h-5" />
+            <span className="text-sm">
+              {banquetPhase === 'arrival' && (language === 'LA' ? 'Adventus' : language === 'EN' ? 'Arrival' : 'Ankunft')}
+              {banquetPhase === 'conversation' && (language === 'LA' ? 'Colloquium' : language === 'EN' ? 'Conversation' : 'Gespräch')}
+              {banquetPhase === 'reflection' && (language === 'LA' ? 'Meditatio' : language === 'EN' ? 'Reflection' : 'Reflexion')}
+            </span>
+          </motion.div>
         </motion.div>
 
-        {/* Tab Navigation */}
-        <div className="flex justify-center mb-12">
-          <div className="flex bg-black/30 backdrop-blur-sm rounded-xl p-2 shadow-lg border border-amber-500/30">
-            {[
-              { id: 'characters', label: language === 'DE' ? 'Charaktere' : language === 'LA' ? 'Personae' : 'Characters', icon: Users },
-              { id: 'topics', label: language === 'DE' ? 'Themen' : language === 'LA' ? 'Themata' : 'Topics', icon: BookOpen },
-              { id: 'culture', label: language === 'DE' ? 'Kultur' : language === 'LA' ? 'Cultura' : 'Culture', icon: Crown }
-            ].map(({ id, label, icon: Icon }) => (
-              <button
-                key={id}
-                onClick={() => setSelectedTab(id as any)}
-                className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
-                  selectedTab === id
-                    ? 'bg-amber-500 text-white shadow-lg'
-                    : 'text-amber-200 hover:text-white hover:bg-amber-500/30'
-                }`}
-              >
-                <Icon className="h-5 w-5 mr-2" />
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <AnimatePresence mode="wait">
-          {/* Characters Tab */}
-          {selectedTab === 'characters' && (
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Character Interaction Area */}
+          <div className="lg:col-span-2">
             <motion.div
-              key="characters"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+              className="relative h-96 md:h-[500px] bg-gradient-to-br from-amber-800/30 to-amber-900/30 rounded-xl border border-yellow-500/20 backdrop-blur-sm overflow-hidden"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
             >
-              {characters.map((character) => (
-                <motion.div
+              {/* Banquet Table (Visual Element) */}
+              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-48 h-24 md:w-64 md:h-32 bg-gradient-to-br from-amber-700/40 to-amber-800/40 rounded-full border border-yellow-500/30 backdrop-blur-sm" />
+              
+              {/* Characters */}
+              {CHARACTERS.map((character) => (
+                <CharacterCard
                   key={character.id}
-                  className={`bg-black/40 backdrop-blur-sm border rounded-xl p-6 cursor-pointer transition-all duration-300 ${
-                    activeCharacter === character.id 
-                      ? 'border-amber-400 shadow-lg shadow-amber-500/20 scale-105' 
-                      : 'border-amber-600/30 hover:border-amber-400/60 hover:scale-102'
-                  }`}
-                  onClick={() => setActiveCharacter(activeCharacter === character.id ? null : character.id)}
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="text-center mb-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full mx-auto mb-3 flex items-center justify-center shadow-lg">
-                      <Crown className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold text-amber-100 mb-1">{character.name}</h3>
-                    <p className="text-amber-300 text-sm font-medium">{character.role}</p>
-                  </div>
-                  
-                  <p className="text-amber-200 text-sm leading-relaxed mb-4">{character.description}</p>
-                  
-                  <AnimatePresence>
-                    {activeCharacter === character.id && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="border-t border-amber-600/30 pt-4"
-                      >
-                        <div className="flex items-start">
-                          <Sparkles className="h-4 w-4 text-amber-400 mr-2 mt-1 flex-shrink-0" />
-                          <p className="text-amber-100 text-sm italic">{character.quote}</p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
+                  character={character}
+                  isSelected={selectedCharacter === character.id}
+                  onClick={() => setSelectedCharacter(
+                    selectedCharacter === character.id ? null : character.id
+                  )}
+                  isHighlighted={highlightedCharacters.includes(character.id)}
+                />
               ))}
+              
+              {/* Instructions */}
+              <motion.div
+                className="absolute top-4 left-4 bg-black/60 text-yellow-100 px-4 py-2 rounded-lg text-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: banquetPhase === 'conversation' ? 1 : 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                {language === 'LA' ? 'Personae tangere' : language === 'EN' ? 'Click on characters to learn about them' : 'Klicken Sie auf Charaktere, um mehr zu erfahren'}
+              </motion.div>
+              
+              {/* FIXED: Title and language-aware labels for the banquet symbols window */}
+              <motion.div
+                className="absolute top-4 right-4 bg-amber-900/80 text-yellow-100 px-4 py-2 rounded-lg text-sm border border-yellow-500/30"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1 }}
+              >
+                <h3 className="font-bold text-yellow-200 mb-1">
+                  {language === 'LA' ? 'Convivium Macrobii' : language === 'EN' ? 'Macrobius\' Banquet' : 'Macrobius\' Gastmahl'}
+                </h3>
+                <p className="text-xs text-yellow-300/90">
+                  {language === 'LA' ? 'Saturnalia libri septem' : language === 'EN' ? 'Seven books of Saturnalia' : 'Sieben Bücher Saturnalia'}
+                </p>
+              </motion.div>
             </motion.div>
-          )}
+          </div>
 
-          {/* Topics Tab */}
-          {selectedTab === 'topics' && (
-            <motion.div
-              key="topics"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-6"
-            >
-              {banquetTopics.map((topic, index) => (
+          {/* Side Panel */}
+          <div className="space-y-6">
+            {/* Character Details */}
+            <AnimatePresence>
+              {selectedCharacterData && (
                 <motion.div
-                  key={topic.id}
-                  className={`bg-black/40 backdrop-blur-sm border rounded-xl p-8 transition-all duration-500 ${
-                    currentTopic === index 
-                      ? 'border-amber-400 shadow-lg shadow-amber-500/20 scale-102' 
-                      : 'border-amber-600/30'
-                  }`}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-gradient-to-br from-amber-900/40 to-amber-950/40 rounded-xl border border-yellow-500/20 backdrop-blur-sm p-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex-1">
-                      <div className="flex items-center mb-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
-                          currentTopic === index ? 'bg-amber-500' : 'bg-amber-600/50'
-                        }`}>
-                          <BookOpen className="h-4 w-4 text-white" />
-                        </div>
-                        <h3 className="text-2xl font-bold text-amber-100">{topic.title}</h3>
-                        {currentTopic === index && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="ml-3 w-3 h-3 bg-amber-400 rounded-full animate-pulse"
-                          />
-                        )}
-                      </div>
-                      <p className="text-amber-200 text-lg leading-relaxed mb-4">{topic.description}</p>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <h4 className="text-amber-300 font-semibold mb-2 flex items-center">
-                            <Users className="h-4 w-4 mr-2" />
-                            {language === 'DE' ? 'Teilnehmer' : language === 'LA' ? 'Participes' : 'Participants'}
-                          </h4>
-                          <div className="flex flex-wrap gap-2">
-                            {topic.participants.map((participant) => (
-                              <span key={participant} className="bg-amber-500/20 text-amber-200 px-3 py-1 rounded-full text-sm">
-                                {participant}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                        
-                        <div>
-                          <h4 className="text-amber-300 font-semibold mb-2 flex items-center">
-                            <Star className="h-4 w-4 mr-2" />
-                            {language === 'DE' ? 'Kulturelle Bedeutung' : language === 'LA' ? 'Significatio Culturalis' : 'Cultural Significance'}
-                          </h4>
-                          <p className="text-amber-200 text-sm">{topic.culturalSignificance}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="mt-4 p-4 bg-amber-500/10 rounded-lg border border-amber-500/20">
-                        <h4 className="text-amber-300 font-semibold mb-2 flex items-center">
-                          <Globe className="h-4 w-4 mr-2" />
-                          {language === 'DE' ? 'Moderne Relevanz' : language === 'LA' ? 'Relevantia Moderna' : 'Modern Relevance'}
-                        </h4>
-                        <p className="text-amber-200 text-sm">{topic.modernRelevance}</p>
-                      </div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-800/60 to-amber-900/60 border border-yellow-500/30 flex items-center justify-center text-2xl">
+                      {selectedCharacterData.avatar}
                     </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-yellow-100">{selectedCharacterData.name}</h3>
+                      <p className="text-yellow-300/80 text-sm">{selectedCharacterData.title}</p>
+                    </div>
+                  </div>
+                  
+                  <p className="text-yellow-200/90 text-sm leading-relaxed mb-4">
+                    {selectedCharacterData.description}
+                  </p>
+                  
+                  <div className="text-xs text-yellow-300/70 leading-relaxed">
+                    <strong>Historical Note:</strong> {selectedCharacterData.historicalNote}
+                  </div>
+                  
+                  <div className="mt-4">
+                    <h4 className="text-sm font-semibold text-yellow-200 mb-2">Sample Wisdom:</h4>
+                    <blockquote className="text-yellow-100/80 italic text-sm border-l-2 border-yellow-500/30 pl-3">
+                      "{selectedCharacterData.wisdom[0]}"
+                    </blockquote>
                   </div>
                 </motion.div>
-              ))}
-            </motion.div>
-          )}
+              )}
+            </AnimatePresence>
 
-          {/* Culture Tab */}
-          {selectedTab === 'culture' && (
+            {/* Conversation Topics */}
             <motion.div
-              key="culture"
+              className="bg-gradient-to-br from-amber-900/40 to-amber-950/40 rounded-xl border border-yellow-500/20 backdrop-blur-sm p-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+              transition={{ duration: 0.5, delay: 0.8 }}
             >
-              {/* Roman Banquet Customs */}
-              <div className="bg-black/40 backdrop-blur-sm border border-amber-600/30 rounded-xl p-8">
-                <div className="flex items-center mb-6">
-                  <Trophy className="h-8 w-8 text-amber-400 mr-3" />
-                  <h3 className="text-2xl font-bold text-amber-100">
-                    {language === 'DE' ? 'Römische Gastmahl-Traditionen' : language === 'LA' ? 'Traditiones Convivii Romani' : 'Roman Banquet Traditions'}
-                  </h3>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-start">
-                    <Clock className="h-5 w-5 text-amber-400 mr-3 mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="text-amber-300 font-semibold mb-1">
-                        {language === 'DE' ? 'Zeitliche Struktur' : language === 'LA' ? 'Structura Temporalis' : 'Temporal Structure'}
-                      </h4>
-                      <p className="text-amber-200 text-sm">
-                        {language === 'DE' ? 'Gastmähler folgten strengen zeitlichen Abläufen mit verschiedenen Gängen und Diskussionsthemen.' : language === 'LA' ? 'Convivia ordines temporales strictos sequebantur cum diversis cursibus et argumentis disputationum.' : 'Banquets followed strict temporal sequences with different courses and discussion topics.'}
-                      </p>
+              <h3 className="text-lg font-semibold text-yellow-100 mb-4 flex items-center gap-2">
+                <MessageCircle className="w-5 h-5" />
+                {language === 'LA' ? 'Colloquia Docta' : language === 'EN' ? 'Scholarly Conversations' : 'Gelehrte Gespräche'}
+              </h3>
+              
+              <div className="space-y-3">
+                {CONVERSATION_TOPICS.map((topic) => (
+                  <button
+                    key={topic.id}
+                    onClick={() => handleTopicSelect(topic)}
+                    className="w-full text-left p-3 bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-500/20 hover:border-yellow-500/30 rounded-lg transition-all duration-300 group"
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-yellow-100 font-medium text-sm group-hover:text-yellow-50">
+                        {topic.title}
+                      </span>
+                      <span className="text-yellow-400/60 text-xs">
+                        {topic.theme}
+                      </span>
                     </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <Crown className="h-5 w-5 text-amber-400 mr-3 mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="text-amber-300 font-semibold mb-1">
-                        {language === 'DE' ? 'Soziale Hierarchie' : language === 'LA' ? 'Hierarchia Socialis' : 'Social Hierarchy'}
-                      </h4>
-                      <p className="text-amber-200 text-sm">
-                        {language === 'DE' ? 'Sitzordnung und Gesprächsführung spiegelten den gesellschaftlichen Status wider.' : language === 'LA' ? 'Ordo sedendi et moderatio colloquii statum socialem reflectebant.' : 'Seating arrangements and conversation leadership reflected social status.'}
-                      </p>
+                    <div className="text-yellow-200/70 text-xs">
+                      {language === 'LA' ? 'Participes' : language === 'EN' ? 'Participants' : 'Teilnehmer'}: {topic.participants.map(id => 
+                        CHARACTERS.find(char => char.id === id)?.name
+                      ).join(', ')}
                     </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <Music className="h-5 w-5 text-amber-400 mr-3 mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="text-amber-300 font-semibold mb-1">
-                        {language === 'DE' ? 'Kulturelle Funktionen' : language === 'LA' ? 'Functiones Culturales' : 'Cultural Functions'}
-                      </h4>
-                      <p className="text-amber-200 text-sm">
-                        {language === 'DE' ? 'Gastmähler dienten der Wissensvermittlung, Netzwerkbildung und kulturellen Kontinuität.' : language === 'LA' ? 'Convivia traditionis scientiae, retis socialis, et continuitatis culturalis serviebant.' : 'Banquets served knowledge transmission, networking, and cultural continuity.'}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Modern Connections */}
-              <div className="bg-black/40 backdrop-blur-sm border border-amber-600/30 rounded-xl p-8">
-                <div className="flex items-center mb-6">
-                  <Zap className="h-8 w-8 text-amber-400 mr-3" />
-                  <h3 className="text-2xl font-bold text-amber-100">
-                    {language === 'DE' ? 'Moderne Parallelen' : language === 'LA' ? 'Parallela Moderna' : 'Modern Parallels'}
-                  </h3>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="p-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg border border-blue-400/30">
-                    <h4 className="text-blue-300 font-semibold mb-2">
-                      {language === 'DE' ? 'Akademische Konferenzen' : language === 'LA' ? 'Conventus Academici' : 'Academic Conferences'}
-                    </h4>
-                    <p className="text-blue-200 text-sm">
-                      {language === 'DE' ? 'Moderne Konferenzen kombinieren Networking mit intellektuellem Austausch, ähnlich römischen Gastmählern.' : language === 'LA' ? 'Conventus moderni retes sociales cum commercio intellectuali combinant, similes conviviis Romanis.' : 'Modern conferences combine networking with intellectual exchange, similar to Roman banquets.'}
-                    </p>
-                  </div>
-                  
-                  <div className="p-4 bg-gradient-to-r from-green-500/20 to-teal-500/20 rounded-lg border border-green-400/30">
-                    <h4 className="text-green-300 font-semibold mb-2">
-                      {language === 'DE' ? 'Business-Dinner' : language === 'LA' ? 'Cena Negotialis' : 'Business Dinners'}
-                    </h4>
-                    <p className="text-green-200 text-sm">
-                      {language === 'DE' ? 'Geschäftsessen nutzen die gleichen sozialen Dynamiken für berufliche Beziehungen.' : language === 'LA' ? 'Cenae negotiales easdem dynamicas sociales pro relationibus professionalibus utuntur.' : 'Business dinners use the same social dynamics for professional relationships.'}
-                    </p>
-                  </div>
-                  
-                  <div className="p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg border border-purple-400/30">
-                    <h4 className="text-purple-300 font-semibold mb-2">
-                      {language === 'DE' ? 'Think Tanks' : language === 'LA' ? 'Cogitatoriums' : 'Think Tanks'}
-                    </h4>
-                    <p className="text-purple-200 text-sm">
-                      {language === 'DE' ? 'Moderne Think Tanks fördern Ideenaustausch in strukturierten sozialen Umgebungen.' : language === 'LA' ? 'Cogitatoriums moderna commercium idearum in ambientibus socialibus structis fovent.' : 'Modern think tanks promote idea exchange in structured social environments.'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Enhanced Progress Indicator */}
-        {isPlaying && (
-          <motion.div 
-            className="fixed bottom-8 right-8 bg-black/60 backdrop-blur-sm border border-amber-500/50 rounded-xl p-4 shadow-lg"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-          >
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center">
-                <Heart className="h-5 w-5 text-red-400 mr-2 animate-pulse" />
-                <span className="text-amber-200 text-sm font-medium">
-                  {language === 'DE' ? 'Tour läuft' : language === 'LA' ? 'Iter procedit' : 'Tour Active'}
-                </span>
-              </div>
-              <div className="flex space-x-1">
-                {banquetTopics.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      index === currentTopic ? 'bg-amber-400' : 'bg-amber-600/50'
-                    }`}
-                  />
+                  </button>
                 ))}
               </div>
-            </div>
-          </motion.div>
-        )}
+            </motion.div>
+
+            {/* Cultural Context */}
+            <motion.div
+              className="bg-gradient-to-br from-blue-900/20 to-blue-950/20 rounded-xl border border-blue-500/20 backdrop-blur-sm p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.2 }}
+            >
+              <h3 className="text-lg font-semibold text-blue-200 mb-3 flex items-center gap-2">
+                <Book className="w-5 h-5" />
+                {language === 'LA' ? 'Contextus Culturalis' : language === 'EN' ? 'Cultural Context' : 'Kultureller Kontext'}
+              </h3>
+              <p className="text-blue-100/80 text-sm leading-relaxed">
+                {/* FIXED: Updated to mention both works and be language-aware */}
+                {language === 'LA' ? 'Macrobius duo opera composuit: Saturnalia quae convivium doctorum virorum in villa Romana describit et Commentarii in Somnium Scipionis qui cosmologiam et philosophiam continent.' 
+                : language === 'EN' ? 'Macrobius composed two works: the Saturnalia which describes a gathering of learned men at a Roman villa discussing literature, religion, and philosophy, and the Commentary on Scipio\'s Dream containing cosmology and Neoplatonic philosophy.'
+                : 'Macrobius verfasste zwei Werke: die Saturnalia, die eine Versammlung gelehrter Männer in einer römischen Villa bei Gesprächen über Literatur, Religion und Philosophie beschreibt, und den Somnium-Kommentar mit Kosmologie und neuplatonischer Philosophie.'}
+              </p>
+            </motion.div>
+          </div>
+        </div>
       </div>
-    </section>
+
+      {/* Conversation Modal */}
+      <AnimatePresence>
+        {selectedTopic && (
+          <ConversationPanel
+            topic={selectedTopic}
+            onClose={() => {
+              setSelectedTopic(null);
+              setHighlightedCharacters([]);
+            }}
+            characters={CHARACTERS}
+          />
+        )}
+      </AnimatePresence>
+    </motion.section>
   );
 }
