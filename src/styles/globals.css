@@ -71,56 +71,6 @@
   }
 }
 
-/* OPTIMIZED: Slow Moving Stars Animation (much slower and smoother) */
-@keyframes slowMove {
-  0% { 
-    transform: translateX(0) translateY(0);
-    opacity: 0.3; 
-  }
-  25% { 
-    opacity: 0.8;
-  }
-  50% { 
-    transform: translateX(-30px) translateY(-15px);
-    opacity: 0.6;
-  }
-  75% { 
-    opacity: 0.9;
-  }
-  100% { 
-    transform: translateX(-60px) translateY(-30px);
-    opacity: 0.3; 
-  }
-}
-
-/* OPTIMIZED: Rare Shooting Star Animation (much slower) */
-@keyframes shootingStar {
-  0% {
-    transform: translateX(100vw) translateY(-50px) rotate(45deg);
-    opacity: 0;
-  }
-  5% {
-    opacity: 0.8;
-  }
-  95% {
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateX(-100px) translateY(50px) rotate(45deg);
-    opacity: 0;
-  }
-}
-
-.shooting-star {
-  position: absolute;
-  width: 3px;
-  height: 1px;
-  background: linear-gradient(90deg, #fff, transparent);
-  border-radius: 2px;
-  animation: shootingStar 15s linear infinite;
-  z-index: 1;
-}
-
 /* Other Animations */
 @keyframes float {
   0%, 100% { 
@@ -164,33 +114,6 @@
   }
 }
 
-@keyframes astrolab-rotate {
-  0% { 
-    transform: rotate(0deg); 
-  }
-  100% { 
-    transform: rotate(360deg); 
-  }
-}
-
-@keyframes planet-rotate {
-  0% { 
-    transform: rotate(0deg) translateX(50px) rotate(0deg); 
-  }
-  100% { 
-    transform: rotate(360deg) translateX(50px) rotate(-360deg); 
-  }
-}
-
-@keyframes pulse-gold {
-  0%, 100% { 
-    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); 
-  }
-  50% { 
-    box-shadow: 0 0 0 20px rgba(255, 215, 0, 0); 
-  }
-}
-
 /* Animation Classes */
 .animate-float {
   animation: float 4s ease-in-out infinite;
@@ -200,57 +123,12 @@
   animation: text-reveal 1s ease-out;
 }
 
-.animate-text-reveal-delay {
-  animation: text-reveal 1s ease-out 0.5s both;
-}
-
 .animate-slide-up {
   animation: slide-up 0.6s ease-out;
 }
 
 .animate-fade-in {
   animation: fade-in 1.2s ease-out 0.8s both;
-}
-
-.animate-astrolab-rotate {
-  animation: astrolab-rotate 60s linear infinite;
-}
-
-.animate-planet-rotate {
-  animation: planet-rotate 20s linear infinite;
-}
-
-.animate-pulse-gold {
-  animation: pulse-gold 2s infinite;
-}
-
-/* Text Animations */
-@keyframes stagger-text {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-stagger-text {
-  animation: stagger-text 0.5s ease-out both;
-}
-
-.animate-stagger-text:nth-child(1) { animation-delay: 0.1s; }
-.animate-stagger-text:nth-child(2) { animation-delay: 0.2s; }
-.animate-stagger-text:nth-child(3) { animation-delay: 0.3s; }
-.animate-stagger-text:nth-child(4) { animation-delay: 0.4s; }
-.animate-stagger-text:nth-child(5) { animation-delay: 0.5s; }
-.animate-stagger-text:nth-child(6) { animation-delay: 0.6s; }
-
-/* Backdrop Blur Enhancement */
-.backdrop-blur-enhanced {
-  backdrop-filter: blur(12px) brightness(1.1);
-  -webkit-backdrop-filter: blur(12px) brightness(1.1);
 }
 
 /* Custom Scrollbar */
@@ -269,62 +147,6 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #8B3A42;
-}
-
-/* Mobile Optimizations */
-@media (max-width: 768px) {
-  .btn-wine {
-    @apply px-4 py-2 text-sm;
-  }
-  
-  .btn-wine-large {
-    @apply px-6 py-3 text-base;
-  }
-  
-  .shooting-star {
-    width: 2px;
-    height: 1px;
-  }
-}
-
-/* High DPI Displays */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  /* Optimized for high DPI displays */
-}
-
-/* PERFORMANCE: Reduced Motion Support */
-@media (prefers-reduced-motion: reduce) {
-  .animate-float,
-  .animate-astrolab-rotate,
-  .animate-planet-rotate,
-  .shooting-star {
-    animation: none;
-  }
-  
-  .btn-wine:hover,
-  .btn-wine-large:hover {
-    transform: none;
-  }
-  
-  /* Disable star animations for accessibility and performance */
-  [style*="animation: twinkle"],
-  [style*="animation: slowMove"] {
-    animation: none !important;
-  }
-}
-
-/* Print Styles */
-@media print {
-  .shooting-star,
-  .animate-float,
-  .animate-astrolab-rotate {
-    display: none;
-  }
-  
-  .bg-azure {
-    background: white !important;
-    color: black !important;
-  }
 }
 
 /* Focus Styles for Accessibility */

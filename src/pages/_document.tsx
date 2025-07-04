@@ -43,35 +43,6 @@ export default function Document() {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Macrobius" />
-        
-        {/* Structured data for educational content */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'EducationalOrganization',
-              name: 'Macrobius Educational Platform',
-              description: 'Interactive educational platform for exploring ancient Roman philosophy and the works of Macrobius',
-              url: 'https://macrobius.education',
-              sameAs: [
-                'https://github.com/thothrde/macrobius-frontend-updated'
-              ],
-              educationalLevel: 'University',
-              educationalUse: 'instruction',
-              learningResourceType: 'interactive resource',
-              audience: {
-                '@type': 'EducationalAudience',
-                educationalRole: 'student'
-              },
-              about: {
-                '@type': 'Thing',
-                name: 'Ancient Roman Philosophy',
-                description: 'The philosophical works and cultural contributions of Macrobius'
-              }
-            })
-          }}
-        />
       </Head>
       <body>
         <Main />
