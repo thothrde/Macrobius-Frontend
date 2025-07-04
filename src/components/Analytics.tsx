@@ -3,10 +3,24 @@
 import { useEffect } from 'react';
 import Script from 'next/script';
 
+// Better TypeScript definitions for analytics
+interface GtagEvent {
+  event_category?: string;
+  event_label?: string;
+  value?: number;
+  app_name?: string;
+  [key: string]: string | number | boolean | undefined;
+}
+
+interface PlausibleEventProps {
+  [key: string]: string | number | boolean;
+}
+
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
-    plausible: (...args: any[]) => void;
+    gtag: (command: string, targetId: string, config?: GtagEvent) => void;
+    plausible: (eventName: string, options?: { props?: PlausibleEventProps }) => void;
+    dataLayer: Record<string, unknown>[];
   }
 }
 
@@ -15,8 +29,8 @@ const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 const ENABLE_ANALYTICS = process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === 'true';
 
-// Analytics Events
-export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
+// Analytics Events with proper typing
+export const trackEvent = (eventName: string, parameters?: Record<string, string | number | boolean>) => {
   if (!ENABLE_ANALYTICS) return;
   
   // Google Analytics
@@ -55,7 +69,7 @@ export const trackEducationalEvent = {
   quizStarted: (category: string) => trackEvent('quiz_started', { category }),
   quizCompleted: (category: string, score: number) => trackEvent('quiz_completed', { category, score }),
   vocabularyPracticed: (word: string, correct: boolean) => trackEvent('vocabulary_practiced', { word, correct }),
-  '3dVisualizationViewed': (type: string) => trackEvent('3d_visualization_viewed', { type }),
+  visualizationViewed: (type: string) => trackEvent('3d_visualization_viewed', { type }),
   banquetPhaseCompleted: (phase: number) => trackEvent('banquet_phase_completed', { phase }),
   languageChanged: (language: string) => trackEvent('language_changed', { language }),
   sectionViewed: (section: string) => trackEvent('section_viewed', { section }),
@@ -125,13 +139,13 @@ const Analytics = () => {
       const originalPushState = window.history.pushState;
       const originalReplaceState = window.history.replaceState;
       
-      window.history.pushState = function(...args) {
-        originalPushState.apply(window.history, args);
+      window.history.pushState = function(data: Record<string, unknown>, unused: string, url?: string | URL | null) {
+        originalPushState.call(this, data, unused, url);
         handleRouteChange(window.location.href);
       };
       
-      window.history.replaceState = function(...args) {
-        originalReplaceState.apply(window.history, args);
+      window.history.replaceState = function(data: Record<string, unknown>, unused: string, url?: string | URL | null) {
+        originalReplaceState.call(this, data, unused, url);
         handleRouteChange(window.location.href);
       };
       
