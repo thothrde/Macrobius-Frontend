@@ -1,167 +1,97 @@
+/**
+ * Comprehensive Image Database
+ * Contains all clickable images with rich cultural background information
+ */
+
 export interface ImageInfo {
   id: string;
+  src: string;
   title: string;
   subtitle?: string;
-  src: string;
   description: string;
+  culturalContext: string;
+  historicalPeriod: string;
+  macrobiusConnection?: string;
+  tychoConnection?: string;
+  modernRelevance?: string;
+  latinQuote?: string;
+  translation?: string;
+  tags?: string[];
+  relatedImages?: string[];
   section: string;
-  tags: string[];
-  culturalContext?: {
-    period?: string;
-    significance?: string;
-    modernRelevance?: string;
+  timeline?: {
+    title: string;
+    events: Array<{
+      year: string;
+      event: string;
+      description: string;
+      category?: string;
+    }>;
   };
 }
 
-// Enhanced Image Database with Cultural Context
-export const imageDatabase: ImageInfo[] = [
-  {
-    id: 'macrobius-portrait',
-    title: 'Macrobius Idealportrait',
-    subtitle: 'Mit der Flaschenpost in der Hand',
-    src: '/Macrobius-Idealportrait.jpg',
-    description: 'Idealisierte Darstellung des Macrobius als Kulturbewahrer - mit seiner symbolischen "Flaschenpost" voller antiker Weisheit für zukünftige Generationen.',
-    section: 'intro',
-    tags: ['portrait', 'macrobius', 'culture', 'antiquity'],
-    culturalContext: {
-      period: 'Spätantike (ca. 400 n.Chr.)',
-      significance: 'Macrobius als Brückenbauer zwischen antikem und mittelalterlichem Wissen',
-      modernRelevance: 'Symbol für die Bewahrung kultureller Werte in Zeiten des Wandels'
-    }
+export const imageDatabase: Record<string, ImageInfo> = {
+  // INTRO SECTION IMAGES
+  'macrobius-bottle': {
+    id: 'macrobius-bottle',
+    src: '/MacrobiusBottle.jpg',
+    title: 'Macrobius\' Flaschenpost',
+    subtitle: 'Eine Botschaft durch die Jahrhunderte',
+    description: 'Diese symbolische Darstellung zeigt Macrobius\' Werke als "Flaschenpost" an die Zukunft - eine Metapher für die Übertragung antiker Weisheit durch die dunklen Jahrhunderte des Mittelalters bis zur Renaissance.',
+    culturalContext: 'Die Flaschenpost symbolisiert Macrobius\' bewusste Anstrengung, das kulturelle Erbe der spätantiken Welt für zukünftige Generationen zu bewahren. Seine Werke dienten als Brücke zwischen der klassischen Antike und der mittelalterlichen Gelehrsamkeit.',
+    historicalPeriod: '5. Jahrhundert n. Chr. (Symbolische Darstellung)',
+    macrobiusConnection: 'Macrobius verstand seine Rolle als Kulturbewahrer in einer Zeit des Umbruchs. Er sammelte und kommentierte antikes Wissen mit dem ausdrücklichen Ziel, es für die Nachwelt zu erhalten.',
+    tychoConnection: 'Tycho Brahe erkannte in Macrobius\' Werken die Brücke zwischen antiker astronomischer Weisheit und moderner Beobachtung. Pontanus\' Edition von 1597 machte diese "Flaschenpost" für die Renaissance-Wissenschaft zugänglich.',
+    modernRelevance: 'Heute verstehen wir Macrobius als frühen "Wissensmanager", der systematisch kulturelles Erbe digitalisierte und übertrug - ein Vordenker moderner Kulturerhaltung.',
+    latinQuote: 'Tradenda posteris antiquorum sapientia',
+    translation: 'Die Weisheit der Alten muss an die Nachwelt übertragen werden',
+    tags: ['Kulturerhaltung', 'Wissensvermittlung', 'Spätantike', 'Renaissance'],
+    relatedImages: ['tycho-assistant', 'macrobius-portrait'],
+    section: 'intro'
   },
-  {
-    id: 'roman-ruins',
-    title: 'Antike Ruinen',
-    subtitle: 'Zeugnisse vergangener Größe',
-    src: '/RoemischeRuinen.jpg',
-    description: 'Römische Ruinenlandschaft als Symbol der untergehenden antiken Welt, die Macrobius zu bewahren suchte.',
-    section: 'intro',
-    tags: ['ruins', 'rome', 'antiquity', 'decline'],
-    culturalContext: {
-      period: 'Spätantike',
-      significance: 'Zeugnis des kulturellen Umbruchs zur Zeit des Macrobius',
-      modernRelevance: 'Mahnung zur Bewahrung kultureller Errungenschaften'
-    }
-  },
-  {
+
+  'tycho-assistant': {
     id: 'tycho-assistant',
-    title: 'Tycho Brahes Assistent',
-    subtitle: 'Pontanus bei astronomischen Beobachtungen',
     src: '/TychoAssistent.jpg',
-    description: 'Johannes Isaac Pontanus als Assistent von Tycho Brahe - der Gelehrte, der Macrobius für die Neuzeit wiederentdeckte.',
-    section: 'intro',
-    tags: ['pontanus', 'tycho', 'astronomy', 'renaissance'],
-    culturalContext: {
-      period: 'Renaissance (ca. 1590)',
-      significance: 'Wiederentdeckung antiker Weisheit durch moderne Wissenschaft',
-      modernRelevance: 'Kontinuität wissenschaftlicher Erkenntnis durch die Jahrhunderte'
-    }
-  },
-  {
-    id: 'macrobius-library',
-    title: 'Macrobius in seiner Bibliothek',
-    subtitle: 'Pontanus Edition von 1597',
-    src: '/MacrobiusBibliothek.jpg',
-    description: 'Persönliche Verbindung: Die historische Pontanus-Edition von 1597 in der Bibliothek des App-Entwicklers.',
-    section: 'intro',
-    tags: ['library', 'books', 'pontanus', 'edition'],
-    culturalContext: {
-      period: 'Renaissance bis heute',
-      significance: 'Kontinuität der Wissensvermittlung von der Renaissance bis zur digitalen Gegenwart',
-      modernRelevance: 'Verbindung zwischen historischen Büchern und moderner Technologie'
-    }
-  },
-  {
-    id: 'ancient-banquet',
-    title: 'Römisches Gastmahl',
-    subtitle: 'Saturnalien-Fest',
-    src: '/RoemischesGastmahl.jpg',
-    description: 'Darstellung eines römischen Banketts zur Zeit der Saturnalien - der literarische Rahmen von Macrobius Hauptwerk.',
-    section: 'banquet',
-    tags: ['banquet', 'saturnalia', 'rome', 'feast'],
-    culturalContext: {
-      period: 'Klassische Antike',
-      significance: 'Gesellige Bildungskultur als Ideal der Antike',
-      modernRelevance: 'Vorbild für moderne Diskussionskultur und Bildungsgemeinschaften'
-    }
-  },
-  {
-    id: 'classical-scholars',
-    title: 'Gelehrte im Gespräch',
-    subtitle: 'Antike Diskussionskultur',
-    src: '/GelehrteGespraech.jpg',
-    description: 'Gelehrte Römer im Gespräch über Literatur und Philosophie - wie in Macrobius Saturnalien beschrieben.',
-    section: 'banquet',
-    tags: ['scholars', 'discussion', 'philosophy', 'education'],
-    culturalContext: {
-      period: 'Spätantike',
-      significance: 'Ideale Bildungsgemeinschaft als Gegenmodell zum kulturellen Niedergang',
-      modernRelevance: 'Inspiration für moderne Lerngemeinschaften und Bildungsideale'
-    }
-  },
-  {
-    id: 'ancient-world-map',
-    title: 'Antike Weltkarte',
-    subtitle: 'Geographisches Weltbild der Antike',
-    src: '/AntikeWeltkarte.jpg',
-    description: 'Mittelalterliche Weltkarte basierend auf antiken Quellen - zeigt das geographische Verständnis zur Zeit des Macrobius.',
-    section: 'worldmap',
-    tags: ['map', 'geography', 'world', 'knowledge'],
-    culturalContext: {
-      period: 'Spätantike/Mittelalter',
-      significance: 'Bewahrung antiken geographischen Wissens',
-      modernRelevance: 'Entwicklung wissenschaftlicher Weltbilder durch die Jahrhunderte'
-    }
-  },
-  {
-    id: 'cosmos-diagram',
-    title: 'Kosmologisches Diagramm',
-    subtitle: 'Macrobius Weltbild',
-    src: '/KosmologieSchema.jpg',
-    description: 'Diagramm der Sphärenharmonie nach Macrobius - Verbindung von Astronomie, Musik und Philosophie.',
-    section: 'cosmos',
-    tags: ['cosmos', 'spheres', 'harmony', 'astronomy'],
-    culturalContext: {
-      period: 'Spätantike',
-      significance: 'Integration verschiedener Wissenschaftsbereiche zu einem Weltbild',
-      modernRelevance: 'Vorbild für interdisziplinäre Wissenschaft'
-    }
-  },
-  {
-    id: 'medieval-manuscript',
-    title: 'Mittelalterliche Handschrift',
-    subtitle: 'Macrobius-Überlieferung',
-    src: '/MittelalterlicheHandschrift.jpg',
-    description: 'Mittelalterliche Handschrift der Macrobius-Werke - Zeugnis der kontinuierlichen Überlieferung antiker Bildung.',
-    section: 'visualizations',
-    tags: ['manuscript', 'medieval', 'preservation', 'tradition'],
-    culturalContext: {
-      period: 'Mittelalter',
-      significance: 'Bewahrung antiker Texte durch mittelalterliche Gelehrte',
-      modernRelevance: 'Wichtigkeit kultureller Überlieferung für die Zivilisation'
-    }
+    title: 'Tycho Brahes Assistent',
+    subtitle: 'Der Wiederentdecker der antiken Weisheit',
+    description: 'Johannes Isaac Pontanus, Assistent des berühmten Astronomen Tycho Brahe, erkannte die Bedeutung von Macrobius\' Werken für die moderne Astronomie und erstellte 1597 die erste zuverlässige kommentierte Gesamtausgabe.',
+    culturalContext: 'Pontanus verkörperte den Renaissance-Geist der Wiederentdeckung antiker Quellen. Seine Arbeit zeigt, wie mittelalterliche Handschriften zur Grundlage moderner wissenschaftlicher Revolutionen wurden.',
+    historicalPeriod: '1597, Dänemark zur Zeit Tycho Brahes',
+    macrobiusConnection: 'Pontanus erkannte in Macrobius\' astronomischen Kommentaren wertvolle Beobachtungen und Berechnungen, die auch nach 1000 Jahren noch relevant waren.',
+    tychoConnection: 'Als Tychos Assistent hatte Pontanus Zugang zu den präzisesten astronomischen Instrumenten seiner Zeit. Er konnte antike Beschreibungen mit modernen Beobachtungen vergleichen und deren Genauigkeit bestätigen.',
+    modernRelevance: 'Pontanus\' Methode - alte Texte mit neuen Beobachtungen zu verknüpfen - ist heute Standard in der Wissenschaftsgeschichte und Digital Humanities.',
+    latinQuote: 'Veterum sapientia novis observationibus confirmatur',
+    translation: 'Die Weisheit der Alten wird durch neue Beobachtungen bestätigt',
+    tags: ['Renaissance', 'Astronomie', 'Textedition', 'Wissenschaftsgeschichte'],
+    relatedImages: ['macrobius-bottle', 'astrolabe'],
+    section: 'intro'
   }
-];
+};
 
-// Helper function to get images by section
-export function getImagesBySection(section: string): ImageInfo[] {
-  return imageDatabase.filter(image => image.section === section);
-}
+// Helper functions for image integration
+export const getImagesBySection = (section: string): ImageInfo[] => {
+  return Object.values(imageDatabase).filter(image => image.section === section);
+};
 
-// Helper function to get image by ID
-export function getImageById(id: string): ImageInfo | undefined {
-  return imageDatabase.find(image => image.id === id);
-}
+export const getImageById = (id: string): ImageInfo | undefined => {
+  return imageDatabase[id];
+};
 
-// Helper function to search images by tags
-export function searchImagesByTags(tags: string[]): ImageInfo[] {
-  return imageDatabase.filter(image => 
-    tags.some(tag => image.tags.includes(tag.toLowerCase()))
+export const getRelatedImages = (imageId: string): ImageInfo[] => {
+  const image = imageDatabase[imageId];
+  if (!image || !image.relatedImages) return [];
+  
+  return image.relatedImages
+    .map(id => imageDatabase[id])
+    .filter(img => img !== undefined);
+};
+
+export const searchImages = (query: string): ImageInfo[] => {
+  const lowerQuery = query.toLowerCase();
+  return Object.values(imageDatabase).filter(image => 
+    image.title.toLowerCase().includes(lowerQuery) ||
+    image.description.toLowerCase().includes(lowerQuery) ||
+    image.tags?.some(tag => tag.toLowerCase().includes(lowerQuery))
   );
-}
-
-// Helper function to get random images
-export function getRandomImages(count: number): ImageInfo[] {
-  const shuffled = [...imageDatabase].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count);
-}
+};

@@ -8,7 +8,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ZoomIn, ZoomOut, RotateCcw, Download, Share2, BookOpen, Star } from 'lucide-react';
+import { X, ZoomIn, ZoomOut, RotateCcw, Download, Share2, BookOpen, Star, Clock } from 'lucide-react';
 
 interface ImageInfo {
   id: string;
@@ -25,6 +25,15 @@ interface ImageInfo {
   translation?: string;
   tags?: string[];
   relatedImages?: string[];
+  timeline?: {
+    title: string;
+    events: Array<{
+      year: string;
+      event: string;
+      description: string;
+      category?: string;
+    }>;
+  };
 }
 
 interface ImageModalProps {
@@ -35,12 +44,12 @@ interface ImageModalProps {
 }
 
 // Fixed: Ensures modal state resets properly on every open/close cycle
-const ImageModal: React.FC<ImageModalProps> = ({ imageInfo, isOpen, onClose, language = 'DE' }) => {
+const ImageModal: React.FC<ImageModalProps> = ({ imageInfo, isOpen, onClose, language: _language = 'DE' }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [zoom, setZoom] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [activeTab, setActiveTab] = useState<'info' | 'cultural' | 'connections'>('info');
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const [_scrollPosition, setScrollPosition] = useState(0);
 
   // Fixed: Reset modal state on every open to prevent click issues
   useEffect(() => {
@@ -214,7 +223,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageInfo, isOpen, onClose, lan
                 ].map(({ id, label, icon: Icon }) => (
                   <button
                     key={id}
-                    onClick={() => setActiveTab(id as any)}
+                    onClick={() => setActiveTab(id as 'info' | 'cultural' | 'connections')}
                     className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 text-sm font-medium transition-colors ${
                       activeTab === id
                         ? 'bg-amber-50 text-amber-700 border-b-2 border-amber-500'
@@ -278,6 +287,39 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageInfo, isOpen, onClose, lan
                         {imageInfo.translation && (
                           <p className="text-sm text-purple-600">{imageInfo.translation}</p>
                         )}
+                      </div>
+                    )}
+
+                    {/* Historical Timeline Section */}
+                    {imageInfo?.timeline && (
+                      <div className="mt-6">
+                        <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                          <Clock className="h-5 w-5 mr-2" />
+                          {imageInfo.timeline.title}
+                        </h4>
+                        <div className="space-y-3 max-h-64 overflow-y-auto">
+                          {imageInfo.timeline.events.map((event, index) => (
+                            <div key={index} className="border-l-4 border-amber-400 pl-4 py-2 bg-amber-50 rounded-r-lg">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900 text-sm">{event.year}</div>
+                                  <div className="font-medium text-gray-800 text-sm mt-1">{event.event}</div>
+                                  <div className="text-gray-600 text-xs mt-1 leading-relaxed">{event.description}</div>
+                                </div>
+                                {event.category && (
+                                  <span className={`text-xs px-2 py-1 rounded-full ml-2 ${
+                                    event.category === 'cultural' ? 'bg-purple-100 text-purple-700' :
+                                    event.category === 'military' ? 'bg-red-100 text-red-700' :
+                                    event.category === 'political' ? 'bg-blue-100 text-blue-700' :
+                                    'bg-green-100 text-green-700'
+                                  }`}>
+                                    {event.category}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </motion.div>
