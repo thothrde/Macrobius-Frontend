@@ -1,0 +1,51 @@
+# Robots.txt for Macrobius Learning Platform
+# https://macrobius.vercel.app/robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://macrobius.vercel.app/sitemap.xml
+
+# Specific paths
+Allow: /dashboard
+Allow: /ki-rag-assistent
+Allow: /intro
+Allow: /weltkarte
+Allow: /kosmos
+Allow: /gastmahl
+Allow: /textsuche
+Allow: /lernen
+Allow: /visualisierungen
+Allow: /ki-kulturanalyse
+Allow: /lernpfade
+Allow: /ki-tutor
+Allow: /kulturmodule
+
+# Disallow admin or sensitive areas
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /static/
+
+# Allow static assets
+Allow: /images/
+Allow: /icons/
+Allow: /css/
+Allow: /js/
+
+# Crawl delay (optional)
+Crawl-delay: 1
+
+# Specific bot instructions
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
