@@ -32,16 +32,19 @@
     "test:coverage": "jest --coverage",
     "type-check": "tsc --noEmit",
     "oracle-test": "node scripts/test-oracle-connection.js",
+    "pre-deploy-check": "node scripts/pre-deploy-check.js",
     "phase4": "npm run lighthouse",
     "lighthouse": "lhci autorun",
     "analyze": "cross-env ANALYZE=true next build",
     "build-stats": "npm run build -- --profile",
     "export": "next export",
-    "deploy": "vercel --prod",
+    "deploy": "bash scripts/deploy.sh",
     "deploy-preview": "vercel",
+    "deploy-prod": "vercel --prod",
     "postbuild": "next-sitemap",
     "clean": "rm -rf .next out",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "vercel-build": "npm run build"
   },
   "dependencies": {
     "@next/bundle-analyzer": "^14.0.0",
