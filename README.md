@@ -8,10 +8,11 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3+-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
 [![Oracle Cloud](https://img.shields.io/badge/Oracle%20Cloud-Free%20Tier-F80000?style=flat-square&logo=oracle)](https://www.oracle.com/cloud/)
 [![RAG System](https://img.shields.io/badge/RAG%20System-AI%20Powered-FF6B35?style=flat-square&logo=openai)](http://152.70.184.232:8082)
+[![License](https://img.shields.io/badge/License-Non--Commercial-blue?style=flat-square)](./LICENSE)
 
 > **Eine revolutionäre Lernplattform für lateinische Bildung mit KI-gestützten Werkzeugen, basierend auf 1.401 authentischen Macrobius-Textpassagen**
 
-## 🎆 **Neueste Ergänzungen - KI-RAG-Assistent Integration**
+## 🌆 **Neueste Ergänzungen - KI-RAG-Assistent Integration**
 
 ### 🤖 **Vollständige RAG-System Integration**
 - **✅ Web-Version**: Vollständig funktionsfähiger KI-RAG-Assistent im Web-Interface
@@ -122,7 +123,7 @@ mobile/
 
 ---
 
-## 🎆 **RAG-System Implementation**
+## 🌆 **RAG-System Implementation**
 
 ### 🤖 **KI-RAG-Assistent Features**
 - **💬 Natürliche Gespräche**: Stelle komplexe Fragen zu Macrobius
@@ -265,7 +266,7 @@ npm run analyze      # Bundle-Analyse
 
 ## 🌐 **Deployment & Hosting**
 
-### 🎆 **Produktionsbereitschaft**
+### 🌆 **Produktionsbereitschaft**
 - **Vercel-optimiert** für automatische Deployments
 - **Netlify-kompatibel** als Alternative
 - **Docker-Support** für containerisierte Deployments
@@ -292,7 +293,7 @@ NEXT_PUBLIC_RAG_ENABLED=true
 ### 💬 **Kontakt**
 - **GitHub Issues**: [Bug Reports & Feature Requests](https://github.com/thothrde/Macrobius-Frontend/issues)
 - **Entwickler**: @thothrde
-- **Lizenz**: MIT License
+- **Lizenz**: Custom Non-Commercial License
 - **Beiträge**: Pull Requests willkommen
 
 ### 📚 **Dokumentation**
@@ -301,7 +302,7 @@ NEXT_PUBLIC_RAG_ENABLED=true
 - **Lehrer-Ressourcen**: Pädagogische Leitfäden
 - **Forschungstools**: Wissenschaftliche Nutzung
 
-### 🎆 **Roadmap**
+### 🌆 **Roadmap**
 - **✅ Phase 1**: Grundlegende Lernkomponenten
 - **✅ Phase 2**: KI-Integration und RAG-System
 - **✅ Phase 3**: Mobile App und Cross-Platform
@@ -311,7 +312,21 @@ NEXT_PUBLIC_RAG_ENABLED=true
 
 ---
 
-## 🎆 **Erfolgsgeschichte**
+## 📄 **Lizenz / License**
+
+Diese Software steht unter einer benutzerdefinierten Lizenz zur **nicht-kommerziellen Nutzung**. Private, akademische und nicht-kommerzielle Verwendung sind erlaubt. Kommerzielle Nutzung ist **ausdrücklich untersagt**, es sei denn mit schriftlicher Genehmigung des Urhebers.
+
+Siehe [LICENSE](./LICENSE) für alle Details.
+
+---
+
+This software is released under a **custom non-commercial license**. Private, academic, and non-commercial use is permitted. **Commercial use is strictly prohibited** without prior written permission from the author.
+
+See [LICENSE](./LICENSE) for full terms.
+
+---
+
+## 🌆 **Erfolgsgeschichte**
 
 ### 📊 **Projektmeilensteine**
 - **✅ Januar 2025**: Projektstart und Grundarchitektur
