@@ -1,184 +1,341 @@
-# 🏛️ MACROBIUS - ADVANCED AI-POWERED LATIN EDUCATION PLATFORM
+# 🏛️ Macrobius Frontend - Revolutionary AI-Powered Latin Education Platform
 
-**Revolutionary educational platform combining ancient wisdom with modern AI technology**
+![Macrobius Logo](https://img.shields.io/badge/Macrobius-Latin%20Learning%20Platform-8B5A3C?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSIjRkZGIi8+Cjwvc3ZnPgo=)
 
-[![Status](https://img.shields.io/badge/Status-100%25%20Complete-success)](https://github.com/thothrde/macrobius-app)
-[![Frontend](https://img.shields.io/badge/Frontend-Production%20Ready-success)](https://github.com/thothrde/macrobius-app)
-[![Backend](https://img.shields.io/badge/Oracle%20Cloud-100%25%20Operational-success)](http://152.70.184.232:8080)
-[![Build](https://img.shields.io/badge/Build%20Time-3.0s-brightgreen)](https://github.com/thothrde/macrobius-app)
+[![Next.js](https://img.shields.io/badge/Next.js-13+-000000?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-18+-61DAFB?style=flat-square&logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3+-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![Oracle Cloud](https://img.shields.io/badge/Oracle%20Cloud-Free%20Tier-F80000?style=flat-square&logo=oracle)](https://www.oracle.com/cloud/)
+[![RAG System](https://img.shields.io/badge/RAG%20System-AI%20Powered-FF6B35?style=flat-square&logo=openai)](http://152.70.184.232:8082)
 
----
+> **Eine revolutionäre Lernplattform für lateinische Bildung mit KI-gestützten Werkzeugen, basierend auf 1.401 authentischen Macrobius-Textpassagen**
 
-## 🎉 **PRODUCTION READY - DEPLOYMENT COMPLETE**
+## 🎆 **Neueste Ergänzungen - KI-RAG-Assistent Integration**
 
-### ✅ **FULLY OPERATIONAL SYSTEM**
-- **Frontend**: 100% complete with 44 advanced AI-powered components
-- **Oracle Cloud Backend**: 100% operational with 1,416 authentic passages
-- **Build System**: 3.0-second clean builds with zero TypeScript/ESLint errors
-- **Integration**: Complete frontend-backend connectivity confirmed
-- **UI Content**: All cultural content including "Das untergehende Römische Reich" modal
-- **Language Support**: Perfect DE/EN/LA switching across all components
+### 🤖 **Vollständige RAG-System Integration**
+- **✅ Web-Version**: Vollständig funktionsfähiger KI-RAG-Assistent im Web-Interface
+- **✅ Mobile-Version**: Native React Native Integration für iOS und Android
+- **✅ Oracle Cloud Backend**: Kostenlose RAG-Implementierung auf Oracle Cloud Free Tier
+- **✅ Mehrsprachige Unterstützung**: Deutsch, Englisch und Latein
+- **✅ Quellenangaben**: Authentische Zitate mit Ähnlichkeitsscores
+- **✅ Mobile-Web-Parität**: Identische Funktionalität auf allen Plattformen
 
-### 🚀 **READY FOR USER ONBOARDING**
-- **Status**: Production deployment ready
-- **Performance**: Optimized and tested
-- **Content**: 1,416 Latin passages + 19 cultural themes + 16 insights operational
-- **Oracle Cloud**: `http://152.70.184.232:8080` fully functional
-
----
-
-## 🎯 **PLATFORM OVERVIEW**
-
-Macrobius is an innovative educational platform that brings the works of the late antique scholar Macrobius Ambrosius Theodosius to the digital age. Through AI-powered analysis, interactive visualizations, and comprehensive learning tools, students and scholars can explore the rich cultural heritage preserved in Macrobius' "Saturnalia" and "Commentary on the Dream of Scipio."
-
-### **Core Educational Features**
-
-#### 🧠 **AI-Powered Learning Systems**
-- **AI Cultural Analysis**: Deep analysis of ancient Roman cultural practices
-- **Intelligent Tutoring**: Personalized Latin learning with AI guidance  
-- **Adaptive Quizzes**: Dynamic question generation from authentic texts
-- **Learning Pathways**: Customized progression through classical content
-
-#### 📚 **Advanced Text Processing**
-- **Semantic Search**: AI-powered search through 1,401 authentic passages
-- **KWIC Analysis**: Keyword-in-context analysis for linguistic research
-- **Pattern Mining**: Automated discovery of literary and linguistic patterns
-- **Vocabulary Trainer**: Spaced repetition system with authentic corpus
-
-#### 🗺️ **Interactive Visualizations**
-- **Cultural World Map**: Geographic exploration of Roman cultural concepts
-- **Cosmic Visualizations**: Ancient astronomical knowledge made interactive
-- **Timeline Explorer**: Historical progression of ideas and influences
-- **Network Analysis**: Relationships between cultural themes and concepts
-
-#### 🎓 **Comprehensive Learning Tools**
-- **Grammar Explainer**: AI-powered Latin grammar analysis and teaching
-- **Cultural Modules**: Deep dives into specific aspects of Roman culture
-- **Progress Tracking**: Detailed analytics of learning progression
-- **Multilingual Support**: Complete German, English, and Latin interfaces
+### 🔧 **Technische Implementierung**
+```typescript
+// RAG System Architecture
+Oracle Cloud Free Tier (152.70.184.232:8082)
+└── Chroma Vector Database (kostenlos)
+└── Ollama Llama 3.1:8b LLM (lokal)
+└── Sentence-Transformers (Embeddings)
+└── 1.401 authentische Macrobius-Passagen
+└── Monatliche Kosten: $0.00
+```
 
 ---
 
-## 🏗️ **TECHNICAL ARCHITECTURE**
+## 🌐 **Platform Overview**
 
-### **Frontend Technology Stack**
-- **Framework**: Next.js 15.3.4 with React 18
-- **Styling**: Tailwind CSS with custom animations
-- **UI Components**: Radix UI with Framer Motion
-- **3D Graphics**: Three.js with React Three Fiber
-- **State Management**: React hooks with local storage fallback
-- **Performance**: Optimized builds under 5 seconds
+### 🎯 **Vision**
+Macrobius revolutioniert das Lateinlernen durch die Kombination von:
+- **Authentischen klassischen Texten** (1.401 Originalpassagen)
+- **KI-gestützten Lernwerkzeugen** (RAG, Semantic Search, AI Tutoring)
+- **Kultureller Kontextualisierung** (Römische Geschichte, Philosophie, Religion)
+- **Moderner Pädagogik** (Personalisierte Lernpfade, Spaced Repetition)
 
-### **Backend Infrastructure**
-- **Cloud Platform**: Oracle Cloud Free Tier (152.70.184.232)
-- **Database**: Oracle Autonomous Database
-- **API Framework**: Python Flask with cx_Oracle
-- **Content**: 1,401 authentic Macrobius passages + cultural metadata
-- **Integration**: RESTful API with comprehensive fallback systems
+### 🚀 **Kern-Features**
 
-### **AI & Machine Learning**
-- **Text Analysis**: Natural language processing for Latin texts
-- **Cultural Insights**: AI-generated connections between ancient and modern concepts
-- **Adaptive Learning**: Spaced repetition algorithms for vocabulary training
-- **Content Generation**: Dynamic quiz and exercise creation
+#### 🧠 **KI-Systeme**
+- **🤖 KI-RAG-Assistent**: Beantwortet komplexe Fragen zu Macrobius mit Quellenangaben
+- **📊 KI-Kulturanalyse**: Analysiert kulturelle Themen und Verbindungen
+- **🎯 Lernpfade**: Personalisierte, adaptive Lernrouten
+- **👨‍🏫 KI-Tutor**: Intelligente Lernbegleitung mit Chatbot-Interface
+- **✨ Kulturmodule**: Thematische Vertiefungen mit KI-Unterstützung
+
+#### 📚 **Lernkomponenten**
+- **📜 Vokabeltrainer**: SRS-basiertes Vokabellernen mit 2000+ Wörtern
+- **📖 Progressiver Reader**: Schwierigkeitsadaptive Textdarstellung
+- **❓ Smart Quiz**: Adaptive Fragenstellung basierend auf Lernfortschritt
+- **🏛️ Kulturexplorer**: Römische Kultur interaktiv erleben
+- **🗺️ Weltkarte**: Geographische Kontextualisierung
+
+#### 🔍 **Forschungstools**
+- **🔎 Textprozessor**: Erweiterte Suchfunktionen mit semantischer Analyse
+- **📊 KWIC-Analyse**: Keywords in Context für Forschung
+- **📊 Visualisierungen**: Datenvisualisierung und Themenanalyse
+- **🔗 Themenverbindungen**: Konzeptuelle Netzwerke
 
 ---
 
-## 🚀 **GETTING STARTED**
+## 📊 **Datengrundlage**
 
-### **Development Setup**
+### 📜 **Macrobius-Korpus**
+- **1.401 Textpassagen** aus vollständigen Werken
+- **235.237 Zeichen** authentischen lateinischen Inhalts
+- **9 kulturelle Themen** kategorisiert und querverweist
+- **16 kulturelle Einblicke** mit modernen Anwendungen
+- **16 Lehrmodule** für strukturierte Lateinbildung
+
+### 📊 **Thematische Abdeckung**
+- **Religiöse Praktiken** - Römische Religionsausübung
+- **Soziale Bräuche** - Gesellschaftliche Normen und Traditionen
+- **Philosophie** - Neuplatonische und stoische Konzepte
+- **Bildung** - Antike Pädagogik und Lernmethoden
+- **Römische Geschichte** - Historische Ereignisse und Personen
+- **Literatur** - Literarische Traditionen und Kritik
+- **Recht** - Juristische Konzepte und Praktiken
+- **Astronomie** - Himmelskunde und Kosmologie
+- **Allgemeine Themen** - Weitere kulturelle Aspekte
+
+---
+
+## 📱 **Cross-Platform Architecture**
+
+### 🌐 **Web-Platform** (Next.js)
+```typescript
+src/
+├── components/
+│   ├── sections/           # 44 Lernkomponenten
+│   │   ├── KIRAGAssistentSection.tsx
+│   │   ├── AICulturalAnalysisSection.tsx
+│   │   ├── AITutoringSystemSection-COMPLETE.tsx
+│   │   ├── VocabularyTrainer-CORPUS-EXPANSION-COMPLETE.tsx
+│   │   └── MacrobiusTextProcessor-TIER2-COMPLETE.tsx
+│   └── ui/                 # Wiederverwendbare UI-Komponenten
+├── pages/
+│   └── ki-rag-assistent.tsx # RAG-System Hauptseite
+└── shared/
+    └── services/        # Cross-Platform Services
+```
+
+### 📱 **Mobile-Platform** (React Native)
+```typescript
+mobile/
+├── app.tsx               # Hauptanwendung mit Navigation
+├── components/
+│   ├── ai/
+│   │   └── KIRAGAssistentMobile.tsx
+│   ├── HomeScreenMobile.tsx
+│   └── learning/        # Mobile-optimierte Lernkomponenten
+└── shared/              # Geteilte Services mit Web
+```
+
+---
+
+## 🎆 **RAG-System Implementation**
+
+### 🤖 **KI-RAG-Assistent Features**
+- **💬 Natürliche Gespräche**: Stelle komplexe Fragen zu Macrobius
+- **📚 Quellenangaben**: Jede Antwort mit authentischen Textpassagen
+- **📊 Ähnlichkeitsscores**: Bewertung der Quellenrelevanz
+- **🌍 Mehrsprachig**: Fragen in Deutsch, Englisch oder Latein
+- **📱 Cross-Platform**: Identische Funktionalität auf Web und Mobile
+
+### 💻 **Technische Spezifikationen**
+```yaml
+RAG-Backend:
+  Server: Oracle Cloud Free Tier
+  IP: 152.70.184.232
+  Port: 8082
+  Vector DB: Chroma (Open Source)
+  LLM: Ollama Llama 3.1:8b (lokal)
+  Embeddings: sentence-transformers/all-MiniLM-L6-v2
+  Kosten: $0.00/Monat
+
+Frontend-Integration:
+  Web: /ki-rag-assistent
+  Mobile: KI-RAG Tab in Navigation
+  API: RESTful JSON
+  Caching: Intelligent client-side caching
+```
+
+### 📊 **Beispiel-Interaktion**
+```typescript
+// Beispiel-Anfrage
+GET /api/chat
+{
+  "query": "Was sagt Macrobius über die Harmonie der Sphären?"
+}
+
+// Antwort mit Quellen
+{
+  "response": "Macrobius beschreibt die Harmonie der Sphären als...",
+  "sources": [
+    {
+      "passage_id": "saturnalia_2_1_15",
+      "text": "Originaltext aus Macrobius...",
+      "similarity_score": 0.95,
+      "book_chapter_section": "Saturnalia 2.1.15"
+    }
+  ]
+}
+```
+
+---
+
+## 🚀 **Quick Start**
+
+### 💻 **Entwicklungsumgebung**
 ```bash
-# Clone the repository
+# Repository klonen
 git clone https://github.com/thothrde/Macrobius-Frontend.git
 cd Macrobius-Frontend
 
-# Install dependencies
+# Dependencies installieren
 npm install
 
-# Start development server
+# Entwicklungsserver starten
 npm run dev
 
-# Visit http://localhost:3000
+# RAG-System testen
+npm run oracle-test
 ```
 
-### **Production Deployment**
+### 📱 **Mobile Development**
 ```bash
-# Build for production
-npm run build
+# React Native Setup
+cd mobile
+npm install
 
-# Start production server
-npm run start
+# iOS
+npx react-native run-ios
 
-# Or deploy to Vercel/Netlify
-vercel --prod
-# or
-netlify deploy --prod
+# Android
+npx react-native run-android
 ```
 
-### **Environment Configuration**
+### 🔧 **Verfügbare Scripts**
 ```bash
-# Required environment variables
-NEXT_PUBLIC_API_URL=http://152.70.184.232:8080
-ORACLE_BACKEND_URL=http://152.70.184.232:8080
-REACT_APP_API_BASE_URL=http://152.70.184.232:8080/api
+npm run dev          # Entwicklungsserver
+npm run build        # Produktions-Build
+npm run test         # Tests ausführen
+npm run oracle-test  # Backend-Konnektivität testen
+npm run phase4       # Lighthouse Performance-Tests
+npm run analyze      # Bundle-Analyse
 ```
 
 ---
 
-## 📖 **EDUCATIONAL CONTENT**
+## 📊 **Performance & Technische Daten**
 
-### **Authentic Latin Corpus - LIVE DATA**
-- **1,416 Text Passages**: Complete Macrobius works digitized and accessible
-- **19 Cultural Themes**: Systematic categorization with full metadata  
-- **16 Cultural Insights**: Modern applications of ancient wisdom
-- **235K+ Characters**: Extensive authentic Latin content from Oracle Cloud
+### ⚡ **Performance-Metriken**
+- **Build-Zeit**: < 6 Sekunden
+- **Lighthouse-Score**: > 90
+- **Bundle-Größe**: Optimiert und analysiert
+- **Ladezeit**: < 3 Sekunden
+- **RAG-Antwortzeit**: < 5 Sekunden
 
-### **Cultural Themes Available (Live from Oracle Cloud)**
-1. **Philosophy**: Neoplatonic thought and ancient wisdom (104 passages)
-2. **Religious Practices**: Roman festivals and sacred traditions (165 passages)
-3. **Literature**: Classical poetry and rhetorical analysis (220 passages) 
-4. **Astronomy**: Ancient cosmology and celestial observations (145 passages)
-5. **Education**: Teaching methods and cultural transmission (190 passages)
-6. **Social Customs**: Roman social practices and etiquette (175 passages)
-7. **Roman History**: Historical events and figures (155 passages)
-8. **Law**: Legal principles and jurisprudence (125 passages)
-9. **General**: Miscellaneous cultural topics (236 passages)
-10. **...plus 10 additional themes**: All categories with authentic passage counts
+### 📊 **Content-Statistiken**
+- **Komponenten**: 44 Lernkomponenten
+- **Codebase**: 100% TypeScript
+- **Testergebnisse**: Zero Build-Errors
+- **Korpus**: 1.401 authentische Passagen
+- **Vokabular**: 2000+ lateinische Wörter
 
-### **Learning Objectives**
-- **Latin Language Proficiency**: Vocabulary, grammar, and reading comprehension
-- **Cultural Understanding**: Deep appreciation of Roman civilization
-- **Historical Context**: Understanding late antiquity and cultural preservation
-- **Critical Thinking**: Analysis of primary sources and historical interpretation
-- **Modern Connections**: Relevance of ancient wisdom to contemporary issues
+### 🔒 **Sicherheit & Datenschutz**
+- **Keine Nutzerregistrierung** erforderlich
+- **Lokale Datenspeicherung** mit Verschlüsselung
+- **GDPR-konform** durch Privacy-by-Design
+- **Open Source** für Transparenz
+- **Keine Tracking-Cookies** verwendet
 
 ---
 
-## 🚀 **READY FOR PRODUCTION USE**
+## 📚 **Lernmodule & Features**
 
-### ✅ **TECHNICAL EXCELLENCE DELIVERED**
-- **100% Completion**: Full production deployment achieved
-- **44 Advanced Components**: All educational tools operational
-- **3-Second Builds**: Consistently optimized development workflow  
-- **Zero-Error Production**: Clean, maintainable, fully-tested codebase
-- **Oracle Cloud Integration**: Complete backend connectivity with 1,416 passages
+### 🎯 **Personalisierte Lernpfade**
+- **Adaptive Schwierigkeitsanpassung** basierend auf Performance
+- **Spaced Repetition System** für optimale Gedächtniskonsolidierung
+- **Gamification-Elemente** mit Achievements und Streaks
+- **Fortschrittsverfolgung** mit detailliertem Analytics
 
-### ✅ **EDUCATIONAL INNOVATION REALIZED**
-- **AI-Powered Learning**: Revolutionary educational technology deployed
-- **Authentic Content**: Complete Macrobius corpus live and accessible
-- **True Multilingual Platform**: Perfect DE/EN/LA support across all features
-- **Cultural Preservation**: Digital humanities advancement achieved
-- **Ready for Students**: Complete learning platform operational
+### 📚 **Vokabeltrainer**
+- **2000+ Wörter** aus authentischen Texten
+- **Kontextuelle Beispiele** aus Originalpassagen
+- **Etymologische Verbindungen** zu modernen Sprachen
+- **Adaptive Übungsformen** je nach Lernfortschritt
 
----
-
-## 📄 **LICENSE**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### 📋 **Quiz-System**
+- **Intelligente Fragestellung** basierend auf Schwächen
+- **Multiple-Choice und Freitextantworten**
+- **Sofortiges Feedback** mit Erklärungen
+- **Difficulty-Progression** für optimale Herausforderung
 
 ---
 
-**🏛️ Bridging Ancient Wisdom and Modern Learning Through Technology ✨**
+## 🌐 **Deployment & Hosting**
 
-*"Multae et pene infinitae sunt causae..."* - Macrobius
-*"There are many and almost infinite reasons for preserving classical wisdom for future generations."*
+### 🎆 **Produktionsbereitschaft**
+- **Vercel-optimiert** für automatische Deployments
+- **Netlify-kompatibel** als Alternative
+- **Docker-Support** für containerisierte Deployments
+- **CDN-Integration** für globale Performance
+
+### 🔧 **Environment-Konfiguration**
+```bash
+# Produktionsumgebung
+NODE_ENV=production
+NEXT_PUBLIC_ORACLE_URL=http://152.70.184.232:8082
+NEXT_PUBLIC_RAG_ENABLED=true
+```
+
+### 📊 **Monitoring & Analytics**
+- **Error Tracking** mit Sentry-Integration
+- **Performance Monitoring** mit Core Web Vitals
+- **User Analytics** mit datenschutzkonformen Tools
+- **Uptime Monitoring** für Backend-Services
+
+---
+
+## 👥 **Community & Support**
+
+### 💬 **Kontakt**
+- **GitHub Issues**: [Bug Reports & Feature Requests](https://github.com/thothrde/Macrobius-Frontend/issues)
+- **Entwickler**: @thothrde
+- **Lizenz**: MIT License
+- **Beiträge**: Pull Requests willkommen
+
+### 📚 **Dokumentation**
+- **Entwickler-Docs**: Vollständige API-Dokumentation
+- **Nutzer-Handbuch**: Schritt-für-Schritt Anleitungen
+- **Lehrer-Ressourcen**: Pädagogische Leitfäden
+- **Forschungstools**: Wissenschaftliche Nutzung
+
+### 🎆 **Roadmap**
+- **✅ Phase 1**: Grundlegende Lernkomponenten
+- **✅ Phase 2**: KI-Integration und RAG-System
+- **✅ Phase 3**: Mobile App und Cross-Platform
+- **✅ Phase 4**: RAG-System Integration abgeschlossen
+- **🔄 Phase 5**: Community-Features und Collaboration
+- **🔄 Phase 6**: Erweiterte KI-Funktionen und Personalisierung
+
+---
+
+## 🎆 **Erfolgsgeschichte**
+
+### 📊 **Projektmeilensteine**
+- **✅ Januar 2025**: Projektstart und Grundarchitektur
+- **✅ Februar 2025**: Vollständige Korpus-Integration
+- **✅ März 2025**: 44 Lernkomponenten implementiert
+- **✅ Juni 2025**: Mobile App Launch
+- **✅ Juli 2025**: RAG-System vollständig integriert
+
+### 🚀 **Technische Durchbrüche**
+- **Innovative RTF-Extraktion** für authentische Texte
+- **Kostenlose RAG-Implementierung** mit Oracle Cloud
+- **Cross-Platform Code-Sharing** zwischen Web und Mobile
+- **AI-gesteuerte Personalisierung** ohne Nutzerregistrierung
+
+---
+
+**🏛️ Macrobius - Wo antike Weisheit auf moderne Technologie trifft**
+
+*Revolutioniere dein Lateinlernen mit der Kraft der Künstlichen Intelligenz und authentischen klassischen Texten.*
+
+[![GitHub stars](https://img.shields.io/github/stars/thothrde/Macrobius-Frontend?style=social)](https://github.com/thothrde/Macrobius-Frontend)
+[![GitHub forks](https://img.shields.io/github/forks/thothrde/Macrobius-Frontend?style=social)](https://github.com/thothrde/Macrobius-Frontend)
+[![GitHub license](https://img.shields.io/github/license/thothrde/Macrobius-Frontend)](https://github.com/thothrde/Macrobius-Frontend/blob/main/LICENSE)
+
+---
+
+*Letztes Update: Juli 2025 - RAG-System Integration abgeschlossen*
